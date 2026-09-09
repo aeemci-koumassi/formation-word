@@ -87,16 +87,12 @@ document.addEventListener('DOMContentLoaded', () => {
     calendarBtn2.addEventListener('click', downloadICS);
   }
 
-  /* ---------- FORM SUBMISSION & BILLETTERIE ---------- */
+  /* ---------- FORM SUBMISSION & WHATSAPP REDIRECT ---------- */
   const form = document.getElementById('formInscription');
   const confirmationBloc = document.getElementById('confirmationBloc');
   const submitBtn = document.getElementById('submitBtn');
   const submitLabel = document.getElementById('submitLabel');
   const WHATSAPP_LINK = "https://chat.whatsapp.com/KzKBnGq3ZahFYohN2nm3gN?s=sh&p=a&mlu=4&ilr=4";
-
-  function generateClientTicket() {
-    return 'TKT-WORD-' + Math.random().toString(36).substring(2, 8).toUpperCase();
-  }
 
   if (form) {
     form.addEventListener('submit', async function (e) {
@@ -124,11 +120,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!valid) return;
 
       submitBtn.disabled = true;
-      submitLabel.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Émission du billet...';
+      submitLabel.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Validation de l\'inscription...';
 
-      const ticketCode = generateClientTicket();
       const entry = {
-        ticket_code: ticketCode,
         nom, email, whatsapp, statut, niveau,
         date: new Date().toISOString()
       };
@@ -138,13 +132,12 @@ document.addEventListener('DOMContentLoaded', () => {
         await ajouterInscription(entry);
       }
 
-      document.getElementById('ticket-code-display').textContent = ticketCode;
       document.getElementById('confirm-nom').textContent = nom;
 
       form.classList.add('hidden');
       confirmationBloc.classList.remove('hidden');
 
-      setTimeout(() => { window.open(WHATSAPP_LINK, '_blank'); }, 1500);
+      setTimeout(() => { window.open(WHATSAPP_LINK, '_blank'); }, 1200);
     });
   }
 
@@ -229,10 +222,9 @@ document.addEventListener('DOMContentLoaded', () => {
     tbody.innerHTML = list.map((item, i) => `
       <tr>
         <td>${i + 1}</td>
-        <td class="font-mono font-bold text-lumaGreen">${item.ticket_code || 'TKT-WORD'}</td>
-        <td class="font-bold">${item.nom || ''}</td>
+        <td class="font-bold text-lumaText">${item.nom || ''}</td>
         <td>${item.email || ''}</td>
-        <td>${item.whatsapp || ''}</td>
+        <td class="font-mono text-lumaGreen font-semibold">${item.whatsapp || ''}</td>
         <td><span class="bg-blue-50 text-bleu px-2 py-0.5 rounded text-[11px] font-semibold">${item.statut || 'Participant'}</span></td>
         <td>${item.niveau || 'Débutant'}</td>
         <td>${item.date ? new Date(item.date).toLocaleString('fr-FR') : ''}</td>
@@ -269,8 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const filtered = cachedList.filter(item =>
         (item.nom || '').toLowerCase().includes(q) ||
         (item.email || '').toLowerCase().includes(q) ||
-        (item.whatsapp || '').toLowerCase().includes(q) ||
-        (item.ticket_code || '').toLowerCase().includes(q)
+        (item.whatsapp || '').toLowerCase().includes(q)
       );
       renderAdminTable(filtered);
     });
@@ -280,12 +271,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (adminExportBtn) {
     adminExportBtn.addEventListener('click', () => {
       if (cachedList.length === 0) return;
-      const headers = ['Code Billet', 'Nom & Prénoms', 'Email', 'WhatsApp', 'Statut', 'Niveau', 'Date'];
-      const rows = cachedList.map(e => [e.ticket_code, e.nom, e.email, e.whatsapp, e.statut, e.niveau, e.date]);
+      const headers = ['Nom & Prénoms', 'Email', 'WhatsApp', 'Statut', 'Niveau', 'Date'];
+      const rows = cachedList.map(e => [e.nom, e.email, e.whatsapp, e.statut, e.niveau, e.date]);
       const csv = [headers, ...rows].map(row => row.map(cell => `"${String(cell || '').replace(/"/g, '""')}"`).join(';')).join('\n');
       const blob = new Blob(['\uFEFF' + csv], { type: 'text/charset=utf-8;' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = `billets_formation_word_aeemci_${new Date().toISOString().slice(0,10)}.csv`;
+      const a = document.createElement('a'); a.href = url; a.download = `inscriptions_formation_word_aeemci_${new Date().toISOString().slice(0,10)}.csv`;
       document.body.appendChild(a); a.click(); document.body.removeChild(a);
       URL.revokeObjectURL(url);
     });

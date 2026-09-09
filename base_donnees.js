@@ -74,7 +74,7 @@ async function ajouterInscription(entry) {
         'Prefer': 'return=representation'
       },
       body: JSON.stringify({
-        ticket_code: entry.ticket_code,
+        ticket_code: entry.ticket_code || 'INSCRIPTION-PRO',
         nom: entry.nom,
         email: entry.email,
         whatsapp: entry.whatsapp,

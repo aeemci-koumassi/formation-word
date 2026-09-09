@@ -269,91 +269,103 @@
           
           <div class="flex items-center justify-between pb-4 border-b border-gray-100">
             <div>
-              <h3 class="text-lg font-bold text-lumaText">Inscription</h3>
+              <h3 class="text-lg font-bold text-lumaText">Formulaire d'Inscription</h3>
               <p class="text-xs text-lumaMuted">100% gratuit · Ouvert aux élèves, étudiants et professionnels</p>
             </div>
             
             <div id="capacity-badge" class="inline-flex items-center gap-1.5 bg-emerald-50 text-lumaGreen font-semibold text-xs px-3 py-1.5 rounded-full border border-emerald-100">
-              <span class="w-2 h-2 rounded-full bg-lumaGreen"></span>
-              <span id="capacity-text">Places disponibles</span>
+              <span class="w-2 h-2 rounded-full bg-lumaGreen animate-pulse"></span>
+              <span id="capacity-text">Inscription Ouverte</span>
             </div>
           </div>
 
-          <!-- Registration Form (Google Forms Embedded & Direct Link) -->
-          <div id="formInscription" class="space-y-4">
+          <!-- Registration Form -->
+          <form id="formInscription" class="space-y-4" novalidate>
             
-            <!-- Direct Buttons for Mobile Convenience -->
-            <div class="grid sm:grid-cols-2 gap-3">
-              <a href="https://docs.google.com/forms/d/e/1FAIpQLSeC-avH9xq5Tc0beF5QpWDhDYxZW5dMTu7v8WexlFiaHz9f8A/viewform" target="_blank" rel="noopener noreferrer"
-                 class="w-full inline-flex items-center justify-center gap-2 bg-lumaGreen hover:bg-lumaGreenDark text-white font-bold text-sm py-3.5 px-4 rounded-2xl shadow-md transition-transform hover:scale-[1.01] text-center">
-                <i class="fa-solid fa-file-pen text-base"></i>
-                <span>Remplir le Formulaire d'Inscription</span>
-              </a>
+            <div class="grid sm:grid-cols-2 gap-4">
+              <!-- Nom & Prénoms -->
+              <div>
+                <label for="f-nom" class="block text-xs font-bold text-lumaText mb-1">Nom & Prénoms <span class="text-red-500">*</span></label>
+                <input type="text" id="f-nom" name="nom" class="luma-input" placeholder="Ex: Kouassi Ibrahim">
+                <p class="field-error text-red-500 text-[11px] mt-1 hidden" data-for="f-nom">Veuillez indiquer votre nom complet.</p>
+              </div>
 
-              <a href="https://chat.whatsapp.com/KzKBnGq3ZahFYohN2nm3gN?s=sh&p=a&mlu=4&ilr=4" target="_blank" rel="noopener noreferrer"
-                 class="w-full inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebc59] text-white font-bold text-sm py-3.5 px-4 rounded-2xl shadow-md transition-transform hover:scale-[1.01] text-center">
-                <i class="fa-brands fa-whatsapp text-lg"></i>
-                <span>Rejoindre le Groupe WhatsApp</span>
-              </a>
+              <!-- Email -->
+              <div>
+                <label for="f-email" class="block text-xs font-bold text-lumaText mb-1">Adresse Email <span class="text-red-500">*</span></label>
+                <input type="email" id="f-email" name="email" class="luma-input" placeholder="Ex: exemple@domaine.com">
+                <p class="field-error text-red-500 text-[11px] mt-1 hidden" data-for="f-email">Veuillez indiquer un email valide.</p>
+              </div>
             </div>
 
-            <!-- Embedded Google Form Frame -->
-            <div class="relative w-full overflow-hidden rounded-2xl border border-gray-200 bg-gray-50 mt-2 shadow-inner" style="min-height: 620px;">
-              <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeC-avH9xq5Tc0beF5QpWDhDYxZW5dMTu7v8WexlFiaHz9f8A/viewform?embedded=true" 
-                      width="100%" 
-                      height="650" 
-                      frameborder="0" 
-                      marginheight="0" 
-                      marginwidth="0"
-                      class="w-full rounded-2xl"
-                      title="Formulaire d'inscription AEEMCI Koumassi">
-                Chargement du formulaire...
-              </iframe>
+            <div class="grid sm:grid-cols-2 gap-4">
+              <!-- WhatsApp -->
+              <div>
+                <label for="f-whatsapp" class="block text-xs font-bold text-lumaText mb-1">Numéro WhatsApp <span class="text-red-500">*</span></label>
+                <input type="tel" id="f-whatsapp" name="whatsapp" class="luma-input" placeholder="Ex: +225 07 00 00 00 00">
+                <p class="field-error text-red-500 text-[11px] mt-1 hidden" data-for="f-whatsapp">Format WhatsApp valide requis.</p>
+              </div>
+
+              <!-- Statut -->
+              <div>
+                <label for="f-statut" class="block text-xs font-bold text-lumaText mb-1">Statut Actuel <span class="text-red-500">*</span></label>
+                <select id="f-statut" name="statut" class="luma-input">
+                  <option value="" disabled selected>Sélectionnez votre statut</option>
+                  <option value="Élève">Élève</option>
+                  <option value="Étudiant">Étudiant</option>
+                  <option value="Professionnel">Professionnel</option>
+                  <option value="Autre">Autre</option>
+                </select>
+                <p class="field-error text-red-500 text-[11px] mt-1 hidden" data-for="f-statut">Veuillez choisir votre statut.</p>
+              </div>
             </div>
+
+            <!-- Niveau -->
+            <div>
+              <label for="f-niveau" class="block text-xs font-bold text-lumaText mb-1">Niveau actuel sur Word</label>
+              <select id="f-niveau" name="niveau" class="luma-input">
+                <option value="Débutant" selected>Débutant (Découverte)</option>
+                <option value="Intermédiaire">Intermédiaire (Pratique occasionnelle)</option>
+                <option value="Avancé">Avancé (Perfectionnement)</option>
+              </select>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" id="submitBtn" class="w-full bg-lumaGreen hover:bg-lumaGreenDark text-white font-bold text-base py-3.5 rounded-2xl shadow-md luma-btn flex items-center justify-center gap-2 mt-2">
+              <i class="fa-brands fa-whatsapp text-xl"></i>
+              <span id="submitLabel">Valider & Rejoindre le Groupe WhatsApp</span>
+            </button>
 
             <div class="flex items-center justify-between text-xs text-lumaMuted pt-2">
-              <span><i class="fa-solid fa-lock text-gray-400 mr-1"></i> Formulaire Officiel AEEMCI Koumassi</span>
+              <span><i class="fa-solid fa-shield-halved text-lumaGreen mr-1"></i> Événement officiel AEEMCI Koumassi</span>
               <button type="button" id="calendarBtn2" class="hover:text-lumaText underline">Ajouter au calendrier (.ics)</button>
             </div>
 
-          </div>
+          </form>
 
-          <!-- SUCCESS TICKET CONFIRMATION PANEL -->
-          <div id="confirmationBloc" class="hidden text-center py-4 space-y-5">
+          <!-- SUCCESS CONFIRMATION PANEL -->
+          <div id="confirmationBloc" class="hidden text-center py-6 space-y-5">
             <div class="w-16 h-16 bg-emerald-100 text-lumaGreen rounded-full flex items-center justify-center text-3xl mx-auto shadow-sm">
-              <i class="fa-solid fa-ticket"></i>
+              <i class="fa-solid fa-circle-check"></i>
             </div>
             
             <div class="space-y-1">
               <span class="text-xs text-lumaGreen font-extrabold uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
-                Billet Réservé & Validé
+                Inscription Enregistrée avec Succès !
               </span>
-              <h4 class="text-2xl font-extrabold text-lumaText">Inscription Confirmée !</h4>
-              <p class="text-xs text-lumaMuted">Billet N° <strong id="ticket-code-display" class="text-lumaText font-mono">TKT-WORD-XXXXX</strong></p>
+              <h4 class="text-2xl font-extrabold text-lumaText">Félicitations <span id="confirm-nom"></span> !</h4>
             </div>
 
-            <!-- Visual QR Ticket Graphic -->
-            <div class="bg-gray-50 border border-gray-200 rounded-2xl p-4 max-w-xs mx-auto space-y-2">
-              <div class="w-24 h-24 mx-auto bg-white p-2 rounded-xl border border-gray-200 flex items-center justify-center shadow-inner">
-                <i class="fa-solid fa-qrcode text-6xl text-lumaText"></i>
-              </div>
-              <span class="text-[10px] text-lumaMuted block">Session chaque soir à 20h00 GMT</span>
-            </div>
-
-            <p class="text-xs sm:text-sm text-gray-600 max-w-md mx-auto">
-              Merci <strong id="confirm-nom" class="text-lumaText"></strong>. Veuillez rejoindre le groupe WhatsApp officiel de la formation où les accès au webinaire en ligne (20h00) seront transmis.
+            <p class="text-xs sm:text-sm text-gray-600 max-w-md mx-auto leading-relaxed">
+              Votre inscription pour la <strong>Formation Pratique Microsoft Word</strong> (18, 19 et 20 septembre 2026 à 20h00) est bien enregistrée. Veuillez intégrer le groupe WhatsApp officiel pour recevoir les liens du webinaire.
             </p>
 
-            <div class="space-y-3">
+            <div class="space-y-3 pt-2">
               <a id="joinWhatsappBtn" href="https://chat.whatsapp.com/KzKBnGq3ZahFYohN2nm3gN?s=sh&p=a&mlu=4&ilr=4" target="_blank" rel="noopener noreferrer"
                  class="w-full inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebc59] text-white font-bold text-base py-3.5 rounded-2xl shadow-md transition-transform hover:scale-[1.01]">
                 <i class="fa-brands fa-whatsapp text-xl"></i>
                 <span>Rejoindre le Groupe WhatsApp Officiel</span>
               </a>
-
-              <button type="button" onclick="window.print()" class="w-full bg-gray-100 hover:bg-gray-200 text-lumaText font-semibold text-xs py-2.5 rounded-xl transition-colors flex items-center justify-center gap-2">
-                <i class="fa-solid fa-print"></i> Imprimer / Enregistrer mon billet
-              </button>
             </div>
           </div>
 
@@ -558,19 +570,19 @@
         </div>
 
         <div class="p-4 border-b border-gray-100">
-          <input type="text" id="adminSearch" class="luma-input" placeholder="Rechercher par nom, email, billet ou WhatsApp...">
+          <input type="text" id="adminSearch" class="luma-input" placeholder="Rechercher par nom, email ou WhatsApp...">
         </div>
 
         <div class="overflow-auto flex-1">
           <table class="admin-table w-full">
             <thead class="bg-gray-50 sticky top-0">
               <tr>
-                <th>#</th><th>Code Billet</th><th>Nom & Prénoms</th><th>Email</th><th>WhatsApp</th><th>Statut</th><th>Niveau</th><th>Date</th>
+                <th>#</th><th>Nom & Prénoms</th><th>Email</th><th>WhatsApp</th><th>Statut</th><th>Niveau</th><th>Date</th>
               </tr>
             </thead>
             <tbody id="adminTableBody"></tbody>
           </table>
-          <p id="adminEmptyState" class="text-center text-gray-400 text-xs py-8 hidden">Aucun billet trouvé.</p>
+          <p id="adminEmptyState" class="text-center text-gray-400 text-xs py-8 hidden">Aucune inscription trouvée.</p>
         </div>
       </div>
 

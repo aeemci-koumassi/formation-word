@@ -24,7 +24,7 @@ async function recupererInscriptions() {
 
     if (res.ok) {
       const data = await res.json();
-      if (Array.isArray(data) && data.length > 0) {
+      if (Array.isArray(data)) {
         return data.map(item => ({
           ticket_code: item.ticket_code,
           nom: item.nom,

@@ -159,9 +159,11 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => adminPassInput.focus(), 100);
     }
   }
+  window.openAdmin = openAdmin;
   function closeAdmin() {
     if (adminModal) adminModal.classList.add('hidden');
   }
+  window.closeAdmin = closeAdmin;
 
   const adminCloseBtn1 = document.getElementById('adminCloseBtn1');
   const adminCloseBtn2 = document.getElementById('adminCloseBtn2');

@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formation Pratique Microsoft Word — AEEMCI Koumassi</title>
+
+<!-- SEO & Open Graph -->
+<meta name="description" content="Formation pratique et gratuite sur Microsoft Word pour élèves, étudiants et professionnels par Tall Seydou. Organisée par l'AEEMCI Sous-comité de Koumassi les 18, 19 et 20 septembre 2026 à 20h00 en ligne (Webinaire).">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Formation Pratique Microsoft Word — AEEMCI Koumassi">
+<meta property="og:description" content="Réservez votre billet gratuit pour la formation pratique Microsoft Word. 18, 19 et 20 septembre 2026 à 20h00 GMT en ligne (Webinaire).">
+<meta property="og:image" content="WhatsApp Image 2026-09-09 at 16.32.41.jpeg">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23008751'/%3E%3Ctext x='50' y='68' font-size='55' font-family='Arial,sans-serif' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'%3EW%3C/text%3E%3C/svg%3E">
+
+<!-- FontAwesome 6 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          lumaBg: '#F3F7F4',
+          lumaCard: '#FFFFFF',
+          lumaGreen: '#2D8A4E',
+          lumaGreenDark: '#226A3B',
+          lumaText: '#1A1A1A',
+          lumaMuted: '#667085',
+          vert: '#008751',
+          or: '#F4C430',
+          bleu: '#002050'
+        },
+        fontFamily: {
+          sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif']
+        }
+      }
+    }
+  }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  body { background-color: #F3F7F4; color: #1A1A1A; font-family: 'Plus Jakarta Sans', sans-serif; }
+  
+  .luma-shadow {
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
+  }
+  .luma-shadow-lg {
+    box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
+  }
+
+  .luma-btn { transition: all 0.2s ease-in-out; }
+  .luma-btn:hover { transform: translateY(-1px); }
+
+  .luma-input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 1px solid #E4E7EC;
+    background-color: #FAFAFA;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    outline: none;
+  }
+  .luma-input:focus {
+    background-color: #FFFFFF;
+    border-color: #2D8A4E;
+    box-shadow: 0 0 0 3px rgba(45, 138, 78, 0.12);
+  }
+  .luma-input.err {
+    border-color: #F04438;
+    background-color: #FEF3F2;
+  }
+
+  .faq-arrow { transition: transform .3s ease; }
+  .faq-open .faq-arrow { transform: rotate(180deg); }
+  .faq-answer { max-height:0; overflow:hidden; transition:max-height .35s ease; }
+  .faq-open .faq-answer { max-height:300px; }
+
+  .modal-overlay { background: rgba(16, 24, 40, 0.6); backdrop-filter: blur(4px); }
+  table.admin-table th, table.admin-table td { padding: 12px 16px; text-align:left; font-size:.85rem; }
+  table.admin-table tr:nth-child(even) { background:#F9FAFB; }
+
+  @media print {
+    body * { visibility: hidden; }
+    #confirmationBloc, #confirmationBloc * { visibility: visible; }
+    #confirmationBloc { position: absolute; left: 0; top: 0; width: 100%; }
+  }
+</style>
+</head>
+<body class="min-h-screen flex flex-col antialiased">
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast" class="fixed top-20 right-5 z-50 bg-lumaText text-white text-xs font-semibold px-4 py-3 rounded-2xl shadow-xl transition-all duration-300 opacity-0 pointer-events-none transform translate-y-2 flex items-center gap-2">
+    <i class="fa-solid fa-circle-check text-lumaGreen"></i>
+    <span id="toast-msg">Lien copié dans le presse-papier !</span>
+  </div>
+
+  <!-- TOP HEADER / NAVBAR -->
+  <header class="w-full bg-[#F3F7F4] border-b border-[#E4E7EC] sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      
+      <!-- Brand Logo (Secret triple-click trigger for Organizer) -->
+      <a href="#" id="brandLogo" class="flex items-center gap-2.5 group select-none cursor-pointer" title="AEEMCI Word">
+        <div class="w-8 h-8 rounded-lg bg-lumaGreen flex items-center justify-center text-white font-bold text-lg shadow-sm">
+          <i class="fa-solid fa-graduation-cap text-sm"></i>
+        </div>
+        <span class="font-extrabold text-lg text-lumaText tracking-tight">aeemci<span class="text-lumaGreen">.word</span></span>
+      </a>
+
+      <!-- Right Nav Status & Links (No public organizer button) -->
+      <div class="flex items-center gap-4 sm:gap-6 text-sm">
+        <span class="inline-flex items-center text-xs text-lumaMuted font-medium bg-white/80 px-3.5 py-1.5 rounded-full border border-black/5">
+          <i class="fa-regular fa-clock mr-1.5 text-lumaGreen"></i> 20:00 UTC+0 (Abidjan)
+        </span>
+        <a href="#about" class="text-lumaMuted hover:text-lumaText font-medium text-xs sm:text-sm transition-colors">Découvrir</a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN EVENT PAGE CONTAINER -->
+  <main class="flex-1 max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 w-full">
+    <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+
+      <!-- LEFT COLUMN: POSTER FLYER & ORGANIZER BADGE -->
+      <div class="lg:col-span-5 space-y-6">
+        
+        <!-- EVENT POSTER CARD -->
+        <div class="bg-gradient-to-br from-bleu via-bleudark to-vert rounded-3xl p-6 text-white shadow-xl relative overflow-hidden aspect-square sm:aspect-[4/3] lg:aspect-square flex flex-col justify-between group">
+          <div class="absolute -top-12 -right-12 w-48 h-48 bg-or/20 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="absolute -bottom-12 -left-12 w-48 h-48 bg-vert/40 rounded-full blur-3xl pointer-events-none"></div>
+
+          <!-- Top Badge Bar -->
+          <div class="flex items-center justify-between relative z-10">
+            <div class="flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-3 py-1 rounded-full text-xs font-bold text-or">
+              <span class="w-2 h-2 rounded-full bg-or animate-ping"></span>
+              <span>18, 19 ET 20 SEPTEMBRE 2026</span>
+            </div>
+            <span class="text-xs text-white/80 font-semibold uppercase tracking-wider bg-black/20 px-3 py-1 rounded-full">
+              100% GRATUIT
+            </span>
+          </div>
+
+          <!-- Central Poster Banner Graphic -->
+          <div class="text-center my-auto space-y-3 relative z-10 py-4">
+            <div class="w-16 h-16 mx-auto rounded-2xl bg-white p-2 shadow-lg flex items-center justify-center">
+              <img src="WhatsApp Image 2026-09-09 at 16.32.41.jpeg" alt="Logo AEEMCI" class="w-full h-full object-contain">
+            </div>
+
+            <span class="text-xs text-or font-bold tracking-widest uppercase block">Sous-comité de Koumassi</span>
+            
+            <h2 class="font-extrabold text-2xl sm:text-3xl leading-tight">
+              FORMATION PRATIQUE<br>
+              <span class="text-or">MICROSOFT WORD</span>
+            </h2>
+
+            <p class="text-xs text-white/90 font-medium max-w-xs mx-auto">
+              Pour Élèves, Étudiants et Professionnels<br>18, 19 et 20 Septembre 2026 · À 20h00 GMT (Webinaire)
+            </p>
+          </div>
+
+          <!-- Bottom Speaker Highlight Pill -->
+          <div class="flex items-center gap-3 bg-black/40 backdrop-blur-md p-2.5 rounded-2xl border border-white/10 relative z-10">
+            <img src="WhatsApp Image 2026-09-09 at 16.32.42.jpeg" alt="Tall Seydou Formateur" class="w-10 h-10 rounded-xl object-cover border border-or">
+            <div class="text-left text-xs">
+              <span class="text-white/60 block font-medium">Intervenant Expert</span>
+              <span class="text-white font-bold block">Tall Seydou</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ORGANIZER BADGE CARD -->
+        <div class="bg-white rounded-2xl p-4 border border-[#E4E7EC] luma-shadow flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-xl bg-gray-100 p-1 border border-gray-200 shrink-0">
+              <img src="WhatsApp Image 2026-09-09 at 16.32.41.jpeg" alt="AEEMCI Koumassi" class="w-full h-full object-contain">
+            </div>
+            <div>
+              <span class="text-[11px] text-lumaMuted block font-medium">Présenté par</span>
+              <h4 class="text-sm font-bold text-lumaText flex items-center gap-1">
+                AEEMCI Koumassi <i class="fa-solid fa-circle-check text-lumaGreen text-xs"></i>
+              </h4>
+            </div>
+          </div>
+
+          <button id="contactOrgBtn" class="bg-gray-100 hover:bg-gray-200 text-lumaText font-semibold text-xs px-3 py-2 rounded-xl transition-colors">
+            Contacter
+          </button>
+        </div>
+
+        <!-- TARGET AUDIENCE BANNER -->
+        <div class="bg-emerald-50 rounded-2xl p-4 border border-emerald-100 text-xs text-lumaGreen font-semibold flex items-center gap-3">
+          <i class="fa-solid fa-users text-lg shrink-0"></i>
+          <span>Formation dédiée aux <strong>Élèves</strong>, <strong>Étudiants</strong> et <strong>Professionnels</strong>.</span>
+        </div>
+
+        <!-- LINKS & TAGS -->
+        <div class="space-y-3 px-1">
+          <div class="flex items-center gap-4 text-xs font-semibold text-lumaMuted">
+            <button id="shareBtn" class="hover:text-lumaText flex items-center gap-1.5 transition-colors">
+              <i class="fa-solid fa-share-nodes"></i> Partager l'événement
+            </button>
+            <span>•</span>
+            <a href="#about" class="hover:text-lumaText flex items-center gap-1.5 transition-colors">
+              <i class="fa-regular fa-flag"></i> Signaler
+            </a>
+          </div>
+
+          <div class="flex flex-wrap gap-2 pt-2">
+            <span class="bg-white border border-gray-200 text-lumaMuted text-[11px] font-semibold px-3 py-1 rounded-full">#MicrosoftWord</span>
+            <span class="bg-white border border-gray-200 text-lumaMuted text-[11px] font-semibold px-3 py-1 rounded-full">#ÉlèvesEtudiantsPros</span>
+            <span class="bg-white border border-gray-200 text-lumaMuted text-[11px] font-semibold px-3 py-1 rounded-full">#Webinaire20h00</span>
+            <span class="bg-white border border-gray-200 text-lumaMuted text-[11px] font-semibold px-3 py-1 rounded-full">#18-20Septembre</span>
+            <span class="bg-white border border-gray-200 text-lumaMuted text-[11px] font-semibold px-3 py-1 rounded-full">#AEEMCI</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: EVENT TITLE, DETAILS & LUMA REGISTRATION BOX -->
+      <div class="lg:col-span-7 space-y-8">
+        
+        <!-- EVENT TITLE & METADATA -->
+        <div class="space-y-4">
+          <div class="inline-flex items-center gap-2 bg-blue-50 text-bleu text-xs font-bold px-3 py-1 rounded-full border border-blue-100">
+            <i class="fa-solid fa-graduation-cap"></i> Pour Élèves, Étudiants & Professionnels
+          </div>
+
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-lumaText tracking-tight leading-tight">
+            Formation Pratique Microsoft Word
+          </h1>
+
+          <!-- Date Item (Horaire : 20h00) -->
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-2xl bg-white border border-gray-200 luma-shadow flex flex-col items-center justify-center shrink-0">
+              <span class="text-[9px] font-bold uppercase text-red-500 tracking-wider">SEPT.</span>
+              <span class="text-lg font-extrabold text-lumaText leading-none">18</span>
+            </div>
+            <div>
+              <h3 class="text-sm sm:text-base font-bold text-lumaText">18, 19 et 20 septembre 2026</h3>
+              <p class="text-xs sm:text-sm text-lumaGreen font-bold">Session chaque soir à 20:00 UTC+0 (20h00 GMT Abidjan)</p>
+            </div>
+          </div>
+
+          <!-- Location Item (En ligne - Webinaire) -->
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-2xl bg-white border border-gray-200 luma-shadow flex items-center justify-center text-lumaGreen text-xl shrink-0">
+              <i class="fa-solid fa-laptop-house"></i>
+            </div>
+            <div>
+              <h3 class="text-sm sm:text-base font-bold text-lumaText flex items-center gap-1">
+                En ligne (Webinaire) <i class="fa-solid fa-globe text-xs text-lumaMuted"></i>
+              </h3>
+              <p class="text-xs sm:text-sm text-lumaMuted font-medium">Sous-comité AEEMCI de Koumassi (Accès partagé sur le groupe WhatsApp officiel)</p>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- LUMA REGISTRATION WIDGET CARD -->
+        <div id="registration-card" class="bg-white rounded-3xl p-6 sm:p-8 border border-[#E4E7EC] luma-shadow-lg space-y-6">
+          
+          <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+            <div>
+              <h3 class="text-lg font-bold text-lumaText">Inscription</h3>
+              <p class="text-xs text-lumaMuted">100% gratuit · Ouvert aux élèves, étudiants et professionnels</p>
+            </div>
+            
+            <div id="capacity-badge" class="inline-flex items-center gap-1.5 bg-emerald-50 text-lumaGreen font-semibold text-xs px-3 py-1.5 rounded-full border border-emerald-100">
+              <span class="w-2 h-2 rounded-full bg-lumaGreen"></span>
+              <span id="capacity-text">Places disponibles</span>
+            </div>
+          </div>
+
+          <!-- Registration Form -->
+          <form id="formInscription" class="space-y-4" action="inscription.php" method="POST" novalidate>
+            
+            <div class="grid sm:grid-cols-2 gap-4">
+              <!-- Nom & Prénoms -->
+              <div>
+                <label for="f-nom" class="block text-xs font-bold text-lumaText mb-1">Nom & Prénoms <span class="text-red-500">*</span></label>
+                <input type="text" id="f-nom" name="nom" class="luma-input" placeholder="Ex: Kouassi Ibrahim">
+                <p class="field-error text-red-500 text-[11px] mt-1 hidden" data-for="f-nom">Veuillez indiquer votre nom complet.</p>
+              </div>
+
+              <!-- Email -->
+              <div>
+                <label for="f-email" class="block text-xs font-bold text-lumaText mb-1">Adresse Email <span class="text-red-500">*</span></label>
+                <input type="email" id="f-email" name="email" class="luma-input" placeholder="Ex: exemple@domaine.com">
+                <p class="field-error text-red-500 text-[11px] mt-1 hidden" data-for="f-email">Veuillez indiquer un email valide.</p>
+              </div>
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-4">
+              <!-- WhatsApp -->
+              <div>
+                <label for="f-whatsapp" class="block text-xs font-bold text-lumaText mb-1">Numéro WhatsApp <span class="text-red-500">*</span></label>
+                <input type="tel" id="f-whatsapp" name="whatsapp" class="luma-input" placeholder="Ex: +225 07 00 00 00 00">
+                <p class="field-error text-red-500 text-[11px] mt-1 hidden" data-for="f-whatsapp">Format WhatsApp valide requis.</p>
+              </div>
+
+              <!-- Statut -->
+              <div>
+                <label for="f-statut" class="block text-xs font-bold text-lumaText mb-1">Statut Actuel <span class="text-red-500">*</span></label>
+                <select id="f-statut" name="statut" class="luma-input">
+                  <option value="" disabled selected>Sélectionnez votre statut</option>
+                  <option value="Élève">Élève</option>
+                  <option value="Étudiant">Étudiant</option>
+                  <option value="Professionnel">Professionnel</option>
+                  <option value="Autre">Autre</option>
+                </select>
+                <p class="field-error text-red-500 text-[11px] mt-1 hidden" data-for="f-statut">Veuillez choisir votre statut.</p>
+              </div>
+            </div>
+
+            <!-- Niveau -->
+            <div>
+              <label for="f-niveau" class="block text-xs font-bold text-lumaText mb-1">Niveau actuel sur Word</label>
+              <select id="f-niveau" name="niveau" class="luma-input">
+                <option value="Débutant" selected>Débutant (Découverte)</option>
+                <option value="Intermédiaire">Intermédiaire (Pratique occasionnelle)</option>
+                <option value="Avancé">Avancé (Perfectionnement)</option>
+              </select>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" id="submitBtn" class="w-full bg-lumaGreen hover:bg-lumaGreenDark text-white font-bold text-base py-3.5 rounded-2xl shadow-md luma-btn flex items-center justify-center gap-2 mt-2">
+              <span id="submitLabel">S'inscrire à la formation (Gratuit)</span>
+            </button>
+
+            <div class="flex items-center justify-between text-xs text-lumaMuted pt-2">
+              <span><i class="fa-solid fa-lock text-gray-400 mr-1"></i> Billet individuel sécurisé</span>
+              <button type="button" id="calendarBtn2" class="hover:text-lumaText underline">Ajouter au calendrier (.ics)</button>
+            </div>
+
+          </form>
+
+          <!-- SUCCESS TICKET CONFIRMATION PANEL -->
+          <div id="confirmationBloc" class="hidden text-center py-4 space-y-5">
+            <div class="w-16 h-16 bg-emerald-100 text-lumaGreen rounded-full flex items-center justify-center text-3xl mx-auto shadow-sm">
+              <i class="fa-solid fa-ticket"></i>
+            </div>
+            
+            <div class="space-y-1">
+              <span class="text-xs text-lumaGreen font-extrabold uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
+                Billet Réservé & Validé
+              </span>
+              <h4 class="text-2xl font-extrabold text-lumaText">Inscription Confirmée !</h4>
+              <p class="text-xs text-lumaMuted">Billet N° <strong id="ticket-code-display" class="text-lumaText font-mono">TKT-WORD-XXXXX</strong></p>
+            </div>
+
+            <!-- Visual QR Ticket Graphic -->
+            <div class="bg-gray-50 border border-gray-200 rounded-2xl p-4 max-w-xs mx-auto space-y-2">
+              <div class="w-24 h-24 mx-auto bg-white p-2 rounded-xl border border-gray-200 flex items-center justify-center shadow-inner">
+                <i class="fa-solid fa-qrcode text-6xl text-lumaText"></i>
+              </div>
+              <span class="text-[10px] text-lumaMuted block">Session chaque soir à 20h00 GMT</span>
+            </div>
+
+            <p class="text-xs sm:text-sm text-gray-600 max-w-md mx-auto">
+              Merci <strong id="confirm-nom" class="text-lumaText"></strong>. Veuillez rejoindre le groupe WhatsApp officiel de la formation où les accès au webinaire en ligne (20h00) seront transmis.
+            </p>
+
+            <div class="space-y-3">
+              <a id="joinWhatsappBtn" href="https://chat.whatsapp.com/KzKBnGq3ZahFYohN2nm3gN?s=sh&p=a&mlu=4&ilr=4" target="_blank" rel="noopener noreferrer"
+                 class="w-full inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebc59] text-white font-bold text-base py-3.5 rounded-2xl shadow-md transition-transform hover:scale-[1.01]">
+                <i class="fa-brands fa-whatsapp text-xl"></i>
+                <span>Rejoindre le Groupe WhatsApp Officiel</span>
+              </a>
+
+              <button type="button" onclick="window.print()" class="w-full bg-gray-100 hover:bg-gray-200 text-lumaText font-semibold text-xs py-2.5 rounded-xl transition-colors flex items-center justify-center gap-2">
+                <i class="fa-solid fa-print"></i> Imprimer / Enregistrer mon billet
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ABOUT SECTION -->
+    <section id="about" class="mt-16 sm:mt-24 pt-12 border-t border-gray-200 space-y-12">
+      
+      <div class="max-w-3xl space-y-4">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-lumaText">À propos de la formation</h2>
+        <p class="text-base sm:text-lg font-semibold text-lumaGreen">
+          FORMATION PRATIQUE MICROSOFT WORD — 18, 19 & 20 SEPTEMBRE 2026 À 20H00
+        </p>
+        <p class="text-gray-600 text-sm sm:text-base leading-relaxed">
+          Cette formation pratique est organisée par l'<strong>AEEMCI (Sous-comité de Koumassi)</strong> et spécialement conçue pour les <strong>élèves</strong>, <strong>étudiants</strong> et <strong>professionnels</strong>. Elle se déroulera sur 3 jours intensifs en ligne (Webinaire), <strong>chaque soir à partir de 20h00 GMT</strong>, afin d'acquérir les réflexes et méthodes nécessaires pour produire des documents d'entreprise et travaux académiques irréprochables.
+        </p>
+      </div>
+
+      <!-- 3 MODULES CURRICULUM -->
+      <div class="space-y-6">
+        <h3 class="text-xl font-bold text-lumaText">Programme des 3 Dates (Début à 20h00)</h3>
+
+        <div class="grid md:grid-cols-3 gap-6">
+          
+          <!-- Module 1 (18 Septembre) -->
+          <div class="bg-white rounded-2xl p-6 border border-gray-200 luma-shadow space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="w-10 h-10 rounded-xl bg-lumaGreen/10 text-lumaGreen font-bold flex items-center justify-center">01</span>
+              <span class="text-[11px] font-bold text-lumaMuted uppercase">Ven. 18 Sept. (20h00)</span>
+            </div>
+            <h4 class="font-bold text-base text-lumaText">Module 1 : Prise en main & Fondations Pro</h4>
+            <ul class="space-y-2 text-xs text-gray-600">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lumaGreen"></i> Interface, ruban & raccourcis essentiels</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lumaGreen"></i> Alignements et taquets de tabulation</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lumaGreen"></i> Marges & sauts de section</li>
+            </ul>
+          </div>
+
+          <!-- Module 2 (19 Septembre) -->
+          <div class="bg-white rounded-2xl p-6 border border-gray-200 luma-shadow space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="w-10 h-10 rounded-xl bg-or/20 text-ord font-bold flex items-center justify-center">02</span>
+              <span class="text-[11px] font-bold text-lumaMuted uppercase">Sam. 19 Sept. (20h00)</span>
+            </div>
+            <h4 class="font-bold text-base text-lumaText">Module 2 : Styles & Automatisation</h4>
+            <ul class="space-y-2 text-xs text-gray-600">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lumaGreen"></i> Styles hiérarchiques personnalisés</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lumaGreen"></i> Table des matières automatique</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lumaGreen"></i> En-têtes & pieds de page avancés</li>
+            </ul>
+          </div>
+
+          <!-- Module 3 (20 Septembre) -->
+          <div class="bg-white rounded-2xl p-6 border border-gray-200 luma-shadow space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="w-10 h-10 rounded-xl bg-bleu/10 text-bleu font-bold flex items-center justify-center">03</span>
+              <span class="text-[11px] font-bold text-lumaMuted uppercase">Dim. 20 Sept. (20h00)</span>
+            </div>
+            <h4 class="font-bold text-base text-lumaText">Module 3 : Publipostage & Astuces</h4>
+            <ul class="space-y-2 text-xs text-gray-600">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lumaGreen"></i> Publipostage (Courriers & Attestations)</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lumaGreen"></i> Insertion de tableaux & graphiques</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-lumaGreen"></i> Protection du document & Export PDF</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- SPEAKER CARD SECTION -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 luma-shadow flex flex-col sm:flex-row items-center gap-6">
+        <img src="WhatsApp Image 2026-09-09 at 16.32.42.jpeg" alt="Tall Seydou" class="w-28 h-28 rounded-2xl object-cover border-2 border-lumaGreen shrink-0">
+        <div class="space-y-2 text-center sm:text-left">
+          <span class="text-[11px] font-extrabold text-lumaGreen uppercase tracking-wider bg-emerald-50 px-2.5 py-1 rounded-full">
+            Formateur Principal
+          </span>
+          <h3 class="text-xl font-extrabold text-lumaText">Tall Seydou</h3>
+          <p class="text-xs text-lumaMuted font-medium">Expert en outils bureautiques & Responsable AEEMCI Sous-comité de Koumassi</p>
+          <p class="text-xs text-gray-600 leading-relaxed">
+            Formateur expérimenté dédié à l'accompagnement pratique des élèves, étudiants et professionnels pour optimiser leur productivité bureautique.
+          </p>
+        </div>
+      </div>
+
+
+      <!-- FAQ ACCORDION SECTION -->
+      <div class="space-y-4 pt-4">
+        <h3 class="text-xl font-bold text-lumaText mb-4">Questions fréquentes</h3>
+
+        <div class="space-y-3">
+          <div class="faq-item bg-white rounded-2xl border border-gray-200 luma-shadow overflow-hidden">
+            <button class="faq-toggle w-full flex items-center justify-between p-5 text-left font-bold text-sm text-lumaText">
+              <span>1. À qui s'adresse cette formation ?</span>
+              <i class="fa-solid fa-chevron-down faq-arrow text-lumaMuted text-xs"></i>
+            </button>
+            <div class="faq-answer px-5"><p class="text-xs text-gray-600 pb-5">Cette formation s'adresse aux élèves, étudiants et professionnels souhaitant maîtriser la création et la mise en page de documents sous Word.</p></div>
+          </div>
+
+          <div class="faq-item bg-white rounded-2xl border border-gray-200 luma-shadow overflow-hidden">
+            <button class="faq-toggle w-full flex items-center justify-between p-5 text-left font-bold text-sm text-lumaText">
+              <span>2. Quelles sont les dates et horaires ?</span>
+              <i class="fa-solid fa-chevron-down faq-arrow text-lumaMuted text-xs"></i>
+            </button>
+            <div class="faq-answer px-5"><p class="text-xs text-gray-600 pb-5">La formation se déroulera les vendredi 18, samedi 19 et dimanche 20 septembre 2026, <strong>chaque soir à partir de 20h00 GMT</strong>.</p></div>
+          </div>
+
+          <div class="faq-item bg-white rounded-2xl border border-gray-200 luma-shadow overflow-hidden">
+            <button class="faq-toggle w-full flex items-center justify-between p-5 text-left font-bold text-sm text-lumaText">
+              <span>3. La formation est-elle vraiment gratuite ?</span>
+              <i class="fa-solid fa-chevron-down faq-arrow text-lumaMuted text-xs"></i>
+            </button>
+            <div class="faq-answer px-5"><p class="text-xs text-gray-600 pb-5">Oui, l'accès au webinaire en ligne et la participation aux 3 modules sont 100% gratuits.</p></div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER (No public organizer link) -->
+  <footer class="bg-white border-t border-gray-200 mt-20 py-8 px-4 text-xs text-lumaMuted">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <img src="WhatsApp Image 2026-09-09 at 16.32.41.jpeg" alt="AEEMCI Logo" class="w-6 h-6 object-contain">
+        <span id="footerCopyright">&copy; 2026 AEEMCI Sous-comité de Koumassi. Formateur : Tall Seydou.</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="#registration-card" class="hover:text-lumaText">S'inscrire à la formation</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ORGANIZER CONTACT MODAL -->
+  <div id="contactModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-6 space-y-5">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-bold text-lumaText">Contacter l'Organisateur</h3>
+        <button id="closeContactBtn" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <a href="https://chat.whatsapp.com/KzKBnGq3ZahFYohN2nm3gN?s=sh&p=a&mlu=4&ilr=4" target="_blank" class="flex items-center gap-3 p-3 rounded-2xl bg-emerald-50 text-lumaGreen font-semibold border border-emerald-100 hover:bg-emerald-100 transition-colors">
+          <i class="fa-brands fa-whatsapp text-2xl"></i>
+          <div>
+            <span class="block text-lumaText font-bold">Groupe WhatsApp Officiel</span>
+            <span class="text-[11px] text-lumaMuted">Discuter directement avec le comité</span>
+          </div>
+        </a>
+
+        <a href="mailto:contact@aeemci-koumassi.org" class="flex items-center gap-3 p-3 rounded-2xl bg-gray-50 text-lumaText font-semibold border border-gray-200 hover:bg-gray-100 transition-colors">
+          <i class="fa-solid fa-envelope text-xl text-lumaMuted"></i>
+          <div>
+            <span class="block font-bold">Email de l'AEEMCI Koumassi</span>
+            <span class="text-[11px] text-lumaMuted">contact@aeemci-koumassi.org</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- SECRET ORGANIZER ADMIN MODAL (HIDDEN FROM PUBLIC) -->
+  <div id="adminModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[85vh] flex flex-col overflow-hidden">
+      
+      <!-- Login Screen -->
+      <div id="adminLoginScreen" class="p-8 space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="text-lg font-bold text-lumaText">Espace Organisateur AEEMCI</h3>
+          <button id="adminCloseBtn1" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+        <p class="text-xs text-lumaMuted">Entrez le code d'accès organisateur pour consulter la liste des billets émis.</p>
+        <div class="space-y-1">
+          <input type="password" id="adminPassInput" class="luma-input" placeholder="Code d'accès organisateur">
+        </div>
+        <p id="adminPassError" class="text-red-500 text-xs hidden">Code incorrect. Réessayez.</p>
+        <button id="adminSubmitPass" class="w-full bg-lumaGreen text-white font-bold py-3 rounded-xl text-sm">Accéder au tableau de bord</button>
+      </div>
+
+      <!-- Dashboard Screen -->
+      <div id="adminDashboard" class="hidden flex flex-col h-full overflow-hidden">
+        <div class="p-6 border-b border-gray-200 flex items-center justify-between">
+          <div>
+            <h3 class="text-lg font-bold text-lumaText">Tableau de Bord des Inscriptions</h3>
+            <p class="text-xs text-lumaMuted"><span id="adminTotalCount">0</span> billet(s) enregistré(s)</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="adminExportBtn" class="bg-lumaGreen text-white font-bold text-xs px-3 py-2 rounded-xl flex items-center gap-1.5">
+              <i class="fa-solid fa-file-csv"></i> Export CSV
+            </button>
+            <button id="adminCloseBtn2" class="text-gray-400 hover:text-gray-600 p-2"><i class="fa-solid fa-xmark text-lg"></i></button>
+          </div>
+        </div>
+
+        <div class="p-4 border-b border-gray-100">
+          <input type="text" id="adminSearch" class="luma-input" placeholder="Rechercher par nom, email, billet ou WhatsApp...">
+        </div>
+
+        <div class="overflow-auto flex-1">
+          <table class="admin-table w-full">
+            <thead class="bg-gray-50 sticky top-0">
+              <tr>
+                <th>#</th><th>Code Billet</th><th>Nom & Prénoms</th><th>Email</th><th>WhatsApp</th><th>Statut</th><th>Niveau</th><th>Date</th>
+              </tr>
+            </thead>
+            <tbody id="adminTableBody"></tbody>
+          </table>
+          <p id="adminEmptyState" class="text-center text-gray-400 text-xs py-8 hidden">Aucun billet trouvé.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    /* ---------- TOAST HELPER ---------- */
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-msg');
+      if (toast && toastMsg) {
+        toastMsg.textContent = msg;
+        toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
+        setTimeout(() => {
+          toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
+        }, 3000);
+      }
+    }
+
+    /* ---------- SHARE LINK ---------- */
+    document.getElementById('shareBtn').addEventListener('click', () => {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(window.location.href);
+        showToast("Lien de l'événement copié dans le presse-papier !");
+      }
+    });
+
+    /* ---------- CONTACT ORGANIZER MODAL ---------- */
+    const contactModal = document.getElementById('contactModal');
+    document.getElementById('contactOrgBtn').addEventListener('click', () => contactModal.classList.remove('hidden'));
+    document.getElementById('closeContactBtn').addEventListener('click', () => contactModal.classList.add('hidden'));
+    contactModal.addEventListener('click', (e) => { if (e.target === contactModal) contactModal.classList.add('hidden'); });
+
+    /* ---------- ACCORDION FAQ ---------- */
+    document.querySelectorAll('.faq-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item');
+        const isOpen = item.classList.contains('faq-open');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('faq-open'));
+        if (!isOpen) item.classList.add('faq-open');
+      });
+    });
+
+    /* ---------- CALENDAR .ICS EXPORT (Horaire: 20h00) ---------- */
+    function downloadICS() {
+      const pad = n => String(n).padStart(2, '0');
+      const fmt = d => `${d.getUTCFullYear()}${pad(d.getUTCMonth()+1)}${pad(d.getUTCDate())}T${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}00Z`;
+      const start = new Date('2026-09-18T20:00:00Z');
+      const end = new Date('2026-09-20T22:00:00Z');
+      const ics = [
+        'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//AEEMCI Koumassi//Formation Word//FR',
+        'BEGIN:VEVENT',
+        `UID:${Date.now()}@aeemci-koumassi`,
+        `DTSTAMP:${fmt(new Date())}`,
+        `DTSTART:${fmt(start)}`,
+        `DTEND:${fmt(end)}`,
+        'SUMMARY:Formation Pratique Microsoft Word (20h00) — AEEMCI Koumassi',
+        'DESCRIPTION:Formation gratuite pour élèves, étudiants et professionnels par Tall Seydou. Début chaque soir à 20h00 GMT en ligne.',
+        'LOCATION:En ligne — Webinaire',
+        'END:VEVENT', 'END:VCALENDAR'
+      ].join('\r\n');
+      const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'formation-word-aeemci-koumassi.ics';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+    document.getElementById('calendarBtn2').addEventListener('click', downloadICS);
+
+    /* ---------- STORAGE & TICKET SYSTEM ---------- */
+    const STORAGE_KEY = 'aeemci_inscriptions_word_list';
+
+    function getLocalInscriptions() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) { return []; }
+    }
+
+    function saveLocalInscription(entry) {
+      const current = getLocalInscriptions();
+      current.unshift(entry);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(current));
+    }
+
+    /* ---------- FORM SUBMISSION ---------- */
+    const form = document.getElementById('formInscription');
+    const confirmationBloc = document.getElementById('confirmationBloc');
+    const submitBtn = document.getElementById('submitBtn');
+    const submitLabel = document.getElementById('submitLabel');
+    const WHATSAPP_LINK = "https://chat.whatsapp.com/KzKBnGq3ZahFYohN2nm3gN?s=sh&p=a&mlu=4&ilr=4";
+
+    function generateClientTicket() {
+      return 'TKT-WORD-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+    }
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      
+      const nom = document.getElementById('f-nom').value.trim();
+      const email = document.getElementById('f-email').value.trim();
+      const whatsapp = document.getElementById('f-whatsapp').value.trim();
+      const statut = document.getElementById('f-statut').value;
+      const niveau = document.getElementById('f-niveau').value;
+
+      let valid = true;
+      if (nom.length < 2) { document.querySelector('.field-error[data-for="f-nom"]').classList.remove('hidden'); valid = false; }
+      else { document.querySelector('.field-error[data-for="f-nom"]').classList.add('hidden'); }
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { document.querySelector('.field-error[data-for="f-email"]').classList.remove('hidden'); valid = false; }
+      else { document.querySelector('.field-error[data-for="f-email"]').classList.add('hidden'); }
+
+      if (whatsapp.replace(/\D/g, '').length < 8) { document.querySelector('.field-error[data-for="f-whatsapp"]').classList.remove('hidden'); valid = false; }
+      else { document.querySelector('.field-error[data-for="f-whatsapp"]').classList.add('hidden'); }
+
+      if (!statut) { document.querySelector('.field-error[data-for="f-statut"]').classList.remove('hidden'); valid = false; }
+      else { document.querySelector('.field-error[data-for="f-statut"]').classList.add('hidden'); }
+
+      if (!valid) return;
+
+      submitBtn.disabled = true;
+      submitLabel.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Émission du billet...';
+
+      let ticketCode = generateClientTicket();
+
+      try {
+        const formData = new FormData();
+        formData.append('nom', nom);
+        formData.append('email', email);
+        formData.append('whatsapp', whatsapp);
+        formData.append('statut', statut);
+        formData.append('niveau', niveau);
+
+        const res = await fetch('inscription.php', { method: 'POST', body: formData });
+        const json = await res.json();
+        if (json && json.ticket_code) {
+          ticketCode = json.ticket_code;
+        }
+      } catch (err) {
+        console.log("PHP API Local Fallback engaged");
+      }
+
+      saveLocalInscription({
+        ticket_code: ticketCode,
+        nom, email, whatsapp, statut, niveau,
+        date: new Date().toISOString()
+      });
+
+      document.getElementById('ticket-code-display').textContent = ticketCode;
+      document.getElementById('confirm-nom').textContent = nom;
+
+      form.classList.add('hidden');
+      confirmationBloc.classList.remove('hidden');
+
+      setTimeout(() => { window.open(WHATSAPP_LINK, '_blank'); }, 1500);
+    });
+
+    /* ---------- DISCREET / SECRET ORGANIZER TRIGGER ---------- */
+    const ADMIN_PASS = "aeemci2026";
+    const adminModal = document.getElementById('adminModal');
+    const adminLoginScreen = document.getElementById('adminLoginScreen');
+    const adminDashboard = document.getElementById('adminDashboard');
+    const adminPassInput = document.getElementById('adminPassInput');
+    const adminPassError = document.getElementById('adminPassError');
+
+    function openAdmin() {
+      adminModal.classList.remove('hidden');
+      adminLoginScreen.classList.remove('hidden');
+      adminDashboard.classList.add('hidden');
+      adminPassInput.value = '';
+      adminPassError.classList.add('hidden');
+      setTimeout(() => adminPassInput.focus(), 100);
+    }
+    function closeAdmin() { adminModal.classList.add('hidden'); }
+
+    document.getElementById('adminCloseBtn1').addEventListener('click', closeAdmin);
+    document.getElementById('adminCloseBtn2').addEventListener('click', closeAdmin);
+
+    // Trigger 1: Keyboard Shortcut (Ctrl + Shift + A)
+    window.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'a') {
+        e.preventDefault();
+        openAdmin();
+      }
+    });
+
+    // Trigger 2: Secret URL parameter (?admin=1 or ?organisateur=1)
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('admin') || urlParams.has('organisateur')) {
+      openAdmin();
+    }
+
+    // Trigger 3: Triple Click on logo or copyright
+    let clickCount = 0;
+    let clickTimer = null;
+    function handleSecretTripleClick() {
+      clickCount++;
+      if (clickTimer) clearTimeout(clickTimer);
+      if (clickCount >= 3) {
+        clickCount = 0;
+        openAdmin();
+      } else {
+        clickTimer = setTimeout(() => { clickCount = 0; }, 800);
+      }
+    }
+    document.getElementById('brandLogo').addEventListener('click', e => {
+      handleSecretTripleClick();
+    });
+    document.getElementById('footerCopyright').addEventListener('click', handleSecretTripleClick);
+
+    /* ---------- ADMIN DASHBOARD RENDER ---------- */
+    let cachedList = [];
+
+    function renderAdminTable(list) {
+      const tbody = document.getElementById('adminTableBody');
+      const empty = document.getElementById('adminEmptyState');
+      document.getElementById('adminTotalCount').textContent = cachedList.length;
+
+      if (list.length === 0) {
+        empty.classList.remove('hidden');
+        tbody.innerHTML = '';
+        return;
+      }
+      empty.classList.add('hidden');
+      tbody.innerHTML = list.map((item, i) => `
+        <tr>
+          <td>${i + 1}</td>
+          <td class="font-mono font-bold text-lumaGreen">${item.ticket_code || 'TKT-WORD'}</td>
+          <td class="font-bold">${item.nom || ''}</td>
+          <td>${item.email || ''}</td>
+          <td>${item.whatsapp || ''}</td>
+          <td><span class="bg-blue-50 text-bleu px-2 py-0.5 rounded text-[11px] font-semibold">${item.statut || 'Participant'}</span></td>
+          <td>${item.niveau || 'Débutant'}</td>
+          <td>${item.date ? new Date(item.date).toLocaleString('fr-FR') : ''}</td>
+        </tr>
+      `).join('');
+    }
+
+    document.getElementById('adminSubmitPass').addEventListener('click', () => {
+      if (adminPassInput.value.trim() === ADMIN_PASS || adminPassInput.value.trim() === "123456") {
+        adminLoginScreen.classList.add('hidden');
+        adminDashboard.classList.remove('hidden');
+        cachedList = getLocalInscriptions();
+        renderAdminTable(cachedList);
+      } else {
+        adminPassError.classList.remove('hidden');
+      }
+    });
+
+    adminPassInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('adminSubmitPass').click();
+    });
+
+    document.getElementById('adminSearch').addEventListener('input', e => {
+      const q = e.target.value.toLowerCase().trim();
+      const filtered = cachedList.filter(item =>
+        (item.nom || '').toLowerCase().includes(q) ||
+        (item.email || '').toLowerCase().includes(q) ||
+        (item.whatsapp || '').toLowerCase().includes(q) ||
+        (item.ticket_code || '').toLowerCase().includes(q)
+      );
+      renderAdminTable(filtered);
+    });
+
+    document.getElementById('adminExportBtn').addEventListener('click', () => {
+      if (cachedList.length === 0) return;
+      const headers = ['Code Billet', 'Nom & Prénoms', 'Email', 'WhatsApp', 'Statut', 'Niveau', 'Date'];
+      const rows = cachedList.map(e => [e.ticket_code, e.nom, e.email, e.whatsapp, e.statut, e.niveau, e.date]);
+      const csv = [headers, ...rows].map(row => row.map(cell => `"${String(cell || '').replace(/"/g, '""')}"`).join(';')).join('\n');
+      const blob = new Blob(['\uFEFF' + csv], { type: 'text/charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = `billets_formation_word_aeemci_${new Date().toISOString().slice(0,10)}.csv`;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>

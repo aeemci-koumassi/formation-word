@@ -18,6 +18,9 @@
 <!-- FontAwesome 6 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+<!-- Supabase JS Client SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <!-- Tailwind CSS CDN -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -114,7 +117,7 @@
         <span class="font-extrabold text-lg text-lumaText tracking-tight">aeemci<span class="text-lumaGreen">.word</span></span>
       </a>
 
-      <!-- Right Nav Status & Links (No public organizer button) -->
+      <!-- Right Nav Status & Links -->
       <div class="flex items-center gap-4 sm:gap-6 text-sm">
         <span class="inline-flex items-center text-xs text-lumaMuted font-medium bg-white/80 px-3.5 py-1.5 rounded-full border border-black/5">
           <i class="fa-regular fa-clock mr-1.5 text-lumaGreen"></i> 20:00 UTC+0 (Abidjan)
@@ -505,7 +508,7 @@
   </main>
 
 
-  <!-- FOOTER (No public organizer link) -->
+  <!-- FOOTER -->
   <footer class="bg-white border-t border-gray-200 mt-20 py-8 px-4 text-xs text-lumaMuted">
     <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
       <div class="flex items-center gap-2">
@@ -548,7 +551,7 @@
   </div>
 
 
-  <!-- SECRET ORGANIZER ADMIN MODAL (HIDDEN FROM PUBLIC) -->
+  <!-- SECRET ORGANIZER ADMIN MODAL (SUPABASE READY) -->
   <div id="adminModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[85vh] flex flex-col overflow-hidden">
       
@@ -604,6 +607,16 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
+    /* ---------- SUPABASE CONFIGURATION (OPTION 2 CLOUD DATABASE) ---------- */
+    // Remplacez ces 2 valeurs ci-dessous par vos identifiants Supabase si vous activez le Cloud
+    const SUPABASE_URL = ""; 
+    const SUPABASE_ANON_KEY = "";
+    let supabaseClient = null;
+
+    if (SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase) {
+      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+
     /* ---------- TOAST HELPER ---------- */
     function showToast(msg) {
       const toast = document.getElementById('toast');
@@ -724,6 +737,23 @@
 
       let ticketCode = generateClientTicket();
 
+      // Send to Supabase Cloud Database if configured
+      if (supabaseClient) {
+        try {
+          await supabaseClient.from('inscriptions_word').insert([{
+            ticket_code: ticketCode,
+            nom: nom,
+            email: email,
+            whatsapp: whatsapp,
+            statut: statut,
+            niveau: niveau
+          }]);
+        } catch (err) {
+          console.log("Supabase insert log", err);
+        }
+      }
+
+      // Try PHP API backend
       try {
         const formData = new FormData();
         formData.append('nom', nom);
@@ -812,6 +842,28 @@
     /* ---------- ADMIN DASHBOARD RENDER ---------- */
     let cachedList = [];
 
+    async function fetchAdminData() {
+      if (supabaseClient) {
+        try {
+          const { data, error } = await supabaseClient.from('inscriptions_word').select('*').order('created_at', { ascending: false });
+          if (!error && data) {
+            return data.map(item => ({
+              ticket_code: item.ticket_code,
+              nom: item.nom,
+              email: item.email,
+              whatsapp: item.whatsapp,
+              statut: item.statut,
+              niveau: item.niveau,
+              date: item.created_at
+            }));
+          }
+        } catch (e) {
+          console.log("Supabase fetch fallback to local");
+        }
+      }
+      return getLocalInscriptions();
+    }
+
     function renderAdminTable(list) {
       const tbody = document.getElementById('adminTableBody');
       const empty = document.getElementById('adminEmptyState');
@@ -837,11 +889,11 @@
       `).join('');
     }
 
-    document.getElementById('adminSubmitPass').addEventListener('click', () => {
+    document.getElementById('adminSubmitPass').addEventListener('click', async () => {
       if (adminPassInput.value.trim() === ADMIN_PASS || adminPassInput.value.trim() === "123456") {
         adminLoginScreen.classList.add('hidden');
         adminDashboard.classList.remove('hidden');
-        cachedList = getLocalInscriptions();
+        cachedList = await fetchAdminData();
         renderAdminTable(cachedList);
       } else {
         adminPassError.classList.remove('hidden');

@@ -18,9 +18,6 @@
 <!-- FontAwesome 6 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-<!-- Supabase JS Client SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <!-- Tailwind CSS CDN -->
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -240,7 +237,7 @@
             Formation Pratique Microsoft Word
           </h1>
 
-          <!-- Date Item (Horaire : 20h00) -->
+          <!-- Date Item -->
           <div class="flex items-start gap-4">
             <div class="w-12 h-12 rounded-2xl bg-white border border-gray-200 luma-shadow flex flex-col items-center justify-center shrink-0">
               <span class="text-[9px] font-bold uppercase text-red-500 tracking-wider">SEPT.</span>
@@ -252,7 +249,7 @@
             </div>
           </div>
 
-          <!-- Location Item (En ligne - Webinaire) -->
+          <!-- Location Item -->
           <div class="flex items-start gap-4">
             <div class="w-12 h-12 rounded-2xl bg-white border border-gray-200 luma-shadow flex items-center justify-center text-lumaGreen text-xl shrink-0">
               <i class="fa-solid fa-laptop-house"></i>
@@ -551,7 +548,7 @@
   </div>
 
 
-  <!-- SECRET ORGANIZER ADMIN MODAL (SUPABASE READY) -->
+  <!-- SECRET ORGANIZER ADMIN MODAL -->
   <div id="adminModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[85vh] flex flex-col overflow-hidden">
       
@@ -605,327 +602,9 @@
   </div>
 
 
-  <!-- JAVASCRIPT LOGIC -->
-  <script>
-    /* ---------- SUPABASE CONFIGURATION (OPTION 2 CLOUD DATABASE) ---------- */
-    // Remplacez ces 2 valeurs ci-dessous par vos identifiants Supabase si vous activez le Cloud
-    const SUPABASE_URL = ""; 
-    const SUPABASE_ANON_KEY = "";
-    let supabaseClient = null;
-
-    if (SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase) {
-      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    }
-
-    /* ---------- TOAST HELPER ---------- */
-    function showToast(msg) {
-      const toast = document.getElementById('toast');
-      const toastMsg = document.getElementById('toast-msg');
-      if (toast && toastMsg) {
-        toastMsg.textContent = msg;
-        toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
-        setTimeout(() => {
-          toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
-        }, 3000);
-      }
-    }
-
-    /* ---------- SHARE LINK ---------- */
-    document.getElementById('shareBtn').addEventListener('click', () => {
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(window.location.href);
-        showToast("Lien de l'événement copié dans le presse-papier !");
-      }
-    });
-
-    /* ---------- CONTACT ORGANIZER MODAL ---------- */
-    const contactModal = document.getElementById('contactModal');
-    document.getElementById('contactOrgBtn').addEventListener('click', () => contactModal.classList.remove('hidden'));
-    document.getElementById('closeContactBtn').addEventListener('click', () => contactModal.classList.add('hidden'));
-    contactModal.addEventListener('click', (e) => { if (e.target === contactModal) contactModal.classList.add('hidden'); });
-
-    /* ---------- ACCORDION FAQ ---------- */
-    document.querySelectorAll('.faq-toggle').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const item = btn.closest('.faq-item');
-        const isOpen = item.classList.contains('faq-open');
-        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('faq-open'));
-        if (!isOpen) item.classList.add('faq-open');
-      });
-    });
-
-    /* ---------- CALENDAR .ICS EXPORT (Horaire: 20h00) ---------- */
-    function downloadICS() {
-      const pad = n => String(n).padStart(2, '0');
-      const fmt = d => `${d.getUTCFullYear()}${pad(d.getUTCMonth()+1)}${pad(d.getUTCDate())}T${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}00Z`;
-      const start = new Date('2026-09-18T20:00:00Z');
-      const end = new Date('2026-09-20T22:00:00Z');
-      const ics = [
-        'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//AEEMCI Koumassi//Formation Word//FR',
-        'BEGIN:VEVENT',
-        `UID:${Date.now()}@aeemci-koumassi`,
-        `DTSTAMP:${fmt(new Date())}`,
-        `DTSTART:${fmt(start)}`,
-        `DTEND:${fmt(end)}`,
-        'SUMMARY:Formation Pratique Microsoft Word (20h00) — AEEMCI Koumassi',
-        'DESCRIPTION:Formation gratuite pour élèves, étudiants et professionnels par Tall Seydou. Début chaque soir à 20h00 GMT en ligne.',
-        'LOCATION:En ligne — Webinaire',
-        'END:VEVENT', 'END:VCALENDAR'
-      ].join('\r\n');
-      const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = 'formation-word-aeemci-koumassi.ics';
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
-    document.getElementById('calendarBtn2').addEventListener('click', downloadICS);
-
-    /* ---------- STORAGE & TICKET SYSTEM ---------- */
-    const STORAGE_KEY = 'aeemci_inscriptions_word_list';
-
-    function getLocalInscriptions() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : [];
-      } catch (e) { return []; }
-    }
-
-    function saveLocalInscription(entry) {
-      const current = getLocalInscriptions();
-      current.unshift(entry);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(current));
-    }
-
-    /* ---------- FORM SUBMISSION ---------- */
-    const form = document.getElementById('formInscription');
-    const confirmationBloc = document.getElementById('confirmationBloc');
-    const submitBtn = document.getElementById('submitBtn');
-    const submitLabel = document.getElementById('submitLabel');
-    const WHATSAPP_LINK = "https://chat.whatsapp.com/KzKBnGq3ZahFYohN2nm3gN?s=sh&p=a&mlu=4&ilr=4";
-
-    function generateClientTicket() {
-      return 'TKT-WORD-' + Math.random().toString(36).substring(2, 8).toUpperCase();
-    }
-
-    form.addEventListener('submit', async function (e) {
-      e.preventDefault();
-      
-      const nom = document.getElementById('f-nom').value.trim();
-      const email = document.getElementById('f-email').value.trim();
-      const whatsapp = document.getElementById('f-whatsapp').value.trim();
-      const statut = document.getElementById('f-statut').value;
-      const niveau = document.getElementById('f-niveau').value;
-
-      let valid = true;
-      if (nom.length < 2) { document.querySelector('.field-error[data-for="f-nom"]').classList.remove('hidden'); valid = false; }
-      else { document.querySelector('.field-error[data-for="f-nom"]').classList.add('hidden'); }
-
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { document.querySelector('.field-error[data-for="f-email"]').classList.remove('hidden'); valid = false; }
-      else { document.querySelector('.field-error[data-for="f-email"]').classList.add('hidden'); }
-
-      if (whatsapp.replace(/\D/g, '').length < 8) { document.querySelector('.field-error[data-for="f-whatsapp"]').classList.remove('hidden'); valid = false; }
-      else { document.querySelector('.field-error[data-for="f-whatsapp"]').classList.add('hidden'); }
-
-      if (!statut) { document.querySelector('.field-error[data-for="f-statut"]').classList.remove('hidden'); valid = false; }
-      else { document.querySelector('.field-error[data-for="f-statut"]').classList.add('hidden'); }
-
-      if (!valid) return;
-
-      submitBtn.disabled = true;
-      submitLabel.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Émission du billet...';
-
-      let ticketCode = generateClientTicket();
-
-      // Send to Supabase Cloud Database if configured
-      if (supabaseClient) {
-        try {
-          await supabaseClient.from('inscriptions_word').insert([{
-            ticket_code: ticketCode,
-            nom: nom,
-            email: email,
-            whatsapp: whatsapp,
-            statut: statut,
-            niveau: niveau
-          }]);
-        } catch (err) {
-          console.log("Supabase insert log", err);
-        }
-      }
-
-      // Try PHP API backend
-      try {
-        const formData = new FormData();
-        formData.append('nom', nom);
-        formData.append('email', email);
-        formData.append('whatsapp', whatsapp);
-        formData.append('statut', statut);
-        formData.append('niveau', niveau);
-
-        const res = await fetch('inscription.php', { method: 'POST', body: formData });
-        const json = await res.json();
-        if (json && json.ticket_code) {
-          ticketCode = json.ticket_code;
-        }
-      } catch (err) {
-        console.log("PHP API Local Fallback engaged");
-      }
-
-      saveLocalInscription({
-        ticket_code: ticketCode,
-        nom, email, whatsapp, statut, niveau,
-        date: new Date().toISOString()
-      });
-
-      document.getElementById('ticket-code-display').textContent = ticketCode;
-      document.getElementById('confirm-nom').textContent = nom;
-
-      form.classList.add('hidden');
-      confirmationBloc.classList.remove('hidden');
-
-      setTimeout(() => { window.open(WHATSAPP_LINK, '_blank'); }, 1500);
-    });
-
-    /* ---------- DISCREET / SECRET ORGANIZER TRIGGER ---------- */
-    const ADMIN_PASS = "aeemci2026";
-    const adminModal = document.getElementById('adminModal');
-    const adminLoginScreen = document.getElementById('adminLoginScreen');
-    const adminDashboard = document.getElementById('adminDashboard');
-    const adminPassInput = document.getElementById('adminPassInput');
-    const adminPassError = document.getElementById('adminPassError');
-
-    function openAdmin() {
-      adminModal.classList.remove('hidden');
-      adminLoginScreen.classList.remove('hidden');
-      adminDashboard.classList.add('hidden');
-      adminPassInput.value = '';
-      adminPassError.classList.add('hidden');
-      setTimeout(() => adminPassInput.focus(), 100);
-    }
-    function closeAdmin() { adminModal.classList.add('hidden'); }
-
-    document.getElementById('adminCloseBtn1').addEventListener('click', closeAdmin);
-    document.getElementById('adminCloseBtn2').addEventListener('click', closeAdmin);
-
-    // Trigger 1: Keyboard Shortcut (Ctrl + Shift + A)
-    window.addEventListener('keydown', e => {
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'a') {
-        e.preventDefault();
-        openAdmin();
-      }
-    });
-
-    // Trigger 2: Secret URL parameter (?admin=1 or ?organisateur=1)
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('admin') || urlParams.has('organisateur')) {
-      openAdmin();
-    }
-
-    // Trigger 3: Triple Click on logo or copyright
-    let clickCount = 0;
-    let clickTimer = null;
-    function handleSecretTripleClick() {
-      clickCount++;
-      if (clickTimer) clearTimeout(clickTimer);
-      if (clickCount >= 3) {
-        clickCount = 0;
-        openAdmin();
-      } else {
-        clickTimer = setTimeout(() => { clickCount = 0; }, 800);
-      }
-    }
-    document.getElementById('brandLogo').addEventListener('click', e => {
-      handleSecretTripleClick();
-    });
-    document.getElementById('footerCopyright').addEventListener('click', handleSecretTripleClick);
-
-    /* ---------- ADMIN DASHBOARD RENDER ---------- */
-    let cachedList = [];
-
-    async function fetchAdminData() {
-      if (supabaseClient) {
-        try {
-          const { data, error } = await supabaseClient.from('inscriptions_word').select('*').order('created_at', { ascending: false });
-          if (!error && data) {
-            return data.map(item => ({
-              ticket_code: item.ticket_code,
-              nom: item.nom,
-              email: item.email,
-              whatsapp: item.whatsapp,
-              statut: item.statut,
-              niveau: item.niveau,
-              date: item.created_at
-            }));
-          }
-        } catch (e) {
-          console.log("Supabase fetch fallback to local");
-        }
-      }
-      return getLocalInscriptions();
-    }
-
-    function renderAdminTable(list) {
-      const tbody = document.getElementById('adminTableBody');
-      const empty = document.getElementById('adminEmptyState');
-      document.getElementById('adminTotalCount').textContent = cachedList.length;
-
-      if (list.length === 0) {
-        empty.classList.remove('hidden');
-        tbody.innerHTML = '';
-        return;
-      }
-      empty.classList.add('hidden');
-      tbody.innerHTML = list.map((item, i) => `
-        <tr>
-          <td>${i + 1}</td>
-          <td class="font-mono font-bold text-lumaGreen">${item.ticket_code || 'TKT-WORD'}</td>
-          <td class="font-bold">${item.nom || ''}</td>
-          <td>${item.email || ''}</td>
-          <td>${item.whatsapp || ''}</td>
-          <td><span class="bg-blue-50 text-bleu px-2 py-0.5 rounded text-[11px] font-semibold">${item.statut || 'Participant'}</span></td>
-          <td>${item.niveau || 'Débutant'}</td>
-          <td>${item.date ? new Date(item.date).toLocaleString('fr-FR') : ''}</td>
-        </tr>
-      `).join('');
-    }
-
-    document.getElementById('adminSubmitPass').addEventListener('click', async () => {
-      if (adminPassInput.value.trim() === ADMIN_PASS || adminPassInput.value.trim() === "123456") {
-        adminLoginScreen.classList.add('hidden');
-        adminDashboard.classList.remove('hidden');
-        cachedList = await fetchAdminData();
-        renderAdminTable(cachedList);
-      } else {
-        adminPassError.classList.remove('hidden');
-      }
-    });
-
-    adminPassInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter') document.getElementById('adminSubmitPass').click();
-    });
-
-    document.getElementById('adminSearch').addEventListener('input', e => {
-      const q = e.target.value.toLowerCase().trim();
-      const filtered = cachedList.filter(item =>
-        (item.nom || '').toLowerCase().includes(q) ||
-        (item.email || '').toLowerCase().includes(q) ||
-        (item.whatsapp || '').toLowerCase().includes(q) ||
-        (item.ticket_code || '').toLowerCase().includes(q)
-      );
-      renderAdminTable(filtered);
-    });
-
-    document.getElementById('adminExportBtn').addEventListener('click', () => {
-      if (cachedList.length === 0) return;
-      const headers = ['Code Billet', 'Nom & Prénoms', 'Email', 'WhatsApp', 'Statut', 'Niveau', 'Date'];
-      const rows = cachedList.map(e => [e.ticket_code, e.nom, e.email, e.whatsapp, e.statut, e.niveau, e.date]);
-      const csv = [headers, ...rows].map(row => row.map(cell => `"${String(cell || '').replace(/"/g, '""')}"`).join(';')).join('\n');
-      const blob = new Blob(['\uFEFF' + csv], { type: 'text/charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = `billets_formation_word_aeemci_${new Date().toISOString().slice(0,10)}.csv`;
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    });
-  </script>
+  <!-- SCRIPTS MODULAIRES JS -->
+  <script src="supabase.js"></script>
+  <script src="base_donnees.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>

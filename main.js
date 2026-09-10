@@ -129,7 +129,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Appel de la fonction de base de données (Supabase / Local)
       if (typeof ajouterInscription === 'function') {
-        await ajouterInscription(entry);
+        const success = await ajouterInscription(entry);
+        if (!success) {
+          alert("Erreur lors de l'enregistrement. Veuillez vérifier votre connexion internet et réessayer.");
+          submitBtn.disabled = false;
+          submitLabel.innerHTML = 'Valider & Rejoindre le Groupe WhatsApp';
+          return;
+        }
       }
 
       document.getElementById('confirm-nom').textContent = nom;

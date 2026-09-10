@@ -1,48 +1,46 @@
 /**
- * Module de gestion de la Base de Données via AirTable
- * Projet : Formation Pratique Microsoft Word (AEEMCI Koumassi)
+ * MODULE BASE DE DONNÉES CLOUD - SUPABASE REST API & LOCALSTORAGE BACKUP
+ * Organisateur : AEEMCI (Sous-comité de Koumassi)
+ * Événement : Formation Pratique Microsoft Word 2026 (Formateur : Tall Seydou)
  */
 
-const AIRTABLE_BASE_ID = "appupo2s6akdsF9II";
-const AIRTABLE_API_KEY = "patw9gaTz8EPbJlEh.77d3a347121e86e840e1b9425d38a4bb5d318fa721eaca10084a0a535f3d4f9c";
-const AIRTABLE_TABLE_NAME = "Inscriptions";
+const SUPABASE_URL = "https://iktoigkruredsudprndu.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_NY-DqlKRgy_IxSoYluUgLQ_eLcoUQbv";
 const LOCAL_STORAGE_KEY = 'aeemci_inscriptions_word_list';
 
 /**
- * Récupère la liste de toutes les personnes inscrites depuis AirTable
+ * Récupère la liste complète des personnes inscrites depuis Supabase Cloud
  */
 async function recupererInscriptions() {
   try {
-    const response = await fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_NAME}`, {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/inscriptions_word?select=*&order=created_at.desc`, {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${AIRTABLE_API_KEY}`
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
       }
     });
 
-    if (response.ok) {
-      const data = await response.json();
-      if (data.records && Array.isArray(data.records)) {
-        return data.records.map(record => ({
-          ticket_code: record.fields.ticket_code || 'INSCRIPTION-PRO',
-          nom: record.fields.Nom || record.fields.nom || 'Inconnu',
-          email: record.fields.Email || record.fields.email || 'Inconnu',
-          whatsapp: record.fields.WhatsApp || record.fields.whatsapp || 'Inconnu',
-          statut: record.fields.Statut || record.fields.statut || 'Participant',
-          niveau: record.fields.Niveau || record.fields.niveau || 'Débutant',
-          date: record.createdTime || record.fields.Date
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        return data.map(item => ({
+          id: item.id,
+          ticket_code: item.ticket_code || 'INSCRIPTION-PRO',
+          nom: item.nom || 'Sans nom',
+          email: item.email || '',
+          whatsapp: item.whatsapp || '',
+          statut: item.statut || 'Participant',
+          niveau: item.niveau || 'Débutant',
+          date: item.created_at || item.date_inscription || new Date().toISOString()
         }));
       }
-    } else {
-      const errText = await response.text();
-      console.error("Erreur GET AirTable:", errText);
-      alert("ERREUR LECTURE AIRTABLE :\n" + errText);
     }
   } catch (e) {
-    console.warn("AirTable API inaccessible", e);
-    alert("ERREUR CONNEXION AIRTABLE :\n" + e.message);
+    console.warn("Supabase Cloud temporairement inaccessible, lecture secours LocalStorage", e);
   }
 
+  // Stockage local de secours
   try {
     const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
     return raw ? JSON.parse(raw) : [];
@@ -52,10 +50,10 @@ async function recupererInscriptions() {
 }
 
 /**
- * Enregistre un nouvel inscrit dans AirTable
+ * Enregistre un nouvel inscrit dans la base de données Cloud Supabase
  */
 async function ajouterInscription(entry) {
-  // 1. Sauvegarde locale immédiate
+  // 1. Sauvegarde locale immédiate (instantanéité)
   try {
     const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
     const current = raw ? JSON.parse(raw) : [];
@@ -65,42 +63,35 @@ async function ajouterInscription(entry) {
     console.error("Erreur LocalStorage", e);
   }
 
-  // 2. Insertion dans AirTable
+  // 2. Insertion directe dans la base de données Cloud Supabase
   try {
-    const response = await fetch(`https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_NAME}`, {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/inscriptions_word`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
-        'Content-Type': 'application/json'
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=representation'
       },
       body: JSON.stringify({
-        records: [
-          {
-            fields: {
-              "Nom": entry.nom,
-              "Email": entry.email,
-              "WhatsApp": entry.whatsapp,
-              "Statut": entry.statut,
-              "Niveau": entry.niveau,
-              "Date": entry.date
-            }
-          }
-        ]
+        ticket_code: entry.ticket_code || 'WORD-2026',
+        nom: entry.nom,
+        email: entry.email,
+        whatsapp: entry.whatsapp,
+        statut: entry.statut,
+        niveau: entry.niveau
       })
     });
 
     if (response.ok) {
-      console.log("✅ Inscription enregistrée dans AirTable avec succès !");
+      console.log("✅ Inscription sauvegardée dans Supabase Cloud avec succès !");
       return true;
     } else {
-      const errorText = await response.text();
-      console.error("❌ Erreur réponse AirTable :", errorText);
-      alert("ERREUR AIRTABLE :\n" + errorText);
+      console.error("❌ Erreur réponse Supabase Cloud :", await response.text());
       return false;
     }
   } catch (err) {
-    console.error("❌ Erreur connexion AirTable :", err);
-    alert("ERREUR CONNEXION :\n" + err.message);
+    console.error("❌ Erreur connexion Supabase Cloud :", err);
     return false;
   }
 }

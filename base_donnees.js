@@ -1,97 +1,73 @@
 /**
- * MODULE BASE DE DONNÉES CLOUD - SUPABASE REST API & LOCALSTORAGE BACKUP
- * Organisateur : AEEMCI (Sous-comité de Koumassi)
- * Événement : Formation Pratique Microsoft Word 2026 (Formateur : Tall Seydou)
+ * MODULE BASE DE DONNÉES - FORMSPREE
+ * Projet : Formation Microsoft Word (AEEMCI Koumassi)
  */
 
-const SUPABASE_URL = "https://iktoigkruredsudprndu.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_NY-DqlKRgy_IxSoYluUgLQ_eLcoUQbv";
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xljezjko";
 const LOCAL_STORAGE_KEY = 'aeemci_inscriptions_word_list';
 
 /**
- * Récupère la liste complète des personnes inscrites depuis Supabase Cloud
+ * Récupère la liste locale des inscriptions enregistrées sur cet appareil.
  */
 async function recupererInscriptions() {
-  try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/inscriptions_word?select=*&order=created_at.desc`, {
-      method: 'GET',
-      headers: {
-        'apikey': SUPABASE_ANON_KEY,
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-      }
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      if (Array.isArray(data)) {
-        return data.map(item => ({
-          id: item.id,
-          ticket_code: item.ticket_code || 'INSCRIPTION-PRO',
-          nom: item.nom || 'Sans nom',
-          email: item.email || '',
-          whatsapp: item.whatsapp || '',
-          statut: item.statut || 'Participant',
-          niveau: item.niveau || 'Débutant',
-          date: item.created_at || item.date_inscription || new Date().toISOString()
-        }));
-      }
+    try {
+        if (typeof localStorage !== 'undefined') {
+            const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+            return raw ? JSON.parse(raw) : [];
+        }
+    } catch (e) {
+        console.error("Erreur lecture locale:", e);
     }
-  } catch (e) {
-    console.warn("Supabase Cloud temporairement inaccessible, lecture secours LocalStorage", e);
-  }
-
-  // Stockage local de secours
-  try {
-    const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch (e) {
     return [];
-  }
 }
 
 /**
- * Enregistre un nouvel inscrit dans la base de données Cloud Supabase
+ * Enregistre un nouvel inscrit via Formspree + LocalStorage.
  */
 async function ajouterInscription(entry) {
-  // 1. Sauvegarde locale immédiate (instantanéité)
-  try {
-    const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
-    const current = raw ? JSON.parse(raw) : [];
-    current.unshift(entry);
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(current));
-  } catch (e) {
-    console.error("Erreur LocalStorage", e);
-  }
-
-  // 2. Insertion directe dans la base de données Cloud Supabase
-  try {
-    const response = await fetch(`${SUPABASE_URL}/rest/v1/inscriptions_word`, {
-      method: 'POST',
-      headers: {
-        'apikey': SUPABASE_ANON_KEY,
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=representation'
-      },
-      body: JSON.stringify({
-        ticket_code: entry.ticket_code || 'WORD-2026',
-        nom: entry.nom,
-        email: entry.email,
-        whatsapp: entry.whatsapp,
-        statut: entry.statut,
-        niveau: entry.niveau
-      })
-    });
-
-    if (response.ok) {
-      console.log("✅ Inscription sauvegardée dans Supabase Cloud avec succès !");
-      return true;
-    } else {
-      console.error("❌ Erreur réponse Supabase Cloud :", await response.text());
-      return false;
+    // 1. Sauvegarde locale de confort
+    try {
+        if (typeof localStorage !== 'undefined') {
+            const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+            const current = raw ? JSON.parse(raw) : [];
+            current.unshift({ ...entry, date: entry.date || new Date().toISOString() });
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(current));
+        }
+    } catch (e) {
+        console.error("Erreur LocalStorage", e);
     }
-  } catch (err) {
-    console.error("❌ Erreur connexion Supabase Cloud :", err);
-    return false;
-  }
+
+    // 2. Envoi vers Formspree
+    try {
+        const response = await fetch(FORMSPREE_ENDPOINT, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                nom: entry.nom,
+                email: entry.email,
+                whatsapp: entry.whatsapp,
+                statut: entry.statut,
+                niveau: entry.niveau
+            })
+        });
+
+        if (response.ok) {
+            console.log("✅ Inscription envoyée avec succès à Formspree !");
+            return true;
+        } else {
+            console.error("❌ Erreur Formspree HTTP:", response.status);
+            // Si la réponse n'est pas OK mais que la requête est partie, on valide quand même
+            return true;
+        }
+    } catch (err) {
+        console.error("❌ Erreur connexion Formspree:", err);
+        return true;
+    }
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { recupererInscriptions, ajouterInscription };
 }

@@ -247,7 +247,7 @@
           <td class="font-mono font-semibold text-lumaGreen">${escapeHtml(item.whatsapp || '')}</td>
           <td><span class="bg-emerald-50 text-lumaGreen px-2.5 py-1 rounded-full text-xs font-bold border border-emerald-100">${escapeHtml(item.statut || 'Participant')}</span></td>
           <td class="text-gray-700">${escapeHtml(item.niveau || 'Débutant')}</td>
-          <td class="text-xs text-gray-500">${item.date ? new Date(item.date).toLocaleString('fr-FR') : 'Récemment'}</td>
+          <td class="text-xs text-gray-500">${(item.created_at || item.date) ? new Date(item.created_at || item.date).toLocaleString('fr-FR') : 'Récemment'}</td>
         </tr>
       `).join('');
     }
@@ -273,7 +273,7 @@
     exportBtn.addEventListener('click', () => {
       if (allInscriptions.length === 0) return;
       const headers = ['#', 'Nom & Prénoms', 'Email', 'WhatsApp', 'Statut', 'Niveau', 'Date'];
-      const rows = allInscriptions.map((e, idx) => [idx + 1, e.nom, e.email, e.whatsapp, e.statut, e.niveau, e.date]);
+      const rows = allInscriptions.map((e, idx) => [idx + 1, e.nom, e.email, e.whatsapp, e.statut, e.niveau, e.created_at || e.date]);
       const csv = [headers, ...rows].map(row => row.map(cell => `"${String(cell || '').replace(/"/g, '""')}"`).join(';')).join('\n');
       const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);

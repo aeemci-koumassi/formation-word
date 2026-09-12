@@ -256,6 +256,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  const adminRefreshBtn = document.getElementById('adminRefreshBtn');
+  if (adminRefreshBtn) {
+    adminRefreshBtn.addEventListener('click', async () => {
+      adminRefreshBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-xs"></i> ...';
+      if (typeof recupererInscriptions === 'function') {
+        cachedList = await recupererInscriptions();
+      }
+      renderAdminTable(cachedList);
+      adminRefreshBtn.innerHTML = '<i class="fa-solid fa-rotate text-xs"></i> Actualiser';
+    });
+  }
+
   if (adminPassInput) {
     adminPassInput.addEventListener('keydown', e => {
       if (e.key === 'Enter') adminSubmitPass.click();

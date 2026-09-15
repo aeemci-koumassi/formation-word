@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Lien du Groupe WhatsApp Principal (150 premières places)
   const WHATSAPP_LINK_PRINCIPAL = "https://chat.whatsapp.com/KzKBnGq3ZahFYohN2nm3gN?s=sh&p=a&mlu=4&ilr=4";
   
-  // Lien du Groupe WhatsApp Liste d'Attente (Modifiez ce lien si vous créez un 2ème groupe spécifique)
-  let WHATSAPP_LINK_ATTENTE = "https://chat.whatsapp.com/KzKBnGq3ZahFYohN2nm3gN?s=sh&p=a&mlu=4&ilr=4";
+  // Lien du Groupe WhatsApp Liste d'Attente (2ème groupe)
+  const WHATSAPP_LINK_ATTENTE = "https://chat.whatsapp.com/FLUfIUEujHj0ZkyIEGpNHp";
 
   /* ---------- TOAST HELPER ---------- */
   window.showToast = function(msg) {

@@ -1,7 +1,7 @@
 /**
  * MODULE BASE DE DONNÉES HYBRIDE (SUPABASE CLOUD + FORMSPREE)
  * Projet : Formation Microsoft Word (AEEMCI Koumassi)
- * Comptage ajusté : 134 membres WhatsApp réels actuels (+34 vs base DB) / 150 places max
+ * Contrôle anti-doublon (Email & WhatsApp) + Gestion Liste d'Attente 150 places
  */
 
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/xljezjko";
@@ -60,7 +60,7 @@ async function recupererInscriptions() {
 }
 
 /**
- * Compte le nombre réel d'inscrits actuels (Membres WhatsApp + Inscrits site = 134 de base).
+ * Compte le nombre réel d'inscrits actuels.
  */
 async function obtenirNombreInscrits() {
     try {
@@ -73,9 +73,31 @@ async function obtenirNombreInscrits() {
 }
 
 /**
- * Enregistre un nouvel inscrit dans Supabase Cloud + Formspree + Cache Local.
+ * Enregistre un nouvel inscrit avec vérification stricte anti-doublon (Email / WhatsApp).
  */
 async function ajouterInscription(entry) {
+    const list = await recupererInscriptions();
+    
+    // Normalisation pour vérification anti-doublon
+    const cleanEmail = (entry.email || '').trim().toLowerCase();
+    const cleanPhone = (entry.whatsapp || '').replace(/\D/g, '');
+
+    const existant = list.find(item => {
+        const itemEmail = (item.email || '').trim().toLowerCase();
+        const itemPhone = (item.whatsapp || '').replace(/\D/g, '');
+        return (cleanEmail && itemEmail === cleanEmail) || (cleanPhone && cleanPhone.length >= 8 && itemPhone === cleanPhone);
+    });
+
+    if (existant) {
+        console.log("ℹ️ Inscription déjà enregistrée (Doublon bloqué) :", existant);
+        return { 
+            success: true, 
+            estDoublon: true, 
+            estAttente: (existant.statut || '').includes("Liste d'attente"),
+            existingRecord: existant 
+        };
+    }
+
     const totalCurrent = await obtenirNombreInscrits();
     const estAttente = totalCurrent >= MAX_CAPACITE;
 
@@ -101,9 +123,8 @@ async function ajouterInscription(entry) {
         console.error("Erreur LocalStorage", e);
     }
 
-    // 2. Envoi simultané vers Formspree (Email & Notifs) et Supabase (Base Cloud Admin)
+    // 2. Envoi simultané vers Formspree et Supabase Cloud
     const promises = [
-        // Envoi Supabase Cloud
         fetch(SUPABASE_REST_URL, {
             method: 'POST',
             headers: {
@@ -115,7 +136,6 @@ async function ajouterInscription(entry) {
             body: JSON.stringify(record)
         }).catch(err => console.error("Erreur Supabase:", err)),
 
-        // Envoi Formspree
         fetch(FORMSPREE_ENDPOINT, {
             method: 'POST',
             headers: {
@@ -127,7 +147,7 @@ async function ajouterInscription(entry) {
     ];
 
     await Promise.allSettled(promises);
-    return { success: true, estAttente, totalCount: totalCurrent + 1 };
+    return { success: true, estDoublon: false, estAttente, totalCount: totalCurrent + 1 };
 }
 
 if (typeof module !== 'undefined' && module.exports) {

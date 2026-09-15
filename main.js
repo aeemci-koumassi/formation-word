@@ -1,7 +1,7 @@
 /**
  * Script Principal d'Interface & Interactions (main.js)
  * Formation Pratique Microsoft Word — AEEMCI Koumassi
- * Gestion de la capacité (150 places max), Liste d'Attente & Redirection WhatsApp Automatique
+ * Gestion de la capacité (150 places max), Liste d'Attente & Contrôle Anti-Doublon
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -179,9 +179,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         date: new Date().toISOString()
       };
 
-      let res = { estAttente: false };
+      let res = { estDoublon: false, estAttente: false };
 
-      // Enregistrement hybride
+      // Enregistrement hybride avec contrôle anti-doublon
       if (typeof ajouterInscription === 'function') {
         res = await ajouterInscription(entry);
       }
@@ -191,7 +191,35 @@ document.addEventListener('DOMContentLoaded', async () => {
       const joinWhatsappBtn = document.getElementById('joinWhatsappBtn');
       let targetWhatsappLink = WHATSAPP_LINK_PRINCIPAL;
 
-      if (res && res.estAttente) {
+      if (res && res.estDoublon) {
+        // En cas de doublon déjà enregistré
+        const confirmBadge = document.getElementById('confirm-badge');
+        const confirmIconBox = document.getElementById('confirm-icon-box');
+        const confirmIcon = document.getElementById('confirm-icon');
+        const confirmText = document.getElementById('confirm-text');
+
+        if (confirmBadge) {
+          confirmBadge.textContent = "Inscription Déjà Enregistrée !";
+          confirmBadge.className = "text-xs text-blue-700 font-extrabold uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full border border-blue-200";
+        }
+        if (confirmIconBox) {
+          confirmIconBox.className = "w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-3xl mx-auto shadow-sm";
+        }
+        if (confirmIcon) {
+          confirmIcon.className = "fa-solid fa-user-check";
+        }
+        if (confirmText) {
+          confirmText.innerHTML = `Bonjour <strong>${nom}</strong>, votre inscription pour la <strong>Formation Pratique Microsoft Word</strong> est déjà validée et bien enregistrée. Vous pouvez intégrer le groupe WhatsApp ci-dessous.`;
+        }
+        if (res.estAttente) {
+          targetWhatsappLink = WHATSAPP_LINK_ATTENTE;
+          if (joinWhatsappBtn) {
+            joinWhatsappBtn.href = WHATSAPP_LINK_ATTENTE;
+            const spanBtn = joinWhatsappBtn.querySelector('span');
+            if (spanBtn) spanBtn.textContent = "Rejoindre le Groupe WhatsApp (Liste d'Attente)";
+          }
+        }
+      } else if (res && res.estAttente) {
         targetWhatsappLink = WHATSAPP_LINK_ATTENTE;
         const confirmBadge = document.getElementById('confirm-badge');
         const confirmIconBox = document.getElementById('confirm-icon-box');

@@ -7,6 +7,7 @@ const FORMSPREE_ENDPOINT = "https://formspree.io/f/xljezjko";
 const SUPABASE_REST_URL = "https://iktoigkruredsudprndu.supabase.co/rest/v1/inscriptions_word";
 const SUPABASE_KEY = "sb_publishable_NY-DqlKRgy_IxSoYluUgLQ_eLcoUQbv";
 const LOCAL_STORAGE_KEY = 'aeemci_inscriptions_word_list';
+const MAX_CAPACITE = 150;
 
 function genererCodeTicket() {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -56,16 +57,31 @@ async function recupererInscriptions() {
 }
 
 /**
+ * Compte le nombre total d'inscrits actuels.
+ */
+async function obtenirNombreInscrits() {
+    try {
+        const list = await recupererInscriptions();
+        return Array.isArray(list) ? list.length : 0;
+    } catch (e) {
+        return 0;
+    }
+}
+
+/**
  * Enregistre un nouvel inscrit dans Supabase Cloud + Formspree + Cache Local.
  */
 async function ajouterInscription(entry) {
+    const totalCurrent = await obtenirNombreInscrits();
+    const estAttente = totalCurrent >= MAX_CAPACITE;
+
     const ticketCode = entry.ticket_code || genererCodeTicket();
     const record = {
         ticket_code: ticketCode,
         nom: entry.nom,
         email: entry.email,
         whatsapp: entry.whatsapp,
-        statut: entry.statut,
+        statut: estAttente ? `${entry.statut} (Liste d'attente)` : entry.statut,
         niveau: entry.niveau
     };
 
@@ -74,7 +90,7 @@ async function ajouterInscription(entry) {
         if (typeof localStorage !== 'undefined') {
             const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
             const current = raw ? JSON.parse(raw) : [];
-            current.unshift({ ...record, date: entry.date || new Date().toISOString() });
+            current.unshift({ ...record, is_attente: estAttente, date: entry.date || new Date().toISOString() });
             localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(current));
         }
     } catch (e) {
@@ -102,14 +118,14 @@ async function ajouterInscription(entry) {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify(record)
+            body: JSON.stringify({ ...record, type_inscription: estAttente ? "Liste d'attente" : "Place principale" })
         }).catch(err => console.error("Erreur Formspree:", err))
     ];
 
     await Promise.allSettled(promises);
-    return true;
+    return { success: true, estAttente, totalCount: totalCurrent + 1 };
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { recupererInscriptions, ajouterInscription, genererCodeTicket };
+    module.exports = { recupererInscriptions, obtenirNombreInscrits, ajouterInscription, genererCodeTicket, MAX_CAPACITE };
 }

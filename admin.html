@@ -93,18 +93,22 @@
     <div id="dashboardCard" class="hidden space-y-6">
 
       <!-- STATS CARDS -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-4">
         <div class="bg-white p-5 rounded-2xl border border-gray-200 luma-shadow">
           <span class="text-xs font-semibold text-lumaMuted uppercase block">Total Inscrits</span>
           <span id="statTotal" class="text-3xl font-extrabold text-lumaGreen mt-1 block">0</span>
         </div>
         <div class="bg-white p-5 rounded-2xl border border-gray-200 luma-shadow">
-          <span class="text-xs font-semibold text-lumaMuted uppercase block">Élèves</span>
-          <span id="statEleves" class="text-2xl font-bold text-lumaText mt-1 block">0</span>
+          <span class="text-xs font-semibold text-lumaMuted uppercase block">Places (Max 150)</span>
+          <span id="statPrincipales" class="text-3xl font-extrabold text-blue-600 mt-1 block">0/150</span>
         </div>
         <div class="bg-white p-5 rounded-2xl border border-gray-200 luma-shadow">
-          <span class="text-xs font-semibold text-lumaMuted uppercase block">Étudiants</span>
-          <span id="statEtudiants" class="text-2xl font-bold text-lumaText mt-1 block">0</span>
+          <span class="text-xs font-semibold text-lumaMuted uppercase block">Liste d'Attente</span>
+          <span id="statAttente" class="text-3xl font-extrabold text-amber-600 mt-1 block">0</span>
+        </div>
+        <div class="bg-white p-5 rounded-2xl border border-gray-200 luma-shadow">
+          <span class="text-xs font-semibold text-lumaMuted uppercase block">Élèves / Étudiants</span>
+          <span id="statElevesEtudiants" class="text-2xl font-bold text-lumaText mt-1 block">0</span>
         </div>
         <div class="bg-white p-5 rounded-2xl border border-gray-200 luma-shadow">
           <span class="text-xs font-semibold text-lumaMuted uppercase block">Professionnels</span>
@@ -225,9 +229,17 @@
     }
 
     function updateStats(list) {
-      document.getElementById('statTotal').textContent = list.length;
-      document.getElementById('statEleves').textContent = list.filter(i => (i.statut || '').toLowerCase().includes('élève')).length;
-      document.getElementById('statEtudiants').textContent = list.filter(i => (i.statut || '').toLowerCase().includes('étudiant')).length;
+      const total = list.length;
+      const attenteCount = list.filter(i => (i.statut || '').includes("Liste d'attente") || i.is_attente).length;
+      const principalesCount = Math.min(150, Math.max(0, total - attenteCount));
+
+      document.getElementById('statTotal').textContent = total;
+      document.getElementById('statPrincipales').textContent = `${principalesCount}/150`;
+      document.getElementById('statAttente').textContent = attenteCount;
+      document.getElementById('statElevesEtudiants').textContent = list.filter(i => {
+        const s = (i.statut || '').toLowerCase();
+        return s.includes('élève') || s.includes('étudiant');
+      }).length;
       document.getElementById('statPros').textContent = list.filter(i => (i.statut || '').toLowerCase().includes('pro')).length;
     }
 
@@ -239,17 +251,24 @@
       }
       emptyState.classList.add('hidden');
 
-      tableBody.innerHTML = list.map((item, i) => `
-        <tr class="hover:bg-gray-50">
-          <td class="font-bold text-gray-400">${i + 1}</td>
-          <td class="font-bold text-lumaText">${escapeHtml(item.nom || '')}</td>
-          <td class="text-gray-600">${escapeHtml(item.email || '')}</td>
-          <td class="font-mono font-semibold text-lumaGreen">${escapeHtml(item.whatsapp || '')}</td>
-          <td><span class="bg-emerald-50 text-lumaGreen px-2.5 py-1 rounded-full text-xs font-bold border border-emerald-100">${escapeHtml(item.statut || 'Participant')}</span></td>
-          <td class="text-gray-700">${escapeHtml(item.niveau || 'Débutant')}</td>
-          <td class="text-xs text-gray-500">${(item.created_at || item.date) ? new Date(item.created_at || item.date).toLocaleString('fr-FR') : 'Récemment'}</td>
-        </tr>
-      `).join('');
+      tableBody.innerHTML = list.map((item, i) => {
+        const isAttente = (item.statut || '').includes("Liste d'attente") || item.is_attente;
+        const badgeStyle = isAttente 
+          ? 'bg-amber-50 text-amber-700 border border-amber-200 font-extrabold' 
+          : 'bg-emerald-50 text-lumaGreen border border-emerald-100 font-bold';
+
+        return `
+          <tr class="hover:bg-gray-50">
+            <td class="font-bold text-gray-400">${i + 1}</td>
+            <td class="font-bold text-lumaText">${escapeHtml(item.nom || '')}</td>
+            <td class="text-gray-600">${escapeHtml(item.email || '')}</td>
+            <td class="font-mono font-semibold text-lumaGreen">${escapeHtml(item.whatsapp || '')}</td>
+            <td><span class="${badgeStyle} px-2.5 py-1 rounded-full text-xs">${escapeHtml(item.statut || 'Participant')}</span></td>
+            <td class="text-gray-700">${escapeHtml(item.niveau || 'Débutant')}</td>
+            <td class="text-xs text-gray-500">${(item.created_at || item.date) ? new Date(item.created_at || item.date).toLocaleString('fr-FR') : 'Récemment'}</td>
+          </tr>
+        `;
+      }).join('');
     }
 
     function escapeHtml(str) {

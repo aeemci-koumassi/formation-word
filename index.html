@@ -269,13 +269,13 @@
           
           <div class="flex items-center justify-between pb-4 border-b border-gray-100">
             <div>
-              <h3 class="text-lg font-bold text-lumaText">Formulaire d'Inscription</h3>
-              <p class="text-xs text-lumaMuted">100% gratuit · Ouvert aux élèves, étudiants et professionnels</p>
+              <h3 id="form-title" class="text-lg font-bold text-lumaText">Formulaire d'Inscription</h3>
+              <p id="form-subtitle" class="text-xs text-lumaMuted">100% gratuit · Ouvert aux élèves, étudiants et professionnels</p>
             </div>
             
             <div id="capacity-badge" class="inline-flex items-center gap-1.5 bg-emerald-50 text-lumaGreen font-semibold text-xs px-3 py-1.5 rounded-full border border-emerald-100">
-              <span class="w-2 h-2 rounded-full bg-lumaGreen animate-pulse"></span>
-              <span id="capacity-text">Inscription Ouverte</span>
+              <span id="capacity-dot" class="w-2 h-2 rounded-full bg-lumaGreen animate-pulse"></span>
+              <span id="capacity-text">Chargement des places...</span>
             </div>
           </div>
 
@@ -345,18 +345,18 @@
 
           <!-- SUCCESS CONFIRMATION PANEL -->
           <div id="confirmationBloc" class="hidden text-center py-6 space-y-5">
-            <div class="w-16 h-16 bg-emerald-100 text-lumaGreen rounded-full flex items-center justify-center text-3xl mx-auto shadow-sm">
-              <i class="fa-solid fa-circle-check"></i>
+            <div id="confirm-icon-box" class="w-16 h-16 bg-emerald-100 text-lumaGreen rounded-full flex items-center justify-center text-3xl mx-auto shadow-sm">
+              <i id="confirm-icon" class="fa-solid fa-circle-check"></i>
             </div>
             
             <div class="space-y-1">
-              <span class="text-xs text-lumaGreen font-extrabold uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
+              <span id="confirm-badge" class="text-xs text-lumaGreen font-extrabold uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
                 Inscription Enregistrée avec Succès !
               </span>
               <h4 class="text-2xl font-extrabold text-lumaText">Félicitations <span id="confirm-nom"></span> !</h4>
             </div>
 
-            <p class="text-xs sm:text-sm text-gray-600 max-w-md mx-auto leading-relaxed">
+            <p id="confirm-text" class="text-xs sm:text-sm text-gray-600 max-w-md mx-auto leading-relaxed">
               Votre inscription pour la <strong>Formation Pratique Microsoft Word</strong> (18, 19 et 20 septembre 2026 à 20h00) est bien enregistrée. Veuillez intégrer le groupe WhatsApp officiel pour recevoir les liens du webinaire.
             </p>
 

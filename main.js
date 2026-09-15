@@ -1,9 +1,12 @@
 /**
  * Script Principal d'Interface & Interactions (main.js)
  * Formation Pratique Microsoft Word — AEEMCI Koumassi
+ * Gestion de la capacité (150 places max) & Liste d'Attente
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+
+  const MAX_CAPACITE = 150;
 
   /* ---------- TOAST HELPER ---------- */
   window.showToast = function(msg) {
@@ -56,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* ---------- CALENDAR .ICS EXPORT (Horaire: 20h00) ---------- */
+  /* ---------- CALENDAR .ICS EXPORT ---------- */
   window.downloadICS = function() {
     const pad = n => String(n).padStart(2, '0');
     const fmt = d => `${d.getUTCFullYear()}${pad(d.getUTCMonth()+1)}${pad(d.getUTCDate())}T${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}00Z`;
@@ -86,6 +89,50 @@ document.addEventListener('DOMContentLoaded', () => {
   if (calendarBtn2) {
     calendarBtn2.addEventListener('click', downloadICS);
   }
+
+  /* ---------- GESTION DE LA CAPACITÉ (150 PLACES) ---------- */
+  async function mettreAJourAffichageCapacite() {
+    if (typeof obtenirNombreInscrits !== 'function') return;
+    const totalCount = await obtenirNombreInscrits();
+    
+    const capacityText = document.getElementById('capacity-text');
+    const capacityBadge = document.getElementById('capacity-badge');
+    const capacityDot = document.getElementById('capacity-dot');
+    const formTitle = document.getElementById('form-title');
+    const formSubtitle = document.getElementById('form-subtitle');
+    const submitBtn = document.getElementById('submitBtn');
+    const submitLabel = document.getElementById('submitLabel');
+
+    if (totalCount >= MAX_CAPACITE) {
+      if (capacityText) capacityText.textContent = `${totalCount}/${MAX_CAPACITE} places — Liste d'attente`;
+      if (capacityBadge) {
+        capacityBadge.className = 'inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 font-semibold text-xs px-3 py-1.5 rounded-full border border-amber-200';
+      }
+      if (capacityDot) capacityDot.className = 'w-2 h-2 rounded-full bg-amber-500 animate-pulse';
+      if (formTitle) formTitle.textContent = "Inscription — Liste d'Attente";
+      if (formSubtitle) formSubtitle.textContent = "Les 150 places principales sont réservées. Inscrivez-vous sur la liste d'attente prioritaire.";
+      if (submitBtn) {
+        submitBtn.className = 'w-full bg-amber-600 hover:bg-amber-700 text-white font-bold text-base py-3.5 rounded-2xl shadow-md luma-btn flex items-center justify-center gap-2 mt-2 transition-colors';
+      }
+      if (submitLabel) submitLabel.textContent = "S'inscrire sur la Liste d'Attente";
+    } else {
+      if (capacityText) capacityText.textContent = `Inscription Ouverte (${totalCount}/${MAX_CAPACITE} places)`;
+      if (capacityBadge) {
+        capacityBadge.className = 'inline-flex items-center gap-1.5 bg-emerald-50 text-lumaGreen font-semibold text-xs px-3 py-1.5 rounded-full border border-emerald-100';
+      }
+      if (capacityDot) capacityDot.className = 'w-2 h-2 rounded-full bg-lumaGreen animate-pulse';
+      if (formTitle) formTitle.textContent = "Formulaire d'Inscription";
+      if (formSubtitle) formSubtitle.textContent = "100% gratuit · Ouvert aux élèves, étudiants et professionnels";
+      if (submitBtn) {
+        submitBtn.className = 'w-full bg-lumaGreen hover:bg-lumaGreenDark text-white font-bold text-base py-3.5 rounded-2xl shadow-md luma-btn flex items-center justify-center gap-2 mt-2 transition-colors';
+      }
+      if (submitLabel) submitLabel.textContent = "Valider & Rejoindre le Groupe WhatsApp";
+    }
+  }
+
+  // Initialisation de la capacité au chargement
+  await mettreAJourAffichageCapacite();
+
 
   /* ---------- FORM SUBMISSION & WHATSAPP REDIRECT ---------- */
   const form = document.getElementById('formInscription');
@@ -127,18 +174,35 @@ document.addEventListener('DOMContentLoaded', () => {
         date: new Date().toISOString()
       };
 
-      // Appel de la fonction de base de données (Supabase / Local)
+      let res = { estAttente: false };
+
+      // Enregistrement hybride
       if (typeof ajouterInscription === 'function') {
-        const success = await ajouterInscription(entry);
-        if (!success) {
-          alert("Erreur lors de l'enregistrement. Veuillez vérifier votre connexion internet et réessayer.");
-          submitBtn.disabled = false;
-          submitLabel.innerHTML = 'Valider & Rejoindre le Groupe WhatsApp';
-          return;
-        }
+        res = await ajouterInscription(entry);
       }
 
       document.getElementById('confirm-nom').textContent = nom;
+
+      if (res && res.estAttente) {
+        const confirmBadge = document.getElementById('confirm-badge');
+        const confirmIconBox = document.getElementById('confirm-icon-box');
+        const confirmIcon = document.getElementById('confirm-icon');
+        const confirmText = document.getElementById('confirm-text');
+
+        if (confirmBadge) {
+          confirmBadge.textContent = "Inscription sur Liste d'Attente !";
+          confirmBadge.className = "text-xs text-amber-700 font-extrabold uppercase tracking-widest bg-amber-50 px-3 py-1 rounded-full border border-amber-200";
+        }
+        if (confirmIconBox) {
+          confirmIconBox.className = "w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-3xl mx-auto shadow-sm";
+        }
+        if (confirmIcon) {
+          confirmIcon.className = "fa-solid fa-clock-rotate-left";
+        }
+        if (confirmText) {
+          confirmText.innerHTML = `Les 150 places principales étant réservées, votre inscription a bien été enregistrée sur notre <strong>liste d'attente prioritaire</strong>. En cas de désistement ou de nouvelle session, vous serez contacté(e) en priorité. Veuillez intégrer le groupe WhatsApp officiel pour rester informé(e).`;
+        }
+      }
 
       form.classList.add('hidden');
       confirmationBloc.classList.remove('hidden');
@@ -227,17 +291,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (empty) empty.classList.add('hidden');
 
-    tbody.innerHTML = list.map((item, i) => `
-      <tr>
-        <td>${i + 1}</td>
-        <td class="font-bold text-lumaText">${item.nom || ''}</td>
-        <td>${item.email || ''}</td>
-        <td class="font-mono text-lumaGreen font-semibold">${item.whatsapp || ''}</td>
-        <td><span class="bg-blue-50 text-bleu px-2 py-0.5 rounded text-[11px] font-semibold">${item.statut || 'Participant'}</span></td>
-        <td>${item.niveau || 'Débutant'}</td>
-        <td>${item.date ? new Date(item.date).toLocaleString('fr-FR') : ''}</td>
-      </tr>
-    `).join('');
+    tbody.innerHTML = list.map((item, i) => {
+      const isAttente = (item.statut || '').includes("Liste d'attente");
+      const badgeStyle = isAttente 
+        ? 'bg-amber-50 text-amber-700 border border-amber-200' 
+        : 'bg-blue-50 text-bleu border border-blue-100';
+
+      return `
+        <tr>
+          <td>${i + 1}</td>
+          <td class="font-bold text-lumaText">${item.nom || ''}</td>
+          <td>${item.email || ''}</td>
+          <td class="font-mono text-lumaGreen font-semibold">${item.whatsapp || ''}</td>
+          <td><span class="${badgeStyle} px-2 py-0.5 rounded text-[11px] font-semibold">${item.statut || 'Participant'}</span></td>
+          <td>${item.niveau || 'Débutant'}</td>
+          <td>${(item.created_at || item.date) ? new Date(item.created_at || item.date).toLocaleString('fr-FR') : ''}</td>
+        </tr>
+      `;
+    }).join('');
   }
 
   const adminSubmitPass = document.getElementById('adminSubmitPass');
@@ -281,7 +352,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const filtered = cachedList.filter(item =>
         (item.nom || '').toLowerCase().includes(q) ||
         (item.email || '').toLowerCase().includes(q) ||
-        (item.whatsapp || '').toLowerCase().includes(q)
+        (item.whatsapp || '').toLowerCase().includes(q) ||
+        (item.statut || '').toLowerCase().includes(q)
       );
       renderAdminTable(filtered);
     });
@@ -292,7 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
     adminExportBtn.addEventListener('click', () => {
       if (cachedList.length === 0) return;
       const headers = ['Nom & Prénoms', 'Email', 'WhatsApp', 'Statut', 'Niveau', 'Date'];
-      const rows = cachedList.map(e => [e.nom, e.email, e.whatsapp, e.statut, e.niveau, e.date]);
+      const rows = cachedList.map(e => [e.nom, e.email, e.whatsapp, e.statut, e.niveau, e.created_at || e.date]);
       const csv = [headers, ...rows].map(row => row.map(cell => `"${String(cell || '').replace(/"/g, '""')}"`).join(';')).join('\n');
       const blob = new Blob(['\uFEFF' + csv], { type: 'text/charset=utf-8;' });
       const url = URL.createObjectURL(blob);

@@ -1,12 +1,18 @@
 /**
  * Script Principal d'Interface & Interactions (main.js)
  * Formation Pratique Microsoft Word — AEEMCI Koumassi
- * Gestion de la capacité (150 places max) & Liste d'Attente
+ * Gestion de la capacité (150 places max), Liste d'Attente & Redirection WhatsApp Automatique
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
 
   const MAX_CAPACITE = 150;
+
+  // Lien du Groupe WhatsApp Principal (150 premières places)
+  const WHATSAPP_LINK_PRINCIPAL = "https://chat.whatsapp.com/KzKBnGq3ZahFYohN2nm3gN?s=sh&p=a&mlu=4&ilr=4";
+  
+  // Lien du Groupe WhatsApp Liste d'Attente (Modifiez ce lien si vous créez un 2ème groupe spécifique)
+  let WHATSAPP_LINK_ATTENTE = "https://chat.whatsapp.com/KzKBnGq3ZahFYohN2nm3gN?s=sh&p=a&mlu=4&ilr=4";
 
   /* ---------- TOAST HELPER ---------- */
   window.showToast = function(msg) {
@@ -110,7 +116,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
       if (capacityDot) capacityDot.className = 'w-2 h-2 rounded-full bg-amber-500 animate-pulse';
       if (formTitle) formTitle.textContent = "Inscription — Liste d'Attente";
-      if (formSubtitle) formSubtitle.textContent = "Les 150 places principales sont réservées. Inscrivez-vous sur la liste d'attente prioritaire.";
+      if (formSubtitle) formSubtitle.textContent = "Les 150 places principales sont réservées. Votre inscription sera placée sur liste d'attente prioritaire.";
       if (submitBtn) {
         submitBtn.className = 'w-full bg-amber-600 hover:bg-amber-700 text-white font-bold text-base py-3.5 rounded-2xl shadow-md luma-btn flex items-center justify-center gap-2 mt-2 transition-colors';
       }
@@ -139,7 +145,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const confirmationBloc = document.getElementById('confirmationBloc');
   const submitBtn = document.getElementById('submitBtn');
   const submitLabel = document.getElementById('submitLabel');
-  const WHATSAPP_LINK = "https://chat.whatsapp.com/KzKBnGq3ZahFYohN2nm3gN?s=sh&p=a&mlu=4&ilr=4";
 
   if (form) {
     form.addEventListener('submit', async function (e) {
@@ -183,7 +188,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       document.getElementById('confirm-nom').textContent = nom;
 
+      const joinWhatsappBtn = document.getElementById('joinWhatsappBtn');
+      let targetWhatsappLink = WHATSAPP_LINK_PRINCIPAL;
+
       if (res && res.estAttente) {
+        targetWhatsappLink = WHATSAPP_LINK_ATTENTE;
         const confirmBadge = document.getElementById('confirm-badge');
         const confirmIconBox = document.getElementById('confirm-icon-box');
         const confirmIcon = document.getElementById('confirm-icon');
@@ -200,14 +209,25 @@ document.addEventListener('DOMContentLoaded', async () => {
           confirmIcon.className = "fa-solid fa-clock-rotate-left";
         }
         if (confirmText) {
-          confirmText.innerHTML = `Les 150 places principales étant réservées, votre inscription a bien été enregistrée sur notre <strong>liste d'attente prioritaire</strong>. En cas de désistement ou de nouvelle session, vous serez contacté(e) en priorité. Veuillez intégrer le groupe WhatsApp officiel pour rester informé(e).`;
+          confirmText.innerHTML = `Les 150 places principales étant réservées, votre inscription a été enregistrée sur notre <strong>liste d'attente prioritaire</strong>. Veuillez intégrer le groupe WhatsApp ci-dessous pour rester informé(e).`;
+        }
+        if (joinWhatsappBtn) {
+          joinWhatsappBtn.href = WHATSAPP_LINK_ATTENTE;
+          const spanBtn = joinWhatsappBtn.querySelector('span');
+          if (spanBtn) spanBtn.textContent = "Rejoindre le Groupe WhatsApp (Liste d'Attente)";
+        }
+      } else {
+        if (joinWhatsappBtn) {
+          joinWhatsappBtn.href = WHATSAPP_LINK_PRINCIPAL;
+          const spanBtn = joinWhatsappBtn.querySelector('span');
+          if (spanBtn) spanBtn.textContent = "Rejoindre le Groupe WhatsApp Officiel";
         }
       }
 
       form.classList.add('hidden');
       confirmationBloc.classList.remove('hidden');
 
-      setTimeout(() => { window.open(WHATSAPP_LINK, '_blank'); }, 1200);
+      setTimeout(() => { window.open(targetWhatsappLink, '_blank'); }, 1200);
     });
   }
 

@@ -1,7 +1,7 @@
 /**
  * MODULE BASE DE DONNÉES HYBRIDE (SUPABASE CLOUD + FORMSPREE)
  * Projet : Formation Microsoft Word (AEEMCI Koumassi)
- * Statut : Groupe 1 rempli (151 membres) -> Basculement automatique actif sur Liste d'Attente & 2ème groupe WhatsApp
+ * Statut : Groupe 1 FERMÉ (151+ membres) -> Liste d'Attente & 2ème groupe WhatsApp VERROUILLÉ EN DIRECT
  */
 
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/xljezjko";
@@ -10,7 +10,7 @@ const SUPABASE_KEY = "sb_publishable_NY-DqlKRgy_IxSoYluUgLQ_eLcoUQbv";
 const LOCAL_STORAGE_KEY = 'aeemci_inscriptions_word_list';
 
 const MAX_CAPACITE = 150;
-const DECALAGE_MEMBRES_EXISTANTS = 36; // Le groupe 1 a atteint 151 membres -> activation immédiate de la Liste d'attente
+const GROUPE1_FERME = true; // Forcer la fermeture du 1er groupe (151+ membres atteints)
 
 function genererCodeTicket() {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -60,20 +60,20 @@ async function recupererInscriptions() {
 }
 
 /**
- * Compte le nombre réel d'inscrits actuels (Membres WhatsApp réels = 151+).
+ * Compte le nombre d'inscrits (Forcé à >= 151 car le 1er groupe est plein).
  */
 async function obtenirNombreInscrits() {
     try {
         const list = await recupererInscriptions();
         const dbCount = Array.isArray(list) ? list.length : 0;
-        return dbCount + DECALAGE_MEMBRES_EXISTANTS;
+        return Math.max(151, dbCount + 36);
     } catch (e) {
         return 151;
     }
 }
 
 /**
- * Enregistre un nouvel inscrit avec basculement automatique sur la Liste d'Attente et le 2ème Groupe WhatsApp.
+ * Enregistre un nouvel inscrit avec basculement automatique et obligatoire sur la Liste d'Attente.
  */
 async function ajouterInscription(entry) {
     const list = await recupererInscriptions();
@@ -99,7 +99,7 @@ async function ajouterInscription(entry) {
     }
 
     const totalCurrent = await obtenirNombreInscrits();
-    const estAttente = totalCurrent >= MAX_CAPACITE;
+    const estAttente = true; // Groupe 1 est fermé, tous les nouveaux vont sur Liste d'attente
 
     const ticketCode = entry.ticket_code || genererCodeTicket();
     const record = {
@@ -107,7 +107,7 @@ async function ajouterInscription(entry) {
         nom: entry.nom,
         email: entry.email,
         whatsapp: entry.whatsapp,
-        statut: estAttente ? `${entry.statut} (Liste d'attente)` : entry.statut,
+        statut: `${entry.statut} (Liste d'attente)`,
         niveau: entry.niveau
     };
 
@@ -142,7 +142,7 @@ async function ajouterInscription(entry) {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({ ...record, type_inscription: "Liste d'attente" })
+            body: JSON.stringify({ ...record, type_inscription: "Liste d'attente (Groupe 2)" })
         }).catch(err => console.error("Erreur Formspree:", err))
     ];
 
@@ -151,5 +151,5 @@ async function ajouterInscription(entry) {
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { recupererInscriptions, obtenirNombreInscrits, ajouterInscription, genererCodeTicket, MAX_CAPACITE };
+    module.exports = { recupererInscriptions, obtenirNombreInscrits, ajouterInscription, genererCodeTicket, MAX_CAPACITE, GROUPE1_FERME };
 }

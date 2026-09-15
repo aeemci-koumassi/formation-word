@@ -1,7 +1,7 @@
 /**
  * MODULE BASE DE DONNÉES HYBRIDE (SUPABASE CLOUD + FORMSPREE)
  * Projet : Formation Microsoft Word (AEEMCI Koumassi)
- * Comptage basé strictement sur les 150 inscriptions officielles en base de données.
+ * Statut : Groupe 1 rempli (151 membres) -> Basculement automatique actif sur Liste d'Attente & 2ème groupe WhatsApp
  */
 
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/xljezjko";
@@ -10,6 +10,7 @@ const SUPABASE_KEY = "sb_publishable_NY-DqlKRgy_IxSoYluUgLQ_eLcoUQbv";
 const LOCAL_STORAGE_KEY = 'aeemci_inscriptions_word_list';
 
 const MAX_CAPACITE = 150;
+const DECALAGE_MEMBRES_EXISTANTS = 36; // Le groupe 1 a atteint 151 membres -> activation immédiate de la Liste d'attente
 
 function genererCodeTicket() {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -59,19 +60,20 @@ async function recupererInscriptions() {
 }
 
 /**
- * Compte le nombre d'inscrits dans la base de données.
+ * Compte le nombre réel d'inscrits actuels (Membres WhatsApp réels = 151+).
  */
 async function obtenirNombreInscrits() {
     try {
         const list = await recupererInscriptions();
-        return Array.isArray(list) ? list.length : 0;
+        const dbCount = Array.isArray(list) ? list.length : 0;
+        return dbCount + DECALAGE_MEMBRES_EXISTANTS;
     } catch (e) {
-        return 0;
+        return 151;
     }
 }
 
 /**
- * Enregistre un nouvel inscrit dans Supabase Cloud + Formspree avec contrôle anti-doublon.
+ * Enregistre un nouvel inscrit avec basculement automatique sur la Liste d'Attente et le 2ème Groupe WhatsApp.
  */
 async function ajouterInscription(entry) {
     const list = await recupererInscriptions();
@@ -91,12 +93,12 @@ async function ajouterInscription(entry) {
         return { 
             success: true, 
             estDoublon: true, 
-            estAttente: (existant.statut || '').includes("Liste d'attente"),
+            estAttente: true,
             existingRecord: existant 
         };
     }
 
-    const totalCurrent = list.length;
+    const totalCurrent = await obtenirNombreInscrits();
     const estAttente = totalCurrent >= MAX_CAPACITE;
 
     const ticketCode = entry.ticket_code || genererCodeTicket();
@@ -114,7 +116,7 @@ async function ajouterInscription(entry) {
         if (typeof localStorage !== 'undefined') {
             const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
             const current = raw ? JSON.parse(raw) : [];
-            current.unshift({ ...record, is_attente: estAttente, date: entry.date || new Date().toISOString() });
+            current.unshift({ ...record, is_attente: true, date: entry.date || new Date().toISOString() });
             localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(current));
         }
     } catch (e) {
@@ -140,12 +142,12 @@ async function ajouterInscription(entry) {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({ ...record, type_inscription: estAttente ? "Liste d'attente" : "Place principale" })
+            body: JSON.stringify({ ...record, type_inscription: "Liste d'attente" })
         }).catch(err => console.error("Erreur Formspree:", err))
     ];
 
     await Promise.allSettled(promises);
-    return { success: true, estDoublon: false, estAttente, totalCount: totalCurrent + 1 };
+    return { success: true, estDoublon: false, estAttente: true, totalCount: totalCurrent + 1 };
 }
 
 if (typeof module !== 'undefined' && module.exports) {

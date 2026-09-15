@@ -229,12 +229,11 @@
     }
 
     function updateStats(list) {
-      const dbCount = list.length;
-      const totalReel = dbCount + 34;
+      const total = list.length;
       const attenteCount = list.filter(i => (i.statut || '').includes("Liste d'attente") || i.is_attente).length;
-      const principalesCount = Math.min(150, Math.max(0, totalReel - attenteCount));
+      const principalesCount = Math.min(150, Math.max(0, total - attenteCount));
 
-      document.getElementById('statTotal').textContent = totalReel;
+      document.getElementById('statTotal').textContent = total;
       document.getElementById('statPrincipales').textContent = `${principalesCount}/150`;
       document.getElementById('statAttente').textContent = attenteCount;
       document.getElementById('statElevesEtudiants').textContent = list.filter(i => {

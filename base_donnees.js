@@ -1,7 +1,7 @@
 /**
  * MODULE BASE DE DONNÉES HYBRIDE (SUPABASE CLOUD + FORMSPREE)
  * Projet : Formation Microsoft Word (AEEMCI Koumassi)
- * Contrôle anti-doublon (Email & WhatsApp) + Gestion Liste d'Attente 150 places
+ * Comptage basé strictement sur les 150 inscriptions officielles en base de données.
  */
 
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/xljezjko";
@@ -10,7 +10,6 @@ const SUPABASE_KEY = "sb_publishable_NY-DqlKRgy_IxSoYluUgLQ_eLcoUQbv";
 const LOCAL_STORAGE_KEY = 'aeemci_inscriptions_word_list';
 
 const MAX_CAPACITE = 150;
-const DECALAGE_MEMBRES_EXISTANTS = 34; // 134 membres WhatsApp réels actuels pour 100 inscrits DB
 
 function genererCodeTicket() {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -60,20 +59,19 @@ async function recupererInscriptions() {
 }
 
 /**
- * Compte le nombre réel d'inscrits actuels.
+ * Compte le nombre d'inscrits dans la base de données.
  */
 async function obtenirNombreInscrits() {
     try {
         const list = await recupererInscriptions();
-        const dbCount = Array.isArray(list) ? list.length : 0;
-        return dbCount + DECALAGE_MEMBRES_EXISTANTS;
+        return Array.isArray(list) ? list.length : 0;
     } catch (e) {
-        return 134;
+        return 0;
     }
 }
 
 /**
- * Enregistre un nouvel inscrit avec vérification stricte anti-doublon (Email / WhatsApp).
+ * Enregistre un nouvel inscrit dans Supabase Cloud + Formspree avec contrôle anti-doublon.
  */
 async function ajouterInscription(entry) {
     const list = await recupererInscriptions();
@@ -98,7 +96,7 @@ async function ajouterInscription(entry) {
         };
     }
 
-    const totalCurrent = await obtenirNombreInscrits();
+    const totalCurrent = list.length;
     const estAttente = totalCurrent >= MAX_CAPACITE;
 
     const ticketCode = entry.ticket_code || genererCodeTicket();

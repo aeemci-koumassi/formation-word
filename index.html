@@ -269,13 +269,13 @@
           
           <div class="flex items-center justify-between pb-4 border-b border-gray-100">
             <div>
-              <h3 id="form-title" class="text-lg font-bold text-lumaText">Formulaire d'Inscription</h3>
-              <p id="form-subtitle" class="text-xs text-lumaMuted">100% gratuit · Ouvert aux élèves, étudiants et professionnels</p>
+              <h3 id="form-title" class="text-lg font-bold text-lumaText">Inscription — Liste d'Attente</h3>
+              <p id="form-subtitle" class="text-xs text-lumaMuted">Les 150 places principales sont réservées. Votre inscription sera placée sur liste d'attente prioritaire.</p>
             </div>
             
-            <div id="capacity-badge" class="inline-flex items-center gap-1.5 bg-emerald-50 text-lumaGreen font-semibold text-xs px-3 py-1.5 rounded-full border border-emerald-100">
-              <span id="capacity-dot" class="w-2 h-2 rounded-full bg-lumaGreen animate-pulse"></span>
-              <span id="capacity-text">Chargement des places...</span>
+            <div id="capacity-badge" class="inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 font-semibold text-xs px-3 py-1.5 rounded-full border border-amber-200">
+              <span id="capacity-dot" class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+              <span id="capacity-text">150/150 places — Liste d'attente</span>
             </div>
           </div>
 
@@ -331,9 +331,9 @@
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" id="submitBtn" class="w-full bg-lumaGreen hover:bg-lumaGreenDark text-white font-bold text-base py-3.5 rounded-2xl shadow-md luma-btn flex items-center justify-center gap-2 mt-2">
-              <i class="fa-brands fa-whatsapp text-xl"></i>
-              <span id="submitLabel">Valider & Rejoindre le Groupe WhatsApp</span>
+            <button type="submit" id="submitBtn" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold text-base py-3.5 rounded-2xl shadow-md luma-btn flex items-center justify-center gap-2 mt-2 transition-colors">
+              <i class="fa-solid fa-clock-rotate-left text-lg"></i>
+              <span id="submitLabel">S'inscrire sur la Liste d'Attente</span>
             </button>
 
             <div class="flex items-center justify-between text-xs text-lumaMuted pt-2">
@@ -345,26 +345,26 @@
 
           <!-- SUCCESS CONFIRMATION PANEL -->
           <div id="confirmationBloc" class="hidden text-center py-6 space-y-5">
-            <div id="confirm-icon-box" class="w-16 h-16 bg-emerald-100 text-lumaGreen rounded-full flex items-center justify-center text-3xl mx-auto shadow-sm">
-              <i id="confirm-icon" class="fa-solid fa-circle-check"></i>
+            <div id="confirm-icon-box" class="w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-3xl mx-auto shadow-sm">
+              <i id="confirm-icon" class="fa-solid fa-clock-rotate-left"></i>
             </div>
             
             <div class="space-y-1">
-              <span id="confirm-badge" class="text-xs text-lumaGreen font-extrabold uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
-                Inscription Enregistrée avec Succès !
+              <span id="confirm-badge" class="text-xs text-amber-700 font-extrabold uppercase tracking-widest bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
+                Inscription sur Liste d'Attente !
               </span>
               <h4 class="text-2xl font-extrabold text-lumaText">Félicitations <span id="confirm-nom"></span> !</h4>
             </div>
 
             <p id="confirm-text" class="text-xs sm:text-sm text-gray-600 max-w-md mx-auto leading-relaxed">
-              Votre inscription pour la <strong>Formation Pratique Microsoft Word</strong> (18, 19 et 20 septembre 2026 à 20h00) est bien enregistrée. Veuillez intégrer le groupe WhatsApp officiel pour recevoir les liens du webinaire.
+              Les 150 places principales étant réservées, votre inscription a été enregistrée sur notre <strong>liste d'attente prioritaire</strong>. Veuillez intégrer le groupe WhatsApp ci-dessous pour rester informé(e).
             </p>
 
             <div class="space-y-3 pt-2">
-              <a id="joinWhatsappBtn" href="https://chat.whatsapp.com/KzKBnGq3ZahFYohN2nm3gN?s=sh&p=a&mlu=4&ilr=4" target="_blank" rel="noopener noreferrer"
+              <a id="joinWhatsappBtn" href="https://chat.whatsapp.com/FLUfIUEujHj0ZkyIEGpNHp" target="_blank" rel="noopener noreferrer"
                  class="w-full inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebc59] text-white font-bold text-base py-3.5 rounded-2xl shadow-md transition-transform hover:scale-[1.01]">
                 <i class="fa-brands fa-whatsapp text-xl"></i>
-                <span>Rejoindre le Groupe WhatsApp Officiel</span>
+                <span>Rejoindre le Groupe WhatsApp (Liste d'Attente)</span>
               </a>
             </div>
           </div>
@@ -600,8 +600,8 @@
 
   <!-- SCRIPTS MODULAIRES JS -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase.js?v=20260915_ATTENTE_LOCKED"></script>
-  <script src="base_donnees.js?v=20260915_ATTENTE_LOCKED"></script>
-  <script src="main.js?v=20260915_ATTENTE_LOCKED"></script>
+  <script src="supabase.js?v=20260915_ATTENTE_HARDCODED"></script>
+  <script src="base_donnees.js?v=20260915_ATTENTE_HARDCODED"></script>
+  <script src="main.js?v=20260915_ATTENTE_HARDCODED"></script>
 </body>
 </html>

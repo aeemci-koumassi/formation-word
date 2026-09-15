@@ -1,13 +1,16 @@
 /**
  * MODULE BASE DE DONNÉES HYBRIDE (SUPABASE CLOUD + FORMSPREE)
  * Projet : Formation Microsoft Word (AEEMCI Koumassi)
+ * Comptage ajusté : 134 membres WhatsApp réels actuels (+34 vs base DB) / 150 places max
  */
 
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/xljezjko";
 const SUPABASE_REST_URL = "https://iktoigkruredsudprndu.supabase.co/rest/v1/inscriptions_word";
 const SUPABASE_KEY = "sb_publishable_NY-DqlKRgy_IxSoYluUgLQ_eLcoUQbv";
 const LOCAL_STORAGE_KEY = 'aeemci_inscriptions_word_list';
+
 const MAX_CAPACITE = 150;
+const DECALAGE_MEMBRES_EXISTANTS = 34; // 134 membres WhatsApp réels actuels pour 100 inscrits DB
 
 function genererCodeTicket() {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -57,14 +60,15 @@ async function recupererInscriptions() {
 }
 
 /**
- * Compte le nombre total d'inscrits actuels.
+ * Compte le nombre réel d'inscrits actuels (Membres WhatsApp + Inscrits site = 134 de base).
  */
 async function obtenirNombreInscrits() {
     try {
         const list = await recupererInscriptions();
-        return Array.isArray(list) ? list.length : 0;
+        const dbCount = Array.isArray(list) ? list.length : 0;
+        return dbCount + DECALAGE_MEMBRES_EXISTANTS;
     } catch (e) {
-        return 0;
+        return 134;
     }
 }
 

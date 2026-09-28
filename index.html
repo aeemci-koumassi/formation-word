@@ -133,7 +133,7 @@
       <div class="lg:col-span-5 space-y-6">
         
         <!-- EVENT POSTER CARD -->
-        <div class="bg-gradient-to-br from-bleu via-[#001030] to-vert rounded-3xl p-6 text-white shadow-xl relative overflow-hidden flex flex-col justify-between group min-h-[420px]">
+        <div class="bg-gradient-to-br from-bleu via-[#001030] to-vert rounded-3xl p-6 text-white shadow-xl relative overflow-hidden flex flex-col justify-between group min-h-[440px]">
           <div class="absolute -top-12 -right-12 w-48 h-48 bg-or/20 rounded-full blur-3xl pointer-events-none"></div>
           <div class="absolute -bottom-12 -left-12 w-48 h-48 bg-vert/40 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -161,30 +161,32 @@
               <span class="text-or">EXCEL & PROMPT ENGINEERING</span>
             </h2>
 
-            <p class="text-xs text-white/90 font-medium max-w-xs mx-auto">
-              Pour Élèves, Étudiants et Professionnels<br>Dimanche 04 Octobre 2026 · À 08h00 GMT<br>En Présentiel : Groupe Scolaire Sainte Thérèse
+            <p class="text-xs text-white/90 font-medium max-w-xs mx-auto leading-relaxed">
+              Pour Élèves, Étudiants et Professionnels<br>
+              <span class="text-or font-semibold">Dimanche 04 Octobre 2026 · À 08h00 GMT</span><br>
+              Présentiel : Groupe Scolaire Sainte Thérèse
             </p>
           </div>
 
           <!-- Bottom Speakers Highlight Pill -->
           <div class="space-y-2 relative z-10">
             <div class="flex items-center gap-3 bg-black/40 backdrop-blur-md p-2 rounded-2xl border border-white/10">
-              <div class="w-8 h-8 rounded-xl bg-emerald-600 text-white font-bold flex items-center justify-center text-xs shrink-0">
-                <i class="fa-solid fa-file-excel"></i>
+              <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white font-extrabold flex items-center justify-center text-xs shrink-0 shadow-sm border border-emerald-400/30">
+                DA
               </div>
               <div class="text-left text-xs">
-                <span class="text-white/60 block text-[10px]">Formateur Bases Excel</span>
-                <span class="text-white font-bold block">Djim Aboubacar Mikahillo</span>
+                <span class="text-emerald-300 block text-[10px] font-bold uppercase tracking-wider">Formateur Excel</span>
+                <span class="text-white font-extrabold block">Djim Aboubacar Mikahillo</span>
               </div>
             </div>
 
             <div class="flex items-center gap-3 bg-black/40 backdrop-blur-md p-2 rounded-2xl border border-white/10">
-              <div class="w-8 h-8 rounded-xl bg-amber-500 text-white font-bold flex items-center justify-center text-xs shrink-0">
-                <i class="fa-solid fa-robot"></i>
+              <div class="w-9 h-9 rounded-xl bg-amber-500 text-white font-extrabold flex items-center justify-center text-xs shrink-0 shadow-sm border border-amber-400/30">
+                TM
               </div>
               <div class="text-left text-xs">
-                <span class="text-white/60 block text-[10px]">Formateur Prompt Engineering & IA</span>
-                <span class="text-white font-bold block">TUO Mamadou</span>
+                <span class="text-amber-300 block text-[10px] font-bold uppercase tracking-wider">Formateur Prompt Engineering & IA</span>
+                <span class="text-white font-extrabold block">TUO Mamadou</span>
               </div>
             </div>
           </div>
@@ -238,7 +240,7 @@
 
       </div>
 
-      <!-- RIGHT COLUMN: EVENT TITLE, DETAILS & LUMA REGISTRATION BOX -->
+      <!-- RIGHT COLUMN: EVENT TITLE, CHRONO & REGISTRATION BOX -->
       <div class="lg:col-span-7 space-y-8">
         
         <!-- EVENT TITLE & METADATA -->
@@ -273,6 +275,40 @@
                 Groupe Scolaire Sainte Thérèse <i class="fa-solid fa-school text-xs text-lumaMuted"></i>
               </h3>
               <p class="text-xs sm:text-sm text-lumaMuted font-medium">Non loin du terminus 11 Koumassi, Abidjan</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- LIVE COUNTDOWN TIMER CARD (CHRONO PRO) -->
+        <div class="bg-gradient-to-r from-[#002050] to-[#008751] rounded-3xl p-6 text-white shadow-lg space-y-3 relative overflow-hidden">
+          <div class="absolute -right-10 -bottom-10 w-36 h-36 bg-or/20 rounded-full blur-2xl pointer-events-none"></div>
+          
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-extrabold uppercase tracking-widest text-or flex items-center gap-2">
+              <i class="fa-solid fa-stopwatch text-sm animate-pulse"></i> Compte à rebours de l'événement
+            </span>
+            <span class="text-[11px] bg-white/10 px-2.5 py-0.5 rounded-full font-medium text-white/90">
+              Dimanche 04 Octobre · 08h00 GMT
+            </span>
+          </div>
+
+          <!-- Chrono Grid -->
+          <div class="grid grid-cols-4 gap-3 text-center pt-1">
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/15">
+              <span id="cd-days" class="text-2xl sm:text-3xl font-extrabold leading-none block text-white font-mono">00</span>
+              <span class="text-[10px] sm:text-xs font-bold uppercase text-white/70 block mt-1">Jours</span>
+            </div>
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/15">
+              <span id="cd-hours" class="text-2xl sm:text-3xl font-extrabold leading-none block text-or font-mono">00</span>
+              <span class="text-[10px] sm:text-xs font-bold uppercase text-white/70 block mt-1">Heures</span>
+            </div>
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/15">
+              <span id="cd-mins" class="text-2xl sm:text-3xl font-extrabold leading-none block text-white font-mono">00</span>
+              <span class="text-[10px] sm:text-xs font-bold uppercase text-white/70 block mt-1">Minutes</span>
+            </div>
+            <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/15">
+              <span id="cd-secs" class="text-2xl sm:text-3xl font-extrabold leading-none block text-or font-mono">00</span>
+              <span class="text-[10px] sm:text-xs font-bold uppercase text-white/70 block mt-1">Secondes</span>
             </div>
           </div>
         </div>
@@ -392,7 +428,7 @@
 
 
     <!-- ABOUT SECTION -->
-    <section id="about" class="mt-16 sm:mt-24 pt-12 border-t border-gray-200 space-y-12">
+    <section id="about" class="mt-16 sm:mt-24 pt-12 border-t border-gray-200 space-y-16">
       
       <div class="max-w-3xl space-y-4">
         <h2 class="text-2xl sm:text-3xl font-extrabold text-lumaText">À propos de la journée de formation</h2>
@@ -403,6 +439,155 @@
           Cette journée spéciale de formation est organisée par l'<strong>AEEMCI (Sous-comité de Koumassi)</strong> et dédiée aux <strong>élèves</strong>, <strong>étudiants</strong> et <strong>professionnels</strong>. En présentiel au <strong>Groupe Scolaire Sainte Thérèse (Koumassi)</strong>, elle regroupe 2 modules pratiques essentiels pour booster vos compétences en bureautique et en Intelligence Artificielle.
         </p>
       </div>
+
+      <!-- PRO TRAINERS / FORMATEURS SECTION (AVEC PHOTOS & QUALITÉS DÉTAILLÉES) -->
+      <div class="space-y-8">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-gray-200 pb-4">
+          <div>
+            <span class="text-xs font-extrabold text-lumaGreen uppercase tracking-widest block">Accompagnement d'Excellence</span>
+            <h3 class="text-2xl sm:text-3xl font-extrabold text-lumaText">Vos Formateurs & Leurs Compétences Clés</h3>
+          </div>
+          <span class="text-xs text-lumaMuted font-medium">Experts certifiés & praticiens passionnés</span>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          
+          <!-- FORMATEUR 1 : DJIM ABOUBACAR MIKAHILLO -->
+          <div class="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 luma-shadow-lg space-y-6 flex flex-col justify-between hover:border-lumaGreen/50 transition-all group">
+            
+            <div class="space-y-6">
+              <!-- Profil Header -->
+              <div class="flex items-center gap-5">
+                <div class="relative shrink-0">
+                  <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-600 to-vert text-white font-extrabold text-2xl flex items-center justify-center shadow-md border-2 border-white group-hover:scale-105 transition-transform">
+                    DA
+                  </div>
+                  <span class="absolute -bottom-2 -right-2 w-7 h-7 rounded-xl bg-lumaGreen text-white flex items-center justify-center text-xs shadow">
+                    <i class="fa-solid fa-file-excel"></i>
+                  </span>
+                </div>
+
+                <div>
+                  <span class="inline-block text-[10px] font-extrabold text-lumaGreen uppercase tracking-wider bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100 mb-1">
+                    Formateur Principal Excel
+                  </span>
+                  <h4 class="text-xl font-extrabold text-lumaText">Djim Aboubacar Mikahillo</h4>
+                  <p class="text-xs font-semibold text-gray-500">Expert Outils Bureautiques & Analyse de Données</p>
+                </div>
+              </div>
+
+              <!-- Qualités & Savoir-faire -->
+              <div class="space-y-3 pt-2 border-t border-gray-100">
+                <h5 class="text-xs font-extrabold uppercase tracking-wider text-lumaText flex items-center gap-1.5">
+                  <i class="fa-solid fa-award text-lumaGreen"></i> Qualités & Pédagogie :
+                </h5>
+
+                <div class="space-y-2.5 text-xs text-gray-600">
+                  <div class="flex items-start gap-2.5 bg-gray-50 p-2.5 rounded-xl border border-gray-100">
+                    <i class="fa-solid fa-check-circle text-lumaGreen text-sm mt-0.5 shrink-0"></i>
+                    <div>
+                      <strong class="text-lumaText block font-bold">Méthode 100% Pratique & Ateliers :</strong>
+                      Explications pas-à-pas basées sur des cas concrets de gestion de données et d'entreprises.
+                    </div>
+                  </div>
+
+                  <div class="flex items-start gap-2.5 bg-gray-50 p-2.5 rounded-xl border border-gray-100">
+                    <i class="fa-solid fa-check-circle text-lumaGreen text-sm mt-0.5 shrink-0"></i>
+                    <div>
+                      <strong class="text-lumaText block font-bold">Maîtrise des Formules & Tableaux Pro :</strong>
+                      Conception de tableaux de bord clairs, lisibles et directement exploitables pour vos projets.
+                    </div>
+                  </div>
+
+                  <div class="flex items-start gap-2.5 bg-gray-50 p-2.5 rounded-xl border border-gray-100">
+                    <i class="fa-solid fa-check-circle text-lumaGreen text-sm mt-0.5 shrink-0"></i>
+                    <div>
+                      <strong class="text-lumaText block font-bold">Patience & Clarté Pédagogique :</strong>
+                      Capacité d'adaptation aussi bien aux grands débutants qu'aux initiés cherchant à se perfectionner.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer Badge -->
+            <div class="pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-lumaMuted">
+              <span class="font-semibold text-lumaGreen"><i class="fa-solid fa-graduation-cap mr-1"></i> Module Bases Excel</span>
+              <span class="bg-emerald-50 text-lumaGreen font-bold px-3 py-1 rounded-full border border-emerald-100 text-[11px]">De la cellule à l'excellence</span>
+            </div>
+
+          </div>
+
+
+          <!-- FORMATEUR 2 : TUO MAMADOU -->
+          <div class="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 luma-shadow-lg space-y-6 flex flex-col justify-between hover:border-amber-500/50 transition-all group">
+            
+            <div class="space-y-6">
+              <!-- Profil Header -->
+              <div class="flex items-center gap-5">
+                <div class="relative shrink-0">
+                  <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 text-white font-extrabold text-2xl flex items-center justify-center shadow-md border-2 border-white group-hover:scale-105 transition-transform">
+                    TM
+                  </div>
+                  <span class="absolute -bottom-2 -right-2 w-7 h-7 rounded-xl bg-amber-500 text-white flex items-center justify-center text-xs shadow">
+                    <i class="fa-solid fa-robot"></i>
+                  </span>
+                </div>
+
+                <div>
+                  <span class="inline-block text-[10px] font-extrabold text-amber-700 uppercase tracking-wider bg-amber-50 px-2.5 py-1 rounded-full border border-amber-100 mb-1">
+                    Formateur Prompt Engineering & IA
+                  </span>
+                  <h4 class="text-xl font-extrabold text-lumaText">TUO Mamadou</h4>
+                  <p class="text-xs font-semibold text-gray-500">Consultant & Spécialiste en Ingénierie des Prompts IA</p>
+                </div>
+              </div>
+
+              <!-- Qualités & Savoir-faire -->
+              <div class="space-y-3 pt-2 border-t border-gray-100">
+                <h5 class="text-xs font-extrabold uppercase tracking-wider text-lumaText flex items-center gap-1.5">
+                  <i class="fa-solid fa-brain text-amber-600"></i> Qualités & Expertise IA :
+                </h5>
+
+                <div class="space-y-2.5 text-xs text-gray-600">
+                  <div class="flex items-start gap-2.5 bg-gray-50 p-2.5 rounded-xl border border-gray-100">
+                    <i class="fa-solid fa-check-circle text-amber-600 text-sm mt-0.5 shrink-0"></i>
+                    <div>
+                      <strong class="text-lumaText block font-bold">Maîtrise Avancée des Prompts IA :</strong>
+                      Techniques pour formuler des consignes précises afin de tirer 100% de potentiel de ChatGPT, Gemini et Claude.
+                    </div>
+                  </div>
+
+                  <div class="flex items-start gap-2.5 bg-gray-50 p-2.5 rounded-xl border border-gray-100">
+                    <i class="fa-solid fa-check-circle text-amber-600 text-sm mt-0.5 shrink-0"></i>
+                    <div>
+                      <strong class="text-lumaText block font-bold">Applications Études, Travail & Business :</strong>
+                      Création de frameworks d'instructions pour la rédaction, la synthèse et la recherche d'informations.
+                    </div>
+                  </div>
+
+                  <div class="flex items-start gap-2.5 bg-gray-50 p-2.5 rounded-xl border border-gray-100">
+                    <i class="fa-solid fa-check-circle text-amber-600 text-sm mt-0.5 shrink-0"></i>
+                    <div>
+                      <strong class="text-lumaText block font-bold">Création de Bibliothèque de Prompts :</strong>
+                      Méthode structurée pour organiser et réutiliser vos meilleurs prompts en quelques clics.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer Badge -->
+            <div class="pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-lumaMuted">
+              <span class="font-semibold text-amber-600"><i class="fa-solid fa-sparkles mr-1"></i> Module Prompt Engineering</span>
+              <span class="bg-amber-50 text-amber-700 font-bold px-3 py-1 rounded-full border border-amber-100 text-[11px]">L'art d'instruire l'IA</span>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
 
       <!-- 2 FORMATIONS CURRICULUM -->
       <div class="space-y-6">
@@ -450,16 +635,6 @@
                 </li>
               </ul>
             </div>
-
-            <div class="pt-4 border-t border-gray-100 flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-lumaGreen/10 text-lumaGreen font-bold flex items-center justify-center text-lg shrink-0">
-                <i class="fa-solid fa-user-tie"></i>
-              </div>
-              <div>
-                <span class="text-[10px] text-lumaMuted uppercase font-bold block">Formateur Excel</span>
-                <span class="text-xs font-bold text-lumaText">Djim Aboubacar Mikahillo</span>
-              </div>
-            </div>
           </div>
 
           <!-- Formation 2 : Prompt Engineering -->
@@ -497,52 +672,6 @@
                   <span>Création et organisation de votre bibliothèque personnelle de prompts réutilisables.</span>
                 </li>
               </ul>
-            </div>
-
-            <div class="pt-4 border-t border-gray-100 flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 font-bold flex items-center justify-center text-lg shrink-0">
-                <i class="fa-solid fa-user-gear"></i>
-              </div>
-              <div>
-                <span class="text-[10px] text-lumaMuted uppercase font-bold block">Formateur IA & Prompting</span>
-                <span class="text-xs font-bold text-lumaText">TUO Mamadou</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-
-      <!-- SPEAKERS / FORMATEURS SECTION -->
-      <div class="space-y-6">
-        <h3 class="text-xl font-bold text-lumaText">Vos Formateurs Experts</h3>
-
-        <div class="grid md:grid-cols-2 gap-6">
-          
-          <div class="bg-white rounded-3xl p-6 border border-gray-200 luma-shadow flex items-center gap-5">
-            <div class="w-16 h-16 rounded-2xl bg-emerald-100 text-lumaGreen font-extrabold text-2xl flex items-center justify-center shrink-0 border border-emerald-200">
-              DA
-            </div>
-            <div class="space-y-1">
-              <span class="text-[10px] font-extrabold text-lumaGreen uppercase tracking-wider bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
-                Bases Excel
-              </span>
-              <h4 class="text-lg font-extrabold text-lumaText">Djim Aboubacar Mikahillo</h4>
-              <p class="text-xs text-lumaMuted font-medium">Spécialiste en gestion de données & bureautique</p>
-            </div>
-          </div>
-
-          <div class="bg-white rounded-3xl p-6 border border-gray-200 luma-shadow flex items-center gap-5">
-            <div class="w-16 h-16 rounded-2xl bg-amber-100 text-amber-700 font-extrabold text-2xl flex items-center justify-center shrink-0 border border-amber-200">
-              TM
-            </div>
-            <div class="space-y-1">
-              <span class="text-[10px] font-extrabold text-amber-700 uppercase tracking-wider bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100">
-                Prompt Engineering & IA
-              </span>
-              <h4 class="text-lg font-extrabold text-lumaText">TUO Mamadou</h4>
-              <p class="text-xs text-lumaMuted font-medium">Consultant & Formateur en Intelligence Artificielle</p>
             </div>
           </div>
 
@@ -693,8 +822,8 @@
 
   <!-- SCRIPTS MODULAIRES JS -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase.js?v=20261004"></script>
-  <script src="base_donnees.js?v=20261004"></script>
-  <script src="main.js?v=20261004"></script>
+  <script src="supabase.js?v=20261004_PRO"></script>
+  <script src="base_donnees.js?v=20261004_PRO"></script>
+  <script src="main.js?v=20261004_PRO"></script>
 </body>
 </html>

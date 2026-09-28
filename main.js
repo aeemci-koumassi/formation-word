@@ -1,7 +1,7 @@
 /**
  * Script Principal d'Interface & Interactions (main.js)
  * Double Formation Pratique : Bases Excel & Prompt Engineering — AEEMCI Koumassi
- * Gestion de la capacité (150 places max), Liste d'Attente & Contrôle Anti-Doublon
+ * Compte à Rebours (Chrono), Gestion de la capacité (150 places max), Liste d'Attente & Contrôle Anti-Doublon
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -13,6 +13,41 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // Lien du Groupe WhatsApp Liste d'Attente (2ème groupe)
   const WHATSAPP_LINK_ATTENTE = "https://chat.whatsapp.com/FLUfIUEujHj0ZkyIEGpNHp";
+
+  /* ---------- COUNTDOWN TIMER (CHRONO PRO) ---------- */
+  function initCountdown() {
+    const targetDate = new Date('2026-10-04T08:00:00Z').getTime();
+
+    function updateTimer() {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      if (distance <= 0) {
+        if (document.getElementById('cd-days')) document.getElementById('cd-days').textContent = '00';
+        if (document.getElementById('cd-hours')) document.getElementById('cd-hours').textContent = '00';
+        if (document.getElementById('cd-mins')) document.getElementById('cd-mins').textContent = '00';
+        if (document.getElementById('cd-secs')) document.getElementById('cd-secs').textContent = '00';
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      const pad = n => String(n).padStart(2, '0');
+
+      if (document.getElementById('cd-days')) document.getElementById('cd-days').textContent = pad(days);
+      if (document.getElementById('cd-hours')) document.getElementById('cd-hours').textContent = pad(hours);
+      if (document.getElementById('cd-mins')) document.getElementById('cd-mins').textContent = pad(minutes);
+      if (document.getElementById('cd-secs')) document.getElementById('cd-secs').textContent = pad(seconds);
+    }
+
+    updateTimer();
+    setInterval(updateTimer, 1000);
+  }
+
+  initCountdown();
 
   /* ---------- TOAST HELPER ---------- */
   window.showToast = function(msg) {

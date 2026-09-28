@@ -94,36 +94,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  /* ---------- CALENDAR .ICS EXPORT ---------- */
+  /* ---------- CALENDAR EXPORT (GOOGLE CALENDAR DIRECT) ---------- */
   window.downloadICS = function() {
-    const pad = n => String(n).padStart(2, '0');
-    const fmt = d => `${d.getUTCFullYear()}${pad(d.getUTCMonth()+1)}${pad(d.getUTCDate())}T${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}00Z`;
-    const start = new Date('2026-10-04T08:00:00Z');
-    const end = new Date('2026-10-04T12:00:00Z');
-    const ics = [
-      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//AEEMCI Koumassi//Double Formation Excel IA//FR',
-      'BEGIN:VEVENT',
-      `UID:${Date.now()}@aeemci-koumassi`,
-      `DTSTAMP:${fmt(new Date())}`,
-      `DTSTART:${fmt(start)}`,
-      `DTEND:${fmt(end)}`,
-      'SUMMARY:Double Formation Pratique (Bases Excel & Prompt Engineering) — AEEMCI Koumassi',
-      'DESCRIPTION:Formation 100% gratuite par Djim Aboubacar Mikahillo (Bases Excel) et TUO Mamadou (Prompt Engineering). Début à 08h00 GMT.',
-      'LOCATION:Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi)',
-      'END:VEVENT', 'END:VCALENDAR'
-    ].join('\r\n');
-    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url; a.download = 'double-formation-excel-ia-aeemci-koumassi.ics';
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    const title = encodeURIComponent("Double Formation Pratique (Bases Excel & Prompt Engineering) — AEEMCI Koumassi");
+    const details = encodeURIComponent("Formation 100% gratuite par Djim Aboubacar Mikahillo (Bases Excel) et TUO Mamadou (Prompt Engineering). Début à 08h00 GMT au Groupe Scolaire Sainte Thérèse.");
+    const location = encodeURIComponent("Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi)");
+    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20261004T080000Z/20261004T120000Z&details=${details}&location=${location}`;
+    
+    window.open(googleCalendarUrl, '_blank');
   };
-
-  const calendarBtn2 = document.getElementById('calendarBtn2');
-  if (calendarBtn2) {
-    calendarBtn2.addEventListener('click', downloadICS);
-  }
 
   /* ---------- GESTION DE LA CAPACITÉ & AFFICHAGE (INSCRIPTIONS OUVERTES) ---------- */
   async function mettreAJourAffichageCapacite() {

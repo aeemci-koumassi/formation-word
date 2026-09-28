@@ -94,8 +94,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  /* ---------- CALENDAR EXPORT (GOOGLE CALENDAR DIRECT) ---------- */
-  window.downloadICS = function() {
+  /* ---------- CALENDAR EXPORT (GOOGLE & ICS) ---------- */
+  window.openGoogleCalendar = function() {
     const title = encodeURIComponent("Double Formation Pratique (Bases Excel & Prompt Engineering) — AEEMCI Koumassi");
     const details = encodeURIComponent("Formation 100% gratuite par Djim Aboubacar Mikahillo (Bases Excel) et TUO Mamadou (Prompt Engineering). Début à 08h00 GMT au Groupe Scolaire Sainte Thérèse.");
     const location = encodeURIComponent("Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi)");
@@ -103,6 +103,35 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     window.open(googleCalendarUrl, '_blank');
   };
+
+  window.downloadICSFile = function() {
+    const icsContent = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//AEEMCI Koumassi//Double Formation Excel IA//FR',
+      'BEGIN:VEVENT',
+      'UID:20261004T080000Z-aeemci@koumassi',
+      'DTSTAMP:20260928T000000Z',
+      'DTSTART:20261004T080000Z',
+      'DTEND:20261004T120000Z',
+      'SUMMARY:Double Formation Pratique (Bases Excel & Prompt Engineering) — AEEMCI Koumassi',
+      'DESCRIPTION:Formation 100% gratuite par Djim Aboubacar Mikahillo (Bases Excel) et TUO Mamadou (Prompt Engineering). Début à 08h00 GMT au Groupe Scolaire Sainte Thérèse.',
+      'LOCATION:Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi)',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'Formation_AEEMCI_04_Octobre_2026.ics');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  window.downloadICS = window.openGoogleCalendar;
 
   /* ---------- GESTION DE LA CAPACITÉ & AFFICHAGE (INSCRIPTIONS OUVERTES) ---------- */
   async function mettreAJourAffichageCapacite() {

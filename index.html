@@ -379,11 +379,16 @@
             Votre inscription pour la <strong>Double Formation Pratique (Excel & Prompt Engineering)</strong> du <strong>Dimanche 04 Octobre 2026 à 08h00 GMT</strong> au <strong>Groupe Scolaire Sainte Thérèse</strong> a été enregistrée avec succès.
           </p>
 
-          <div class="space-y-3 pt-2">
-            <button type="button" onclick="downloadICS()"
-               class="w-full inline-flex items-center justify-center gap-2.5 bg-brandGreen hover:bg-brandGreenDark text-white font-extrabold text-sm sm:text-base py-3.5 sm:py-4 rounded-2xl shadow-lg transition-transform hover:scale-[1.01]">
-              <i class="fa-solid fa-calendar-plus text-lg sm:text-xl"></i>
-              <span>Ajouter à mon Agenda (Google Calendar)</span>
+          <div class="grid sm:grid-cols-2 gap-3 pt-2">
+            <button type="button" onclick="openGoogleCalendar()"
+               class="w-full inline-flex items-center justify-center gap-2 bg-brandGreen hover:bg-brandGreenDark text-white font-extrabold text-xs sm:text-sm py-3.5 px-3 rounded-2xl shadow-md transition-transform hover:scale-[1.01]">
+              <i class="fa-brands fa-google text-base"></i>
+              <span>Google Calendar</span>
+            </button>
+            <button type="button" onclick="downloadICSFile()"
+               class="w-full inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-900 text-white font-extrabold text-xs sm:text-sm py-3.5 px-3 rounded-2xl shadow-md transition-transform hover:scale-[1.01]">
+              <i class="fa-solid fa-calendar-check text-base"></i>
+              <span>Télécharger (.ICS)</span>
             </button>
           </div>
         </div>

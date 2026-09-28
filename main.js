@@ -1,18 +1,12 @@
 /**
  * Script Principal d'Interface & Interactions (main.js)
  * Double Formation Pratique : Bases Excel & Prompt Engineering — AEEMCI Koumassi
- * Compte à Rebours (Chrono), Gestion de la capacité (150 places max), Liste d'Attente & Contrôle Anti-Doublon
+ * Mode Inscription Directe (Sans lien WhatsApp)
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
 
   const MAX_CAPACITE = 150;
-
-  // Lien du Groupe WhatsApp Principal (150 premières places)
-  const WHATSAPP_LINK_PRINCIPAL = "https://chat.whatsapp.com/KzKBnGq3ZahFYohN2nm3gN?s=sh&p=a&mlu=4&ilr=4";
-  
-  // Lien du Groupe WhatsApp Liste d'Attente (2ème groupe)
-  const WHATSAPP_LINK_ATTENTE = "https://chat.whatsapp.com/FLUfIUEujHj0ZkyIEGpNHp";
 
   /* ---------- COUNTDOWN TIMER (CHRONO PRO) ---------- */
   function initCountdown() {
@@ -131,7 +125,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     calendarBtn2.addEventListener('click', downloadICS);
   }
 
-  /* ---------- GESTION DE LA CAPACITÉ (150 PLACES) ---------- */
+  /* ---------- GESTION DE LA CAPACITÉ & AFFICHAGE ---------- */
   async function mettreAJourAffichageCapacite() {
     if (typeof obtenirNombreInscrits !== 'function') return;
     const totalCount = await obtenirNombreInscrits();
@@ -145,29 +139,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     const submitLabel = document.getElementById('submitLabel');
 
     if (totalCount >= MAX_CAPACITE) {
-      if (capacityText) capacityText.textContent = `${totalCount}/${MAX_CAPACITE} places — Liste d'attente`;
+      if (capacityText) capacityText.textContent = `${totalCount}/${MAX_CAPACITE} places — Inscriptions Clôturées`;
       if (capacityBadge) {
-        capacityBadge.className = 'inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 font-semibold text-xs px-3 py-1.5 rounded-full border border-amber-200';
+        capacityBadge.className = 'inline-flex items-center gap-2 bg-amber-50 text-amber-700 font-bold text-xs px-4 py-2 rounded-full border border-amber-200';
       }
-      if (capacityDot) capacityDot.className = 'w-2 h-2 rounded-full bg-amber-500 animate-pulse';
-      if (formTitle) formTitle.textContent = "Inscription — Liste d'Attente (Groupe 2)";
-      if (formSubtitle) formSubtitle.textContent = "Les 150 places du 1er groupe WhatsApp sont réservées. Votre inscription sera placée sur le 2ème groupe d'attente.";
+      if (capacityDot) capacityDot.className = 'w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse';
+      if (formTitle) formTitle.textContent = "Inscriptions Complètes";
+      if (formSubtitle) formSubtitle.textContent = "La capacité maximale de la salle a été atteinte.";
       if (submitBtn) {
-        submitBtn.className = 'w-full bg-amber-600 hover:bg-amber-700 text-white font-bold text-base py-3.5 rounded-2xl shadow-md luma-btn flex items-center justify-center gap-2 mt-2 transition-colors';
+        submitBtn.className = 'w-full bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-base py-4 rounded-2xl shadow-lg pro-btn flex items-center justify-center gap-3 mt-4 transition-all';
       }
-      if (submitLabel) submitLabel.textContent = "S'inscrire sur le Groupe 2 (Liste d'Attente)";
+      if (submitLabel) submitLabel.textContent = "S'inscrire sur la Liste d'Attente";
     } else {
-      if (capacityText) capacityText.textContent = `Inscription Ouverte (${totalCount}/${MAX_CAPACITE} places)`;
+      if (capacityText) capacityText.textContent = `Inscriptions Ouvertes (${totalCount}/${MAX_CAPACITE} places)`;
       if (capacityBadge) {
-        capacityBadge.className = 'inline-flex items-center gap-1.5 bg-emerald-50 text-lumaGreen font-semibold text-xs px-3 py-1.5 rounded-full border border-emerald-100';
+        capacityBadge.className = 'inline-flex items-center gap-2 bg-emerald-50 text-brandGreen font-bold text-xs px-4 py-2 rounded-full border border-emerald-200';
       }
-      if (capacityDot) capacityDot.className = 'w-2 h-2 rounded-full bg-lumaGreen animate-pulse';
-      if (formTitle) formTitle.textContent = "Formulaire d'Inscription";
-      if (formSubtitle) formSubtitle.textContent = "100% gratuit · Dimanche 04 Octobre à 08h00 au Groupe Scolaire Sainte Thérèse";
+      if (capacityDot) capacityDot.className = 'w-2.5 h-2.5 rounded-full bg-brandGreen animate-pulse';
+      if (formTitle) formTitle.textContent = "Formulaire d'Inscription Officiel";
+      if (formSubtitle) formSubtitle.textContent = "Dimanche 04 Octobre 2026 à 08h00 GMT · Groupe Scolaire Sainte Thérèse";
       if (submitBtn) {
-        submitBtn.className = 'w-full bg-lumaGreen hover:bg-lumaGreenDark text-white font-bold text-base py-3.5 rounded-2xl shadow-md luma-btn flex items-center justify-center gap-2 mt-2 transition-colors';
+        submitBtn.className = 'w-full bg-brandGreen hover:bg-brandGreenDark text-white font-extrabold text-base py-4 rounded-2xl shadow-lg pro-btn flex items-center justify-center gap-3 mt-4 transition-all';
       }
-      if (submitLabel) submitLabel.textContent = "Valider & Rejoindre le Groupe WhatsApp";
+      if (submitLabel) submitLabel.textContent = "Valider mon inscription";
     }
   }
 
@@ -175,7 +169,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await mettreAJourAffichageCapacite();
 
 
-  /* ---------- FORM SUBMISSION & WHATSAPP REDIRECT ---------- */
+  /* ---------- FORM SUBMISSION & DIRECT CONFIRMATION ---------- */
   const form = document.getElementById('formInscription');
   const confirmationBloc = document.getElementById('confirmationBloc');
   const submitBtn = document.getElementById('submitBtn');
@@ -211,14 +205,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (!valid) return;
 
       submitBtn.disabled = true;
-      submitLabel.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Validation de l\'inscription...';
+      submitLabel.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enregistrement de votre inscription...';
 
       const entry = {
         nom, email, whatsapp, statut, formation,
         date: new Date().toISOString()
       };
 
-      let res = { estDoublon: false, estAttente: false };
+      let res = { estDoublon: false };
 
       // Enregistrement hybride avec contrôle anti-doublon
       if (typeof ajouterInscription === 'function') {
@@ -227,11 +221,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       document.getElementById('confirm-nom').textContent = nom;
 
-      const joinWhatsappBtn = document.getElementById('joinWhatsappBtn');
-      let targetWhatsappLink = WHATSAPP_LINK_PRINCIPAL;
-
       if (res && res.estDoublon) {
-        // En cas de doublon déjà enregistré
         const confirmBadge = document.getElementById('confirm-badge');
         const confirmIconBox = document.getElementById('confirm-icon-box');
         const confirmIcon = document.getElementById('confirm-icon');
@@ -239,62 +229,40 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (confirmBadge) {
           confirmBadge.textContent = "Inscription Déjà Enregistrée !";
-          confirmBadge.className = "text-xs text-blue-700 font-extrabold uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full border border-blue-200";
+          confirmBadge.className = "text-xs text-blue-700 font-extrabold uppercase tracking-widest bg-blue-50 px-4 py-1.5 rounded-full border border-blue-200";
         }
         if (confirmIconBox) {
-          confirmIconBox.className = "w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-3xl mx-auto shadow-sm";
+          confirmIconBox.className = "w-20 h-20 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-4xl mx-auto shadow-sm";
         }
         if (confirmIcon) {
           confirmIcon.className = "fa-solid fa-user-check";
         }
         if (confirmText) {
-          confirmText.innerHTML = `Bonjour <strong>${nom}</strong>, votre inscription pour la <strong>Double Formation Pratique (Excel & Prompt Engineering)</strong> du Dimanche 04 Octobre à 08h00 est déjà enregistrée. Vous pouvez intégrer le groupe WhatsApp ci-dessous.`;
+          confirmText.innerHTML = `Bonjour <strong>${nom}</strong>, votre inscription pour la <strong>Double Formation Pratique (Excel & Prompt Engineering)</strong> du Dimanche 04 Octobre à 08h00 au Groupe Scolaire Sainte Thérèse est déjà validée et enregistrée.`;
         }
-        if (res.estAttente) {
-          targetWhatsappLink = WHATSAPP_LINK_ATTENTE;
-          if (joinWhatsappBtn) {
-            joinWhatsappBtn.href = WHATSAPP_LINK_ATTENTE;
-            const spanBtn = joinWhatsappBtn.querySelector('span');
-            if (spanBtn) spanBtn.textContent = "Rejoindre le Groupe WhatsApp (Groupe 2 - Liste d'Attente)";
-          }
-        }
-      } else if (res && res.estAttente) {
-        targetWhatsappLink = WHATSAPP_LINK_ATTENTE;
+      } else {
         const confirmBadge = document.getElementById('confirm-badge');
         const confirmIconBox = document.getElementById('confirm-icon-box');
         const confirmIcon = document.getElementById('confirm-icon');
         const confirmText = document.getElementById('confirm-text');
 
         if (confirmBadge) {
-          confirmBadge.textContent = "Inscription enregistrée sur le Groupe 2 !";
-          confirmBadge.className = "text-xs text-amber-700 font-extrabold uppercase tracking-widest bg-amber-50 px-3 py-1 rounded-full border border-amber-200";
+          confirmBadge.textContent = "Inscription Validée !";
+          confirmBadge.className = "text-xs text-brandGreen font-extrabold uppercase tracking-widest bg-emerald-50 px-4 py-1.5 rounded-full border border-emerald-200";
         }
         if (confirmIconBox) {
-          confirmIconBox.className = "w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-3xl mx-auto shadow-sm";
+          confirmIconBox.className = "w-20 h-20 bg-emerald-100 text-brandGreen rounded-full flex items-center justify-center text-4xl mx-auto shadow-sm";
         }
         if (confirmIcon) {
-          confirmIcon.className = "fa-solid fa-clock-rotate-left";
+          confirmIcon.className = "fa-solid fa-circle-check";
         }
         if (confirmText) {
-          confirmText.innerHTML = `Le 1er groupe WhatsApp ayant atteint 150 personnes, votre inscription est validée sur notre <strong>2ème groupe WhatsApp</strong>. Rendez-vous le Dimanche 04 Octobre à 08h00 au Groupe Scolaire Sainte Thérèse.`;
-        }
-        if (joinWhatsappBtn) {
-          joinWhatsappBtn.href = WHATSAPP_LINK_ATTENTE;
-          const spanBtn = joinWhatsappBtn.querySelector('span');
-          if (spanBtn) spanBtn.textContent = "Rejoindre le Groupe WhatsApp (Groupe 2)";
-        }
-      } else {
-        if (joinWhatsappBtn) {
-          joinWhatsappBtn.href = WHATSAPP_LINK_PRINCIPAL;
-          const spanBtn = joinWhatsappBtn.querySelector('span');
-          if (spanBtn) spanBtn.textContent = "Rejoindre le Groupe WhatsApp Officiel (Groupe 1)";
+          confirmText.innerHTML = `Votre inscription pour la <strong>Double Formation Pratique (Excel & Prompt Engineering)</strong> du <strong>Dimanche 04 Octobre 2026 à 08h00 GMT</strong> au <strong>Groupe Scolaire Sainte Thérèse</strong> a été enregistrée avec succès.`;
         }
       }
 
       form.classList.add('hidden');
       confirmationBloc.classList.remove('hidden');
-
-      setTimeout(() => { window.open(targetWhatsappLink, '_blank'); }, 1200);
     });
   }
 
@@ -379,19 +347,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (empty) empty.classList.add('hidden');
 
     tbody.innerHTML = list.map((item, i) => {
-      const isAttente = (item.statut || '').includes("Liste d'attente");
-      const badgeStyle = isAttente 
-        ? 'bg-amber-50 text-amber-700 border border-amber-200' 
-        : 'bg-blue-50 text-bleu border border-blue-100';
-
       return `
         <tr>
           <td>${i + 1}</td>
-          <td class="font-bold text-lumaText">${item.nom || ''}</td>
+          <td class="font-extrabold text-slate-900">${item.nom || ''}</td>
           <td>${item.email || ''}</td>
-          <td class="font-mono text-lumaGreen font-semibold">${item.whatsapp || ''}</td>
-          <td><span class="${badgeStyle} px-2 py-0.5 rounded text-[11px] font-semibold">${item.statut || 'Participant'}</span></td>
-          <td class="font-semibold text-gray-700">${item.niveau || item.formation || 'Les deux formations'}</td>
+          <td class="font-mono text-brandGreen font-bold">${item.whatsapp || ''}</td>
+          <td><span class="bg-emerald-50 text-brandGreen border border-emerald-200 px-2.5 py-1 rounded-full text-[11px] font-bold">${item.statut || 'Participant'}</span></td>
+          <td class="font-bold text-slate-700">${item.niveau || item.formation || 'Les deux formations'}</td>
           <td>${(item.created_at || item.date) ? new Date(item.created_at || item.date).toLocaleString('fr-FR') : ''}</td>
         </tr>
       `;

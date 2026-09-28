@@ -169,7 +169,7 @@
           <div class="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
             <a href="#registration-card" class="w-full sm:w-auto bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold text-base px-8 py-4 rounded-2xl shadow-lg pro-btn text-center flex items-center justify-center gap-3">
               <i class="fa-solid fa-user-plus"></i>
-              <span>Réserver mon billet gratuit</span>
+              <span>S'inscrire à la formation</span>
             </a>
             <a href="#instructors" class="w-full sm:w-auto bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-base px-6 py-4 rounded-2xl border border-slate-700 text-center transition-colors flex items-center justify-center gap-2">
               <span>Voir les formateurs</span>
@@ -279,7 +279,7 @@
           </div>
           <div>
             <h4 class="font-extrabold text-sm text-slate-900">Accès 100% Gratuit</h4>
-            <p class="text-xs text-slate-500 mt-1">Billet offert par l'AEEMCI Sous-comité Koumassi.</p>
+            <p class="text-xs text-slate-500 mt-1">Offert par l'AEEMCI Sous-comité Koumassi.</p>
           </div>
         </div>
 
@@ -294,7 +294,7 @@
     <!-- REGISTRATION WIDGET & DETAILS SECTION GRID -->
     <div class="grid lg:grid-cols-12 gap-12 items-start" id="registration-card">
       
-      <!-- LEFT FORM CONTAINER (LUMA / EDTECH STYLE) -->
+      <!-- LEFT FORM CONTAINER -->
       <div class="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 pro-shadow-lg space-y-6">
         
         <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-100 gap-4">
@@ -364,7 +364,7 @@
           <!-- Submit Button -->
           <button type="submit" id="submitBtn" class="w-full bg-brandGreen hover:bg-brandGreenDark text-white font-extrabold text-base py-4 rounded-2xl shadow-lg pro-btn flex items-center justify-center gap-3 mt-4 transition-all">
             <i class="fa-solid fa-circle-check text-lg"></i>
-            <span id="submitLabel">Valider mon inscription & Rejoindre le groupe WhatsApp</span>
+            <span id="submitLabel">Valider mon inscription</span>
           </button>
 
           <div class="flex items-center justify-between text-xs text-slate-500 pt-3 border-t border-slate-100">
@@ -374,7 +374,7 @@
 
         </form>
 
-        <!-- SUCCESS CONFIRMATION PANEL -->
+        <!-- SUCCESS CONFIRMATION PANEL (100% DIRECT, SANS REDIRECTION WHATSAPP) -->
         <div id="confirmationBloc" class="hidden text-center py-8 space-y-6">
           <div id="confirm-icon-box" class="w-20 h-20 bg-emerald-100 text-brandGreen rounded-full flex items-center justify-center text-4xl mx-auto shadow-sm">
             <i id="confirm-icon" class="fa-solid fa-circle-check"></i>
@@ -388,15 +388,15 @@
           </div>
 
           <p id="confirm-text" class="text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
-            Votre inscription pour la <strong>Double Formation Pratique (Excel & Prompt Engineering)</strong> du Dimanche 04 Octobre à 08h00 est enregistrée. Cliquez ci-dessous pour rejoindre le groupe WhatsApp officiel.
+            Votre inscription pour la <strong>Double Formation Pratique (Excel & Prompt Engineering)</strong> du <strong>Dimanche 04 Octobre 2026 à 08h00 GMT</strong> au <strong>Groupe Scolaire Sainte Thérèse</strong> a été enregistrée avec succès.
           </p>
 
           <div class="space-y-3 pt-2">
-            <a id="joinWhatsappBtn" href="https://chat.whatsapp.com/KzKBnGq3ZahFYohN2nm3gN?s=sh&p=a&mlu=4&ilr=4" target="_blank" rel="noopener noreferrer"
-               class="w-full inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#1ebc59] text-white font-extrabold text-base py-4 rounded-2xl shadow-lg transition-transform hover:scale-[1.01]">
-              <i class="fa-brands fa-whatsapp text-2xl"></i>
-              <span>Rejoindre le Groupe WhatsApp Officiel</span>
-            </a>
+            <button type="button" onclick="downloadICS()"
+               class="w-full inline-flex items-center justify-center gap-3 bg-brandGreen hover:bg-brandGreenDark text-white font-extrabold text-base py-4 rounded-2xl shadow-lg transition-transform hover:scale-[1.01]">
+              <i class="fa-solid fa-calendar-plus text-xl"></i>
+              <span>Ajouter la formation à mon calendrier (.ICS)</span>
+            </button>
           </div>
         </div>
 
@@ -793,14 +793,6 @@
       </div>
 
       <div class="space-y-3 text-xs">
-        <a href="https://chat.whatsapp.com/KzKBnGq3ZahFYohN2nm3gN?s=sh&p=a&mlu=4&ilr=4" target="_blank" class="flex items-center gap-3 p-3.5 rounded-2xl bg-emerald-50 text-brandGreen font-bold border border-emerald-100 hover:bg-emerald-100 transition-colors">
-          <i class="fa-brands fa-whatsapp text-2xl"></i>
-          <div>
-            <span class="block text-slate-900 font-extrabold">Groupe WhatsApp Officiel</span>
-            <span class="text-[11px] text-slate-500 font-medium">Discuter directement avec le comité</span>
-          </div>
-        </a>
-
         <a href="mailto:contact@aeemci-koumassi.org" class="flex items-center gap-3 p-3.5 rounded-2xl bg-slate-50 text-slate-800 font-bold border border-slate-200 hover:bg-slate-100 transition-colors">
           <i class="fa-solid fa-envelope text-xl text-slate-400"></i>
           <div>
@@ -875,8 +867,8 @@
 
   <!-- SCRIPTS MODULAIRES JS -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase.js?v=20261004_ACADEMY"></script>
-  <script src="base_donnees.js?v=20261004_ACADEMY"></script>
-  <script src="main.js?v=20261004_ACADEMY"></script>
+  <script src="supabase.js?v=20261004_DIRECT"></script>
+  <script src="base_donnees.js?v=20261004_DIRECT"></script>
+  <script src="main.js?v=20261004_DIRECT"></script>
 </body>
 </html>

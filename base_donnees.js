@@ -1,7 +1,7 @@
 /**
  * MODULE BASE DE DONNÉES HYBRIDE (SUPABASE CLOUD + FORMSPREE)
  * Projet : Double Formation Excel & Prompt Engineering (AEEMCI Koumassi)
- * Statut : Basculement automatique au 2ème groupe WhatsApp dès atteinte de 150 personnes
+ * Statut : Mode Inscription Directe (Sans lien de groupe WhatsApp)
  */
 
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/xljezjko";
@@ -71,7 +71,7 @@ async function obtenirNombreInscrits() {
 }
 
 /**
- * Enregistre un nouvel inscrit avec gestion de la capacité (150 places) et basculement automatique.
+ * Enregistre un nouvel inscrit directement.
  */
 async function ajouterInscription(entry) {
     const list = await recupererInscriptions();
@@ -87,14 +87,12 @@ async function ajouterInscription(entry) {
     });
 
     const totalCurrent = list.length;
-    const estAttente = totalCurrent >= MAX_CAPACITE;
 
     if (existant) {
         console.log("ℹ️ Inscription déjà enregistrée (Doublon bloqué) :", existant);
         return { 
             success: true, 
             estDoublon: true, 
-            estAttente: estAttente,
             existingRecord: existant 
         };
     }
@@ -105,7 +103,7 @@ async function ajouterInscription(entry) {
         nom: entry.nom,
         email: entry.email,
         whatsapp: entry.whatsapp,
-        statut: estAttente ? `${entry.statut} (Liste d'attente)` : entry.statut,
+        statut: entry.statut,
         niveau: entry.formation || entry.niveau || 'Les deux formations'
     };
 
@@ -114,7 +112,7 @@ async function ajouterInscription(entry) {
         if (typeof localStorage !== 'undefined') {
             const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
             const current = raw ? JSON.parse(raw) : [];
-            current.unshift({ ...record, is_attente: estAttente, date: entry.date || new Date().toISOString() });
+            current.unshift({ ...record, date: entry.date || new Date().toISOString() });
             localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(current));
         }
     } catch (e) {
@@ -140,12 +138,12 @@ async function ajouterInscription(entry) {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({ ...record, type_inscription: estAttente ? "Liste d'attente (Groupe 2)" : "Groupe Principal (Groupe 1)" })
+            body: JSON.stringify({ ...record, type_inscription: "Inscription Directe" })
         }).catch(err => console.error("Erreur Formspree:", err))
     ];
 
     await Promise.allSettled(promises);
-    return { success: true, estDoublon: false, estAttente: estAttente, totalCount: totalCurrent + 1 };
+    return { success: true, estDoublon: false, totalCount: totalCurrent + 1 };
 }
 
 if (typeof module !== 'undefined' && module.exports) {

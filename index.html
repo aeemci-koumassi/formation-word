@@ -2,7 +2,7 @@
 <html lang="fr" class="scroll-smooth">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>AEEMCI Academy — Double Formation Pratique : Excel & Prompt Engineering</title>
 
 <!-- SEO & Open Graph -->
@@ -44,7 +44,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-  body { background-color: #F8FAFC; color: #0F172A; font-family: 'Plus Jakarta Sans', sans-serif; }
+  body { background-color: #F8FAFC; color: #0F172A; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
   
   .glass-card {
     background: rgba(255, 255, 255, 0.95);
@@ -64,13 +64,16 @@
 
   .pro-input {
     width: 100%;
-    padding: 14px 18px;
+    padding: 12px 16px;
     border-radius: 14px;
     border: 1px solid #E2E8F0;
     background-color: #FFFFFF;
-    font-size: 0.925rem;
+    font-size: 0.9rem;
     transition: all 0.2s ease;
     outline: none;
+  }
+  @media (min-width: 640px) {
+    .pro-input { padding: 14px 18px; font-size: 0.925rem; }
   }
   .pro-input:focus {
     border-color: #10B981;
@@ -82,142 +85,142 @@
   .faq-answer { max-height:0; overflow:hidden; transition:max-height .35s ease; }
   .faq-open .faq-answer { max-height:300px; }
 
-  .modal-overlay { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(6px); }
-  table.admin-table th, table.admin-table td { padding: 14px 18px; text-align:left; font-size:.875rem; }
+  .modal-overlay { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(6px); }
+  table.admin-table th, table.admin-table td { padding: 12px 14px; text-align:left; font-size:.85rem; }
   table.admin-table tr:nth-child(even) { background:#F8FAFC; }
 </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased">
 
   <!-- TOAST NOTIFICATION CONTAINER -->
-  <div id="toast" class="fixed top-20 right-5 z-50 bg-slate-900 text-white text-xs font-semibold px-4 py-3 rounded-2xl shadow-2xl transition-all duration-300 opacity-0 pointer-events-none transform translate-y-2 flex items-center gap-2">
+  <div id="toast" class="fixed top-16 right-4 sm:top-20 sm:right-5 z-50 bg-slate-900 text-white text-xs font-semibold px-4 py-3 rounded-2xl shadow-2xl transition-all duration-300 opacity-0 pointer-events-none transform translate-y-2 flex items-center gap-2">
     <i class="fa-solid fa-circle-check text-brandGreen"></i>
     <span id="toast-msg">Lien copié dans le presse-papier !</span>
   </div>
 
-  <!-- NAVBAR ACADÉMIQUE ÉPURÉE -->
-  <header class="w-full bg-white/90 backdrop-blur-md border-b border-slate-200 sticky top-0 z-40">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between py-3">
+  <!-- NAVBAR ACADÉMIQUE MOBILE-FIRST -->
+  <header class="w-full bg-white/95 backdrop-blur-md border-b border-slate-200 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-18 flex items-center justify-between py-2 sm:py-3">
       
       <!-- Brand Logo -->
-      <a href="#" id="brandLogo" class="flex items-center gap-3 group select-none cursor-pointer" title="AEEMCI Academy">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white font-black text-xl shadow-md group-hover:scale-105 transition-transform">
+      <a href="#" id="brandLogo" class="flex items-center gap-2.5 sm:gap-3 group select-none cursor-pointer" title="AEEMCI Academy">
+        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white font-black text-base sm:text-xl shadow-md group-hover:scale-105 transition-transform shrink-0">
           <i class="fa-solid fa-graduation-cap"></i>
         </div>
         <div class="flex flex-col">
-          <span class="font-extrabold text-xl text-slate-900 tracking-tight leading-none">AEEMCI <span class="text-brandGreen">ACADEMY</span></span>
-          <span class="text-[10px] text-slate-500 font-semibold tracking-wider uppercase">Sous-comité de Koumassi</span>
+          <span class="font-extrabold text-base sm:text-xl text-slate-900 tracking-tight leading-none">AEEMCI <span class="text-brandGreen">ACADEMY</span></span>
+          <span class="text-[9px] sm:text-[10px] text-slate-500 font-semibold tracking-wider uppercase">Sous-comité Koumassi</span>
         </div>
       </a>
 
       <!-- Quick Nav Action Button -->
-      <div class="flex items-center gap-4 text-sm">
-        <a href="#registration-card" class="bg-brandGreen hover:bg-brandGreenDark text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-xl shadow-sm pro-btn flex items-center gap-2">
+      <div class="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm">
+        <a href="#registration-card" class="bg-brandGreen hover:bg-brandGreenDark text-white font-extrabold text-xs sm:text-sm px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-xl shadow-sm pro-btn flex items-center gap-1.5 shrink-0">
           <span>S'inscrire</span>
-          <i class="fa-solid fa-arrow-right text-xs"></i>
+          <i class="fa-solid fa-arrow-right text-[10px] sm:text-xs"></i>
         </a>
       </div>
 
     </div>
   </header>
 
-  <!-- HERO SECTION PLATEFORME EDTECH -->
-  <section class="relative bg-slate-900 text-white overflow-hidden py-16 sm:py-24 border-b border-slate-800">
+  <!-- HERO SECTION OPTIMISÉE TÉLÉPHONE -->
+  <section class="relative bg-slate-900 text-white overflow-hidden py-10 sm:py-24 border-b border-slate-800">
     <!-- Background Gradient Orbs -->
-    <div class="absolute top-0 right-1/4 w-96 h-96 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute bottom-0 left-10 w-96 h-96 bg-blue-600/15 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute top-0 right-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-0 left-10 w-72 sm:w-96 h-72 sm:h-96 bg-blue-600/15 rounded-full blur-3xl pointer-events-none"></div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="grid lg:grid-cols-12 gap-12 items-center">
+      <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
         
         <!-- Hero Text Content -->
-        <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+        <div class="lg:col-span-7 space-y-4 sm:space-y-6 text-center lg:text-left">
           
-          <!-- Session Badge Repositionné dans la Hero Section -->
-          <div class="inline-flex items-center gap-2.5 bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs sm:text-sm font-extrabold px-4 py-2 rounded-full shadow-sm">
-            <span class="w-2.5 h-2.5 rounded-full bg-brandGreen animate-pulse"></span>
-            <span>Session du Dimanche 04 Octobre 2026 à 08h00 GMT</span>
+          <!-- Session Badge Repositionné & Optimisé Mobile -->
+          <div class="inline-flex items-center gap-2 bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[11px] sm:text-sm font-extrabold px-3 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-sm max-w-full">
+            <span class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-brandGreen animate-pulse shrink-0"></span>
+            <span class="truncate">Session du Dimanche 04 Octobre 2026 à 08h00 GMT</span>
           </div>
 
-          <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
+          <h1 class="text-2xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
             Maîtrisez les <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Bases d'Excel</span> & l'Art du <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-orange-400">Prompt IA</span>
           </h1>
 
-          <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal">
+          <p class="text-xs sm:text-lg text-slate-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal">
             Une formation intensive 100% pratique pour élèves, étudiants et professionnels. Apprenez à structurer vos données et à utiliser l'Intelligence Artificielle au quotidien.
           </p>
 
           <!-- Key Highlights Pills -->
-          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2">
-            <span class="inline-flex items-center gap-2 bg-slate-800/80 border border-slate-700/80 px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-200">
-              <i class="fa-solid fa-location-dot text-brandGreen"></i> Groupe Scolaire Sainte Thérèse (Koumassi)
+          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2 sm:gap-3 pt-1">
+            <span class="inline-flex items-center gap-1.5 bg-slate-800/80 border border-slate-700/80 px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold text-slate-200">
+              <i class="fa-solid fa-location-dot text-brandGreen"></i> Groupe Scolaire Sainte Thérèse
             </span>
-            <span class="inline-flex items-center gap-2 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-3.5 py-1.5 rounded-xl text-xs font-bold">
+            <span class="inline-flex items-center gap-1.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold">
               <i class="fa-solid fa-gift"></i> 100% Gratuit
             </span>
           </div>
 
           <!-- Hero CTAs -->
-          <div class="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-            <a href="#registration-card" class="w-full sm:w-auto bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold text-base px-8 py-4 rounded-2xl shadow-lg pro-btn text-center flex items-center justify-center gap-3">
+          <div class="pt-2 sm:pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4">
+            <a href="#registration-card" class="w-full sm:w-auto bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold text-sm sm:text-base px-6 py-3.5 sm:px-8 sm:py-4 rounded-2xl shadow-lg pro-btn text-center flex items-center justify-center gap-2">
               <i class="fa-solid fa-user-plus"></i>
               <span>S'inscrire à la formation</span>
             </a>
-            <a href="#instructors" class="w-full sm:w-auto bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-base px-6 py-4 rounded-2xl border border-slate-700 text-center transition-colors flex items-center justify-center gap-2">
+            <a href="#instructors" class="w-full sm:w-auto bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs sm:text-base px-5 py-3 sm:px-6 sm:py-4 rounded-2xl border border-slate-700 text-center transition-colors flex items-center justify-center gap-2">
               <span>Voir les formateurs</span>
-              <i class="fa-solid fa-chevron-right text-xs"></i>
+              <i class="fa-solid fa-chevron-right text-[10px]"></i>
             </a>
           </div>
 
         </div>
 
-        <!-- Live Chrono & Poster Card -->
+        <!-- Live Chrono & Poster Card Mobile-Optimized -->
         <div class="lg:col-span-5">
-          <div class="bg-slate-800/90 border border-slate-700/80 rounded-3xl p-6 shadow-2xl space-y-6 relative overflow-hidden backdrop-blur-xl">
+          <div class="bg-slate-800/90 border border-slate-700/80 rounded-3xl p-4 sm:p-6 shadow-2xl space-y-4 sm:space-y-6 relative overflow-hidden backdrop-blur-xl">
             
-            <div class="flex items-center justify-between border-b border-slate-700/80 pb-4">
-              <div class="flex items-center gap-2.5">
-                <span class="w-3 h-3 rounded-full bg-emerald-400 animate-ping"></span>
-                <span class="text-xs font-bold uppercase tracking-widest text-emerald-400">Compte à rebours direct</span>
+            <div class="flex items-center justify-between border-b border-slate-700/80 pb-3">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                <span class="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-emerald-400">Compte à rebours direct</span>
               </div>
-              <span class="text-[11px] font-semibold bg-slate-700 text-slate-300 px-3 py-1 rounded-full">Koumassi</span>
+              <span class="text-[10px] sm:text-[11px] font-semibold bg-slate-700 text-slate-300 px-2.5 py-0.5 rounded-full">Koumassi</span>
             </div>
 
-            <!-- Timer Grid -->
-            <div class="grid grid-cols-4 gap-3 text-center">
-              <div class="bg-slate-900/90 rounded-2xl p-3 border border-slate-700">
-                <span id="cd-days" class="text-2xl sm:text-4xl font-black text-white font-mono block">00</span>
-                <span class="text-[10px] sm:text-xs font-bold uppercase text-slate-400 block mt-1">Jours</span>
+            <!-- Timer Grid Responsive -->
+            <div class="grid grid-cols-4 gap-2 sm:gap-3 text-center">
+              <div class="bg-slate-900/90 rounded-2xl p-2 sm:p-3 border border-slate-700">
+                <span id="cd-days" class="text-xl sm:text-4xl font-black text-white font-mono block">00</span>
+                <span class="text-[9px] sm:text-xs font-bold uppercase text-slate-400 block mt-0.5">Jours</span>
               </div>
-              <div class="bg-slate-900/90 rounded-2xl p-3 border border-slate-700">
-                <span id="cd-hours" class="text-2xl sm:text-4xl font-black text-brandGold font-mono block">00</span>
-                <span class="text-[10px] sm:text-xs font-bold uppercase text-slate-400 block mt-1">Heures</span>
+              <div class="bg-slate-900/90 rounded-2xl p-2 sm:p-3 border border-slate-700">
+                <span id="cd-hours" class="text-xl sm:text-4xl font-black text-brandGold font-mono block">00</span>
+                <span class="text-[9px] sm:text-xs font-bold uppercase text-slate-400 block mt-0.5">Heures</span>
               </div>
-              <div class="bg-slate-900/90 rounded-2xl p-3 border border-slate-700">
-                <span id="cd-mins" class="text-2xl sm:text-4xl font-black text-white font-mono block">00</span>
-                <span class="text-[10px] sm:text-xs font-bold uppercase text-slate-400 block mt-1">Minutes</span>
+              <div class="bg-slate-900/90 rounded-2xl p-2 sm:p-3 border border-slate-700">
+                <span id="cd-mins" class="text-xl sm:text-4xl font-black text-white font-mono block">00</span>
+                <span class="text-[9px] sm:text-xs font-bold uppercase text-slate-400 block mt-0.5">Min.</span>
               </div>
-              <div class="bg-slate-900/90 rounded-2xl p-3 border border-slate-700">
-                <span id="cd-secs" class="text-2xl sm:text-4xl font-black text-emerald-400 font-mono block">00</span>
-                <span class="text-[10px] sm:text-xs font-bold uppercase text-slate-400 block mt-1">Secondes</span>
+              <div class="bg-slate-900/90 rounded-2xl p-2 sm:p-3 border border-slate-700">
+                <span id="cd-secs" class="text-xl sm:text-4xl font-black text-emerald-400 font-mono block">00</span>
+                <span class="text-[9px] sm:text-xs font-bold uppercase text-slate-400 block mt-0.5">Sec.</span>
               </div>
             </div>
 
             <!-- Presenter Mini Cards -->
-            <div class="space-y-3 pt-2">
-              <div class="flex items-center gap-3 bg-slate-900/70 p-3 rounded-2xl border border-slate-700/60">
-                <img src="WhatsApp Image 2026-09-28 at 22.04.43.jpeg" alt="Djim Aboubacar" class="w-11 h-11 rounded-xl object-cover border border-emerald-500 shrink-0">
-                <div class="text-xs">
-                  <span class="text-emerald-400 font-bold block text-[11px] uppercase tracking-wider">Module 1 · Bases Excel</span>
-                  <span class="text-white font-extrabold block text-sm">Djim Aboubacar Mikahillo</span>
+            <div class="space-y-2.5 pt-1">
+              <div class="flex items-center gap-3 bg-slate-900/70 p-2.5 sm:p-3 rounded-2xl border border-slate-700/60">
+                <img src="WhatsApp Image 2026-09-28 at 22.04.43.jpeg" alt="Djim Aboubacar" class="w-10 h-10 rounded-xl object-cover border border-emerald-500 shrink-0">
+                <div class="text-xs text-left">
+                  <span class="text-emerald-400 font-bold block text-[10px] uppercase tracking-wider">Module 1 · Bases Excel</span>
+                  <span class="text-white font-extrabold block text-xs sm:text-sm">Djim Aboubacar Mikahillo</span>
                 </div>
               </div>
 
-              <div class="flex items-center gap-3 bg-slate-900/70 p-3 rounded-2xl border border-slate-700/60">
-                <img src="WhatsApp Image 2026-09-28 at 22.09.13.jpeg" alt="TUO Mamadou" class="w-11 h-11 rounded-xl object-cover border border-amber-500 shrink-0">
-                <div class="text-xs">
-                  <span class="text-amber-400 font-bold block text-[11px] uppercase tracking-wider">Module 2 · Prompt Engineering</span>
-                  <span class="text-white font-extrabold block text-sm">TUO Mamadou</span>
+              <div class="flex items-center gap-3 bg-slate-900/70 p-2.5 sm:p-3 rounded-2xl border border-slate-700/60">
+                <img src="WhatsApp Image 2026-09-28 at 22.09.13.jpeg" alt="TUO Mamadou" class="w-10 h-10 rounded-xl object-cover border border-amber-500 shrink-0">
+                <div class="text-xs text-left">
+                  <span class="text-amber-400 font-bold block text-[10px] uppercase tracking-wider">Module 2 · Prompt Engineering</span>
+                  <span class="text-white font-extrabold block text-xs sm:text-sm">TUO Mamadou</span>
                 </div>
               </div>
             </div>
@@ -230,48 +233,48 @@
   </section>
 
 
-  <!-- BARRE DES BÉNÉFICES & ATOUTS -->
-  <section class="py-12 bg-white border-b border-slate-200">
+  <!-- BARRE DES BÉNÉFICES & ATOUTS MOBILE-FRIENDLY -->
+  <section class="py-8 sm:py-12 bg-white border-b border-slate-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         
-        <div class="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
-          <div class="w-12 h-12 rounded-xl bg-emerald-100 text-brandGreen flex items-center justify-center text-xl shrink-0">
+        <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-slate-50 border border-slate-100">
+          <div class="w-10 h-10 rounded-xl bg-emerald-100 text-brandGreen flex items-center justify-center text-lg shrink-0">
             <i class="fa-solid fa-laptop-code"></i>
           </div>
           <div>
-            <h4 class="font-extrabold text-sm text-slate-900">100% Pratique & Cas Réels</h4>
-            <p class="text-xs text-slate-500 mt-1">Exercices guidés pas-à-pas orientés monde professionnel.</p>
+            <h4 class="font-extrabold text-xs sm:text-sm text-slate-900">100% Pratique & Cas Réels</h4>
+            <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">Exercices guidés pas-à-pas orientés monde professionnel.</p>
           </div>
         </div>
 
-        <div class="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
-          <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-xl shrink-0">
+        <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-slate-50 border border-slate-100">
+          <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-lg shrink-0">
             <i class="fa-solid fa-user-shield"></i>
           </div>
           <div>
-            <h4 class="font-extrabold text-sm text-slate-900">Formateurs Qualifiés</h4>
-            <p class="text-xs text-slate-500 mt-1">Experts certifiés et praticiens passionnés.</p>
+            <h4 class="font-extrabold text-xs sm:text-sm text-slate-900">Formateurs Qualifiés</h4>
+            <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">Experts certifiés et praticiens passionnés.</p>
           </div>
         </div>
 
-        <div class="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
-          <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl shrink-0">
+        <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-slate-50 border border-slate-100">
+          <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-lg shrink-0">
             <i class="fa-solid fa-users"></i>
           </div>
           <div>
-            <h4 class="font-extrabold text-sm text-slate-900">Réseautage & Entraide</h4>
-            <p class="text-xs text-slate-500 mt-1">Communauté dynamique d'apprenants à Koumassi.</p>
+            <h4 class="font-extrabold text-xs sm:text-sm text-slate-900">Réseautage & Entraide</h4>
+            <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">Communauté dynamique d'apprenants à Koumassi.</p>
           </div>
         </div>
 
-        <div class="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
-          <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-xl shrink-0">
+        <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-slate-50 border border-slate-100">
+          <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-lg shrink-0">
             <i class="fa-solid fa-award"></i>
           </div>
           <div>
-            <h4 class="font-extrabold text-sm text-slate-900">Accès 100% Gratuit</h4>
-            <p class="text-xs text-slate-500 mt-1">Offert par l'AEEMCI Sous-comité Koumassi.</p>
+            <h4 class="font-extrabold text-xs sm:text-sm text-slate-900">Accès 100% Gratuit</h4>
+            <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">Offert par l'AEEMCI Sous-comité Koumassi.</p>
           </div>
         </div>
 
@@ -281,56 +284,56 @@
 
 
   <!-- MAIN CONTENT AREA -->
-  <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-20 w-full">
+  <main class="flex-1 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-12 sm:space-y-20 w-full">
     
     <!-- REGISTRATION WIDGET & DETAILS SECTION GRID -->
-    <div class="grid lg:grid-cols-12 gap-12 items-start" id="registration-card">
+    <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start" id="registration-card">
       
       <!-- LEFT FORM CONTAINER -->
-      <div class="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 pro-shadow-lg space-y-6">
+      <div class="lg:col-span-7 bg-white rounded-3xl p-5 sm:p-10 border border-slate-200 pro-shadow-lg space-y-5 sm:space-y-6">
         
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-100 gap-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 sm:pb-6 border-b border-slate-100 gap-3">
           <div>
-            <h3 id="form-title" class="text-2xl font-black text-slate-900">Formulaire d'Inscription Officiel</h3>
+            <h3 id="form-title" class="text-xl sm:text-2xl font-black text-slate-900">Formulaire d'Inscription Officiel</h3>
             <p id="form-subtitle" class="text-xs text-slate-500 font-medium mt-1">Dimanche 04 Octobre 2026 à 08h00 GMT · Groupe Scolaire Sainte Thérèse</p>
           </div>
           
-          <div id="capacity-badge" class="inline-flex items-center gap-2 bg-emerald-50 text-brandGreen font-bold text-xs px-4 py-2 rounded-full border border-emerald-200 shrink-0">
-            <span id="capacity-dot" class="w-2.5 h-2.5 rounded-full bg-brandGreen animate-pulse"></span>
+          <div id="capacity-badge" class="inline-flex items-center gap-2 bg-emerald-50 text-brandGreen font-bold text-xs px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full border border-emerald-200 shrink-0 self-start sm:self-center">
+            <span id="capacity-dot" class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-brandGreen animate-pulse"></span>
             <span id="capacity-text">Chargement des places...</span>
           </div>
         </div>
 
         <!-- Registration Form -->
-        <form id="formInscription" class="space-y-5" novalidate>
+        <form id="formInscription" class="space-y-4 sm:space-y-5" novalidate>
           
-          <div class="grid sm:grid-cols-2 gap-5">
+          <div class="grid sm:grid-cols-2 gap-4 sm:gap-5">
             <!-- Nom & Prénoms -->
             <div>
-              <label for="f-nom" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1.5">Nom & Prénoms <span class="text-red-500">*</span></label>
+              <label for="f-nom" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1">Nom & Prénoms <span class="text-red-500">*</span></label>
               <input type="text" id="f-nom" name="nom" class="pro-input" placeholder="Ex: Kouassi Ibrahim">
               <p class="field-error text-red-500 text-[11px] mt-1 hidden" data-for="f-nom">Veuillez indiquer votre nom complet.</p>
             </div>
 
             <!-- Email -->
             <div>
-              <label for="f-email" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1.5">Adresse Email <span class="text-red-500">*</span></label>
+              <label for="f-email" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1">Adresse Email <span class="text-red-500">*</span></label>
               <input type="email" id="f-email" name="email" class="pro-input" placeholder="Ex: exemple@domaine.com">
               <p class="field-error text-red-500 text-[11px] mt-1 hidden" data-for="f-email">Veuillez indiquer un email valide.</p>
             </div>
           </div>
 
-          <div class="grid sm:grid-cols-2 gap-5">
+          <div class="grid sm:grid-cols-2 gap-4 sm:gap-5">
             <!-- WhatsApp -->
             <div>
-              <label for="f-whatsapp" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1.5">Numéro WhatsApp <span class="text-red-500">*</span></label>
+              <label for="f-whatsapp" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1">Numéro WhatsApp <span class="text-red-500">*</span></label>
               <input type="tel" id="f-whatsapp" name="whatsapp" class="pro-input" placeholder="Ex: +225 07 00 00 00 00">
               <p class="field-error text-red-500 text-[11px] mt-1 hidden" data-for="f-whatsapp">Format WhatsApp valide requis.</p>
             </div>
 
             <!-- Statut -->
             <div>
-              <label for="f-statut" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1.5">Statut Actuel <span class="text-red-500">*</span></label>
+              <label for="f-statut" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1">Statut Actuel <span class="text-red-500">*</span></label>
               <select id="f-statut" name="statut" class="pro-input font-medium">
                 <option value="" disabled selected>Sélectionnez votre statut</option>
                 <option value="Élève">Élève</option>
@@ -344,7 +347,7 @@
 
           <!-- Choice of Training -->
           <div>
-            <label for="f-formation" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1.5">Formation souhaitée <span class="text-red-500">*</span></label>
+            <label for="f-formation" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1">Formation souhaitée <span class="text-red-500">*</span></label>
             <select id="f-formation" name="formation_choisie" class="pro-input font-bold text-slate-900 bg-slate-50">
               <option value="Les deux formations" selected>Les deux formations (Excel + Prompt Engineering) — Recommandé</option>
               <option value="100% Bases Excel">100% Bases Excel (Formateur: Djim Aboubacar Mikahillo)</option>
@@ -354,40 +357,40 @@
           </div>
 
           <!-- Submit Button -->
-          <button type="submit" id="submitBtn" class="w-full bg-brandGreen hover:bg-brandGreenDark text-white font-extrabold text-base py-4 rounded-2xl shadow-lg pro-btn flex items-center justify-center gap-3 mt-4 transition-all">
-            <i class="fa-solid fa-circle-check text-lg"></i>
+          <button type="submit" id="submitBtn" class="w-full bg-brandGreen hover:bg-brandGreenDark text-white font-extrabold text-sm sm:text-base py-3.5 sm:py-4 rounded-2xl shadow-lg pro-btn flex items-center justify-center gap-2 mt-3 transition-all">
+            <i class="fa-solid fa-circle-check text-base sm:text-lg"></i>
             <span id="submitLabel">Valider mon inscription</span>
           </button>
 
-          <div class="flex items-center justify-between text-xs text-slate-500 pt-3 border-t border-slate-100">
-            <span class="flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-brandGreen"></i> Organisé par l'AEEMCI Sous-comité de Koumassi</span>
+          <div class="flex items-center justify-between text-[11px] sm:text-xs text-slate-500 pt-2 border-t border-slate-100">
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-brandGreen"></i> AEEMCI Koumassi</span>
             <button type="button" id="calendarBtn2" class="hover:text-slate-900 font-bold underline transition-colors">Exporter .ICS</button>
           </div>
 
         </form>
 
-        <!-- SUCCESS CONFIRMATION PANEL (100% DIRECT, SANS REDIRECTION WHATSAPP) -->
-        <div id="confirmationBloc" class="hidden text-center py-8 space-y-6">
-          <div id="confirm-icon-box" class="w-20 h-20 bg-emerald-100 text-brandGreen rounded-full flex items-center justify-center text-4xl mx-auto shadow-sm">
+        <!-- SUCCESS CONFIRMATION PANEL -->
+        <div id="confirmationBloc" class="hidden text-center py-6 sm:py-8 space-y-4 sm:space-y-6">
+          <div id="confirm-icon-box" class="w-16 h-16 sm:w-20 sm:h-20 bg-emerald-100 text-brandGreen rounded-full flex items-center justify-center text-3xl sm:text-4xl mx-auto shadow-sm">
             <i id="confirm-icon" class="fa-solid fa-circle-check"></i>
           </div>
           
-          <div class="space-y-2">
-            <span id="confirm-badge" class="text-xs text-brandGreen font-extrabold uppercase tracking-widest bg-emerald-50 px-4 py-1.5 rounded-full border border-emerald-200">
+          <div class="space-y-1 sm:space-y-2">
+            <span id="confirm-badge" class="text-[11px] sm:text-xs text-brandGreen font-extrabold uppercase tracking-widest bg-emerald-50 px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full border border-emerald-200">
               Inscription Validée !
             </span>
-            <h4 class="text-3xl font-black text-slate-900">Félicitations <span id="confirm-nom"></span> !</h4>
+            <h4 class="text-2xl sm:text-3xl font-black text-slate-900">Félicitations <span id="confirm-nom"></span> !</h4>
           </div>
 
-          <p id="confirm-text" class="text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
+          <p id="confirm-text" class="text-xs sm:text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
             Votre inscription pour la <strong>Double Formation Pratique (Excel & Prompt Engineering)</strong> du <strong>Dimanche 04 Octobre 2026 à 08h00 GMT</strong> au <strong>Groupe Scolaire Sainte Thérèse</strong> a été enregistrée avec succès.
           </p>
 
           <div class="space-y-3 pt-2">
             <button type="button" onclick="downloadICS()"
-               class="w-full inline-flex items-center justify-center gap-3 bg-brandGreen hover:bg-brandGreenDark text-white font-extrabold text-base py-4 rounded-2xl shadow-lg transition-transform hover:scale-[1.01]">
-              <i class="fa-solid fa-calendar-plus text-xl"></i>
-              <span>Ajouter la formation à mon calendrier (.ICS)</span>
+               class="w-full inline-flex items-center justify-center gap-2.5 bg-brandGreen hover:bg-brandGreenDark text-white font-extrabold text-sm sm:text-base py-3.5 sm:py-4 rounded-2xl shadow-lg transition-transform hover:scale-[1.01]">
+              <i class="fa-solid fa-calendar-plus text-lg sm:text-xl"></i>
+              <span>Ajouter au calendrier (.ICS)</span>
             </button>
           </div>
         </div>
@@ -397,15 +400,15 @@
       <!-- RIGHT LOGISTICS & LOCATION CARD -->
       <div class="lg:col-span-5 space-y-6">
         
-        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 pro-shadow space-y-6">
-          <div class="border-b border-slate-100 pb-4">
+        <div class="bg-white rounded-3xl p-5 sm:p-8 border border-slate-200 pro-shadow space-y-5 sm:space-y-6">
+          <div class="border-b border-slate-100 pb-3 sm:pb-4">
             <span class="text-xs font-extrabold text-brandGreen uppercase tracking-wider block">Lieu & Logistique</span>
-            <h3 class="text-xl font-extrabold text-slate-900 mt-1">Accès & Informations Pratiques</h3>
+            <h3 class="text-lg sm:text-xl font-extrabold text-slate-900 mt-1">Accès & Informations Pratiques</h3>
           </div>
 
-          <div class="space-y-5 text-sm">
-            <div class="flex items-start gap-4">
-              <div class="w-10 h-10 rounded-xl bg-emerald-50 text-brandGreen flex items-center justify-center text-lg shrink-0 border border-emerald-100">
+          <div class="space-y-4 sm:space-y-5 text-xs sm:text-sm">
+            <div class="flex items-start gap-3.5">
+              <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-50 text-brandGreen flex items-center justify-center text-base sm:text-lg shrink-0 border border-emerald-100">
                 <i class="fa-solid fa-location-dot"></i>
               </div>
               <div>
@@ -414,8 +417,8 @@
               </div>
             </div>
 
-            <div class="flex items-start gap-4">
-              <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-lg shrink-0 border border-amber-100">
+            <div class="flex items-start gap-3.5">
+              <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-base sm:text-lg shrink-0 border border-amber-100">
                 <i class="fa-solid fa-clock"></i>
               </div>
               <div>
@@ -424,36 +427,36 @@
               </div>
             </div>
 
-            <div class="flex items-start gap-4">
-              <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg shrink-0 border border-blue-100">
+            <div class="flex items-start gap-3.5">
+              <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-base sm:text-lg shrink-0 border border-blue-100">
                 <i class="fa-solid fa-laptop"></i>
               </div>
               <div>
                 <strong class="text-slate-900 block font-bold">Matériel recommandé :</strong>
-                <p class="text-xs text-slate-600 mt-0.5">Carnet de notes. Ordinateur portable vivement conseillé pour pratiquer en direct.</p>
+                <p class="text-xs text-slate-600 mt-0.5">Carnet de notes. Ordinateur portable conseillé pour pratiquer en direct.</p>
               </div>
             </div>
           </div>
 
-          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-1">
+          <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-1">
             <span class="font-bold text-slate-900 block flex items-center gap-1.5"><i class="fa-solid fa-circle-info text-brandGreen"></i> À noter :</span>
             <p>L'événement est 100% gratuit. Les places en salle sont attribuées par ordre d'arrivée des personnes inscrites.</p>
           </div>
         </div>
 
         <!-- ORGANIZER CONTACT BADGE -->
-        <div class="bg-white rounded-2xl p-5 border border-slate-200 pro-shadow flex items-center justify-between">
-          <div class="flex items-center gap-3.5">
-            <img src="WhatsApp Image 2026-09-09 at 16.32.41.jpeg" alt="AEEMCI Koumassi" class="w-12 h-12 rounded-xl object-contain p-1 border border-slate-200 bg-slate-50">
+        <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 pro-shadow flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <img src="WhatsApp Image 2026-09-09 at 16.32.41.jpeg" alt="AEEMCI Koumassi" class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl object-contain p-1 border border-slate-200 bg-slate-50">
             <div>
-              <span class="text-[11px] text-slate-500 font-semibold block">Organisation officielle</span>
-              <h4 class="text-sm font-extrabold text-slate-900 flex items-center gap-1.5">
+              <span class="text-[10px] sm:text-[11px] text-slate-500 font-semibold block">Organisation officielle</span>
+              <h4 class="text-xs sm:text-sm font-extrabold text-slate-900 flex items-center gap-1">
                 AEEMCI Koumassi <i class="fa-solid fa-circle-check text-brandGreen text-xs"></i>
               </h4>
             </div>
           </div>
 
-          <button id="contactOrgBtn" class="bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs px-4 py-2.5 rounded-xl transition-colors">
+          <button id="contactOrgBtn" class="bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs px-3 py-2 sm:px-4 sm:py-2.5 rounded-xl transition-colors">
             Contacter
           </button>
         </div>
@@ -463,64 +466,64 @@
     </div>
 
 
-    <!-- SECTION FORMATEURS & QUALIFICATIONS PRO -->
-    <section id="instructors" class="space-y-10 pt-10 border-t border-slate-200">
+    <!-- SECTION FORMATEURS & QUALIFICATIONS PRO (ADAPTÉE SOURIS & MOBILE) -->
+    <section id="instructors" class="space-y-8 sm:space-y-10 pt-8 sm:pt-10 border-t border-slate-200">
       
-      <div class="text-center max-w-3xl mx-auto space-y-3">
-        <span class="text-xs font-black text-brandGreen uppercase tracking-widest bg-emerald-50 px-4 py-1.5 rounded-full border border-emerald-200">
+      <div class="text-center max-w-3xl mx-auto space-y-2 sm:space-y-3">
+        <span class="text-xs font-black text-brandGreen uppercase tracking-widest bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200">
           Instructeurs Qualifiés
         </span>
-        <h2 class="text-3xl sm:text-4xl font-black text-slate-900">Vos Formateurs & Leurs Qualités Professionnelles</h2>
-        <p class="text-sm text-slate-600">Des experts passionnés combinant expérience technique, compétences pédagogiques et parcours académiques d'excellence.</p>
+        <h2 class="text-2xl sm:text-4xl font-black text-slate-900">Vos Formateurs & Leurs Compétences</h2>
+        <p class="text-xs sm:text-sm text-slate-600">Des experts passionnés combinant expérience technique, compétences pédagogiques et parcours académiques d'excellence.</p>
       </div>
 
-      <div class="grid md:grid-cols-2 gap-8">
+      <div class="grid md:grid-cols-2 gap-6 sm:gap-8">
         
         <!-- CARD FORMATEUR 1 : DJIM ABOUBACAR MIKAHILLO -->
-        <div class="bg-white rounded-3xl p-8 border border-slate-200 pro-shadow-lg space-y-6 flex flex-col justify-between hover:border-brandGreen transition-all group">
+        <div class="bg-white rounded-3xl p-5 sm:p-8 border border-slate-200 pro-shadow-lg space-y-5 sm:space-y-6 flex flex-col justify-between hover:border-brandGreen transition-all group">
           
-          <div class="space-y-6">
+          <div class="space-y-5 sm:space-y-6">
             <!-- Header avec photo officielle -->
-            <div class="flex items-center gap-6">
+            <div class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 sm:gap-6">
               <div class="relative shrink-0">
-                <img src="WhatsApp Image 2026-09-28 at 22.04.43.jpeg" alt="Djim Aboubacar Mikahillo" class="w-28 h-28 rounded-2xl object-cover shadow-lg border-2 border-emerald-500 group-hover:scale-105 transition-transform">
-                <span class="absolute -bottom-2 -right-2 w-9 h-9 rounded-xl bg-brandGreen text-white flex items-center justify-center text-sm shadow">
+                <img src="WhatsApp Image 2026-09-28 at 22.04.43.jpeg" alt="Djim Aboubacar Mikahillo" class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover shadow-lg border-2 border-emerald-500 group-hover:scale-105 transition-transform">
+                <span class="absolute -bottom-2 -right-2 w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-brandGreen text-white flex items-center justify-center text-xs sm:text-sm shadow">
                   <i class="fa-solid fa-file-excel"></i>
                 </span>
               </div>
 
               <div class="space-y-1">
-                <span class="inline-block text-[10px] font-black uppercase tracking-wider text-brandGreen bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+                <span class="inline-block text-[10px] font-black uppercase tracking-wider text-brandGreen bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
                   Formateur Bases Excel
                 </span>
-                <h3 class="text-2xl font-black text-slate-900">Djim Aboubacar Mikahillo</h3>
+                <h3 class="text-xl sm:text-2xl font-black text-slate-900">Djim Aboubacar Mikahillo</h3>
                 <p class="text-xs font-bold text-slate-500">Expertise Design, Marketing & Bureautique</p>
               </div>
             </div>
 
             <!-- Qualification Tags -->
-            <div class="space-y-3 pt-4 border-t border-slate-100">
-              <h4 class="text-xs font-black uppercase tracking-wider text-slate-800 flex items-center gap-2">
+            <div class="space-y-3 pt-3 sm:pt-4 border-t border-slate-100">
+              <h4 class="text-xs font-black uppercase tracking-wider text-slate-800 flex items-center gap-2 justify-center sm:justify-start">
                 <i class="fa-solid fa-award text-brandGreen"></i> Titres & Qualités :
               </h4>
 
-              <div class="space-y-2.5">
-                <div class="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200/80">
-                  <div class="w-8 h-8 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-xs shrink-0 font-bold">
+              <div class="space-y-2 sm:space-y-2.5">
+                <div class="flex items-center gap-3 bg-slate-50 p-2.5 sm:p-3 rounded-xl border border-slate-200/80 text-left">
+                  <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-xs shrink-0 font-bold">
                     <i class="fa-solid fa-palette"></i>
                   </div>
                   <span class="text-xs font-bold text-slate-800">Designer Graphique</span>
                 </div>
 
-                <div class="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200/80">
-                  <div class="w-8 h-8 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-xs shrink-0 font-bold">
+                <div class="flex items-center gap-3 bg-slate-50 p-2.5 sm:p-3 rounded-xl border border-slate-200/80 text-left">
+                  <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-xs shrink-0 font-bold">
                     <i class="fa-solid fa-bullhorn"></i>
                   </div>
                   <span class="text-xs font-bold text-slate-800">Marketeur Digital</span>
                 </div>
 
-                <div class="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200/80">
-                  <div class="w-8 h-8 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-xs shrink-0 font-bold">
+                <div class="flex items-center gap-3 bg-slate-50 p-2.5 sm:p-3 rounded-xl border border-slate-200/80 text-left">
+                  <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-xs shrink-0 font-bold">
                     <i class="fa-solid fa-table"></i>
                   </div>
                   <span class="text-xs font-bold text-slate-800">Formateur Pratique Excel (Organiser, Formules & Graphiques)</span>
@@ -530,72 +533,72 @@
           </div>
 
           <!-- Bottom Footer Badge -->
-          <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-            <span class="font-bold text-brandGreen"><i class="fa-solid fa-check-double mr-1"></i> Specialité Excel 365</span>
-            <span class="bg-emerald-50 text-brandGreen font-extrabold px-3 py-1 rounded-full border border-emerald-200 text-[11px]">De la cellule à l'excellence</span>
+          <div class="pt-3 sm:pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+            <span class="font-bold text-brandGreen"><i class="fa-solid fa-check-double mr-1"></i> Excel 365</span>
+            <span class="bg-emerald-50 text-brandGreen font-extrabold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full border border-emerald-200 text-[10px] sm:text-[11px]">De la cellule à l'excellence</span>
           </div>
 
         </div>
 
 
         <!-- CARD FORMATEUR 2 : TUO MAMADOU -->
-        <div class="bg-white rounded-3xl p-8 border border-slate-200 pro-shadow-lg space-y-6 flex flex-col justify-between hover:border-amber-500 transition-all group">
+        <div class="bg-white rounded-3xl p-5 sm:p-8 border border-slate-200 pro-shadow-lg space-y-5 sm:space-y-6 flex flex-col justify-between hover:border-amber-500 transition-all group">
           
-          <div class="space-y-6">
+          <div class="space-y-5 sm:space-y-6">
             <!-- Header avec photo officielle -->
-            <div class="flex items-center gap-6">
+            <div class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 sm:gap-6">
               <div class="relative shrink-0">
-                <img src="WhatsApp Image 2026-09-28 at 22.09.13.jpeg" alt="TUO Mamadou" class="w-28 h-28 rounded-2xl object-cover shadow-lg border-2 border-amber-500 group-hover:scale-105 transition-transform">
-                <span class="absolute -bottom-2 -right-2 w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center text-sm shadow">
+                <img src="WhatsApp Image 2026-09-28 at 22.09.13.jpeg" alt="TUO Mamadou" class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover shadow-lg border-2 border-amber-500 group-hover:scale-105 transition-transform">
+                <span class="absolute -bottom-2 -right-2 w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center text-xs sm:text-sm shadow">
                   <i class="fa-solid fa-brain"></i>
                 </span>
               </div>
 
               <div class="space-y-1">
-                <span class="inline-block text-[10px] font-black uppercase tracking-wider text-amber-700 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
+                <span class="inline-block text-[10px] font-black uppercase tracking-wider text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
                   Formateur Prompt Engineering & IA
                 </span>
-                <h3 class="text-2xl font-black text-slate-900">TUO Mamadou</h3>
+                <h3 class="text-xl sm:text-2xl font-black text-slate-900">TUO Mamadou</h3>
                 <p class="text-xs font-bold text-slate-500">Ingénierie IA, Design & Développement</p>
               </div>
             </div>
 
             <!-- Qualification Tags -->
-            <div class="space-y-3 pt-4 border-t border-slate-100">
-              <h4 class="text-xs font-black uppercase tracking-wider text-slate-800 flex items-center gap-2">
+            <div class="space-y-3 pt-3 sm:pt-4 border-t border-slate-100">
+              <h4 class="text-xs font-black uppercase tracking-wider text-slate-800 flex items-center gap-2 justify-center sm:justify-start">
                 <i class="fa-solid fa-user-gear text-amber-600"></i> Titres & Qualifications :
               </h4>
 
               <div class="space-y-2">
-                <div class="flex items-center gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200/80">
+                <div class="flex items-center gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200/80 text-left">
                   <div class="w-7 h-7 rounded-lg bg-amber-500 text-white flex items-center justify-center text-xs shrink-0 font-bold">
                     <i class="fa-solid fa-pen-nib"></i>
                   </div>
                   <span class="text-xs font-bold text-slate-800">UX/UI Designer</span>
                 </div>
 
-                <div class="flex items-center gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200/80">
+                <div class="flex items-center gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200/80 text-left">
                   <div class="w-7 h-7 rounded-lg bg-amber-500 text-white flex items-center justify-center text-xs shrink-0 font-bold">
                     <i class="fa-solid fa-diagram-project"></i>
                   </div>
                   <span class="text-xs font-bold text-slate-800">Project Planner GDSC (Google Developer Student Clubs)</span>
                 </div>
 
-                <div class="flex items-center gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200/80">
+                <div class="flex items-center gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200/80 text-left">
                   <div class="w-7 h-7 rounded-lg bg-amber-500 text-white flex items-center justify-center text-xs shrink-0 font-bold">
                     <i class="fa-solid fa-code"></i>
                   </div>
                   <span class="text-xs font-bold text-slate-800">Développeur Full Stack</span>
                 </div>
 
-                <div class="flex items-center gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200/80">
+                <div class="flex items-center gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200/80 text-left">
                   <div class="w-7 h-7 rounded-lg bg-amber-500 text-white flex items-center justify-center text-xs shrink-0 font-bold">
                     <i class="fa-solid fa-chalkboard-user"></i>
                   </div>
                   <span class="text-xs font-bold text-slate-800">Instructeur chez GoMyCode</span>
                 </div>
 
-                <div class="flex items-center gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200/80">
+                <div class="flex items-center gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200/80 text-left">
                   <div class="w-7 h-7 rounded-lg bg-amber-500 text-white flex items-center justify-center text-xs shrink-0 font-bold">
                     <i class="fa-solid fa-graduation-cap"></i>
                   </div>
@@ -606,9 +609,9 @@
           </div>
 
           <!-- Bottom Footer Badge -->
-          <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-            <span class="font-bold text-amber-600"><i class="fa-solid fa-sparkles mr-1"></i> IA & Generative Tech</span>
-            <span class="bg-amber-50 text-amber-700 font-extrabold px-3 py-1 rounded-full border border-amber-200 text-[11px]">L'art d'instruire l'IA</span>
+          <div class="pt-3 sm:pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+            <span class="font-bold text-amber-600"><i class="fa-solid fa-sparkles mr-1"></i> Generative Tech</span>
+            <span class="bg-amber-50 text-amber-700 font-extrabold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full border border-amber-200 text-[10px] sm:text-[11px]">L'art d'instruire l'IA</span>
           </div>
 
         </div>
@@ -618,52 +621,52 @@
 
 
     <!-- CURRICULUM DES FORMATIONS -->
-    <section class="space-y-10 pt-10 border-t border-slate-200">
+    <section class="space-y-8 sm:space-y-10 pt-8 sm:pt-10 border-t border-slate-200">
       
-      <div class="text-center max-w-3xl mx-auto space-y-3">
-        <span class="text-xs font-black text-brandBlue uppercase tracking-widest bg-blue-50 px-4 py-1.5 rounded-full border border-blue-200">
+      <div class="text-center max-w-3xl mx-auto space-y-2 sm:space-y-3">
+        <span class="text-xs font-black text-brandBlue uppercase tracking-widest bg-blue-50 px-3.5 py-1.5 rounded-full border border-blue-200">
           Programme Pédagogique
         </span>
-        <h2 class="text-3xl sm:text-4xl font-black text-slate-900">Le Contenu des Formations du 04 Octobre</h2>
+        <h2 class="text-2xl sm:text-4xl font-black text-slate-900">Le Contenu des Formations du 04 Octobre</h2>
       </div>
 
-      <div class="grid md:grid-cols-2 gap-8">
+      <div class="grid md:grid-cols-2 gap-6 sm:gap-8">
         
         <!-- Formation 1 : Bases Excel -->
-        <div class="bg-white rounded-3xl p-8 border border-slate-200 pro-shadow space-y-6 flex flex-col justify-between">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 pro-shadow space-y-5 sm:space-y-6 flex flex-col justify-between">
           <div class="space-y-4">
             <div class="flex items-center justify-between">
-              <span class="px-3.5 py-1 rounded-full bg-emerald-50 text-brandGreen font-bold text-xs border border-emerald-200">
-                <i class="fa-solid fa-file-excel mr-1.5"></i> Formation 1
+              <span class="px-3 py-1 rounded-full bg-emerald-50 text-brandGreen font-bold text-xs border border-emerald-200">
+                <i class="fa-solid fa-file-excel mr-1"></i> Formation 1
               </span>
               <span class="text-xs font-extrabold text-slate-400 uppercase tracking-wider">100% PRATIQUE</span>
             </div>
 
             <div>
-              <h3 class="font-black text-2xl text-slate-900">Formation 100 % Bases Excel</h3>
-              <p class="text-xs font-bold text-brandGreen mt-1.5">
+              <h3 class="font-black text-xl sm:text-2xl text-slate-900">Formation 100 % Bases Excel</h3>
+              <p class="text-xs font-bold text-brandGreen mt-1">
                 Thème : De la cellule à l'excellence : découvrir et maîtriser les bases d'Excel
               </p>
             </div>
 
-            <ul class="space-y-3.5 text-xs sm:text-sm text-slate-700 pt-3">
-              <li class="flex items-start gap-3">
+            <ul class="space-y-3 text-xs sm:text-sm text-slate-700 pt-2">
+              <li class="flex items-start gap-2.5">
                 <i class="fa-solid fa-circle-check text-brandGreen text-base shrink-0 mt-0.5"></i>
                 <span>Saisir et organiser efficacement les données dans un tableau propre.</span>
               </li>
-              <li class="flex items-start gap-3">
+              <li class="flex items-start gap-2.5">
                 <i class="fa-solid fa-circle-check text-brandGreen text-base shrink-0 mt-0.5"></i>
                 <span>Créer et utiliser des formules de calcul fondamentales et utiles.</span>
               </li>
-              <li class="flex items-start gap-3">
+              <li class="flex items-start gap-2.5">
                 <i class="fa-solid fa-circle-check text-brandGreen text-base shrink-0 mt-0.5"></i>
                 <span>Mettre en forme un tableau professionnel prêt à l'impression / export PDF.</span>
               </li>
-              <li class="flex items-start gap-3">
+              <li class="flex items-start gap-2.5">
                 <i class="fa-solid fa-circle-check text-brandGreen text-base shrink-0 mt-0.5"></i>
                 <span>Trier, filtrer et analyser rapidement de grands volumes d'informations.</span>
               </li>
-              <li class="flex items-start gap-3">
+              <li class="flex items-start gap-2.5">
                 <i class="fa-solid fa-circle-check text-brandGreen text-base shrink-0 mt-0.5"></i>
                 <span>Créer un tableau de bord visuel et un graphique simple pour présenter vos chiffres.</span>
               </li>
@@ -672,36 +675,36 @@
         </div>
 
         <!-- Formation 2 : Prompt Engineering -->
-        <div class="bg-white rounded-3xl p-8 border border-slate-200 pro-shadow space-y-6 flex flex-col justify-between">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 pro-shadow space-y-5 sm:space-y-6 flex flex-col justify-between">
           <div class="space-y-4">
             <div class="flex items-center justify-between">
-              <span class="px-3.5 py-1 rounded-full bg-amber-50 text-amber-700 font-bold text-xs border border-amber-200">
-                <i class="fa-solid fa-brain mr-1.5"></i> Formation 2
+              <span class="px-3 py-1 rounded-full bg-amber-50 text-amber-700 font-bold text-xs border border-amber-200">
+                <i class="fa-solid fa-brain mr-1"></i> Formation 2
               </span>
               <span class="text-xs font-extrabold text-slate-400 uppercase tracking-wider">INTELLIGENCE ARTIFICIELLE</span>
             </div>
 
             <div>
-              <h3 class="font-black text-2xl text-slate-900">L’art du Prompt Engineering</h3>
-              <p class="text-xs font-bold text-amber-700 mt-1.5">
+              <h3 class="font-black text-xl sm:text-2xl text-slate-900">L’art du Prompt Engineering</h3>
+              <p class="text-xs font-bold text-amber-700 mt-1">
                 Thème : L’art du Prompt Engineering — Dompter la puissance de l'IA
               </p>
             </div>
 
-            <ul class="space-y-3.5 text-xs sm:text-sm text-slate-700 pt-3">
-              <li class="flex items-start gap-3">
+            <ul class="space-y-3 text-xs sm:text-sm text-slate-700 pt-2">
+              <li class="flex items-start gap-2.5">
                 <i class="fa-solid fa-circle-check text-amber-600 text-base shrink-0 mt-0.5"></i>
                 <span>Comment donner de bonnes instructions claires, structurées et sans ambiguïté à l’IA.</span>
               </li>
-              <li class="flex items-start gap-3">
+              <li class="flex items-start gap-2.5">
                 <i class="fa-solid fa-circle-check text-amber-600 text-base shrink-0 mt-0.5"></i>
                 <span>Prompts stratégiques pour les études, le travail académique, le business et la communication.</span>
               </li>
-              <li class="flex items-start gap-3">
+              <li class="flex items-start gap-2.5">
                 <i class="fa-solid fa-circle-check text-amber-600 text-base shrink-0 mt-0.5"></i>
                 <span>Méthodes pour obtenir des réponses ultra-précises et réduire les erreurs d'IA.</span>
               </li>
-              <li class="flex items-start gap-3">
+              <li class="flex items-start gap-2.5">
                 <i class="fa-solid fa-circle-check text-amber-600 text-base shrink-0 mt-0.5"></i>
                 <span>Création et organisation de votre bibliothèque personnelle de prompts réutilisables au quotidien.</span>
               </li>
@@ -714,35 +717,35 @@
 
 
     <!-- FAQ ACCORDION SECTION -->
-    <section class="space-y-8 pt-6 border-t border-slate-200">
+    <section class="space-y-6 sm:space-y-8 pt-6 border-t border-slate-200">
       <div class="text-center max-w-2xl mx-auto space-y-2">
-        <h3 class="text-2xl sm:text-3xl font-black text-slate-900">Questions Fréquentes</h3>
+        <h3 class="text-xl sm:text-3xl font-black text-slate-900">Questions Fréquentes</h3>
         <p class="text-xs text-slate-500">Tout ce que vous devez savoir avant de vous inscrire.</p>
       </div>
 
-      <div class="max-w-3xl mx-auto space-y-4">
+      <div class="max-w-3xl mx-auto space-y-3 sm:space-y-4">
         <div class="faq-item bg-white rounded-2xl border border-slate-200 pro-shadow overflow-hidden">
-          <button class="faq-toggle w-full flex items-center justify-between p-6 text-left font-bold text-slate-900 text-sm">
+          <button class="faq-toggle w-full flex items-center justify-between p-4 sm:p-6 text-left font-bold text-slate-900 text-xs sm:text-sm">
             <span>1. Quel est le public visé par cette formation ?</span>
             <i class="fa-solid fa-chevron-down faq-arrow text-slate-400 text-xs"></i>
           </button>
-          <div class="faq-answer px-6"><p class="text-xs text-slate-600 pb-6 leading-relaxed">Cette journée est ouverte aux élèves, étudiants et professionnels souhaitant acquérir des compétences pratiques en bureautique et en IA.</p></div>
+          <div class="faq-answer px-4 sm:px-6"><p class="text-xs text-slate-600 pb-4 sm:pb-6 leading-relaxed">Cette journée est ouverte aux élèves, étudiants et professionnels souhaitant acquérir des compétences pratiques en bureautique et en IA.</p></div>
         </div>
 
         <div class="faq-item bg-white rounded-2xl border border-slate-200 pro-shadow overflow-hidden">
-          <button class="faq-toggle w-full flex items-center justify-between p-6 text-left font-bold text-slate-900 text-sm">
+          <button class="faq-toggle w-full flex items-center justify-between p-4 sm:p-6 text-left font-bold text-slate-900 text-xs sm:text-sm">
             <span>2. Quel est le lieu et l'horaire exact ?</span>
             <i class="fa-solid fa-chevron-down faq-arrow text-slate-400 text-xs"></i>
           </button>
-          <div class="faq-answer px-6"><p class="text-xs text-slate-600 pb-6 leading-relaxed">La formation se tiendra en présentiel le <strong>Dimanche 04 Octobre 2026 à partir de 08h00 GMT</strong> au <strong>Groupe Scolaire Sainte Thérèse</strong> (non loin du terminus 11 Koumassi).</p></div>
+          <div class="faq-answer px-4 sm:px-6"><p class="text-xs text-slate-600 pb-4 sm:pb-6 leading-relaxed">La formation se tiendra en présentiel le <strong>Dimanche 04 Octobre 2026 à partir de 08h00 GMT</strong> au <strong>Groupe Scolaire Sainte Thérèse</strong> (non loin du terminus 11 Koumassi).</p></div>
         </div>
 
         <div class="faq-item bg-white rounded-2xl border border-slate-200 pro-shadow overflow-hidden">
-          <button class="faq-toggle w-full flex items-center justify-between p-6 text-left font-bold text-slate-900 text-sm">
+          <button class="faq-toggle w-full flex items-center justify-between p-4 sm:p-6 text-left font-bold text-slate-900 text-xs sm:text-sm">
             <span>3. Faut-il amener son propre ordinateur ?</span>
             <i class="fa-solid fa-chevron-down faq-arrow text-slate-400 text-xs"></i>
           </button>
-          <div class="faq-answer px-6"><p class="text-xs text-slate-600 pb-6 leading-relaxed">Il est fortement conseillé d'apporter votre propre ordinateur portable si vous en possédez un afin de pratiquer en direct pendant les ateliers.</p></div>
+          <div class="faq-answer px-4 sm:px-6"><p class="text-xs text-slate-600 pb-4 sm:pb-6 leading-relaxed">Il est fortement conseillé d'apporter votre propre ordinateur portable si vous en possédez un afin de pratiquer en direct pendant les ateliers.</p></div>
         </div>
       </div>
     </section>
@@ -750,12 +753,12 @@
   </main>
 
 
-  <!-- FOOTER ACADÉMIQUE -->
-  <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 mt-20 py-12 px-4 text-xs">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+  <!-- FOOTER ACADÉMIQUE MOBILE-RESPONSIVE -->
+  <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 mt-16 sm:mt-20 py-8 sm:py-12 px-4 text-xs">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 text-center md:text-left">
       
       <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-lg bg-brandGreen text-white flex items-center justify-center font-bold text-sm">
+        <div class="w-8 h-8 rounded-lg bg-brandGreen text-white flex items-center justify-center font-bold text-sm shrink-0">
           <i class="fa-solid fa-graduation-cap"></i>
         </div>
         <div>
@@ -764,7 +767,7 @@
         </div>
       </div>
 
-      <div class="flex items-center gap-4 text-slate-400">
+      <div class="flex items-center gap-3 sm:gap-4 text-slate-400">
         <a href="#registration-card" class="hover:text-white font-semibold transition-colors">S'inscrire</a>
         <span>·</span>
         <a href="#instructors" class="hover:text-white font-semibold transition-colors">Instructeurs</a>
@@ -778,9 +781,9 @@
 
   <!-- ORGANIZER CONTACT MODAL -->
   <div id="contactModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-6 space-y-5 border border-slate-200">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-5 sm:p-6 space-y-4 sm:space-y-5 border border-slate-200">
       <div class="flex items-center justify-between">
-        <h3 class="text-lg font-bold text-slate-900">Contacter l'Organisateur</h3>
+        <h3 class="text-base sm:text-lg font-bold text-slate-900">Contacter l'Organisateur</h3>
         <button id="closeContactBtn" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
 
@@ -802,9 +805,9 @@
     <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[85vh] flex flex-col overflow-hidden border border-slate-200">
       
       <!-- Login Screen -->
-      <div id="adminLoginScreen" class="p-8 space-y-4">
+      <div id="adminLoginScreen" class="p-6 sm:p-8 space-y-4">
         <div class="flex items-center justify-between">
-          <h3 class="text-lg font-bold text-slate-900">Espace Organisateur AEEMCI</h3>
+          <h3 class="text-base sm:text-lg font-bold text-slate-900">Espace Organisateur AEEMCI</h3>
           <button id="adminCloseBtn1" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
         </div>
         <p class="text-xs text-slate-500">Entrez le code d'accès organisateur pour consulter la liste des billets émis.</p>
@@ -817,9 +820,9 @@
 
       <!-- Dashboard Screen -->
       <div id="adminDashboard" class="hidden flex flex-col h-full overflow-hidden">
-        <div class="p-6 border-b border-slate-200 flex items-center justify-between">
+        <div class="p-4 sm:p-6 border-b border-slate-200 flex items-center justify-between">
           <div>
-            <h3 class="text-lg font-extrabold text-slate-900">Tableau de Bord des Inscriptions</h3>
+            <h3 class="text-base sm:text-lg font-extrabold text-slate-900">Tableau de Bord des Inscriptions</h3>
             <p class="text-xs text-slate-500"><span id="adminTotalCount">0</span> inscription(s) enregistrée(s)</p>
           </div>
           <div class="flex items-center gap-2">
@@ -836,7 +839,7 @@
           </div>
         </div>
 
-        <div class="p-4 border-b border-slate-100">
+        <div class="p-3 sm:p-4 border-b border-slate-100">
           <input type="text" id="adminSearch" class="pro-input" placeholder="Rechercher par nom, email, whatsapp ou formation...">
         </div>
 
@@ -859,8 +862,8 @@
 
   <!-- SCRIPTS MODULAIRES JS -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase.js?v=20261004_HERO"></script>
-  <script src="base_donnees.js?v=20261004_HERO"></script>
-  <script src="main.js?v=20261004_HERO"></script>
+  <script src="supabase.js?v=20261004_MOBILE"></script>
+  <script src="base_donnees.js?v=20261004_MOBILE"></script>
+  <script src="main.js?v=20261004_MOBILE"></script>
 </body>
 </html>

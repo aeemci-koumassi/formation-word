@@ -1,6 +1,6 @@
 /**
  * Script Principal d'Interface & Interactions (main.js)
- * Formation Pratique Microsoft Word — AEEMCI Koumassi
+ * Double Formation Pratique : Bases Excel & Prompt Engineering — AEEMCI Koumassi
  * Gestion de la capacité (150 places max), Liste d'Attente & Contrôle Anti-Doublon
  */
 
@@ -69,24 +69,24 @@ document.addEventListener('DOMContentLoaded', async () => {
   window.downloadICS = function() {
     const pad = n => String(n).padStart(2, '0');
     const fmt = d => `${d.getUTCFullYear()}${pad(d.getUTCMonth()+1)}${pad(d.getUTCDate())}T${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}00Z`;
-    const start = new Date('2026-09-18T20:00:00Z');
-    const end = new Date('2026-09-20T22:00:00Z');
+    const start = new Date('2026-10-04T08:00:00Z');
+    const end = new Date('2026-10-04T12:00:00Z');
     const ics = [
-      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//AEEMCI Koumassi//Formation Word//FR',
+      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//AEEMCI Koumassi//Double Formation Excel IA//FR',
       'BEGIN:VEVENT',
       `UID:${Date.now()}@aeemci-koumassi`,
       `DTSTAMP:${fmt(new Date())}`,
       `DTSTART:${fmt(start)}`,
       `DTEND:${fmt(end)}`,
-      'SUMMARY:Formation Pratique Microsoft Word (20h00) — AEEMCI Koumassi',
-      'DESCRIPTION:Formation gratuite pour élèves, étudiants et professionnels par Tall Seydou. Début chaque soir à 20h00 GMT en ligne.',
-      'LOCATION:En ligne — Webinaire',
+      'SUMMARY:Double Formation Pratique (Bases Excel & Prompt Engineering) — AEEMCI Koumassi',
+      'DESCRIPTION:Formation 100% gratuite par Djim Aboubacar Mikahillo (Bases Excel) et TUO Mamadou (Prompt Engineering). Début à 08h00 GMT.',
+      'LOCATION:Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi)',
       'END:VEVENT', 'END:VCALENDAR'
     ].join('\r\n');
     const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url; a.download = 'formation-word-aeemci-koumassi.ics';
+    a.href = url; a.download = 'double-formation-excel-ia-aeemci-koumassi.ics';
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
@@ -115,12 +115,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         capacityBadge.className = 'inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 font-semibold text-xs px-3 py-1.5 rounded-full border border-amber-200';
       }
       if (capacityDot) capacityDot.className = 'w-2 h-2 rounded-full bg-amber-500 animate-pulse';
-      if (formTitle) formTitle.textContent = "Inscription — Liste d'Attente";
-      if (formSubtitle) formSubtitle.textContent = "Les 150 places principales sont réservées. Votre inscription sera placée sur liste d'attente prioritaire.";
+      if (formTitle) formTitle.textContent = "Inscription — Liste d'Attente (Groupe 2)";
+      if (formSubtitle) formSubtitle.textContent = "Les 150 places du 1er groupe WhatsApp sont réservées. Votre inscription sera placée sur le 2ème groupe d'attente.";
       if (submitBtn) {
         submitBtn.className = 'w-full bg-amber-600 hover:bg-amber-700 text-white font-bold text-base py-3.5 rounded-2xl shadow-md luma-btn flex items-center justify-center gap-2 mt-2 transition-colors';
       }
-      if (submitLabel) submitLabel.textContent = "S'inscrire sur la Liste d'Attente";
+      if (submitLabel) submitLabel.textContent = "S'inscrire sur le Groupe 2 (Liste d'Attente)";
     } else {
       if (capacityText) capacityText.textContent = `Inscription Ouverte (${totalCount}/${MAX_CAPACITE} places)`;
       if (capacityBadge) {
@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
       if (capacityDot) capacityDot.className = 'w-2 h-2 rounded-full bg-lumaGreen animate-pulse';
       if (formTitle) formTitle.textContent = "Formulaire d'Inscription";
-      if (formSubtitle) formSubtitle.textContent = "100% gratuit · Ouvert aux élèves, étudiants et professionnels";
+      if (formSubtitle) formSubtitle.textContent = "100% gratuit · Dimanche 04 Octobre à 08h00 au Groupe Scolaire Sainte Thérèse";
       if (submitBtn) {
         submitBtn.className = 'w-full bg-lumaGreen hover:bg-lumaGreenDark text-white font-bold text-base py-3.5 rounded-2xl shadow-md luma-btn flex items-center justify-center gap-2 mt-2 transition-colors';
       }
@@ -154,7 +154,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       const email = document.getElementById('f-email').value.trim();
       const whatsapp = document.getElementById('f-whatsapp').value.trim();
       const statut = document.getElementById('f-statut').value;
-      const niveau = document.getElementById('f-niveau').value;
+      const formationElem = document.getElementById('f-formation');
+      const formation = formationElem ? formationElem.value : 'Les deux formations';
 
       let valid = true;
       if (nom.length < 2) { document.querySelector('.field-error[data-for="f-nom"]').classList.remove('hidden'); valid = false; }
@@ -169,13 +170,16 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (!statut) { document.querySelector('.field-error[data-for="f-statut"]').classList.remove('hidden'); valid = false; }
       else { document.querySelector('.field-error[data-for="f-statut"]').classList.add('hidden'); }
 
+      if (!formation) { document.querySelector('.field-error[data-for="f-formation"]').classList.remove('hidden'); valid = false; }
+      else if (document.querySelector('.field-error[data-for="f-formation"]')) { document.querySelector('.field-error[data-for="f-formation"]').classList.add('hidden'); }
+
       if (!valid) return;
 
       submitBtn.disabled = true;
       submitLabel.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Validation de l\'inscription...';
 
       const entry = {
-        nom, email, whatsapp, statut, niveau,
+        nom, email, whatsapp, statut, formation,
         date: new Date().toISOString()
       };
 
@@ -209,14 +213,14 @@ document.addEventListener('DOMContentLoaded', async () => {
           confirmIcon.className = "fa-solid fa-user-check";
         }
         if (confirmText) {
-          confirmText.innerHTML = `Bonjour <strong>${nom}</strong>, votre inscription pour la <strong>Formation Pratique Microsoft Word</strong> est déjà validée et bien enregistrée. Vous pouvez intégrer le groupe WhatsApp ci-dessous.`;
+          confirmText.innerHTML = `Bonjour <strong>${nom}</strong>, votre inscription pour la <strong>Double Formation Pratique (Excel & Prompt Engineering)</strong> du Dimanche 04 Octobre à 08h00 est déjà enregistrée. Vous pouvez intégrer le groupe WhatsApp ci-dessous.`;
         }
         if (res.estAttente) {
           targetWhatsappLink = WHATSAPP_LINK_ATTENTE;
           if (joinWhatsappBtn) {
             joinWhatsappBtn.href = WHATSAPP_LINK_ATTENTE;
             const spanBtn = joinWhatsappBtn.querySelector('span');
-            if (spanBtn) spanBtn.textContent = "Rejoindre le Groupe WhatsApp (Liste d'Attente)";
+            if (spanBtn) spanBtn.textContent = "Rejoindre le Groupe WhatsApp (Groupe 2 - Liste d'Attente)";
           }
         }
       } else if (res && res.estAttente) {
@@ -227,7 +231,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const confirmText = document.getElementById('confirm-text');
 
         if (confirmBadge) {
-          confirmBadge.textContent = "Inscription sur Liste d'Attente !";
+          confirmBadge.textContent = "Inscription enregistrée sur le Groupe 2 !";
           confirmBadge.className = "text-xs text-amber-700 font-extrabold uppercase tracking-widest bg-amber-50 px-3 py-1 rounded-full border border-amber-200";
         }
         if (confirmIconBox) {
@@ -237,18 +241,18 @@ document.addEventListener('DOMContentLoaded', async () => {
           confirmIcon.className = "fa-solid fa-clock-rotate-left";
         }
         if (confirmText) {
-          confirmText.innerHTML = `Les 150 places principales étant réservées, votre inscription a été enregistrée sur notre <strong>liste d'attente prioritaire</strong>. Veuillez intégrer le groupe WhatsApp ci-dessous pour rester informé(e).`;
+          confirmText.innerHTML = `Le 1er groupe WhatsApp ayant atteint 150 personnes, votre inscription est validée sur notre <strong>2ème groupe WhatsApp</strong>. Rendez-vous le Dimanche 04 Octobre à 08h00 au Groupe Scolaire Sainte Thérèse.`;
         }
         if (joinWhatsappBtn) {
           joinWhatsappBtn.href = WHATSAPP_LINK_ATTENTE;
           const spanBtn = joinWhatsappBtn.querySelector('span');
-          if (spanBtn) spanBtn.textContent = "Rejoindre le Groupe WhatsApp (Liste d'Attente)";
+          if (spanBtn) spanBtn.textContent = "Rejoindre le Groupe WhatsApp (Groupe 2)";
         }
       } else {
         if (joinWhatsappBtn) {
           joinWhatsappBtn.href = WHATSAPP_LINK_PRINCIPAL;
           const spanBtn = joinWhatsappBtn.querySelector('span');
-          if (spanBtn) spanBtn.textContent = "Rejoindre le Groupe WhatsApp Officiel";
+          if (spanBtn) spanBtn.textContent = "Rejoindre le Groupe WhatsApp Officiel (Groupe 1)";
         }
       }
 
@@ -352,7 +356,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           <td>${item.email || ''}</td>
           <td class="font-mono text-lumaGreen font-semibold">${item.whatsapp || ''}</td>
           <td><span class="${badgeStyle} px-2 py-0.5 rounded text-[11px] font-semibold">${item.statut || 'Participant'}</span></td>
-          <td>${item.niveau || 'Débutant'}</td>
+          <td class="font-semibold text-gray-700">${item.niveau || item.formation || 'Les deux formations'}</td>
           <td>${(item.created_at || item.date) ? new Date(item.created_at || item.date).toLocaleString('fr-FR') : ''}</td>
         </tr>
       `;
@@ -401,7 +405,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         (item.nom || '').toLowerCase().includes(q) ||
         (item.email || '').toLowerCase().includes(q) ||
         (item.whatsapp || '').toLowerCase().includes(q) ||
-        (item.statut || '').toLowerCase().includes(q)
+        (item.statut || '').toLowerCase().includes(q) ||
+        (item.niveau || item.formation || '').toLowerCase().includes(q)
       );
       renderAdminTable(filtered);
     });
@@ -411,12 +416,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (adminExportBtn) {
     adminExportBtn.addEventListener('click', () => {
       if (cachedList.length === 0) return;
-      const headers = ['Nom & Prénoms', 'Email', 'WhatsApp', 'Statut', 'Niveau', 'Date'];
-      const rows = cachedList.map(e => [e.nom, e.email, e.whatsapp, e.statut, e.niveau, e.created_at || e.date]);
+      const headers = ['Nom & Prénoms', 'Email', 'WhatsApp', 'Statut', 'Formation Choisie', 'Date'];
+      const rows = cachedList.map(e => [e.nom, e.email, e.whatsapp, e.statut, e.niveau || e.formation, e.created_at || e.date]);
       const csv = [headers, ...rows].map(row => row.map(cell => `"${String(cell || '').replace(/"/g, '""')}"`).join(';')).join('\n');
       const blob = new Blob(['\uFEFF' + csv], { type: 'text/charset=utf-8;' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = `inscriptions_formation_word_aeemci_${new Date().toISOString().slice(0,10)}.csv`;
+      const a = document.createElement('a'); a.href = url; a.download = `inscriptions_double_formation_aeemci_${new Date().toISOString().slice(0,10)}.csv`;
       document.body.appendChild(a); a.click(); document.body.removeChild(a);
       URL.revokeObjectURL(url);
     });

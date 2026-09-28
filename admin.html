@@ -6,7 +6,7 @@
 <title>Tableau de Bord Administrateur — AEEMCI Koumassi</title>
 
 <!-- Favicon -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23008751'/%3E%3Ctext x='50' y='68' font-size='55' font-family='Arial,sans-serif' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'%3EW%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23008751'/%3E%3Ctext x='50' y='68' font-size='55' font-family='Arial,sans-serif' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'%3EE%3C/text%3E%3C/svg%3E">
 
 <!-- FontAwesome 6 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -55,10 +55,12 @@
   <header class="bg-white border-b border-gray-200 sticky top-0 z-30">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-xl bg-lumaGreen text-white flex items-center justify-center font-bold text-lg shadow-sm">W</div>
+        <div class="w-9 h-9 rounded-xl bg-lumaGreen text-white flex items-center justify-center font-bold text-lg shadow-sm">
+          <i class="fa-solid fa-graduation-cap text-sm"></i>
+        </div>
         <div>
           <h1 class="font-bold text-sm sm:text-base text-lumaText leading-tight">AEEMCI Koumassi — Espace Organisateur</h1>
-          <p class="text-[11px] text-lumaMuted">Formation Pratique Microsoft Word 2026</p>
+          <p class="text-[11px] text-lumaMuted">Double Formation Excel & Prompt Engineering 2026</p>
         </div>
       </div>
       <a href="index.html" class="text-xs text-lumaMuted hover:text-lumaGreen font-semibold flex items-center gap-1.5 bg-gray-50 px-3.5 py-2 rounded-xl border border-gray-200 transition-colors">
@@ -99,11 +101,11 @@
           <span id="statTotal" class="text-3xl font-extrabold text-lumaGreen mt-1 block">0</span>
         </div>
         <div class="bg-white p-5 rounded-2xl border border-gray-200 luma-shadow">
-          <span class="text-xs font-semibold text-lumaMuted uppercase block">Places (Max 150)</span>
+          <span class="text-xs font-semibold text-lumaMuted uppercase block">Groupe 1 (Max 150)</span>
           <span id="statPrincipales" class="text-3xl font-extrabold text-blue-600 mt-1 block">0/150</span>
         </div>
         <div class="bg-white p-5 rounded-2xl border border-gray-200 luma-shadow">
-          <span class="text-xs font-semibold text-lumaMuted uppercase block">Liste d'Attente</span>
+          <span class="text-xs font-semibold text-lumaMuted uppercase block">Groupe 2 (Attente)</span>
           <span id="statAttente" class="text-3xl font-extrabold text-amber-600 mt-1 block">0</span>
         </div>
         <div class="bg-white p-5 rounded-2xl border border-gray-200 luma-shadow">
@@ -122,7 +124,7 @@
         <!-- TOOLBAR -->
         <div class="p-4 sm:p-6 border-b border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div class="w-full sm:w-80">
-            <input type="text" id="searchInput" class="luma-input" placeholder="Rechercher par nom, email, whatsapp...">
+            <input type="text" id="searchInput" class="luma-input" placeholder="Rechercher par nom, email, whatsapp, formation...">
           </div>
 
           <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
@@ -145,7 +147,7 @@
                 <th>Adresse Email</th>
                 <th>WhatsApp</th>
                 <th>Statut</th>
-                <th>Niveau Word</th>
+                <th>Formation Choisie</th>
                 <th>Date d'inscription</th>
               </tr>
             </thead>
@@ -170,7 +172,7 @@
   </main>
 
   <!-- JAVASCRIPT LOGIC -->
-  <script src="base_donnees.js?v=25"></script>
+  <script src="base_donnees.js?v=20261004"></script>
   <script>
     const ADMIN_PASS = "aeemci2026";
     let allInscriptions = [];
@@ -230,12 +232,11 @@
 
     function updateStats(list) {
       const dbCount = list.length;
-      const totalReel = dbCount + 36;
-      const attenteCount = Math.max(0, totalReel - 150);
-      const principalesCount = 150;
+      const attenteCount = Math.max(0, dbCount - 150);
+      const principalesCount = Math.min(150, dbCount);
 
-      document.getElementById('statTotal').textContent = totalReel;
-      document.getElementById('statPrincipales').textContent = `150/150 (Complet)`;
+      document.getElementById('statTotal').textContent = dbCount;
+      document.getElementById('statPrincipales').textContent = `${principalesCount}/150`;
       document.getElementById('statAttente').textContent = attenteCount;
       document.getElementById('statElevesEtudiants').textContent = list.filter(i => {
         const s = (i.statut || '').toLowerCase();
@@ -265,7 +266,7 @@
             <td class="text-gray-600">${escapeHtml(item.email || '')}</td>
             <td class="font-mono font-semibold text-lumaGreen">${escapeHtml(item.whatsapp || '')}</td>
             <td><span class="${badgeStyle} px-2.5 py-1 rounded-full text-xs">${escapeHtml(item.statut || 'Participant')}</span></td>
-            <td class="text-gray-700">${escapeHtml(item.niveau || 'Débutant')}</td>
+            <td class="text-gray-700 font-medium">${escapeHtml(item.niveau || item.formation || 'Les deux formations')}</td>
             <td class="text-xs text-gray-500">${(item.created_at || item.date) ? new Date(item.created_at || item.date).toLocaleString('fr-FR') : 'Récemment'}</td>
           </tr>
         `;
@@ -283,7 +284,8 @@
       const filtered = allInscriptions.filter(item =>
         (item.nom || '').toLowerCase().includes(q) ||
         (item.email || '').toLowerCase().includes(q) ||
-        (item.whatsapp || '').toLowerCase().includes(q)
+        (item.whatsapp || '').toLowerCase().includes(q) ||
+        (item.niveau || item.formation || '').toLowerCase().includes(q)
       );
       renderTable(filtered);
     });
@@ -292,12 +294,12 @@
 
     exportBtn.addEventListener('click', () => {
       if (allInscriptions.length === 0) return;
-      const headers = ['#', 'Nom & Prénoms', 'Email', 'WhatsApp', 'Statut', 'Niveau', 'Date'];
-      const rows = allInscriptions.map((e, idx) => [idx + 1, e.nom, e.email, e.whatsapp, e.statut, e.niveau, e.created_at || e.date]);
+      const headers = ['#', 'Nom & Prénoms', 'Email', 'WhatsApp', 'Statut', 'Formation Choisie', 'Date'];
+      const rows = allInscriptions.map((e, idx) => [idx + 1, e.nom, e.email, e.whatsapp, e.statut, e.niveau || e.formation, e.created_at || e.date]);
       const csv = [headers, ...rows].map(row => row.map(cell => `"${String(cell || '').replace(/"/g, '""')}"`).join(';')).join('\n');
       const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = `inscriptions_word_aeemci_${new Date().toISOString().slice(0,10)}.csv`;
+      const a = document.createElement('a'); a.href = url; a.download = `inscriptions_excel_ia_aeemci_${new Date().toISOString().slice(0,10)}.csv`;
       document.body.appendChild(a); a.click(); document.body.removeChild(a);
       URL.revokeObjectURL(url);
     });

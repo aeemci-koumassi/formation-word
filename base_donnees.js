@@ -1,16 +1,15 @@
 /**
  * MODULE BASE DE DONNÉES HYBRIDE (SUPABASE CLOUD + FORMSPREE)
- * Projet : Formation Microsoft Word (AEEMCI Koumassi)
- * Statut : Groupe 1 FERMÉ (151+ membres) -> Liste d'Attente & 2ème groupe WhatsApp VERROUILLÉ EN DIRECT
+ * Projet : Double Formation Excel & Prompt Engineering (AEEMCI Koumassi)
+ * Statut : Basculement automatique au 2ème groupe WhatsApp dès atteinte de 150 personnes
  */
 
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/xljezjko";
 const SUPABASE_REST_URL = "https://iktoigkruredsudprndu.supabase.co/rest/v1/inscriptions_word";
 const SUPABASE_KEY = "sb_publishable_NY-DqlKRgy_IxSoYluUgLQ_eLcoUQbv";
-const LOCAL_STORAGE_KEY = 'aeemci_inscriptions_word_list';
+const LOCAL_STORAGE_KEY = 'aeemci_inscriptions_excel_ia_list';
 
 const MAX_CAPACITE = 150;
-const GROUPE1_FERME = true; // Forcer la fermeture du 1er groupe (151+ membres atteints)
 
 function genererCodeTicket() {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -18,7 +17,7 @@ function genererCodeTicket() {
     for (let i = 0; i < 6; i++) {
         code += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-    return `TKT-WORD-${code}`;
+    return `TKT-EXCEL-IA-${code}`;
 }
 
 /**
@@ -60,20 +59,19 @@ async function recupererInscriptions() {
 }
 
 /**
- * Compte le nombre d'inscrits (Forcé à >= 151 car le 1er groupe est plein).
+ * Compte le nombre d'inscrits réels.
  */
 async function obtenirNombreInscrits() {
     try {
         const list = await recupererInscriptions();
-        const dbCount = Array.isArray(list) ? list.length : 0;
-        return Math.max(151, dbCount + 36);
+        return Array.isArray(list) ? list.length : 0;
     } catch (e) {
-        return 151;
+        return 0;
     }
 }
 
 /**
- * Enregistre un nouvel inscrit avec basculement automatique et obligatoire sur la Liste d'Attente.
+ * Enregistre un nouvel inscrit avec gestion de la capacité (150 places) et basculement automatique.
  */
 async function ajouterInscription(entry) {
     const list = await recupererInscriptions();
@@ -88,18 +86,18 @@ async function ajouterInscription(entry) {
         return (cleanEmail && itemEmail === cleanEmail) || (cleanPhone && cleanPhone.length >= 8 && itemPhone === cleanPhone);
     });
 
+    const totalCurrent = list.length;
+    const estAttente = totalCurrent >= MAX_CAPACITE;
+
     if (existant) {
         console.log("ℹ️ Inscription déjà enregistrée (Doublon bloqué) :", existant);
         return { 
             success: true, 
             estDoublon: true, 
-            estAttente: true,
+            estAttente: estAttente,
             existingRecord: existant 
         };
     }
-
-    const totalCurrent = await obtenirNombreInscrits();
-    const estAttente = true; // Groupe 1 est fermé, tous les nouveaux vont sur Liste d'attente
 
     const ticketCode = entry.ticket_code || genererCodeTicket();
     const record = {
@@ -107,8 +105,8 @@ async function ajouterInscription(entry) {
         nom: entry.nom,
         email: entry.email,
         whatsapp: entry.whatsapp,
-        statut: `${entry.statut} (Liste d'attente)`,
-        niveau: entry.niveau
+        statut: estAttente ? `${entry.statut} (Liste d'attente)` : entry.statut,
+        niveau: entry.formation || entry.niveau || 'Les deux formations'
     };
 
     // 1. Sauvegarde locale de confort (Cache)
@@ -116,7 +114,7 @@ async function ajouterInscription(entry) {
         if (typeof localStorage !== 'undefined') {
             const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
             const current = raw ? JSON.parse(raw) : [];
-            current.unshift({ ...record, is_attente: true, date: entry.date || new Date().toISOString() });
+            current.unshift({ ...record, is_attente: estAttente, date: entry.date || new Date().toISOString() });
             localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(current));
         }
     } catch (e) {
@@ -142,14 +140,14 @@ async function ajouterInscription(entry) {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({ ...record, type_inscription: "Liste d'attente (Groupe 2)" })
+            body: JSON.stringify({ ...record, type_inscription: estAttente ? "Liste d'attente (Groupe 2)" : "Groupe Principal (Groupe 1)" })
         }).catch(err => console.error("Erreur Formspree:", err))
     ];
 
     await Promise.allSettled(promises);
-    return { success: true, estDoublon: false, estAttente: true, totalCount: totalCurrent + 1 };
+    return { success: true, estDoublon: false, estAttente: estAttente, totalCount: totalCurrent + 1 };
 }
 
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { recupererInscriptions, obtenirNombreInscrits, ajouterInscription, genererCodeTicket, MAX_CAPACITE, GROUPE1_FERME };
+    module.exports = { recupererInscriptions, obtenirNombreInscrits, ajouterInscription, genererCodeTicket, MAX_CAPACITE };
 }

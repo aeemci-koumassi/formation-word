@@ -122,12 +122,20 @@
       <div class="bg-white rounded-3xl border border-gray-200 luma-shadow-lg overflow-hidden flex flex-col">
         
         <!-- TOOLBAR -->
-        <div class="p-4 sm:p-6 border-b border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div class="w-full sm:w-80">
-            <input type="text" id="searchInput" class="luma-input" placeholder="Rechercher par nom, email, whatsapp, formation...">
+        <div class="p-4 sm:p-6 border-b border-gray-100 flex flex-col lg:flex-row items-center justify-between gap-4">
+          <div class="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
+            <!-- SESSION SELECTOR -->
+            <select id="sessionFilter" class="luma-input font-bold text-xs text-lumaGreen border-lumaGreen/40 bg-emerald-50/60 cursor-pointer w-full sm:w-auto shadow-sm">
+              <option value="new" selected>🎯 Session du 04 Octobre 2026 (Excel & Prompt)</option>
+              <option value="all">📂 Toutes les sessions (Historique Word inclut)</option>
+            </select>
+
+            <div class="w-full sm:w-64">
+              <input type="text" id="searchInput" class="luma-input text-xs" placeholder="Rechercher par nom, email, whatsapp...">
+            </div>
           </div>
 
-          <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+          <div class="flex items-center gap-2 w-full lg:w-auto justify-end">
             <button id="refreshBtn" class="bg-gray-100 hover:bg-gray-200 text-lumaText font-bold text-xs px-4 py-3 rounded-xl transition-colors flex items-center gap-2">
               <i class="fa-solid fa-rotate text-sm"></i> Actualiser
             </button>
@@ -161,7 +169,7 @@
 
           <div id="emptyState" class="py-12 text-center text-gray-400 text-xs hidden">
             <i class="fa-solid fa-folder-open text-3xl mb-2 text-gray-300"></i>
-            <p>Aucune inscription trouvée.</p>
+            <p>Aucune inscription trouvée pour cette sélection.</p>
           </div>
         </div>
 
@@ -172,10 +180,11 @@
   </main>
 
   <!-- JAVASCRIPT LOGIC -->
-  <script src="base_donnees.js?v=20261004"></script>
+  <script src="base_donnees.js?v=20261004_v2"></script>
   <script>
     const ADMIN_PASS = "aeemci2026";
-    let allInscriptions = [];
+    let rawInscriptions = [];
+    let currentSessionInscriptions = [];
 
     const loginCard = document.getElementById('loginCard');
     const dashboardCard = document.getElementById('dashboardCard');
@@ -186,6 +195,7 @@
     const emptyState = document.getElementById('emptyState');
     const loadingState = document.getElementById('loadingState');
     const searchInput = document.getElementById('searchInput');
+    const sessionFilter = document.getElementById('sessionFilter');
     const refreshBtn = document.getElementById('refreshBtn');
     const exportBtn = document.getElementById('exportBtn');
 
@@ -220,14 +230,45 @@
       tableBody.innerHTML = '';
 
       if (typeof recupererInscriptions === 'function') {
-        allInscriptions = await recupererInscriptions();
+        rawInscriptions = await recupererInscriptions();
       } else {
-        allInscriptions = [];
+        rawInscriptions = [];
       }
 
       loadingState.classList.add('hidden');
-      renderTable(allInscriptions);
-      updateStats(allInscriptions);
+      applyFilterAndRender();
+    }
+
+    function applyFilterAndRender() {
+      const mode = sessionFilter ? sessionFilter.value : 'new';
+      
+      // Filtrage par session
+      if (mode === 'new') {
+        currentSessionInscriptions = rawInscriptions.filter(item => {
+          if (typeof estInscriptionNouvelleSession === 'function') {
+            return estInscriptionNouvelleSession(item);
+          }
+          const f = (item.niveau || item.formation || '').toLowerCase();
+          const dateStr = item.created_at || item.date;
+          return f.includes('excel') || f.includes('prompt') || f.includes('deux') || (dateStr && new Date(dateStr) >= new Date('2026-09-28T00:00:00Z'));
+        });
+      } else {
+        currentSessionInscriptions = [...rawInscriptions];
+      }
+
+      // Mise à jour des cartes de statistiques de la session choisie
+      updateStats(currentSessionInscriptions);
+
+      // Filtrage supplémentaire par terme de recherche
+      const q = searchInput.value.toLowerCase().trim();
+      const filtered = currentSessionInscriptions.filter(item =>
+        (item.nom || '').toLowerCase().includes(q) ||
+        (item.email || '').toLowerCase().includes(q) ||
+        (item.whatsapp || '').toLowerCase().includes(q) ||
+        (item.niveau || item.formation || '').toLowerCase().includes(q)
+      );
+
+      renderTable(filtered);
     }
 
     function updateStats(list) {
@@ -279,27 +320,20 @@
       });
     }
 
-    searchInput.addEventListener('input', (e) => {
-      const q = e.target.value.toLowerCase().trim();
-      const filtered = allInscriptions.filter(item =>
-        (item.nom || '').toLowerCase().includes(q) ||
-        (item.email || '').toLowerCase().includes(q) ||
-        (item.whatsapp || '').toLowerCase().includes(q) ||
-        (item.niveau || item.formation || '').toLowerCase().includes(q)
-      );
-      renderTable(filtered);
-    });
-
+    searchInput.addEventListener('input', () => applyFilterAndRender());
+    sessionFilter.addEventListener('change', () => applyFilterAndRender());
     refreshBtn.addEventListener('click', () => loadData());
 
     exportBtn.addEventListener('click', () => {
-      if (allInscriptions.length === 0) return;
+      if (currentSessionInscriptions.length === 0) return;
       const headers = ['#', 'Nom & Prénoms', 'Email', 'WhatsApp', 'Statut', 'Formation Choisie', 'Date'];
-      const rows = allInscriptions.map((e, idx) => [idx + 1, e.nom, e.email, e.whatsapp, e.statut, e.niveau || e.formation, e.created_at || e.date]);
+      const rows = currentSessionInscriptions.map((e, idx) => [idx + 1, e.nom, e.email, e.whatsapp, e.statut, e.niveau || e.formation, e.created_at || e.date]);
       const csv = [headers, ...rows].map(row => row.map(cell => `"${String(cell || '').replace(/"/g, '""')}"`).join(';')).join('\n');
       const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = `inscriptions_excel_ia_aeemci_${new Date().toISOString().slice(0,10)}.csv`;
+      const a = document.createElement('a'); a.href = url;
+      const sessionLabel = sessionFilter.value === 'new' ? 'oct2026' : 'complet';
+      a.download = `inscriptions_aeemci_${sessionLabel}_${new Date().toISOString().slice(0,10)}.csv`;
       document.body.appendChild(a); a.click(); document.body.removeChild(a);
       URL.revokeObjectURL(url);
     });

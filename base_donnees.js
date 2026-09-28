@@ -59,6 +59,17 @@ async function recupererInscriptions() {
 }
 
 /**
+ * Vérifie si une inscription appartient à la NOUVELLE formation (04 Octobre 2026).
+ */
+function estInscriptionNouvelleSession(item) {
+    if (!item) return false;
+    const f = (item.niveau || item.formation || '').toLowerCase();
+    const dateStr = item.created_at || item.date;
+    const isNewDate = dateStr && new Date(dateStr) >= new Date('2026-09-28T00:00:00Z');
+    return f.includes('excel') || f.includes('prompt') || f.includes('deux') || isNewDate;
+}
+
+/**
  * Compte uniquement les inscrits de la NOUVELLE formation (Excel & Prompt Engineering - Octobre 2026).
  */
 async function obtenirNombreInscrits() {
@@ -67,14 +78,7 @@ async function obtenirNombreInscrits() {
         if (!Array.isArray(list)) return 0;
         
         // Filtre les inscriptions liées à la nouvelle formation
-        const countNew = list.filter(item => {
-            const f = (item.niveau || item.formation || '').toLowerCase();
-            const dateStr = item.created_at || item.date;
-            const isNewDate = dateStr && new Date(dateStr) >= new Date('2026-09-28T00:00:00Z');
-            return f.includes('excel') || f.includes('prompt') || f.includes('deux') || isNewDate;
-        }).length;
-
-        return countNew;
+        return list.filter(estInscriptionNouvelleSession).length;
     } catch (e) {
         return 0;
     }

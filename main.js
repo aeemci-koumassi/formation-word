@@ -1,12 +1,12 @@
 /**
  * Script Principal d'Interface & Interactions (main.js)
  * Double Formation Pratique : Bases Excel & Prompt Engineering — AEEMCI Koumassi
- * Mode Inscription Directe (Sans lien WhatsApp)
+ * Inscriptions Ouvertes pour l'événement du Dimanche 04 Octobre 2026 à 08h00 GMT
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
 
-  const MAX_CAPACITE = 150;
+  const MAX_CAPACITE = 300;
 
   /* ---------- COUNTDOWN TIMER (CHRONO PRO) ---------- */
   function initCountdown() {
@@ -125,10 +125,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     calendarBtn2.addEventListener('click', downloadICS);
   }
 
-  /* ---------- GESTION DE LA CAPACITÉ & AFFICHAGE ---------- */
+  /* ---------- GESTION DE LA CAPACITÉ & AFFICHAGE (INSCRIPTIONS OUVERTES) ---------- */
   async function mettreAJourAffichageCapacite() {
-    if (typeof obtenirNombreInscrits !== 'function') return;
-    const totalCount = await obtenirNombreInscrits();
+    let totalCount = 0;
+    if (typeof obtenirNombreInscrits === 'function') {
+      totalCount = await obtenirNombreInscrits();
+    }
     
     const capacityText = document.getElementById('capacity-text');
     const capacityBadge = document.getElementById('capacity-badge');
@@ -138,31 +140,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     const submitBtn = document.getElementById('submitBtn');
     const submitLabel = document.getElementById('submitLabel');
 
-    if (totalCount >= MAX_CAPACITE) {
-      if (capacityText) capacityText.textContent = `${totalCount}/${MAX_CAPACITE} places — Inscriptions Clôturées`;
-      if (capacityBadge) {
-        capacityBadge.className = 'inline-flex items-center gap-2 bg-amber-50 text-amber-700 font-bold text-xs px-4 py-2 rounded-full border border-amber-200';
-      }
-      if (capacityDot) capacityDot.className = 'w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse';
-      if (formTitle) formTitle.textContent = "Inscriptions Complètes";
-      if (formSubtitle) formSubtitle.textContent = "La capacité maximale de la salle a été atteinte.";
-      if (submitBtn) {
-        submitBtn.className = 'w-full bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-base py-4 rounded-2xl shadow-lg pro-btn flex items-center justify-center gap-3 mt-4 transition-all';
-      }
-      if (submitLabel) submitLabel.textContent = "S'inscrire sur la Liste d'Attente";
-    } else {
-      if (capacityText) capacityText.textContent = `Inscriptions Ouvertes (${totalCount}/${MAX_CAPACITE} places)`;
-      if (capacityBadge) {
-        capacityBadge.className = 'inline-flex items-center gap-2 bg-emerald-50 text-brandGreen font-bold text-xs px-4 py-2 rounded-full border border-emerald-200';
-      }
-      if (capacityDot) capacityDot.className = 'w-2.5 h-2.5 rounded-full bg-brandGreen animate-pulse';
-      if (formTitle) formTitle.textContent = "Formulaire d'Inscription Officiel";
-      if (formSubtitle) formSubtitle.textContent = "Dimanche 04 Octobre 2026 à 08h00 GMT · Groupe Scolaire Sainte Thérèse";
-      if (submitBtn) {
-        submitBtn.className = 'w-full bg-brandGreen hover:bg-brandGreenDark text-white font-extrabold text-base py-4 rounded-2xl shadow-lg pro-btn flex items-center justify-center gap-3 mt-4 transition-all';
-      }
-      if (submitLabel) submitLabel.textContent = "Valider mon inscription";
+    if (capacityText) capacityText.textContent = `Inscriptions Ouvertes (${totalCount}/150 places)`;
+    if (capacityBadge) {
+      capacityBadge.className = 'inline-flex items-center gap-2 bg-emerald-50 text-brandGreen font-bold text-xs px-4 py-2 rounded-full border border-emerald-200';
     }
+    if (capacityDot) capacityDot.className = 'w-2.5 h-2.5 rounded-full bg-brandGreen animate-pulse';
+    if (formTitle) formTitle.textContent = "Formulaire d'Inscription Officiel";
+    if (formSubtitle) formSubtitle.textContent = "Dimanche 04 Octobre 2026 à 08h00 GMT · Groupe Scolaire Sainte Thérèse";
+    if (submitBtn) {
+      submitBtn.className = 'w-full bg-brandGreen hover:bg-brandGreenDark text-white font-extrabold text-base py-4 rounded-2xl shadow-lg pro-btn flex items-center justify-center gap-3 mt-4 transition-all';
+    }
+    if (submitLabel) submitLabel.textContent = "Valider mon inscription";
   }
 
   // Initialisation de la capacité au chargement
@@ -263,6 +251,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       form.classList.add('hidden');
       confirmationBloc.classList.remove('hidden');
+
+      await mettreAJourAffichageCapacite();
     });
   }
 

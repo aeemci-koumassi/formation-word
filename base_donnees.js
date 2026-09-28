@@ -1,7 +1,7 @@
 /**
  * MODULE BASE DE DONNÉES HYBRIDE (SUPABASE CLOUD + FORMSPREE)
  * Projet : Double Formation Excel & Prompt Engineering (AEEMCI Koumassi)
- * Statut : Mode Inscription Directe (Sans lien de groupe WhatsApp)
+ * Statut : Inscriptions Ouvertes pour la nouvelle formation du 04 Octobre
  */
 
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/xljezjko";
@@ -9,7 +9,7 @@ const SUPABASE_REST_URL = "https://iktoigkruredsudprndu.supabase.co/rest/v1/insc
 const SUPABASE_KEY = "sb_publishable_NY-DqlKRgy_IxSoYluUgLQ_eLcoUQbv";
 const LOCAL_STORAGE_KEY = 'aeemci_inscriptions_excel_ia_list';
 
-const MAX_CAPACITE = 150;
+const MAX_CAPACITE = 300;
 
 function genererCodeTicket() {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -59,12 +59,22 @@ async function recupererInscriptions() {
 }
 
 /**
- * Compte le nombre d'inscrits réels.
+ * Compte uniquement les inscrits de la NOUVELLE formation (Excel & Prompt Engineering - Octobre 2026).
  */
 async function obtenirNombreInscrits() {
     try {
         const list = await recupererInscriptions();
-        return Array.isArray(list) ? list.length : 0;
+        if (!Array.isArray(list)) return 0;
+        
+        // Filtre les inscriptions liées à la nouvelle formation
+        const countNew = list.filter(item => {
+            const f = (item.niveau || item.formation || '').toLowerCase();
+            const dateStr = item.created_at || item.date;
+            const isNewDate = dateStr && new Date(dateStr) >= new Date('2026-09-28T00:00:00Z');
+            return f.includes('excel') || f.includes('prompt') || f.includes('deux') || isNewDate;
+        }).length;
+
+        return countNew;
     } catch (e) {
         return 0;
     }
@@ -86,7 +96,7 @@ async function ajouterInscription(entry) {
         return (cleanEmail && itemEmail === cleanEmail) || (cleanPhone && cleanPhone.length >= 8 && itemPhone === cleanPhone);
     });
 
-    const totalCurrent = list.length;
+    const totalCurrent = await obtenirNombreInscrits();
 
     if (existant) {
         console.log("ℹ️ Inscription déjà enregistrée (Doublon bloqué) :", existant);
@@ -138,7 +148,7 @@ async function ajouterInscription(entry) {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({ ...record, type_inscription: "Inscription Directe" })
+            body: JSON.stringify({ ...record, type_inscription: "Double Formation Excel & Prompt Engineering (04 Octobre)" })
         }).catch(err => console.error("Erreur Formspree:", err))
     ];
 

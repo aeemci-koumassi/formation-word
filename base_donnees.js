@@ -41,10 +41,11 @@ function parseSupabaseItem(item) {
  * Récupère uniquement la liste des inscrits de la NOUVELLE formation (04 Octobre 2026).
  */
 async function recupererInscriptions() {
-    // 1. Essai sur la table Supabase active (inscriptions_word)
+    // 1. Essai sur la table Supabase active (inscriptions_word) avec contournement strict du cache navigateur
     try {
-        const response = await fetch(`${SUPABASE_PRIMARY_URL}?select=*&created_at=gte.2026-09-28T00:00:00Z&order=created_at.desc`, {
+        const response = await fetch(`${SUPABASE_PRIMARY_URL}?select=*&created_at=gte.2026-09-28T00:00:00Z&order=created_at.desc&_t=${Date.now()}`, {
             method: 'GET',
+            cache: 'no-store',
             headers: {
                 'apikey': SUPABASE_KEY,
                 'Authorization': `Bearer ${SUPABASE_KEY}`,

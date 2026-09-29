@@ -179,6 +179,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       const email = document.getElementById('f-email').value.trim();
       const whatsapp = document.getElementById('f-whatsapp').value.trim();
       const statut = document.getElementById('f-statut').value;
+      const genreElem = document.getElementById('f-genre');
+      const genre = genreElem ? genreElem.value : '';
+      const ageElem = document.getElementById('f-age');
+      const age = ageElem ? ageElem.value.trim() : '';
+      const ordiElem = document.getElementById('f-ordi');
+      const ordi = ordiElem ? ordiElem.value : '';
+      const attentesElem = document.getElementById('f-attentes');
+      const attentes = attentesElem ? attentesElem.value.trim() : '';
       const formationElem = document.getElementById('f-formation');
       const formation = formationElem ? formationElem.value : 'Les deux formations';
 
@@ -195,16 +203,26 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (!statut) { document.querySelector('.field-error[data-for="f-statut"]').classList.remove('hidden'); valid = false; }
       else { document.querySelector('.field-error[data-for="f-statut"]').classList.add('hidden'); }
 
-      if (!formation) { document.querySelector('.field-error[data-for="f-formation"]').classList.remove('hidden'); valid = false; }
-      else if (document.querySelector('.field-error[data-for="f-formation"]')) { document.querySelector('.field-error[data-for="f-formation"]').classList.add('hidden'); }
+      if (!genre && document.querySelector('.field-error[data-for="f-genre"]')) { document.querySelector('.field-error[data-for="f-genre"]').classList.remove('hidden'); valid = false; }
+      else if (document.querySelector('.field-error[data-for="f-genre"]')) { document.querySelector('.field-error[data-for="f-genre"]').classList.add('hidden'); }
+
+      if (!age && document.querySelector('.field-error[data-for="f-age"]')) { document.querySelector('.field-error[data-for="f-age"]').classList.remove('hidden'); valid = false; }
+      else if (document.querySelector('.field-error[data-for="f-age"]')) { document.querySelector('.field-error[data-for="f-age"]').classList.add('hidden'); }
+
+      if (!ordi && document.querySelector('.field-error[data-for="f-ordi"]')) { document.querySelector('.field-error[data-for="f-ordi"]').classList.remove('hidden'); valid = false; }
+      else if (document.querySelector('.field-error[data-for="f-ordi"]')) { document.querySelector('.field-error[data-for="f-ordi"]').classList.add('hidden'); }
+
+      if (attentes.length < 3 && document.querySelector('.field-error[data-for="f-attentes"]')) { document.querySelector('.field-error[data-for="f-attentes"]').classList.remove('hidden'); valid = false; }
+      else if (document.querySelector('.field-error[data-for="f-attentes"]')) { document.querySelector('.field-error[data-for="f-attentes"]').classList.add('hidden'); }
 
       if (!valid) return;
 
       submitBtn.disabled = true;
-      submitLabel.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enregistrement de votre inscription...';
+      submitLabel.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Transmission de votre dossier...';
 
       const entry = {
-        nom, email, whatsapp, statut, formation,
+        nom, email, whatsapp, statut, genre, age, ordi, attentes, formation,
+        statut_validation: "Liste d'attente",
         date: new Date().toISOString()
       };
 
@@ -224,7 +242,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const confirmText = document.getElementById('confirm-text');
 
         if (confirmBadge) {
-          confirmBadge.textContent = "Inscription Déjà Enregistrée !";
+          confirmBadge.textContent = "Candidature Déjà Enregistrée !";
           confirmBadge.className = "text-xs text-blue-700 font-extrabold uppercase tracking-widest bg-blue-50 px-4 py-1.5 rounded-full border border-blue-200";
         }
         if (confirmIconBox) {
@@ -234,7 +252,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           confirmIcon.className = "fa-solid fa-user-check";
         }
         if (confirmText) {
-          confirmText.innerHTML = `Bonjour <strong>${nom}</strong>, votre inscription pour la <strong>Double Formation Pratique (Excel & Prompt Engineering)</strong> du Dimanche 04 Octobre à 08h00 au Groupe Scolaire Sainte Thérèse est déjà validée et enregistrée.`;
+          confirmText.innerHTML = `Bonjour <strong>${nom}</strong>, votre dossier de candidature pour la <strong>Double Formation Pratique (Excel & Prompt Engineering)</strong> du 04 Octobre à 08h00 au Groupe Scolaire Sainte Thérèse a déjà été transmis et est actuellement sous examen.`;
         }
       } else {
         const confirmBadge = document.getElementById('confirm-badge');
@@ -243,17 +261,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         const confirmText = document.getElementById('confirm-text');
 
         if (confirmBadge) {
-          confirmBadge.textContent = "Inscription Validée !";
-          confirmBadge.className = "text-xs text-brandGreen font-extrabold uppercase tracking-widest bg-emerald-50 px-4 py-1.5 rounded-full border border-emerald-200";
+          confirmBadge.textContent = "📋 Candidature en Liste d'Attente";
+          confirmBadge.className = "text-xs text-amber-700 font-extrabold uppercase tracking-widest bg-amber-50 px-4 py-1.5 rounded-full border border-amber-200";
         }
         if (confirmIconBox) {
-          confirmIconBox.className = "w-20 h-20 bg-emerald-100 text-brandGreen rounded-full flex items-center justify-center text-4xl mx-auto shadow-sm";
+          confirmIconBox.className = "w-20 h-20 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-4xl mx-auto shadow-sm border border-amber-200";
         }
         if (confirmIcon) {
-          confirmIcon.className = "fa-solid fa-circle-check";
+          confirmIcon.className = "fa-solid fa-clock";
         }
         if (confirmText) {
-          confirmText.innerHTML = `Votre inscription pour la <strong>Double Formation Pratique (Excel & Prompt Engineering)</strong> du <strong>Dimanche 04 Octobre 2026 à 08h00 GMT</strong> au <strong>Groupe Scolaire Sainte Thérèse</strong> a été enregistrée avec succès.`;
+          confirmText.innerHTML = `Votre candidature pour la <strong>Double Formation Pratique (Excel & Prompt Engineering)</strong> du <strong>Dimanche 04 Octobre 2026</strong> a été enregistrée avec succès et est sur <strong>liste d'attente</strong>.<br><br>L'équipe organisatrice examinera votre profil. Après validation, votre <strong>Reçu d'Inscription Officiel avec QR Code</strong> vous sera attribué pour accéder à la formation.`;
         }
       }
 

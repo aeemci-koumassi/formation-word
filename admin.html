@@ -150,13 +150,15 @@
           <table class="admin-table w-full">
             <thead class="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th class="w-12">#</th>
+                <th class="w-10">#</th>
                 <th>Nom & Prénoms</th>
-                <th>Adresse Email</th>
-                <th>WhatsApp</th>
-                <th>Statut</th>
-                <th>Formation Choisie</th>
-                <th>Date d'inscription</th>
+                <th>Genre / Âge</th>
+                <th>Contact</th>
+                <th>Ordinateur</th>
+                <th>Attentes & Motivations</th>
+                <th>Formation</th>
+                <th>Statut Dossier</th>
+                <th class="text-center">Action / Billet QR</th>
               </tr>
             </thead>
             <tbody id="tableBody" class="divide-y divide-gray-100"></tbody>
@@ -164,12 +166,12 @@
           
           <div id="loadingState" class="py-12 text-center text-gray-400 text-xs">
             <i class="fa-solid fa-spinner fa-spin text-2xl text-lumaGreen mb-2"></i>
-            <p>Chargement des inscriptions depuis Supabase Cloud...</p>
+            <p>Chargement des candidatures depuis Supabase Cloud...</p>
           </div>
 
           <div id="emptyState" class="py-12 text-center text-gray-400 text-xs hidden">
             <i class="fa-solid fa-folder-open text-3xl mb-2 text-gray-300"></i>
-            <p>Aucune inscription trouvée pour cette sélection.</p>
+            <p>Aucune candidature trouvée pour cette sélection.</p>
           </div>
         </div>
 
@@ -179,8 +181,79 @@
 
   </main>
 
+  <!-- MODAL REÇU D'INSCRIPTION & TICKET QR CODE -->
+  <div id="ticketModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden border border-slate-200 flex flex-col max-h-[90vh]">
+      
+      <!-- Modal Header -->
+      <div class="bg-slate-900 text-white p-4 sm:p-5 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold text-sm">
+            <i class="fa-solid fa-qrcode"></i>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-sm sm:text-base text-white">Reçu d'Inscription Officiel</h3>
+            <p class="text-[10px] text-slate-300">AEEMCI Koumassi · Double Formation 2026</p>
+          </div>
+        </div>
+        <button id="closeTicketBtn" class="text-slate-400 hover:text-white p-1 text-lg"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <!-- Ticket Printable Body -->
+      <div id="printableTicket" class="p-6 overflow-y-auto space-y-5 bg-gradient-to-b from-white to-slate-50">
+        
+        <!-- Pass Header Badge -->
+        <div class="border-2 border-emerald-500/30 bg-emerald-50/60 p-4 rounded-2xl text-center space-y-1 relative">
+          <span class="bg-emerald-600 text-white font-black text-[10px] uppercase tracking-widest px-3 py-0.5 rounded-full inline-block">
+            CANDIDATURE VALIDÉE · BILLET ACCÈS SALLE
+          </span>
+          <h4 id="t-nom" class="text-xl font-black text-slate-900 pt-1">---</h4>
+          <p id="t-code" class="text-xs font-mono font-bold text-emerald-700">TKT-EXCEL-IA-XXXXXX</p>
+        </div>
+
+        <!-- Details Grid -->
+        <div class="grid grid-cols-2 gap-3 text-xs">
+          <div class="bg-white p-3 rounded-xl border border-slate-200">
+            <span class="text-[10px] font-bold text-slate-400 block uppercase">Formation</span>
+            <span id="t-formation" class="font-extrabold text-slate-800 block">--</span>
+          </div>
+          <div class="bg-white p-3 rounded-xl border border-slate-200">
+            <span class="text-[10px] font-bold text-slate-400 block uppercase">Statut & Ordinateur</span>
+            <span id="t-statut" class="font-extrabold text-slate-800 block">--</span>
+          </div>
+          <div class="bg-white p-3 rounded-xl border border-slate-200">
+            <span class="text-[10px] font-bold text-slate-400 block uppercase">Date & Heure</span>
+            <span class="font-extrabold text-slate-800 block">Dim 04 Oct 2026 · 08h00 GMT</span>
+          </div>
+          <div class="bg-white p-3 rounded-xl border border-slate-200">
+            <span class="text-[10px] font-bold text-slate-400 block uppercase">Lieu</span>
+            <span class="font-extrabold text-slate-800 block">Gr. Scolaire Ste Thérèse</span>
+          </div>
+        </div>
+
+        <!-- QR Code Centered Display -->
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm text-center space-y-2">
+          <img id="t-qrcode" src="" alt="QR Code d'Accès" class="w-36 h-36 mx-auto rounded-xl border p-1 bg-white">
+          <p class="text-[10px] text-slate-500 font-semibold">Présentez ce QR Code le jour J à l'entrée de la salle.</p>
+        </div>
+
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="p-4 bg-white border-t border-slate-200 flex flex-col sm:flex-row gap-2.5">
+        <button id="printTicketBtn" onclick="window.print()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs py-3 rounded-xl flex items-center justify-center gap-2">
+          <i class="fa-solid fa-print"></i> Imprimer le Reçu
+        </button>
+        <a id="sendWaTicketBtn" href="#" target="_blank" rel="noopener noreferrer" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 rounded-xl flex items-center justify-center gap-2 text-center">
+          <i class="fa-brands fa-whatsapp text-sm"></i> Envoyer au participant
+        </a>
+      </div>
+
+    </div>
+  </div>
+
   <!-- JAVASCRIPT LOGIC -->
-  <script src="base_donnees.js?v=20261004_v2"></script>
+  <script src="base_donnees.js?v=20261004_v3"></script>
   <script>
     const ADMIN_PASS = "aeemci2026";
     let rawInscriptions = [];
@@ -198,6 +271,11 @@
     const sessionFilter = document.getElementById('sessionFilter');
     const refreshBtn = document.getElementById('refreshBtn');
     const exportBtn = document.getElementById('exportBtn');
+
+    // Ticket Modal Elements
+    const ticketModal = document.getElementById('ticketModal');
+    const closeTicketBtn = document.getElementById('closeTicketBtn');
+    if (closeTicketBtn) closeTicketBtn.addEventListener('click', () => ticketModal.classList.add('hidden'));
 
     function checkAuth() {
       if (sessionStorage.getItem('aeemci_admin_logged') === 'true') {
@@ -265,7 +343,8 @@
         (item.nom || '').toLowerCase().includes(q) ||
         (item.email || '').toLowerCase().includes(q) ||
         (item.whatsapp || '').toLowerCase().includes(q) ||
-        (item.niveau || item.formation || '').toLowerCase().includes(q)
+        (item.niveau || item.formation || '').toLowerCase().includes(q) ||
+        (item.attentes || '').toLowerCase().includes(q)
       );
 
       renderTable(filtered);
@@ -273,11 +352,11 @@
 
     function updateStats(list) {
       const dbCount = list.length;
-      const attenteCount = Math.max(0, dbCount - 150);
-      const principalesCount = Math.min(150, dbCount);
+      const attenteCount = list.filter(i => (i.statut_validation || '').includes('attente') || !(i.statut_validation || '').includes('Valid')).length;
+      const principalesCount = list.length - attenteCount;
 
       document.getElementById('statTotal').textContent = dbCount;
-      document.getElementById('statPrincipales').textContent = `${principalesCount}/150`;
+      document.getElementById('statPrincipales').textContent = `${principalesCount} Validé(s)`;
       document.getElementById('statAttente').textContent = attenteCount;
       document.getElementById('statElevesEtudiants').textContent = list.filter(i => {
         const s = (i.statut || '').toLowerCase();
@@ -295,23 +374,103 @@
       emptyState.classList.add('hidden');
 
       tableBody.innerHTML = list.map((item, i) => {
-        const isAttente = (item.statut || '').includes("Liste d'attente") || item.is_attente;
-        const badgeStyle = isAttente 
-          ? 'bg-amber-50 text-amber-700 border border-amber-200 font-extrabold' 
-          : 'bg-emerald-50 text-lumaGreen border border-emerald-100 font-bold';
+        const isValidated = (item.statut_validation || '').includes('Valid') || (item.statut || '').includes('Confirm');
+        const badgeStyle = isValidated 
+          ? 'bg-emerald-50 text-lumaGreen border border-emerald-200 font-extrabold'
+          : 'bg-amber-50 text-amber-700 border border-amber-200 font-extrabold';
+
+        const statusText = isValidated ? 'Validée' : "En attente";
+        const ticketCode = item.ticket_code || `TKT-${(item.nom || 'EXCEL').slice(0,3).toUpperCase()}-${i+100}`;
+        const indexInAll = rawInscriptions.indexOf(item);
 
         return `
-          <tr class="hover:bg-gray-50">
+          <tr class="hover:bg-gray-50 text-xs">
             <td class="font-bold text-gray-400">${i + 1}</td>
-            <td class="font-bold text-lumaText">${escapeHtml(item.nom || '')}</td>
-            <td class="text-gray-600">${escapeHtml(item.email || '')}</td>
-            <td class="font-mono font-semibold text-lumaGreen">${escapeHtml(item.whatsapp || '')}</td>
-            <td><span class="${badgeStyle} px-2.5 py-1 rounded-full text-xs">${escapeHtml(item.statut || 'Participant')}</span></td>
-            <td class="text-gray-700 font-medium">${escapeHtml(item.niveau || item.formation || 'Les deux formations')}</td>
-            <td class="text-xs text-gray-500">${(item.created_at || item.date) ? new Date(item.created_at || item.date).toLocaleString('fr-FR') : 'Récemment'}</td>
+            <td class="font-bold text-lumaText">
+              <div>${escapeHtml(item.nom || 'Anonyme')}</div>
+              <span class="text-[10px] text-slate-400 font-mono">${escapeHtml(ticketCode)}</span>
+            </td>
+            <td>
+              <span class="font-bold text-slate-700">${escapeHtml(item.genre || '-')}</span>, 
+              <span class="text-slate-500">${escapeHtml(item.age ? item.age + ' ans' : '-')}</span>
+            </td>
+            <td>
+              <div class="text-gray-700">${escapeHtml(item.email || '-')}</div>
+              <a href="https://wa.me/${(item.whatsapp || '').replace(/\D/g, '')}" target="_blank" class="font-mono font-bold text-brandGreen hover:underline">${escapeHtml(item.whatsapp || '-')}</a>
+            </td>
+            <td>
+              <span class="px-2 py-0.5 rounded-md text-[10px] font-bold ${item.ordi === 'Oui' ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'bg-slate-100 text-slate-600'}">
+                <i class="fa-solid fa-laptop mr-1"></i>${item.ordi || 'Non précisé'}
+              </span>
+            </td>
+            <td class="max-w-xs truncate text-gray-600 text-[11px]" title="${escapeHtml(item.attentes || '')}">
+              ${escapeHtml(item.attentes || 'Aucune précision')}
+            </td>
+            <td class="text-gray-700 font-semibold">${escapeHtml(item.niveau || item.formation || 'Les deux formations')}</td>
+            <td>
+              <span class="${badgeStyle} px-2.5 py-1 rounded-full text-[11px] inline-block">${statusText}</span>
+            </td>
+            <td class="text-center">
+              ${isValidated ? `
+                <button onclick="voirTicket(${indexInAll})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] px-3 py-1.5 rounded-xl shadow-sm transition-colors flex items-center gap-1 mx-auto">
+                  <i class="fa-solid fa-qrcode text-xs"></i> Billet QR
+                </button>
+              ` : `
+                <button onclick="validerCandidature(${indexInAll})" class="bg-lumaGreen hover:bg-lumaGreenDark text-white font-bold text-[11px] px-3 py-1.5 rounded-xl shadow-md transition-all flex items-center gap-1 mx-auto">
+                  <i class="fa-solid fa-circle-check text-xs"></i> Valider
+                </button>
+              `}
+            </td>
           </tr>
         `;
       }).join('');
+    }
+
+    function validerCandidature(idx) {
+      if (idx < 0 || idx >= rawInscriptions.length) return;
+      const item = rawInscriptions[idx];
+      item.statut_validation = "Validée";
+      item.statut = "Validé";
+      if (!item.ticket_code) {
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        let code = '';
+        for (let i = 0; i < 6; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
+        item.ticket_code = `TKT-EXCEL-IA-${code}`;
+      }
+
+      // Sauvegarde dans cache local
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem('aeemci_inscriptions_octobre_2026_v2', JSON.stringify(rawInscriptions));
+        }
+      } catch (e) {}
+
+      applyFilterAndRender();
+      voirTicket(idx);
+    }
+
+    function voirTicket(idx) {
+      if (idx < 0 || idx >= rawInscriptions.length) return;
+      const item = rawInscriptions[idx];
+      const ticketCode = item.ticket_code || `TKT-EXCEL-IA-${idx+100}`;
+      
+      document.getElementById('t-nom').textContent = item.nom || 'Participant';
+      document.getElementById('t-code').textContent = ticketCode;
+      document.getElementById('t-formation').textContent = item.niveau || item.formation || 'Les deux formations';
+      document.getElementById('t-statut').textContent = `${item.statut || 'Participant'} (${item.ordi === 'Oui' ? 'PC disponible' : 'Sans PC'})`;
+      
+      // QR Code via QuickChart / QRServer API
+      const qrData = encodeURIComponent(`RECU-OFFICIEL|AEEMCI-KOUMASSI|${ticketCode}|${item.nom}|${item.whatsapp}`);
+      document.getElementById('t-qrcode').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${qrData}`;
+
+      // WhatsApp Message Link
+      const waPhone = (item.whatsapp || '').replace(/\D/g, '');
+      const waMsg = encodeURIComponent(`Bonjour ${item.nom} 👋,\n\nVotre candidature pour la Double Formation Pratique (Bases Excel & Prompt Engineering) du Dimanche 04 Octobre 2026 à 08h00 au Groupe Scolaire Sainte Thérèse a été VALIDÉE ! 🎉\n\nVoici votre Billet d'Accès Officiel :\nCode Billet : ${ticketCode}\nFormations : ${item.niveau || item.formation}\n\nPrésentez ce message à l'entrée. À très bientôt !`);
+      
+      const waBtn = document.getElementById('sendWaTicketBtn');
+      if (waBtn) waBtn.href = `https://wa.me/${waPhone}?text=${waMsg}`;
+
+      ticketModal.classList.remove('hidden');
     }
 
     function escapeHtml(str) {
@@ -326,8 +485,23 @@
 
     exportBtn.addEventListener('click', () => {
       if (currentSessionInscriptions.length === 0) return;
-      const headers = ['#', 'Nom & Prénoms', 'Email', 'WhatsApp', 'Statut', 'Formation Choisie', 'Date'];
-      const rows = currentSessionInscriptions.map((e, idx) => [idx + 1, e.nom, e.email, e.whatsapp, e.statut, e.niveau || e.formation, e.created_at || e.date]);
+      const headers = ['#', 'Ticket Code', 'Nom & Prénoms', 'Genre', 'Âge', 'Email', 'WhatsApp', 'Statut Pro', 'Ordinateur', 'Attentes', 'Formation', 'Statut Validation', 'Date'];
+      const rows = currentSessionInscriptions.map((e, idx) => [
+        idx + 1, 
+        e.ticket_code || '', 
+        e.nom || '', 
+        e.genre || '', 
+        e.age || '', 
+        e.email || '', 
+        e.whatsapp || '', 
+        e.statut || '', 
+        e.ordi || '', 
+        e.attentes || '', 
+        e.niveau || e.formation || '', 
+        e.statut_validation || "Liste d'attente", 
+        e.created_at || e.date || ''
+      ]);
+
       const csv = [headers, ...rows].map(row => row.map(cell => `"${String(cell || '').replace(/"/g, '""')}"`).join(';')).join('\n');
       const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);

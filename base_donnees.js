@@ -148,7 +148,12 @@ async function ajouterInscription(entry) {
         email: entry.email,
         whatsapp: entry.whatsapp,
         statut: entry.statut,
-        niveau: entry.formation || entry.niveau || 'Les deux formations'
+        genre: entry.genre || 'Non spécifié',
+        age: entry.age || '',
+        ordi: entry.ordi || 'Non précisé',
+        attentes: entry.attentes || '',
+        niveau: entry.formation || entry.niveau || 'Les deux formations',
+        statut_validation: entry.statut_validation || "Liste d'attente"
     };
 
     // 1. Sauvegarde locale de confort (Cache)

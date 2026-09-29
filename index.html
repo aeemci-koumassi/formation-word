@@ -346,21 +346,60 @@
             </div>
           </div>
 
-          <!-- Choice of Training -->
+          <div class="grid sm:grid-cols-2 gap-4 sm:gap-5">
+            <!-- Genre / Sexe -->
+            <div>
+              <label for="f-genre" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1">Genre / Sexe <span class="text-red-500">*</span></label>
+              <select id="f-genre" name="genre" class="pro-input font-medium">
+                <option value="" disabled selected>Sélectionnez votre genre</option>
+                <option value="Homme">Homme</option>
+                <option value="Femme">Femme</option>
+              </select>
+              <p class="field-error text-red-500 text-[11px] mt-1 hidden" data-for="f-genre">Veuillez indiquer votre genre.</p>
+            </div>
+
+            <!-- Âge -->
+            <div>
+              <label for="f-age" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1">Votre Âge (ans) <span class="text-red-500">*</span></label>
+              <input type="number" id="f-age" name="age" min="10" max="99" class="pro-input" placeholder="Ex: 22">
+              <p class="field-error text-red-500 text-[11px] mt-1 hidden" data-for="f-age">Indiquez votre âge.</p>
+            </div>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-4 sm:gap-5">
+            <!-- Disposer d'un Ordinateur -->
+            <div>
+              <label for="f-ordi" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1">Ordinateur portable disponible ? <span class="text-red-500">*</span></label>
+              <select id="f-ordi" name="ordi" class="pro-input font-medium">
+                <option value="" disabled selected>Avez-vous un ordinateur ?</option>
+                <option value="Oui">Oui, j'ai mon propre ordinateur</option>
+                <option value="Non">Non, je n'en ai pas</option>
+              </select>
+              <p class="field-error text-red-500 text-[11px] mt-1 hidden" data-for="f-ordi">Veuillez préciser la disponibilité d'un ordinateur.</p>
+            </div>
+
+            <!-- Choice of Training -->
+            <div>
+              <label for="f-formation" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1">Formation souhaitée <span class="text-red-500">*</span></label>
+              <select id="f-formation" name="formation_choisie" class="pro-input font-bold text-slate-900 bg-slate-50">
+                <option value="Les deux formations" selected>Les deux formations (Excel + Prompt IA)</option>
+                <option value="100% Bases Excel">100% Bases Excel (Djim Aboubacar)</option>
+                <option value="Prompt Engineering & IA">L'art du Prompt Engineering (TUO Mamadou)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Attentes / Motivations -->
           <div>
-            <label for="f-formation" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1">Formation souhaitée <span class="text-red-500">*</span></label>
-            <select id="f-formation" name="formation_choisie" class="pro-input font-bold text-slate-900 bg-slate-50">
-              <option value="Les deux formations" selected>Les deux formations (Excel + Prompt Engineering) — Recommandé</option>
-              <option value="100% Bases Excel">100% Bases Excel (Formateur: Djim Aboubacar Mikahillo)</option>
-              <option value="Prompt Engineering & IA">L'art du Prompt Engineering (Formateur: TUO Mamadou)</option>
-            </select>
-            <p class="field-error text-red-500 text-[11px] mt-1 hidden" data-for="f-formation">Veuillez choisir votre formation.</p>
+            <label for="f-attentes" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1">Vos attentes par rapport à la formation <span class="text-red-500">*</span></label>
+            <textarea id="f-attentes" name="attentes" rows="2" class="pro-input" placeholder="Décrivez brièvement ce que vous aimeriez apprendre ou maîtriser..."></textarea>
+            <p class="field-error text-red-500 text-[11px] mt-1 hidden" data-for="f-attentes">Veuillez décrire vos attentes.</p>
           </div>
 
           <!-- Submit Button -->
           <button type="submit" id="submitBtn" class="w-full bg-brandGreen hover:bg-brandGreenDark text-white font-extrabold text-sm sm:text-base py-3.5 sm:py-4 rounded-2xl shadow-lg pro-btn flex items-center justify-center gap-2 mt-3 transition-all">
-            <i class="fa-solid fa-circle-check text-base sm:text-lg"></i>
-            <span id="submitLabel">Valider mon inscription</span>
+            <i class="fa-solid fa-paper-plane text-base sm:text-lg"></i>
+            <span id="submitLabel">Soumettre ma candidature</span>
           </button>
 
           <div class="flex items-center justify-between text-[11px] sm:text-xs text-slate-500 pt-2 border-t border-slate-100">
@@ -370,21 +409,23 @@
 
         </form>
 
-        <!-- SUCCESS CONFIRMATION PANEL -->
+        <!-- SUCCESS CONFIRMATION PANEL (LISTE D'ATTENTE) -->
         <div id="confirmationBloc" class="hidden text-center py-6 sm:py-8 space-y-4 sm:space-y-6">
-          <div id="confirm-icon-box" class="w-16 h-16 sm:w-20 sm:h-20 bg-emerald-100 text-brandGreen rounded-full flex items-center justify-center text-3xl sm:text-4xl mx-auto shadow-sm">
-            <i id="confirm-icon" class="fa-solid fa-circle-check"></i>
+          <div id="confirm-icon-box" class="w-16 h-16 sm:w-20 sm:h-20 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-3xl sm:text-4xl mx-auto shadow-sm border border-amber-200">
+            <i id="confirm-icon" class="fa-solid fa-clock"></i>
           </div>
           
           <div class="space-y-1 sm:space-y-2">
-            <span id="confirm-badge" class="text-[11px] sm:text-xs text-brandGreen font-extrabold uppercase tracking-widest bg-emerald-50 px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full border border-emerald-200">
-              Inscription Validée !
+            <span id="confirm-badge" class="text-[11px] sm:text-xs text-amber-700 font-extrabold uppercase tracking-widest bg-amber-50 px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full border border-amber-200">
+              📋 Candidature en Liste d'Attente
             </span>
-            <h4 class="text-2xl sm:text-3xl font-black text-slate-900">Félicitations <span id="confirm-nom"></span> !</h4>
+            <h4 class="text-2xl sm:text-3xl font-black text-slate-900">Merci <span id="confirm-nom"></span> !</h4>
           </div>
 
           <p id="confirm-text" class="text-xs sm:text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
-            Votre inscription pour la <strong>Double Formation Pratique (Excel & Prompt Engineering)</strong> du <strong>Dimanche 04 Octobre 2026 à 08h00 GMT</strong> au <strong>Groupe Scolaire Sainte Thérèse</strong> a été enregistrée avec succès.
+            Votre candidature pour la <strong>Double Formation Pratique (Excel & Prompt Engineering)</strong> du <strong>Dimanche 04 Octobre 2026</strong> a bien été enregistrée et est actuellement sur <strong>liste d'attente</strong>.
+            <br><br>
+            L'équipe organisatrice va examiner votre dossier. Après validation de votre candidature, vous recevrez votre <strong>Reçu d'Inscription Officiel muni de son QR Code</strong> de confirmation.
           </p>
 
           <div class="grid sm:grid-cols-2 gap-3 pt-2">
@@ -401,7 +442,7 @@
           </div>
 
           <p class="text-[11px] sm:text-xs text-slate-500 font-medium pt-1 text-center">
-            Besoin d'assistance ? Infoline / WhatsApp : <a href="https://wa.me/2250711985810" target="_blank" rel="noopener noreferrer" class="text-brandGreen font-extrabold hover:underline">07 11 98 58 10</a>
+            Une question sur votre dossier ? Infoline / WhatsApp : <a href="https://wa.me/2250711985810" target="_blank" rel="noopener noreferrer" class="text-brandGreen font-extrabold hover:underline">07 11 98 58 10</a>
           </p>
         </div>
 

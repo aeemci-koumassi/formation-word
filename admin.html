@@ -411,15 +411,20 @@
               <span class="${badgeStyle} px-2.5 py-1 rounded-full text-[11px] inline-block">${statusText}</span>
             </td>
             <td class="text-center">
-              ${isValidated ? `
-                <button onclick="voirTicket(${indexInAll})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] px-3 py-1.5 rounded-xl shadow-sm transition-colors flex items-center gap-1 mx-auto">
-                  <i class="fa-solid fa-qrcode text-xs"></i> Billet QR
-                </button>
-              ` : `
-                <button onclick="validerCandidature(${indexInAll})" class="bg-lumaGreen hover:bg-lumaGreenDark text-white font-bold text-[11px] px-3 py-1.5 rounded-xl shadow-md transition-all flex items-center gap-1 mx-auto">
-                  <i class="fa-solid fa-circle-check text-xs"></i> Valider
-                </button>
-              `}
+              <div class="flex items-center justify-center gap-1.5">
+                ${isValidated ? `
+                  <button onclick="voirTicket(${indexInAll})" class="bg-slate-800 hover:bg-slate-900 text-white font-bold text-[11px] px-2.5 py-1.5 rounded-xl shadow-sm transition-colors flex items-center gap-1">
+                    <i class="fa-solid fa-qrcode text-xs"></i> QR Code
+                  </button>
+                  <button onclick="envoyerWhatsAppDirect(${indexInAll})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] px-2.5 py-1.5 rounded-xl shadow-sm transition-colors flex items-center gap-1" title="Envoyer le reçu sur WhatsApp">
+                    <i class="fa-brands fa-whatsapp text-xs"></i> WhatsApp
+                  </button>
+                ` : `
+                  <button onclick="validerCandidature(${indexInAll})" class="bg-lumaGreen hover:bg-lumaGreenDark text-white font-bold text-[11px] px-3 py-1.5 rounded-xl shadow-md transition-all flex items-center gap-1">
+                    <i class="fa-solid fa-circle-check text-xs"></i> Valider la candidature
+                  </button>
+                `}
+              </div>
             </td>
           </tr>
         `;
@@ -438,15 +443,60 @@
         item.ticket_code = `TKT-EXCEL-IA-${code}`;
       }
 
-      // Sauvegarde dans cache local
+      // 1. Sauvegarde dans cache local
       try {
         if (typeof localStorage !== 'undefined') {
           localStorage.setItem('aeemci_inscriptions_octobre_2026_v2', JSON.stringify(rawInscriptions));
         }
       } catch (e) {}
 
+      // 2. Synchronisation Supabase Cloud en arrière-plan
+      try {
+        if (item.id) {
+          fetch(`${SUPABASE_PRIMARY_URL}?id=eq.${item.id}`, {
+            method: 'PATCH',
+            headers: {
+              'apikey': SUPABASE_KEY,
+              'Authorization': `Bearer ${SUPABASE_KEY}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ statut_validation: "Validée", statut: "Validé", ticket_code: item.ticket_code })
+          }).catch(err => console.error("Mise à jour Supabase", err));
+        }
+      } catch (e) {}
+
       applyFilterAndRender();
       voirTicket(idx);
+    }
+
+    function meFormaterTelephoneWA(numStr) {
+      let digits = (numStr || '').replace(/\D/g, '');
+      if (digits.startsWith('00225')) digits = digits.slice(5);
+      if (!digits.startsWith('225')) {
+        digits = '225' + digits;
+      }
+      return digits;
+    }
+
+    function envoyerWhatsAppDirect(idx) {
+      if (idx < 0 || idx >= rawInscriptions.length) return;
+      const item = rawInscriptions[idx];
+      const ticketCode = item.ticket_code || `TKT-EXCEL-IA-${idx+100}`;
+      const waPhone = meFormaterTelephoneWA(item.whatsapp);
+      
+      const waMsg = encodeURIComponent(
+        `Bonjour ${item.nom} 👋,\n\n` +
+        `Félicitations ! Votre candidature pour la Double Formation Pratique (Bases Excel & Prompt Engineering) du Dimanche 04 Octobre 2026 à 08h00 au Groupe Scolaire Sainte Thérèse a été VALIDÉE ! 🎉\n\n` +
+        `🎫 Vos informations d'accès :\n` +
+        `• Code Billet : ${ticketCode}\n` +
+        `• Formation(s) : ${item.niveau || item.formation || 'Excel + Prompt IA'}\n` +
+        `• Statut : ${item.statut || 'Participant'} (${item.ordi === 'Oui' ? 'Avec ordinateur' : 'Sans ordinateur'})\n\n` +
+        `📍 Lieu : Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi)\n` +
+        `⏰ Heure : Dimanche 04 Octobre 2026 à 08h00 GMT\n\n` +
+        `Présentez ce message à l'entrée de la salle. À dimanche !`
+      );
+
+      window.open(`https://wa.me/${waPhone}?text=${waMsg}`, '_blank');
     }
 
     function voirTicket(idx) {
@@ -463,9 +513,19 @@
       const qrData = encodeURIComponent(`RECU-OFFICIEL|AEEMCI-KOUMASSI|${ticketCode}|${item.nom}|${item.whatsapp}`);
       document.getElementById('t-qrcode').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${qrData}`;
 
-      // WhatsApp Message Link
-      const waPhone = (item.whatsapp || '').replace(/\D/g, '');
-      const waMsg = encodeURIComponent(`Bonjour ${item.nom} 👋,\n\nVotre candidature pour la Double Formation Pratique (Bases Excel & Prompt Engineering) du Dimanche 04 Octobre 2026 à 08h00 au Groupe Scolaire Sainte Thérèse a été VALIDÉE ! 🎉\n\nVoici votre Billet d'Accès Officiel :\nCode Billet : ${ticketCode}\nFormations : ${item.niveau || item.formation}\n\nPrésentez ce message à l'entrée. À très bientôt !`);
+      // WhatsApp Message Link avec indicatif international +225 garanti
+      const waPhone = meFormaterTelephoneWA(item.whatsapp);
+      const waMsg = encodeURIComponent(
+        `Bonjour ${item.nom} 👋,\n\n` +
+        `Félicitations ! Votre candidature pour la Double Formation Pratique (Bases Excel & Prompt Engineering) du Dimanche 04 Octobre 2026 à 08h00 au Groupe Scolaire Sainte Thérèse a été VALIDÉE ! 🎉\n\n` +
+        `🎫 Voici votre Billet d'Accès Officiel :\n` +
+        `• Code Billet : ${ticketCode}\n` +
+        `• Formation(s) : ${item.niveau || item.formation || 'Excel + Prompt IA'}\n` +
+        `• Matériel : ${item.ordi === 'Oui' ? 'Apportez votre ordinateur' : 'Carnet de notes'}\n\n` +
+        `📍 Lieu : Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi)\n` +
+        `⏰ Heure : Dimanche 04 Octobre 2026 à 08h00 GMT\n\n` +
+        `Présentez ce message ou votre QR Code à l'entrée. À très bientôt !`
+      );
       
       const waBtn = document.getElementById('sendWaTicketBtn');
       if (waBtn) waBtn.href = `https://wa.me/${waPhone}?text=${waMsg}`;

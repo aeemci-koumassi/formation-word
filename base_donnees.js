@@ -148,15 +148,25 @@ async function ajouterInscription(entry) {
         console.error("Erreur LocalStorage", e);
     }
 
-    // 4. Envoi instantané vers Formspree et Supabase Cloud (Non-bloquant)
+    // 4. Envoi instantané vers Formspree (FormData) et Supabase Cloud (Non-bloquant)
     try {
+        const formData = new FormData();
+        formData.append('nom', fullRecord.nom || '');
+        formData.append('email', fullRecord.email || '');
+        formData.append('whatsapp', fullRecord.whatsapp || '');
+        formData.append('statut', fullRecord.statut || '');
+        formData.append('genre', fullRecord.genre || '');
+        formData.append('age', fullRecord.age || '');
+        formData.append('ordi', fullRecord.ordi || '');
+        formData.append('attentes', fullRecord.attentes || '');
+        formData.append('formation', fullRecord.niveau || '');
+        formData.append('ticket_code', fullRecord.ticket_code || '');
+        formData.append('_subject', `Nouvelle Inscription AEEMCI : ${fullRecord.nom} (${fullRecord.ticket_code})`);
+
         fetch(FORMSPREE_ENDPOINT, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({ ...fullRecord, type_inscription: "Double Formation Excel & Prompt Engineering (04 Octobre)" })
+            headers: { 'Accept': 'application/json' },
+            body: formData
         }).catch(err => console.error("Erreur Formspree:", err));
     } catch (e) {}
 

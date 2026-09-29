@@ -133,38 +133,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   window.downloadICS = window.openGoogleCalendar;
 
-  /* ---------- GESTION DE LA CAPACITÉ & AFFICHAGE (INSCRIPTIONS OUVERTES) ---------- */
-  async function mettreAJourAffichageCapacite() {
-    let totalCount = 0;
-    if (typeof obtenirNombreInscrits === 'function') {
-      totalCount = await obtenirNombreInscrits();
-    }
-    
-    const capacityText = document.getElementById('capacity-text');
-    const capacityBadge = document.getElementById('capacity-badge');
-    const capacityDot = document.getElementById('capacity-dot');
-    const formTitle = document.getElementById('form-title');
-    const formSubtitle = document.getElementById('form-subtitle');
-    const submitBtn = document.getElementById('submitBtn');
-    const submitLabel = document.getElementById('submitLabel');
-
-    if (capacityText) capacityText.textContent = `Inscriptions Ouvertes (${totalCount}/150 places)`;
-    if (capacityBadge) {
-      capacityBadge.className = 'inline-flex items-center gap-2 bg-emerald-50 text-brandGreen font-bold text-xs px-4 py-2 rounded-full border border-emerald-200';
-    }
-    if (capacityDot) capacityDot.className = 'w-2.5 h-2.5 rounded-full bg-brandGreen animate-pulse';
-    if (formTitle) formTitle.textContent = "Formulaire d'Inscription Officiel";
-    if (formSubtitle) formSubtitle.textContent = "Dimanche 04 Octobre 2026 à 08h00 GMT · Groupe Scolaire Sainte Thérèse";
-    if (submitBtn) {
-      submitBtn.className = 'w-full bg-brandGreen hover:bg-brandGreenDark text-white font-extrabold text-base py-4 rounded-2xl shadow-lg pro-btn flex items-center justify-center gap-3 mt-4 transition-all';
-    }
-    if (submitLabel) submitLabel.textContent = "Valider mon inscription";
-  }
-
-  // Initialisation de la capacité au chargement
-  await mettreAJourAffichageCapacite();
-
-
   /* ---------- FORM SUBMISSION & DIRECT CONFIRMATION ---------- */
   const form = document.getElementById('formInscription');
   const confirmationBloc = document.getElementById('confirmationBloc');
@@ -172,8 +140,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const submitLabel = document.getElementById('submitLabel');
 
   if (form) {
-    form.addEventListener('submit', async function (e) {
+    form.addEventListener('submit', function (e) {
       e.preventDefault();
+      e.stopPropagation();
       
       const nom = document.getElementById('f-nom').value.trim();
       const email = document.getElementById('f-email').value.trim();
@@ -222,7 +191,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
 
       // 1. Bascule d'affichage IMMÉDIATE et INSTANTANÉE (0 milliseconde d'attente)
-      document.getElementById('confirm-nom').textContent = nom;
+      const confirmNomElem = document.getElementById('confirm-nom');
+      if (confirmNomElem) confirmNomElem.textContent = nom;
+      
       const confirmBadge = document.getElementById('confirm-badge');
       const confirmIconBox = document.getElementById('confirm-icon-box');
       const confirmIcon = document.getElementById('confirm-icon');
@@ -242,9 +213,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         confirmText.innerHTML = `Votre candidature pour la <strong>Double Formation Pratique (Excel & Prompt Engineering)</strong> du <strong>Dimanche 04 Octobre 2026</strong> a été enregistrée avec succès et est sur <strong>liste d'attente</strong>.<br><br>L'équipe organisatrice examinera votre profil. Après validation, votre <strong>Reçu d'Inscription Officiel avec QR Code</strong> vous sera attribué pour accéder à la formation.`;
       }
 
-      form.classList.add('hidden');
-      confirmationBloc.classList.remove('hidden');
-      confirmationBloc.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (form) form.classList.add('hidden');
+      if (confirmationBloc) {
+        confirmationBloc.classList.remove('hidden');
+        confirmationBloc.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
 
       // 2. Traitement et synchronisation Cloud Supabase / Local en arrière-plan
       const entry = {
@@ -262,6 +235,41 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
   }
+
+  /* ---------- GESTION DE LA CAPACITÉ & AFFICHAGE (INSCRIPTIONS OUVERTES) ---------- */
+  async function mettreAJourAffichageCapacite() {
+    let totalCount = 0;
+    try {
+      if (typeof obtenirNombreInscrits === 'function') {
+        totalCount = await obtenirNombreInscrits();
+      }
+    } catch (e) {}
+    
+    const capacityText = document.getElementById('capacity-text');
+    const capacityBadge = document.getElementById('capacity-badge');
+    const capacityDot = document.getElementById('capacity-dot');
+    const formTitle = document.getElementById('form-title');
+    const formSubtitle = document.getElementById('form-subtitle');
+    const submitBtnElem = document.getElementById('submitBtn');
+    const submitLabelElem = document.getElementById('submitLabel');
+
+    if (capacityText) capacityText.textContent = `Inscriptions Ouvertes (${totalCount}/150 places)`;
+    if (capacityBadge) {
+      capacityBadge.className = 'inline-flex items-center gap-2 bg-emerald-50 text-brandGreen font-bold text-xs px-4 py-2 rounded-full border border-emerald-200';
+    }
+    if (capacityDot) capacityDot.className = 'w-2.5 h-2.5 rounded-full bg-brandGreen animate-pulse';
+    if (formTitle) formTitle.textContent = "Formulaire d'Inscription Officiel";
+    if (formSubtitle) formSubtitle.textContent = "Dimanche 04 Octobre 2026 à 08h00 GMT · Groupe Scolaire Sainte Thérèse";
+    if (submitBtnElem) {
+      submitBtnElem.className = 'w-full bg-brandGreen hover:bg-brandGreenDark text-white font-extrabold text-base py-4 rounded-2xl shadow-lg pro-btn flex items-center justify-center gap-3 mt-4 transition-all';
+    }
+    if (submitLabelElem) submitLabelElem.textContent = "Valider mon inscription";
+  }
+
+  // Initialisation de la capacité au chargement (arrière-plan non bloquant)
+  try {
+    mettreAJourAffichageCapacite();
+  } catch (e) {}
 
   /* ---------- DISCREET ORGANIZER ADMIN TRIGGERS ---------- */
   const ADMIN_PASS = "aeemci2026";

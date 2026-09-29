@@ -230,35 +230,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         date: new Date().toISOString()
       };
 
-      let res = { estDoublon: false };
-
-      // Enregistrement hybride avec contrôle anti-doublon
-      if (typeof ajouterInscription === 'function') {
-        res = await ajouterInscription(entry);
-      }
-
-      document.getElementById('confirm-nom').textContent = nom;
-
-      if (res && res.estDoublon) {
-        const confirmBadge = document.getElementById('confirm-badge');
-        const confirmIconBox = document.getElementById('confirm-icon-box');
-        const confirmIcon = document.getElementById('confirm-icon');
-        const confirmText = document.getElementById('confirm-text');
-
-        if (confirmBadge) {
-          confirmBadge.textContent = "Candidature Déjà Enregistrée !";
-          confirmBadge.className = "text-xs text-blue-700 font-extrabold uppercase tracking-widest bg-blue-50 px-4 py-1.5 rounded-full border border-blue-200";
+      try {
+        if (typeof ajouterInscription === 'function') {
+          await ajouterInscription(entry);
         }
-        if (confirmIconBox) {
-          confirmIconBox.className = "w-20 h-20 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-4xl mx-auto shadow-sm";
-        }
-        if (confirmIcon) {
-          confirmIcon.className = "fa-solid fa-user-check";
-        }
-        if (confirmText) {
-          confirmText.innerHTML = `Bonjour <strong>${nom}</strong>, votre dossier de candidature pour la <strong>Double Formation Pratique (Excel & Prompt Engineering)</strong> du 04 Octobre à 08h00 au Groupe Scolaire Sainte Thérèse a déjà été transmis et est actuellement sous examen.`;
-        }
-      } else {
+      } catch (err) {
+        console.error("Erreur soumission", err);
+      } finally {
+        document.getElementById('confirm-nom').textContent = nom;
         const confirmBadge = document.getElementById('confirm-badge');
         const confirmIconBox = document.getElementById('confirm-icon-box');
         const confirmIcon = document.getElementById('confirm-icon');
@@ -277,13 +256,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (confirmText) {
           confirmText.innerHTML = `Votre candidature pour la <strong>Double Formation Pratique (Excel & Prompt Engineering)</strong> du <strong>Dimanche 04 Octobre 2026</strong> a été enregistrée avec succès et est sur <strong>liste d'attente</strong>.<br><br>L'équipe organisatrice examinera votre profil. Après validation, votre <strong>Reçu d'Inscription Officiel avec QR Code</strong> vous sera attribué pour accéder à la formation.`;
         }
+
+        form.classList.add('hidden');
+        confirmationBloc.classList.remove('hidden');
+        confirmationBloc.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        await mettreAJourAffichageCapacite();
       }
-
-      form.classList.add('hidden');
-      confirmationBloc.classList.remove('hidden');
-      confirmationBloc.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-      await mettreAJourAffichageCapacite();
     });
   }
 

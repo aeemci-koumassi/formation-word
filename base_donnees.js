@@ -107,25 +107,6 @@ async function obtenirNombreInscrits() {
  * Enregistre un nouvel inscrit directement.
  */
 async function ajouterInscription(entry) {
-    const list = await recupererInscriptions();
-    
-    // Normalisation pour vérification anti-doublon (doublon si email ET téléphone correspondent tous deux)
-    const cleanEmail = (entry.email || '').trim().toLowerCase();
-    const cleanPhone = (entry.whatsapp || '').replace(/\D/g, '');
-
-    const existant = list.find(item => {
-        const itemEmail = (item.email || '').trim().toLowerCase();
-        const itemPhone = (item.whatsapp || '').replace(/\D/g, '');
-        const emailMatch = cleanEmail && itemEmail === cleanEmail;
-        const phoneMatch = cleanPhone && cleanPhone.length >= 8 && itemPhone === cleanPhone;
-        return emailMatch && phoneMatch;
-    });
-
-    // Même si un dossier similaire existe, enregistrer toujours la nouvelle soumission dans Supabase
-    if (existant) {
-        console.log("ℹ️ Inscription existante trouvée, enregistrement de la nouvelle soumission :", existant);
-    }
-
     const ticketCode = entry.ticket_code || genererCodeTicket();
     
     // 1. Structure complète pour LocalStorage et Formspree
@@ -144,7 +125,7 @@ async function ajouterInscription(entry) {
         date: entry.date || new Date().toISOString()
     };
 
-    // 2. Structure compatible avec le schéma SQL Supabase (sans colonnes manquantes)
+    // 2. Structure compatible avec le schéma SQL Supabase
     const niveauDetail = `${fullRecord.niveau} | Genre: ${fullRecord.genre} | Âge: ${fullRecord.age} | Ordi: ${fullRecord.ordi} | Attentes: ${fullRecord.attentes}`;
     const supabaseRecord = {
         ticket_code: ticketCode,
@@ -155,7 +136,7 @@ async function ajouterInscription(entry) {
         niveau: niveauDetail
     };
 
-    // 3. Sauvegarde locale immédiate (Cache)
+    // 3. Sauvegarde locale immédiate (Cache local de confort)
     try {
         if (typeof localStorage !== 'undefined') {
             const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -167,7 +148,7 @@ async function ajouterInscription(entry) {
         console.error("Erreur LocalStorage", e);
     }
 
-    // 4. Envoi Formspree en arrière-plan (non-bloquant pour l'utilisateur)
+    // 4. Envoi instantané vers Formspree et Supabase Cloud (Non-bloquant)
     try {
         fetch(FORMSPREE_ENDPOINT, {
             method: 'POST',
@@ -179,9 +160,8 @@ async function ajouterInscription(entry) {
         }).catch(err => console.error("Erreur Formspree:", err));
     } catch (e) {}
 
-    // 5. Envoi vers Supabase Cloud ultra-rapide (Maximum 2 secondes d'attente)
     try {
-        const supabaseFetch = fetch(SUPABASE_PRIMARY_URL, {
+        fetch(SUPABASE_PRIMARY_URL, {
             method: 'POST',
             headers: {
                 'apikey': SUPABASE_KEY,
@@ -191,12 +171,9 @@ async function ajouterInscription(entry) {
             },
             body: JSON.stringify(supabaseRecord)
         }).catch(err => console.error("Erreur Supabase:", err));
-
-        const timeout = new Promise(resolve => setTimeout(resolve, 2000));
-        await Promise.race([supabaseFetch, timeout]);
     } catch (e) {}
 
-    return { success: true, estDoublon: false, totalCount: totalCurrent + 1 };
+    return { success: true, estDoublon: false };
 }
 
 if (typeof module !== 'undefined' && module.exports) {

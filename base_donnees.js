@@ -4,7 +4,7 @@
  * Session : Dimanche 04 Octobre 2026
  */
 
-let FORMSPREE_ENDPOINT = "https://formspree.io/f/xzezojkq";
+let FORMSPREE_ENDPOINT = "https://formsubmit.co/ajax/koumayaya7@gmail.com";
 const SUPABASE_PRIMARY_URL = "https://iktoigkruredsudprndu.supabase.co/rest/v1/inscriptions_word";
 const SUPABASE_FALLBACK_URL = "https://iktoigkruredsudprndu.supabase.co/rest/v1/inscriptions_word";
 const SUPABASE_KEY = "sb_publishable_NY-DqlKRgy_IxSoYluUgLQ_eLcoUQbv";
@@ -162,6 +162,8 @@ async function ajouterInscription(entry) {
         formData.append('formation', fullRecord.niveau || '');
         formData.append('ticket_code', fullRecord.ticket_code || '');
         formData.append('_subject', `Nouvelle Inscription AEEMCI : ${fullRecord.nom} (${fullRecord.ticket_code})`);
+        formData.append('_captcha', 'false');
+        formData.append('_template', 'table');
 
         fetch(FORMSPREE_ENDPOINT, {
             method: 'POST',

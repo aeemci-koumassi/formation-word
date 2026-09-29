@@ -253,7 +253,7 @@
   </div>
 
   <!-- JAVASCRIPT LOGIC -->
-  <script src="base_donnees.js?v=20261004_REALTIME_v5"></script>
+  <script src="base_donnees.js?v=20261004_MOBILE_V10"></script>
   <script>
     const ADMIN_PASS = "aeemci2026";
     let rawInscriptions = [];
@@ -278,13 +278,14 @@
     if (closeTicketBtn) closeTicketBtn.addEventListener('click', () => ticketModal.classList.add('hidden'));
 
     function checkAuth() {
-      if (sessionStorage.getItem('aeemci_admin_logged') === 'true') {
+      if (localStorage.getItem('aeemci_admin_logged') === 'true' || sessionStorage.getItem('aeemci_admin_logged') === 'true') {
         showDashboard();
       }
     }
 
     loginBtn.addEventListener('click', () => {
       if (passInput.value.trim() === ADMIN_PASS || passInput.value.trim() === "123456") {
+        localStorage.setItem('aeemci_admin_logged', 'true');
         sessionStorage.setItem('aeemci_admin_logged', 'true');
         showDashboard();
       } else {
@@ -602,7 +603,7 @@
 
     // Actualisation automatique en arrière-plan toutes les 10 secondes (Temps Réel Direct)
     setInterval(() => {
-      if (sessionStorage.getItem('aeemci_admin_logged') === 'true') {
+      if (localStorage.getItem('aeemci_admin_logged') === 'true' || sessionStorage.getItem('aeemci_admin_logged') === 'true') {
         loadData();
       }
     }, 10000);

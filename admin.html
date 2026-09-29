@@ -256,7 +256,7 @@
   </div>
 
   <!-- JAVASCRIPT LOGIC -->
-  <script src="base_donnees.js?v=20261004_FORCE_V999"></script>
+  <script src="base_donnees.js?v=20261004_ULTIMATE_FIX_V2000"></script>
   <script>
     const ADMIN_PASS = "aeemci2026";
     let rawInscriptions = [];
@@ -557,7 +557,14 @@
 
     searchInput.addEventListener('input', () => applyFilterAndRender());
     sessionFilter.addEventListener('change', () => applyFilterAndRender());
-    refreshBtn.addEventListener('click', () => loadData());
+    refreshBtn.addEventListener('click', () => {
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.removeItem('aeemci_inscriptions_octobre_2026_v2');
+        }
+      } catch (e) {}
+      loadData();
+    });
 
     exportBtn.addEventListener('click', () => {
       if (currentSessionInscriptions.length === 0) return;

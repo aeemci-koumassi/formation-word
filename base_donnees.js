@@ -8,7 +8,7 @@ let FORMSPREE_ENDPOINT = "https://formsubmit.co/ajax/koumayaya7@gmail.com";
 const SUPABASE_PRIMARY_URL = "https://iktoigkruredsudprndu.supabase.co/rest/v1/inscriptions_word";
 const SUPABASE_FALLBACK_URL = "https://iktoigkruredsudprndu.supabase.co/rest/v1/inscriptions_word";
 const SUPABASE_KEY = "sb_publishable_NY-DqlKRgy_IxSoYluUgLQ_eLcoUQbv";
-const LOCAL_STORAGE_KEY = 'aeemci_inscriptions_octobre_2026_v2';
+const LOCAL_STORAGE_KEY = 'aeemci_inscriptions_excel_ia_2026';
 
 const MAX_CAPACITE = 300;
 
@@ -41,15 +41,26 @@ function parseSupabaseItem(item) {
  * Récupère l'ensemble des inscrits depuis Supabase Cloud (sans limite ni tronquage par date).
  */
 async function recupererInscriptions() {
-    // 1. Essai sur la table Supabase active (inscriptions_word) avec contournement strict du cache navigateur
+    // Purge automatique de l'ancien cache local obsolète s'il contient moins de 50 enregistrements
+    try {
+        if (typeof localStorage !== 'undefined') {
+            const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+            if (raw) {
+                const parsedLocal = JSON.parse(raw);
+                if (Array.isArray(parsedLocal) && parsedLocal.length < 50) {
+                    localStorage.removeItem(LOCAL_STORAGE_KEY);
+                }
+            }
+        }
+    } catch(e) {}
+
+    // 1. Appel direct vers Supabase Cloud avec timestamp anti-cache (sans l'option CORS no-store)
     try {
         const response = await fetch(`${SUPABASE_PRIMARY_URL}?select=*&limit=5000&order=created_at.desc&_t=${Date.now()}`, {
             method: 'GET',
-            cache: 'no-store',
             headers: {
                 'apikey': SUPABASE_KEY,
-                'Authorization': `Bearer ${SUPABASE_KEY}`,
-                'Content-Type': 'application/json'
+                'Authorization': `Bearer ${SUPABASE_KEY}`
             }
         });
 
@@ -64,10 +75,10 @@ async function recupererInscriptions() {
             }
         }
     } catch (err) {
-        console.warn("⚠️ Table Supabase non accessible, passage en mode cache local", err);
+        console.warn("⚠️ Connexion Supabase en cours...", err);
     }
 
-    // 2. Fallback LocalStorage propre
+    // 2. Fallback LocalStorage si hors-ligne
     try {
         if (typeof localStorage !== 'undefined') {
             const raw = localStorage.getItem(LOCAL_STORAGE_KEY);

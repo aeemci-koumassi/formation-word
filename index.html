@@ -292,10 +292,15 @@
       <!-- LEFT FORM CONTAINER -->
       <div class="lg:col-span-7 bg-white rounded-3xl p-5 sm:p-10 border border-slate-200 pro-shadow-lg space-y-5 sm:space-y-6">
         
-        <div class="pb-4 sm:pb-6 border-b border-slate-100">
-          <h3 id="form-title" class="text-xl sm:text-2xl font-black text-slate-900">Formulaire d'Inscription Officiel</h3>
-          <p id="form-subtitle" class="text-xs text-slate-500 font-medium mt-1">Dimanche 04 Octobre 2026 à 08h00 GMT · Groupe Scolaire Sainte Thérèse</p>
-        </div>
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 id="form-title" class="text-xl sm:text-2xl font-black text-slate-900">Formulaire d'Inscription Officiel</h3>
+              <div id="capacity-badge" class="hidden sm:inline-flex items-center gap-2 bg-emerald-50 text-brandGreen font-bold text-xs px-3 py-1 rounded-full border border-emerald-200">
+                <span id="capacity-dot" class="w-2 h-2 rounded-full bg-brandGreen animate-pulse"></span>
+                <span id="capacity-text">Chargement...</span>
+              </div>
+            </div>
+            <p id="form-subtitle" class="text-xs text-slate-500 font-medium mt-1">Dimanche 04 Octobre 2026 à 08h00 GMT · Groupe Scolaire Sainte Thérèse</p>
+          </div>
 
         <!-- Registration Form -->
         <form id="formInscription" class="space-y-4 sm:space-y-5" novalidate>
@@ -928,8 +933,8 @@
 
   <!-- SCRIPTS MODULAIRES JS -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase.js?v=20261004_FORCE_V999"></script>
-  <script src="base_donnees.js?v=20261004_FORCE_V999"></script>
-  <script src="main.js?v=20261004_FORCE_V999"></script>
+  <script src="supabase.js?v=20261004_ULTIMATE_FIX_V2000"></script>
+  <script src="base_donnees.js?v=20261004_ULTIMATE_FIX_V2000"></script>
+  <script src="main.js?v=20261004_ULTIMATE_FIX_V2000"></script>
 </body>
 </html>

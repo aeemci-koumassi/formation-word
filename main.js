@@ -221,47 +221,44 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
       }
 
-      submitBtn.disabled = true;
-      submitLabel.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Transmission de votre dossier...';
+      // 1. Bascule d'affichage IMMÉDIATE et INSTANTANÉE (0 milliseconde d'attente)
+      document.getElementById('confirm-nom').textContent = nom;
+      const confirmBadge = document.getElementById('confirm-badge');
+      const confirmIconBox = document.getElementById('confirm-icon-box');
+      const confirmIcon = document.getElementById('confirm-icon');
+      const confirmText = document.getElementById('confirm-text');
 
+      if (confirmBadge) {
+        confirmBadge.textContent = "📋 Candidature en Liste d'Attente";
+        confirmBadge.className = "text-xs text-amber-700 font-extrabold uppercase tracking-widest bg-amber-50 px-4 py-1.5 rounded-full border border-amber-200";
+      }
+      if (confirmIconBox) {
+        confirmIconBox.className = "w-20 h-20 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-4xl mx-auto shadow-sm border border-amber-200";
+      }
+      if (confirmIcon) {
+        confirmIcon.className = "fa-solid fa-clock";
+      }
+      if (confirmText) {
+        confirmText.innerHTML = `Votre candidature pour la <strong>Double Formation Pratique (Excel & Prompt Engineering)</strong> du <strong>Dimanche 04 Octobre 2026</strong> a été enregistrée avec succès et est sur <strong>liste d'attente</strong>.<br><br>L'équipe organisatrice examinera votre profil. Après validation, votre <strong>Reçu d'Inscription Officiel avec QR Code</strong> vous sera attribué pour accéder à la formation.`;
+      }
+
+      form.classList.add('hidden');
+      confirmationBloc.classList.remove('hidden');
+      confirmationBloc.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      // 2. Traitement et synchronisation Cloud Supabase / Local en arrière-plan
       const entry = {
         nom, email, whatsapp, statut, genre, age, ordi, attentes, formation,
         statut_validation: "Liste d'attente",
         date: new Date().toISOString()
       };
 
-      try {
-        if (typeof ajouterInscription === 'function') {
-          await ajouterInscription(entry);
-        }
-      } catch (err) {
-        console.error("Erreur soumission", err);
-      } finally {
-        document.getElementById('confirm-nom').textContent = nom;
-        const confirmBadge = document.getElementById('confirm-badge');
-        const confirmIconBox = document.getElementById('confirm-icon-box');
-        const confirmIcon = document.getElementById('confirm-icon');
-        const confirmText = document.getElementById('confirm-text');
-
-        if (confirmBadge) {
-          confirmBadge.textContent = "📋 Candidature en Liste d'Attente";
-          confirmBadge.className = "text-xs text-amber-700 font-extrabold uppercase tracking-widest bg-amber-50 px-4 py-1.5 rounded-full border border-amber-200";
-        }
-        if (confirmIconBox) {
-          confirmIconBox.className = "w-20 h-20 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-4xl mx-auto shadow-sm border border-amber-200";
-        }
-        if (confirmIcon) {
-          confirmIcon.className = "fa-solid fa-clock";
-        }
-        if (confirmText) {
-          confirmText.innerHTML = `Votre candidature pour la <strong>Double Formation Pratique (Excel & Prompt Engineering)</strong> du <strong>Dimanche 04 Octobre 2026</strong> a été enregistrée avec succès et est sur <strong>liste d'attente</strong>.<br><br>L'équipe organisatrice examinera votre profil. Après validation, votre <strong>Reçu d'Inscription Officiel avec QR Code</strong> vous sera attribué pour accéder à la formation.`;
-        }
-
-        form.classList.add('hidden');
-        confirmationBloc.classList.remove('hidden');
-        confirmationBloc.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-        await mettreAJourAffichageCapacite();
+      if (typeof ajouterInscription === 'function') {
+        ajouterInscription(entry).then(() => {
+          if (typeof mettreAJourAffichageCapacite === 'function') {
+            mettreAJourAffichageCapacite();
+          }
+        }).catch(err => console.error("Erreur enregistrement:", err));
       }
     });
   }

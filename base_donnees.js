@@ -167,27 +167,8 @@ async function ajouterInscription(entry) {
         console.error("Erreur LocalStorage", e);
     }
 
-    // 4. Envoi simultané vers Supabase Cloud et Formspree
-    const postToSupabase = async () => {
-        try {
-            return await fetch(SUPABASE_PRIMARY_URL, {
-                method: 'POST',
-                headers: {
-                    'apikey': SUPABASE_KEY,
-                    'Authorization': `Bearer ${SUPABASE_KEY}`,
-                    'Content-Type': 'application/json',
-                    'Prefer': 'return=representation'
-                },
-                body: JSON.stringify(supabaseRecord)
-            });
-        } catch (e) {
-            console.error("Erreur Supabase:", e);
-        }
-    };
-
-    const promises = [
-        postToSupabase(),
-
+    // 4. Envoi Formspree en arrière-plan (non-bloquant pour l'utilisateur)
+    try {
         fetch(FORMSPREE_ENDPOINT, {
             method: 'POST',
             headers: {
@@ -195,10 +176,26 @@ async function ajouterInscription(entry) {
                 'Accept': 'application/json'
             },
             body: JSON.stringify({ ...fullRecord, type_inscription: "Double Formation Excel & Prompt Engineering (04 Octobre)" })
-        }).catch(err => console.error("Erreur Formspree:", err))
-    ];
+        }).catch(err => console.error("Erreur Formspree:", err));
+    } catch (e) {}
 
-    await Promise.allSettled(promises);
+    // 5. Envoi vers Supabase Cloud ultra-rapide (Maximum 2 secondes d'attente)
+    try {
+        const supabaseFetch = fetch(SUPABASE_PRIMARY_URL, {
+            method: 'POST',
+            headers: {
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=representation'
+            },
+            body: JSON.stringify(supabaseRecord)
+        }).catch(err => console.error("Erreur Supabase:", err));
+
+        const timeout = new Promise(resolve => setTimeout(resolve, 2000));
+        await Promise.race([supabaseFetch, timeout]);
+    } catch (e) {}
+
     return { success: true, estDoublon: false, totalCount: totalCurrent + 1 };
 }
 

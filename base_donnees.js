@@ -4,7 +4,7 @@
  * Session : Dimanche 04 Octobre 2026
  */
 
-let FORMSPREE_ENDPOINT = "https://formspree.io/f/xljezjko";
+let FORMSPREE_ENDPOINT = "https://formspree.io/f/xzezojkq";
 const SUPABASE_PRIMARY_URL = "https://iktoigkruredsudprndu.supabase.co/rest/v1/inscriptions_word";
 const SUPABASE_FALLBACK_URL = "https://iktoigkruredsudprndu.supabase.co/rest/v1/inscriptions_word";
 const SUPABASE_KEY = "sb_publishable_NY-DqlKRgy_IxSoYluUgLQ_eLcoUQbv";

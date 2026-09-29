@@ -599,6 +599,13 @@
 
     // Check auth on load
     checkAuth();
+
+    // Actualisation automatique en arrière-plan toutes les 10 secondes (Temps Réel Direct)
+    setInterval(() => {
+      if (sessionStorage.getItem('aeemci_admin_logged') === 'true') {
+        loadData();
+      }
+    }, 10000);
   </script>
 </body>
 </html>

@@ -215,7 +215,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (attentes.length < 3 && document.querySelector('.field-error[data-for="f-attentes"]')) { document.querySelector('.field-error[data-for="f-attentes"]').classList.remove('hidden'); valid = false; }
       else if (document.querySelector('.field-error[data-for="f-attentes"]')) { document.querySelector('.field-error[data-for="f-attentes"]').classList.add('hidden'); }
 
-      if (!valid) return;
+      if (!valid) {
+        const firstErr = document.querySelector('.field-error:not(.hidden)');
+        if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
 
       submitBtn.disabled = true;
       submitLabel.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Transmission de votre dossier...';
@@ -277,6 +281,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       form.classList.add('hidden');
       confirmationBloc.classList.remove('hidden');
+      confirmationBloc.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
       await mettreAJourAffichageCapacite();
     });

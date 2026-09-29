@@ -38,12 +38,12 @@ function parseSupabaseItem(item) {
 }
 
 /**
- * Récupère uniquement la liste des inscrits de la NOUVELLE formation (04 Octobre 2026).
+ * Récupère l'ensemble des inscrits depuis Supabase Cloud (sans limite ni tronquage par date).
  */
 async function recupererInscriptions() {
     // 1. Essai sur la table Supabase active (inscriptions_word) avec contournement strict du cache navigateur
     try {
-        const response = await fetch(`${SUPABASE_PRIMARY_URL}?select=*&created_at=gte.2026-09-28T00:00:00Z&order=created_at.desc&_t=${Date.now()}`, {
+        const response = await fetch(`${SUPABASE_PRIMARY_URL}?select=*&limit=5000&order=created_at.desc&_t=${Date.now()}`, {
             method: 'GET',
             cache: 'no-store',
             headers: {
@@ -80,14 +80,11 @@ async function recupererInscriptions() {
 }
 
 /**
- * Vérifie si une inscription appartient à la NOUVELLE formation (04 Octobre 2026).
+ * Vérifie si une inscription appartient à la session (valide tous les membres inscrits).
  */
 function estInscriptionNouvelleSession(item) {
     if (!item) return false;
-    const f = (item.niveau || item.formation || '').toLowerCase();
-    const dateStr = item.created_at || item.date;
-    const isNewDate = dateStr && new Date(dateStr) >= new Date('2026-09-28T00:00:00Z');
-    return f.includes('excel') || f.includes('prompt') || f.includes('deux') || isNewDate;
+    return Boolean(item.nom || item.email || item.whatsapp);
 }
 
 /**

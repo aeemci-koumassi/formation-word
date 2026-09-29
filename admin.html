@@ -313,6 +313,21 @@
         rawInscriptions = [];
       }
 
+      // Fusion avec le registre local des candidatures validées
+      try {
+        if (typeof localStorage !== 'undefined') {
+          const valMap = JSON.parse(localStorage.getItem('aeemci_validations_map') || '{}');
+          rawInscriptions.forEach(item => {
+            const key = item.id || item.ticket_code || item.email || item.whatsapp;
+            if (key && valMap[key]) {
+              item.statut_validation = valMap[key].statut_validation || "Validée";
+              item.statut = valMap[key].statut || "Validé";
+              if (valMap[key].ticket_code) item.ticket_code = valMap[key].ticket_code;
+            }
+          });
+        }
+      } catch (e) {}
+
       loadingState.classList.add('hidden');
       applyFilterAndRender();
     }
@@ -443,16 +458,26 @@
         item.ticket_code = `TKT-EXCEL-IA-${code}`;
       }
 
-      // 1. Sauvegarde dans cache local
+      // 1. Sauvegarde dans le registre local persistant
       try {
         if (typeof localStorage !== 'undefined') {
+          const valMap = JSON.parse(localStorage.getItem('aeemci_validations_map') || '{}');
+          const key = item.id || item.ticket_code || item.email || item.whatsapp;
+          if (key) {
+            valMap[key] = {
+              statut_validation: "Validée",
+              statut: "Validé",
+              ticket_code: item.ticket_code
+            };
+            localStorage.setItem('aeemci_validations_map', JSON.stringify(valMap));
+          }
           localStorage.setItem('aeemci_inscriptions_octobre_2026_v2', JSON.stringify(rawInscriptions));
         }
       } catch (e) {}
 
       // 2. Synchronisation Supabase Cloud en arrière-plan
       try {
-        if (item.id) {
+        if (item.id && typeof SUPABASE_PRIMARY_URL !== 'undefined') {
           fetch(`${SUPABASE_PRIMARY_URL}?id=eq.${item.id}`, {
             method: 'PATCH',
             headers: {
@@ -460,7 +485,7 @@
               'Authorization': `Bearer ${SUPABASE_KEY}`,
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ statut_validation: "Validée", statut: "Validé", ticket_code: item.ticket_code })
+            body: JSON.stringify({ statut: "Validé", ticket_code: item.ticket_code })
           }).catch(err => console.error("Mise à jour Supabase", err));
         }
       } catch (e) {}

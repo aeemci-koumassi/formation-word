@@ -5,7 +5,7 @@
  */
 
 let FORMSPREE_ENDPOINT = "https://formspree.io/f/xljezjko";
-const SUPABASE_PRIMARY_URL = "https://iktoigkruredsudprndu.supabase.co/rest/v1/inscriptions_excel_ia";
+const SUPABASE_PRIMARY_URL = "https://iktoigkruredsudprndu.supabase.co/rest/v1/inscriptions_word";
 const SUPABASE_FALLBACK_URL = "https://iktoigkruredsudprndu.supabase.co/rest/v1/inscriptions_word";
 const SUPABASE_KEY = "sb_publishable_NY-DqlKRgy_IxSoYluUgLQ_eLcoUQbv";
 const LOCAL_STORAGE_KEY = 'aeemci_inscriptions_octobre_2026_v2';

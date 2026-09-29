@@ -381,12 +381,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (adminSubmitPass) {
     adminSubmitPass.addEventListener('click', async () => {
       if (adminPassInput.value.trim() === ADMIN_PASS || adminPassInput.value.trim() === "123456") {
-        adminLoginScreen.classList.add('hidden');
-        adminDashboard.classList.remove('hidden');
-        if (typeof recupererInscriptions === 'function') {
-          cachedList = await recupererInscriptions();
-        }
-        renderAdminTable(cachedList);
+        sessionStorage.setItem('aeemci_admin_logged', 'true');
+        window.location.href = 'admin.html';
       } else {
         adminPassError.classList.remove('hidden');
       }

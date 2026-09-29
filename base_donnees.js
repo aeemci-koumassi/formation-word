@@ -121,15 +121,9 @@ async function ajouterInscription(entry) {
         return emailMatch && phoneMatch;
     });
 
-    const totalCurrent = await obtenirNombreInscrits();
-
+    // Même si un dossier similaire existe, enregistrer toujours la nouvelle soumission dans Supabase
     if (existant) {
-        console.log("ℹ️ Inscription déjà enregistrée (Doublon bloqué) :", existant);
-        return { 
-            success: true, 
-            estDoublon: true, 
-            existingRecord: existant 
-        };
+        console.log("ℹ️ Inscription existante trouvée, enregistrement de la nouvelle soumission :", existant);
     }
 
     const ticketCode = entry.ticket_code || genererCodeTicket();

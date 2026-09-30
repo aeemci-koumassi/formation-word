@@ -7,7 +7,6 @@
 let FORMSPREE_ENDPOINT = "https://formsubmit.co/ajax/koumayaya7@gmail.com";
 const SUPABASE_PRIMARY_URL = "https://iktoigkruredsudprndu.supabase.co/rest/v1/inscriptions_word";
 const SUPABASE_KEY = "sb_publishable_NY-DqlKRgy_IxSoYluUgLQ_eLcoUQbv";
-const LOCAL_STORAGE_KEY = 'aeemci_inscriptions_octobre_2026_v2';
 
 const MAX_CAPACITE = 300;
 
@@ -37,7 +36,7 @@ function parseSupabaseItem(item) {
 }
 
 /**
- * Récupère directement l'intégralité des inscrits depuis le Cloud Supabase centralisé.
+ * Récupère l'intégralité des inscrits depuis la base centralisée Supabase Cloud.
  */
 async function recupererInscriptions() {
     try {
@@ -52,23 +51,12 @@ async function recupererInscriptions() {
         if (response.ok) {
             const data = await response.json();
             if (Array.isArray(data)) {
-                const parsed = data.map(parseSupabaseItem);
-                if (typeof localStorage !== 'undefined') {
-                    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(parsed));
-                }
-                return parsed;
+                return data.map(parseSupabaseItem);
             }
         }
     } catch (err) {
-        console.warn("⚠️ Connexion Cloud temporairement indisponible, secours local", err);
+        console.warn("⚠️ Impossible de contacter la base centrale Supabase Cloud", err);
     }
-
-    try {
-        if (typeof localStorage !== 'undefined') {
-            const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
-            return raw ? JSON.parse(raw) : [];
-        }
-    } catch (e) {}
     return [];
 }
 
@@ -86,8 +74,8 @@ async function obtenirNombreInscrits() {
 }
 
 /**
- * Enregistre un nouvel inscrit avec CONFIRMATION SYNCHRONE (AWAIT) sur Supabase Cloud.
- * Garantit que toute inscription soumise depuis un mobile est immédiatement enregistrée dans le Cloud central.
+ * Enregistre un nouvel inscrit avec AWAIT obligatoire sur Supabase Cloud.
+ * Garantit la synchronisation multi-appareils (téléphone <-> ordinateur).
  */
 async function ajouterInscription(entry) {
     const ticketCode = entry.ticket_code || genererCodeTicket();
@@ -119,7 +107,7 @@ async function ajouterInscription(entry) {
 
     // 1. GARANTIE CLOUD CENTRALE (AWAIT STRICT SUR SUPABASE)
     try {
-        await fetch(SUPABASE_PRIMARY_URL, {
+        const cloudRes = await fetch(SUPABASE_PRIMARY_URL, {
             method: 'POST',
             headers: {
                 'apikey': SUPABASE_KEY,
@@ -129,6 +117,9 @@ async function ajouterInscription(entry) {
             },
             body: JSON.stringify(supabaseRecord)
         });
+        if (!cloudRes.ok) {
+            console.error("Supabase Cloud Error:", cloudRes.status);
+        }
     } catch (e) {
         console.error("Erreur envoi Cloud Supabase:", e);
     }
@@ -155,16 +146,6 @@ async function ajouterInscription(entry) {
             headers: { 'Accept': 'application/json' },
             body: formData
         }).catch(err => console.error("Erreur Notification:", err));
-    } catch (e) {}
-
-    // 3. Mise à jour du cache local
-    try {
-        if (typeof localStorage !== 'undefined') {
-            const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
-            const current = raw ? JSON.parse(raw) : [];
-            current.unshift(fullRecord);
-            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(current));
-        }
     } catch (e) {}
 
     return { success: true, estDoublon: false };

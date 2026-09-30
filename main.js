@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const submitLabel = document.getElementById('submitLabel');
 
   if (form) {
-    form.addEventListener('submit', function (e) {
+    form.addEventListener('submit', async function (e) {
       e.preventDefault();
       e.stopPropagation();
       
@@ -190,7 +190,26 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
       }
 
-      // 1. Bascule d'affichage IMMÉDIATE et INSTANTANÉE (0 milliseconde d'attente)
+      // 1. Bouton en état de chargement pendant l'envoi vers le serveur Cloud
+      if (submitBtn) submitBtn.disabled = true;
+      if (submitLabel) submitLabel.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Enregistrement...';
+
+      // 2. Traitement et synchronisation Cloud Supabase
+      const entry = {
+        nom, email, whatsapp, statut, genre, age, ordi, attentes, formation,
+        statut_validation: "Liste d'attente",
+        date: new Date().toISOString()
+      };
+
+      if (typeof ajouterInscription === 'function') {
+        try {
+          await ajouterInscription(entry);
+        } catch (err) {
+          console.error("Erreur enregistrement:", err);
+        }
+      }
+
+      // 3. Affichage du message de confirmation après confirmation Cloud
       const confirmNomElem = document.getElementById('confirm-nom');
       if (confirmNomElem) confirmNomElem.textContent = nom;
       
@@ -219,19 +238,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         confirmationBloc.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
 
-      // 2. Traitement et synchronisation Cloud Supabase / Local en arrière-plan
-      const entry = {
-        nom, email, whatsapp, statut, genre, age, ordi, attentes, formation,
-        statut_validation: "Liste d'attente",
-        date: new Date().toISOString()
-      };
-
-      if (typeof ajouterInscription === 'function') {
-        ajouterInscription(entry).then(() => {
-          if (typeof mettreAJourAffichageCapacite === 'function') {
-            mettreAJourAffichageCapacite();
-          }
-        }).catch(err => console.error("Erreur enregistrement:", err));
+      if (typeof mettreAJourAffichageCapacite === 'function') {
+        mettreAJourAffichageCapacite();
       }
     });
   }

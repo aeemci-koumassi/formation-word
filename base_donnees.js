@@ -36,9 +36,25 @@ function parseSupabaseItem(item) {
 }
 
 /**
- * Récupère l'intégralité des inscrits depuis la base centralisée Supabase Cloud.
+ * Récupère l'intégralité des inscrits depuis Supabase Cloud via le SDK Officiel (ou Fetch Direct).
  */
 async function recupererInscriptions() {
+    try {
+        if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+            const { data, error } = await supabaseClient
+                .from('inscriptions_word')
+                .select('*')
+                .order('created_at', { ascending: false })
+                .limit(5000);
+            
+            if (!error && Array.isArray(data)) {
+                return data.map(parseSupabaseItem);
+            }
+        }
+    } catch (e) {
+        console.warn("Erreur Supabase SDK Select:", e);
+    }
+
     try {
         const response = await fetch(`${SUPABASE_PRIMARY_URL}?select=*&limit=5000&order=created_at.desc&_t=${Date.now()}`, {
             method: 'GET',
@@ -55,8 +71,9 @@ async function recupererInscriptions() {
             }
         }
     } catch (err) {
-        console.warn("⚠️ Impossible de contacter la base centrale Supabase Cloud", err);
+        console.warn("Erreur Fetch Direct Select:", err);
     }
+
     return [];
 }
 
@@ -74,8 +91,8 @@ async function obtenirNombreInscrits() {
 }
 
 /**
- * Enregistre un nouvel inscrit avec AWAIT obligatoire sur Supabase Cloud.
- * Garantit la synchronisation multi-appareils (téléphone <-> ordinateur).
+ * Enregistre un nouvel inscrit directement dans le Cloud Supabase centralisé.
+ * Utilise en priorité le SDK officiel Supabase compatible avec les réseaux mobiles 3G/4G/WiFi.
  */
 async function ajouterInscription(entry) {
     const ticketCode = entry.ticket_code || genererCodeTicket();
@@ -105,23 +122,40 @@ async function ajouterInscription(entry) {
         niveau: niveauDetail
     };
 
-    // 1. GARANTIE CLOUD CENTRALE (AWAIT STRICT SUR SUPABASE)
+    // 1. Insertion via le SDK Supabase Officiel (Ultra-robuste sur réseaux mobiles)
+    let isSavedInCloud = false;
     try {
-        const cloudRes = await fetch(SUPABASE_PRIMARY_URL, {
-            method: 'POST',
-            headers: {
-                'apikey': SUPABASE_KEY,
-                'Authorization': `Bearer ${SUPABASE_KEY}`,
-                'Content-Type': 'application/json',
-                'Prefer': 'return=representation'
-            },
-            body: JSON.stringify(supabaseRecord)
-        });
-        if (!cloudRes.ok) {
-            console.error("Supabase Cloud Error:", cloudRes.status);
+        if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+            const { data, error } = await supabaseClient
+                .from('inscriptions_word')
+                .insert([supabaseRecord]);
+            
+            if (!error) {
+                isSavedInCloud = true;
+            } else {
+                console.error("Supabase SDK Insert Error:", error);
+            }
         }
     } catch (e) {
-        console.error("Erreur envoi Cloud Supabase:", e);
+        console.error("Exception SDK Supabase:", e);
+    }
+
+    // Fallback Fetch REST direct
+    if (!isSavedInCloud) {
+        try {
+            await fetch(SUPABASE_PRIMARY_URL, {
+                method: 'POST',
+                headers: {
+                    'apikey': SUPABASE_KEY,
+                    'Authorization': `Bearer ${SUPABASE_KEY}`,
+                    'Content-Type': 'application/json',
+                    'Prefer': 'return=representation'
+                },
+                body: JSON.stringify(supabaseRecord)
+            });
+        } catch (e) {
+            console.error("Erreur Fetch Direct Supabase:", e);
+        }
     }
 
     // 2. Notification Email FormSubmit (Arrière-plan non-bloquant)

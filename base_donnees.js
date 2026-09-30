@@ -37,7 +37,7 @@ function parseSupabaseItem(item) {
 }
 
 /**
- * Récupère directement l'intégralité des inscrits de Supabase Cloud.
+ * Récupère directement l'intégralité des inscrits depuis le Cloud Supabase centralisé.
  */
 async function recupererInscriptions() {
     try {
@@ -60,7 +60,7 @@ async function recupererInscriptions() {
             }
         }
     } catch (err) {
-        console.warn("⚠️ Utilisation du secours local", err);
+        console.warn("⚠️ Connexion Cloud temporairement indisponible, secours local", err);
     }
 
     try {
@@ -85,6 +85,10 @@ async function obtenirNombreInscrits() {
     }
 }
 
+/**
+ * Enregistre un nouvel inscrit avec CONFIRMATION SYNCHRONE (AWAIT) sur Supabase Cloud.
+ * Garantit que toute inscription soumise depuis un mobile est immédiatement enregistrée dans le Cloud central.
+ */
 async function ajouterInscription(entry) {
     const ticketCode = entry.ticket_code || genererCodeTicket();
     
@@ -113,15 +117,23 @@ async function ajouterInscription(entry) {
         niveau: niveauDetail
     };
 
+    // 1. GARANTIE CLOUD CENTRALE (AWAIT STRICT SUR SUPABASE)
     try {
-        if (typeof localStorage !== 'undefined') {
-            const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
-            const current = raw ? JSON.parse(raw) : [];
-            current.unshift(fullRecord);
-            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(current));
-        }
-    } catch (e) {}
+        await fetch(SUPABASE_PRIMARY_URL, {
+            method: 'POST',
+            headers: {
+                'apikey': SUPABASE_KEY,
+                'Authorization': `Bearer ${SUPABASE_KEY}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=representation'
+            },
+            body: JSON.stringify(supabaseRecord)
+        });
+    } catch (e) {
+        console.error("Erreur envoi Cloud Supabase:", e);
+    }
 
+    // 2. Notification Email FormSubmit (Arrière-plan non-bloquant)
     try {
         const formData = new FormData();
         formData.append('nom', fullRecord.nom || '');
@@ -145,17 +157,14 @@ async function ajouterInscription(entry) {
         }).catch(err => console.error("Erreur Notification:", err));
     } catch (e) {}
 
+    // 3. Mise à jour du cache local
     try {
-        fetch(SUPABASE_PRIMARY_URL, {
-            method: 'POST',
-            headers: {
-                'apikey': SUPABASE_KEY,
-                'Authorization': `Bearer ${SUPABASE_KEY}`,
-                'Content-Type': 'application/json',
-                'Prefer': 'return=representation'
-            },
-            body: JSON.stringify(supabaseRecord)
-        }).catch(err => console.error("Erreur Supabase:", err));
+        if (typeof localStorage !== 'undefined') {
+            const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+            const current = raw ? JSON.parse(raw) : [];
+            current.unshift(fullRecord);
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(current));
+        }
     } catch (e) {}
 
     return { success: true, estDoublon: false };

@@ -41,20 +41,14 @@ function parseSupabaseItem(item) {
  * Récupère l'ensemble des inscrits depuis Supabase Cloud (sans limite ni tronquage par date).
  */
 async function recupererInscriptions() {
-    // Purge automatique de l'ancien cache local obsolète s'il contient moins de 50 enregistrements
+    let localData = [];
     try {
         if (typeof localStorage !== 'undefined') {
             const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
-            if (raw) {
-                const parsedLocal = JSON.parse(raw);
-                if (Array.isArray(parsedLocal) && parsedLocal.length < 50) {
-                    localStorage.removeItem(LOCAL_STORAGE_KEY);
-                }
-            }
+            if (raw) localData = JSON.parse(raw);
         }
-    } catch(e) {}
+    } catch (e) {}
 
-    // 1. Appel direct vers Supabase Cloud avec timestamp anti-cache (sans l'option CORS no-store)
     try {
         const response = await fetch(`${SUPABASE_PRIMARY_URL}?select=*&limit=5000&order=created_at.desc&_t=${Date.now()}`, {
             method: 'GET',
@@ -66,7 +60,7 @@ async function recupererInscriptions() {
 
         if (response.ok) {
             const data = await response.json();
-            if (Array.isArray(data)) {
+            if (Array.isArray(data) && data.length > 0) {
                 const parsed = data.map(parseSupabaseItem);
                 if (typeof localStorage !== 'undefined') {
                     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(parsed));
@@ -75,19 +69,10 @@ async function recupererInscriptions() {
             }
         }
     } catch (err) {
-        console.warn("⚠️ Connexion Supabase en cours...", err);
+        console.warn("⚠️ Mode secours local actif", err);
     }
 
-    // 2. Fallback LocalStorage si hors-ligne
-    try {
-        if (typeof localStorage !== 'undefined') {
-            const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
-            return raw ? JSON.parse(raw) : [];
-        }
-    } catch (e) {
-        console.error("Erreur lecture locale:", e);
-    }
-    return [];
+    return localData;
 }
 
 /**

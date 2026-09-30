@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       // 2. Traitement et synchronisation Cloud Supabase
       const entry = {
         nom, email, whatsapp, statut, genre, age, ordi, attentes, formation,
-        statut_validation: "Liste d'attente",
+        statut_validation: "Validée",
         date: new Date().toISOString()
       };
 
@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
       }
 
-      // 3. Affichage du message de confirmation après confirmation Cloud
+      // 3. Affichage du message de confirmation officielle
       const confirmNomElem = document.getElementById('confirm-nom');
       if (confirmNomElem) confirmNomElem.textContent = nom;
       
@@ -219,17 +219,17 @@ document.addEventListener('DOMContentLoaded', async () => {
       const confirmText = document.getElementById('confirm-text');
 
       if (confirmBadge) {
-        confirmBadge.textContent = "📋 Candidature en Liste d'Attente";
-        confirmBadge.className = "text-xs text-amber-700 font-extrabold uppercase tracking-widest bg-amber-50 px-4 py-1.5 rounded-full border border-amber-200";
+        confirmBadge.textContent = "✅ Inscription Officielle Validée";
+        confirmBadge.className = "text-xs text-brandGreen font-extrabold uppercase tracking-widest bg-emerald-50 px-4 py-1.5 rounded-full border border-emerald-200";
       }
       if (confirmIconBox) {
-        confirmIconBox.className = "w-20 h-20 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-4xl mx-auto shadow-sm border border-amber-200";
+        confirmIconBox.className = "w-20 h-20 bg-emerald-100 text-brandGreen rounded-full flex items-center justify-center text-4xl mx-auto shadow-sm border border-emerald-200";
       }
       if (confirmIcon) {
-        confirmIcon.className = "fa-solid fa-clock";
+        confirmIcon.className = "fa-solid fa-circle-check";
       }
       if (confirmText) {
-        confirmText.innerHTML = `Votre candidature pour la <strong>Double Formation Pratique (Excel & Prompt Engineering)</strong> du <strong>Dimanche 04 Octobre 2026</strong> a été enregistrée avec succès et est sur <strong>liste d'attente</strong>.<br><br>L'équipe organisatrice examinera votre profil. Après validation, votre <strong>Reçu d'Inscription Officiel avec QR Code</strong> vous sera attribué pour accéder à la formation.`;
+        confirmText.innerHTML = `Félicitations <strong>${nom}</strong> ! Votre inscription pour la <strong>Double Formation Pratique (Bases Excel & Prompt Engineering)</strong> du <strong>Dimanche 04 Octobre 2026 à 08h00 GMT</strong> au Groupe Scolaire Sainte Thérèse a été réservée et <strong>validée avec succès</strong>.`;
       }
 
       if (form) form.classList.add('hidden');

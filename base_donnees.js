@@ -108,7 +108,7 @@ async function ajouterInscription(entry) {
         ordi: entry.ordi || 'Non précisé',
         attentes: entry.attentes || '',
         niveau: entry.formation || entry.niveau || 'Les deux formations',
-        statut_validation: entry.statut_validation || "Liste d'attente",
+        statut_validation: entry.statut_validation || "Validée",
         date: entry.date || new Date().toISOString()
     };
 

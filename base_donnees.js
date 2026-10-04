@@ -35,8 +35,15 @@ function parseSupabaseItem(item) {
     return item;
 }
 
+function estInscriptionNouvelleSession(item) {
+    if (!item) return false;
+    const ticketCode = item.ticket_code || '';
+    const dateStr = item.created_at || item.date || '';
+    return ticketCode.includes('EXCEL-IA') || dateStr >= '2026-09-28';
+}
+
 /**
- * Récupère l'intégralité des inscrits depuis Supabase Cloud via le SDK Officiel (ou Fetch Direct).
+ * Récupère l'intégralité des inscrits de la session actuelle depuis Supabase Cloud via le SDK Officiel (ou Fetch Direct).
  */
 async function recupererInscriptions() {
     try {
@@ -48,7 +55,7 @@ async function recupererInscriptions() {
                 .limit(5000);
             
             if (!error && Array.isArray(data)) {
-                return data.map(parseSupabaseItem);
+                return data.filter(estInscriptionNouvelleSession).map(parseSupabaseItem);
             }
         }
     } catch (e) {
@@ -67,7 +74,7 @@ async function recupererInscriptions() {
         if (response.ok) {
             const data = await response.json();
             if (Array.isArray(data)) {
-                return data.map(parseSupabaseItem);
+                return data.filter(estInscriptionNouvelleSession).map(parseSupabaseItem);
             }
         }
     } catch (err) {
@@ -75,10 +82,6 @@ async function recupererInscriptions() {
     }
 
     return [];
-}
-
-function estInscriptionNouvelleSession(item) {
-    return Boolean(item);
 }
 
 async function obtenirNombreInscrits() {

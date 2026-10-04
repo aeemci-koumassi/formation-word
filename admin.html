@@ -475,6 +475,8 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
         const statusText = isValidated ? 'Validée' : "En attente";
         const ticketCode = item.ticket_code || `TKT-${(item.nom || 'EXCEL').slice(0,3).toUpperCase()}-${i+100}`;
         const indexInAll = rawInscriptions.indexOf(item);
+        const key = 'aeemci_thanked_' + (item.ticket_code || item.whatsapp || item.nom);
+        const isThanked = item.is_thanked || (typeof localStorage !== 'undefined' && localStorage.getItem(key) === 'true');
 
         return `
           <tr class="hover:bg-gray-50 text-xs">
@@ -505,8 +507,8 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
             </td>
             <td class="text-center">
               <div class="flex items-center justify-center gap-1.5">
-                <button onclick="envoyerRemerciementWhatsApp(${indexInAll})" class="bg-teal-600 hover:bg-teal-700 text-white font-bold text-[11px] px-2 py-1.5 rounded-xl shadow-sm transition-colors flex items-center gap-1" title="Envoyer un message de remerciement sur WhatsApp">
-                  <i class="fa-solid fa-heart text-xs"></i> Merci
+                <button onclick="envoyerRemerciementWhatsApp(${indexInAll})" class="${isThanked ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-teal-600 hover:bg-teal-700'} text-white font-bold text-[11px] px-2 py-1.5 rounded-xl shadow-sm transition-colors flex items-center gap-1" title="Envoyer un message de remerciement sur WhatsApp">
+                  <i class="fa-solid ${isThanked ? 'fa-circle-check' : 'fa-heart'} text-xs"></i> ${isThanked ? '✓ Remercié' : 'Merci'}
                 </button>
                 ${isValidated ? `
                   <button onclick="voirTicket(${indexInAll})" class="bg-slate-800 hover:bg-slate-900 text-white font-bold text-[11px] px-2.5 py-1.5 rounded-xl shadow-sm transition-colors flex items-center gap-1">
@@ -607,6 +609,10 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
       const item = rawInscriptions[idx];
       const waPhone = meFormaterTelephoneWA(item.whatsapp);
       
+      const key = 'aeemci_thanked_' + (item.ticket_code || item.whatsapp || item.nom);
+      try { localStorage.setItem(key, 'true'); } catch (e) {}
+      item.is_thanked = true;
+
       const waMsg = encodeURIComponent(
         `Assalamou Aleykoum / Bonjour ${item.nom} 👋,\n\n` +
         `Au nom de toute l'équipe organisatrice de l'AEEMCI Koumassi, nous tenons à vous adresser nos plus sincères REMERCIEMENTS pour votre présence et votre participation active à la Double Formation Pratique (Bases Excel & Prompt Engineering) du Dimanche 04 Octobre 2026 au Groupe Scolaire Sainte Thérèse ! 🎓✨\n\n` +
@@ -616,6 +622,7 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
       );
 
       window.open(`https://wa.me/${waPhone}?text=${waMsg}`, '_blank');
+      applyFilterAndRender();
     }
 
     function voirTicket(idx) {

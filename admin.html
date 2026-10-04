@@ -142,6 +142,9 @@
             <button id="refreshBtn" class="bg-gray-100 hover:bg-gray-200 text-lumaText font-bold text-xs px-4 py-3 rounded-xl transition-colors flex items-center gap-2">
               <i class="fa-solid fa-rotate text-sm"></i> Actualiser
             </button>
+            <button id="thanksBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-3 rounded-xl shadow-md transition-colors flex items-center gap-2">
+              <i class="fa-brands fa-whatsapp text-sm"></i> Remerciements
+            </button>
             <button id="exportBtn" class="bg-lumaGreen hover:bg-lumaGreenDark text-white font-bold text-xs px-4 py-3 rounded-xl shadow-md transition-colors flex items-center gap-2">
               <i class="fa-solid fa-file-excel text-sm"></i> Exporter en Excel (CSV)
             </button>
@@ -255,6 +258,52 @@
     </div>
   </div>
 
+  <!-- THANKS BROADCAST MODAL -->
+  <div id="thanksModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100 flex flex-col max-h-[90vh]">
+      
+      <div class="p-5 bg-gradient-to-r from-emerald-600 to-teal-700 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center text-lg">
+            <i class="fa-brands fa-whatsapp text-white"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-base">Message de Remerciement</h3>
+            <p class="text-[11px] text-emerald-100">Diffusion WhatsApp — Session Excel & Prompt IA</p>
+          </div>
+        </div>
+        <button id="closeThanksBtn" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition-colors">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-4 overflow-y-auto flex-1">
+        <div class="space-y-1.5">
+          <label class="text-xs font-bold text-slate-700">Modèle du message à envoyer :</label>
+          <textarea id="thanksMsgText" rows="7" class="luma-input text-xs font-sans leading-relaxed text-slate-800" readonly>Assalamou Aleykoum / Bonjour 👋,
+
+Au nom de toute l'équipe organisatrice de l'AEEMCI Koumassi, nous tenons à vous adresser nos plus sincères REMERCIEMENTS pour votre présence et votre participation active à la Double Formation Pratique (Bases Excel & Prompt Engineering) du Dimanche 04 Octobre 2026 au Groupe Scolaire Sainte Thérèse ! 🎓✨
+
+Nous espérons que les enseignements de M. Djim Aboubacar Mikahillo (Excel) et M. TUO Mamadou (Prompt IA) vous seront très utiles au quotidien. 📊🤖
+
+Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
+
+— L'équipe d'Organisation AEEMCI Koumassi</textarea>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <button id="copyThanksMsgBtn" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
+            <i class="fa-solid fa-copy"></i> Copier le texte du message
+          </button>
+          <button id="copyPhonesBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 rounded-xl shadow-md transition-colors flex items-center justify-center gap-2">
+            <i class="fa-solid fa-address-book"></i> Copier les numéros (+225) pour WhatsApp Business / Diffusion
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- JAVASCRIPT LOGIC -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase.js?v=20261004_ORIGINAL_GLORY_V6000"></script>
@@ -277,10 +326,40 @@
     const refreshBtn = document.getElementById('refreshBtn');
     const exportBtn = document.getElementById('exportBtn');
 
-    // Ticket Modal Elements
+    // Ticket & Thanks Modal Elements
     const ticketModal = document.getElementById('ticketModal');
     const closeTicketBtn = document.getElementById('closeTicketBtn');
     if (closeTicketBtn) closeTicketBtn.addEventListener('click', () => ticketModal.classList.add('hidden'));
+
+    const thanksModal = document.getElementById('thanksModal');
+    const thanksBtn = document.getElementById('thanksBtn');
+    const closeThanksBtn = document.getElementById('closeThanksBtn');
+    const copyThanksMsgBtn = document.getElementById('copyThanksMsgBtn');
+    const copyPhonesBtn = document.getElementById('copyPhonesBtn');
+
+    if (thanksBtn && thanksModal) {
+      thanksBtn.addEventListener('click', () => thanksModal.classList.remove('hidden'));
+    }
+    if (closeThanksBtn && thanksModal) {
+      closeThanksBtn.addEventListener('click', () => thanksModal.classList.add('hidden'));
+    }
+    if (copyThanksMsgBtn) {
+      copyThanksMsgBtn.addEventListener('click', () => {
+        const text = document.getElementById('thanksMsgText').value;
+        navigator.clipboard.writeText(text);
+        alert('Message de remerciement copié dans le presse-papier !');
+      });
+    }
+    if (copyPhonesBtn) {
+      copyPhonesBtn.addEventListener('click', () => {
+        const phones = currentSessionInscriptions
+          .map(item => meFormaterTelephoneWA(item.whatsapp))
+          .filter(Boolean)
+          .join('\n');
+        navigator.clipboard.writeText(phones);
+        alert(`${currentSessionInscriptions.length} numéros WhatsApp (+225) copiés pour votre liste de diffusion !`);
+      });
+    }
 
     function checkAuth() {
       if (localStorage.getItem('aeemci_admin_logged') === 'true' || sessionStorage.getItem('aeemci_admin_logged') === 'true') {
@@ -426,16 +505,16 @@
             </td>
             <td class="text-center">
               <div class="flex items-center justify-center gap-1.5">
+                <button onclick="envoyerRemerciementWhatsApp(${indexInAll})" class="bg-teal-600 hover:bg-teal-700 text-white font-bold text-[11px] px-2 py-1.5 rounded-xl shadow-sm transition-colors flex items-center gap-1" title="Envoyer un message de remerciement sur WhatsApp">
+                  <i class="fa-solid fa-heart text-xs"></i> Merci
+                </button>
                 ${isValidated ? `
                   <button onclick="voirTicket(${indexInAll})" class="bg-slate-800 hover:bg-slate-900 text-white font-bold text-[11px] px-2.5 py-1.5 rounded-xl shadow-sm transition-colors flex items-center gap-1">
                     <i class="fa-solid fa-qrcode text-xs"></i> QR Code
                   </button>
-                  <button onclick="envoyerWhatsAppDirect(${indexInAll})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] px-2.5 py-1.5 rounded-xl shadow-sm transition-colors flex items-center gap-1" title="Envoyer le reçu sur WhatsApp">
-                    <i class="fa-brands fa-whatsapp text-xs"></i> WhatsApp
-                  </button>
                 ` : `
                   <button onclick="validerCandidature(${indexInAll})" class="bg-lumaGreen hover:bg-lumaGreenDark text-white font-bold text-[11px] px-3 py-1.5 rounded-xl shadow-md transition-all flex items-center gap-1">
-                    <i class="fa-solid fa-circle-check text-xs"></i> Valider la candidature
+                    <i class="fa-solid fa-circle-check text-xs"></i> Valider
                   </button>
                 `}
               </div>
@@ -518,6 +597,22 @@
         `📍 Lieu : Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi)\n` +
         `⏰ Heure : Dimanche 04 Octobre 2026 à 08h00 GMT\n\n` +
         `Présentez ce message à l'entrée de la salle. À dimanche !`
+      );
+
+      window.open(`https://wa.me/${waPhone}?text=${waMsg}`, '_blank');
+    }
+
+    function envoyerRemerciementWhatsApp(idx) {
+      if (idx < 0 || idx >= rawInscriptions.length) return;
+      const item = rawInscriptions[idx];
+      const waPhone = meFormaterTelephoneWA(item.whatsapp);
+      
+      const waMsg = encodeURIComponent(
+        `Assalamou Aleykoum / Bonjour ${item.nom} 👋,\n\n` +
+        `Au nom de toute l'équipe organisatrice de l'AEEMCI Koumassi, nous tenons à vous adresser nos plus sincères REMERCIEMENTS pour votre présence et votre participation active à la Double Formation Pratique (Bases Excel & Prompt Engineering) du Dimanche 04 Octobre 2026 au Groupe Scolaire Sainte Thérèse ! 🎓✨\n\n` +
+        `Nous espérons que les enseignements de M. Djim Aboubacar Mikahillo (Excel) et M. TUO Mamadou (Prompt IA) vous seront très utiles au quotidien. 📊🤖\n\n` +
+        `Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲\n\n` +
+        `— L'équipe d'Organisation AEEMCI Koumassi`
       );
 
       window.open(`https://wa.me/${waPhone}?text=${waMsg}`, '_blank');

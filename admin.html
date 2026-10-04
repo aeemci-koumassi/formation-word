@@ -339,8 +339,14 @@
     }
 
     function applyFilterAndRender() {
-      // Inclusion complète de toutes les 275+ inscriptions enregistrées dans la base de données
-      currentSessionInscriptions = [...rawInscriptions];
+      if (sessionFilter && sessionFilter.value === 'new') {
+        currentSessionInscriptions = rawInscriptions.filter(item => 
+          (item.ticket_code || '').includes('EXCEL-IA') || 
+          (item.created_at && item.created_at >= '2026-09-28')
+        );
+      } else {
+        currentSessionInscriptions = [...rawInscriptions];
+      }
 
       // Mise à jour des cartes de statistiques de la session choisie
       updateStats(currentSessionInscriptions);

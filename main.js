@@ -22,31 +22,50 @@ document.addEventListener('DOMContentLoaded', async () => {
   updateLiveUtcTime();
   setInterval(updateLiveUtcTime, 10000);
 
-  /* ---------- 2. COUNTDOWN PILL ("Commence dans 3d 08h") ---------- */
-  function updateCountdownPill() {
+  /* ---------- 2. COUNTDOWN CHRONO PRO (CHAMP ROUGE & TICKER) ---------- */
+  function updateCountdown() {
     const pillText = document.getElementById('cd-pill-text');
-    if (!pillText) return;
+    const dEl = document.getElementById('pro-cd-days');
+    const hEl = document.getElementById('pro-cd-hours');
+    const mEl = document.getElementById('pro-cd-mins');
+    const sEl = document.getElementById('pro-cd-secs');
 
     const now = new Date().getTime();
     const distance = EVENT_DATE_UTC.getTime() - now;
 
+    const pad = n => String(Math.max(0, n)).padStart(2, '0');
+
     if (distance <= 0) {
-      pillText.textContent = "Événement en cours !";
+      if (pillText) pillText.textContent = "Événement en cours !";
+      if (dEl) dEl.textContent = '00';
+      if (hEl) hEl.textContent = '00';
+      if (mEl) mEl.textContent = '00';
+      if (sEl) sEl.textContent = '00';
       return;
     }
 
     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const mins = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const secs = Math.floor((distance % (1000 * 60)) / 1000);
 
-    if (days > 0) {
-      pillText.textContent = `${days}d ${hours}h`;
-    } else {
-      pillText.textContent = `${hours}h ${mins}m`;
+    // Boîtes Digitales du champ rouge
+    if (dEl) dEl.textContent = pad(days);
+    if (hEl) hEl.textContent = pad(hours);
+    if (mEl) mEl.textContent = pad(mins);
+    if (sEl) sEl.textContent = pad(secs);
+
+    // Pastille de la carte d'inscription
+    if (pillText) {
+      if (days > 0) {
+        pillText.textContent = `${days}j ${pad(hours)}h ${pad(mins)}m`;
+      } else {
+        pillText.textContent = `${pad(hours)}h ${pad(mins)}m ${pad(secs)}s`;
+      }
     }
   }
-  updateCountdownPill();
-  setInterval(updateCountdownPill, 60000);
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
 
   /* ---------- 3. TOAST NOTIFICATION HELPER ---------- */
   window.showToast = function(msg) {

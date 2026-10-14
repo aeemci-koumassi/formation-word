@@ -9,7 +9,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
 
   const EVENT_DATE_UTC = new Date('2026-10-18T08:00:00Z');
-  const BASE_PARTICIPANTS_COUNT = 820;
 
   /* ---------- 1. LIVE UTC TIME (TOPBAR) ---------- */
   function updateLiveUtcTime() {
@@ -62,23 +61,92 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   };
 
-  /* ---------- 4. SOCIAL PROOF & PARTICIPANT COUNT ---------- */
+  /* ---------- 4. REAL PARTICIPANT DATA & SOCIAL PROOF ---------- */
+  function getInitials(name) {
+    if (!name) return 'P';
+    const clean = name.trim().replace(/[^a-zA-ZÀ-ÿ\s]/g, '');
+    const parts = clean.split(/\s+/).filter(Boolean);
+    if (parts.length === 0) return 'P';
+    if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
+
+  const AVATAR_PALETTES = [
+    'bg-blue-100 text-blue-700',
+    'bg-emerald-100 text-emerald-700',
+    'bg-purple-100 text-purple-700',
+    'bg-amber-100 text-amber-800',
+    'bg-pink-100 text-pink-700',
+    'bg-teal-100 text-teal-700',
+    'bg-indigo-100 text-indigo-700'
+  ];
+
   async function refreshParticipantsCount() {
     try {
-      let registeredCount = 0;
+      let list = [];
       if (typeof recupererInscriptions === 'function') {
-        const list = await recupererInscriptions();
-        if (Array.isArray(list)) {
-          registeredCount = list.length;
+        list = await recupererInscriptions();
+      }
+
+      // Si l'utilisateur local vient de s'inscrire sur son navigateur
+      const saved = getSavedUserTicket();
+      if (saved && saved.nom) {
+        const alreadyInList = list.some(item => (item.whatsapp && item.whatsapp === saved.whatsapp) || (item.nom && item.nom.toLowerCase() === saved.nom.toLowerCase()));
+        if (!alreadyInList) {
+          list.unshift(saved);
         }
       }
-      const total = BASE_PARTICIPANTS_COUNT + registeredCount;
+
+      const totalCount = list.length;
       const countEl = document.getElementById('social-participant-count');
-      const othersEl = document.getElementById('social-others-count');
-      if (countEl) countEl.textContent = total;
-      if (othersEl) othersEl.textContent = Math.max(0, total - 2);
+      const avatarsContainer = document.getElementById('social-avatars-container');
+      const namesEl = document.getElementById('social-participant-names');
+
+      if (countEl) countEl.textContent = totalCount;
+
+      if (totalCount === 0) {
+        if (avatarsContainer) {
+          avatarsContainer.innerHTML = `
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/80 text-[11px] font-semibold">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span>Inscriptions ouvertes</span>
+            </div>
+          `;
+        }
+        if (namesEl) {
+          namesEl.textContent = "Les inscriptions viennent d'ouvrir · Soyez le premier inscrit !";
+        }
+        return;
+      }
+
+      // Génération des avatars réels avec les vraies initiales
+      if (avatarsContainer) {
+        const topParticipants = list.slice(0, 5);
+        const avatarsHtml = topParticipants.map((p, idx) => {
+          const initials = getInitials(p.nom);
+          const colorClass = AVATAR_PALETTES[idx % AVATAR_PALETTES.length];
+          return `<div class="w-7 h-7 rounded-full ${colorClass} font-bold text-[10px] flex items-center justify-center border-2 border-white shadow-xs select-none" title="${p.nom}">${initials}</div>`;
+        }).join('');
+
+        const extraCount = totalCount > 5 ? `<div class="w-7 h-7 rounded-full bg-slate-200 text-slate-700 font-bold text-[10px] flex items-center justify-center border-2 border-white shadow-xs">+${totalCount - 5}</div>` : '';
+
+        avatarsContainer.innerHTML = avatarsHtml + extraCount;
+      }
+
+      // Affichage des vrais noms
+      if (namesEl) {
+        if (totalCount === 1) {
+          namesEl.innerHTML = `<strong>${list[0].nom}</strong> est déjà inscrit(e) !`;
+        } else if (totalCount === 2) {
+          namesEl.innerHTML = `<strong>${list[0].nom}</strong> et <strong>${list[1].nom}</strong> sont inscrits !`;
+        } else {
+          const others = totalCount - 2;
+          namesEl.innerHTML = `<strong>${list[0].nom}</strong>, <strong>${list[1].nom}</strong> et ${others} autre${others > 1 ? 's' : ''}`;
+        }
+      }
+
     } catch (e) {
-      console.warn("Notice: sync participant count", e);
+      console.warn("Notice: sync real participants", e);
     }
   }
   refreshParticipantsCount();

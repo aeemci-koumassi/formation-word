@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const now = new Date();
     const hours = String(now.getUTCHours()).padStart(2, '0');
     const mins = String(now.getUTCMinutes()).padStart(2, '0');
-    timeEl.textContent = `${hours}:${mins} UTC+0`;
+    timeEl.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span><span>${hours}:${mins} GMT (Abidjan)</span>`;
   }
   updateLiveUtcTime();
   setInterval(updateLiveUtcTime, 10000);
@@ -508,6 +508,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     adminModal.addEventListener('click', e => {
       if (e.target === adminModal) closeAdmin();
     });
+  // Mobile Sticky CTA Visibility Handler
+  const mobileCta = document.getElementById('mobile-sticky-cta');
+  const formSection = document.getElementById('event-form-state');
+  if (mobileCta && formSection) {
+    window.addEventListener('scroll', () => {
+      const rect = formSection.getBoundingClientRect();
+      if (rect.top < window.innerHeight - 80 && rect.bottom > 80) {
+        mobileCta.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+      } else {
+        mobileCta.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+      }
+    }, { passive: true });
   }
 
 });

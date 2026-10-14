@@ -54,8 +54,8 @@ async function recupererInscriptions() {
                 .order('created_at', { ascending: false })
                 .limit(5000);
             
-            if (!error && Array.isArray(data)) {
-                return data.filter(estInscriptionNouvelleSession).map(parseSupabaseItem);
+            if (!error && Array.isArray(data) && data.length > 0) {
+                return data.map(parseSupabaseItem);
             }
         }
     } catch (e) {
@@ -73,8 +73,8 @@ async function recupererInscriptions() {
 
         if (response.ok) {
             const data = await response.json();
-            if (Array.isArray(data)) {
-                return data.filter(estInscriptionNouvelleSession).map(parseSupabaseItem);
+            if (Array.isArray(data) && data.length > 0) {
+                return data.map(parseSupabaseItem);
             }
         }
     } catch (err) {

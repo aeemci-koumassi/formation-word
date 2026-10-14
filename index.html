@@ -9,11 +9,20 @@
 <title>Double Formation Pratique 2026 — Pass Participant | AEEMCI Academy</title>
 
 <!-- SEO & Open Graph -->
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="description" content="Double Formation Pratique Gratuite : PowerPoint & IA (Djim Aboubacar Mikahillo) × Création d’Affiches & Montage Vidéo (Sawadogo Mohamed). Dimanche 18 Octobre 2026 à 08h00 GMT au Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi).">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="AEEMCI Academy">
+<meta property="og:url" content="https://aeemci-koumassi.github.io/formation-word/">
 <meta property="og:title" content="AEEMCI Academy — Double Formation Pratique 2026 (Pass Participant)">
 <meta property="og:description" content="Inscrivez-vous gratuitement à la double formation pratique : PowerPoint & IA × Création d'Affiches & Montage Vidéo le Dimanche 18 Octobre 2026 au Groupe Scolaire Sainte Thérèse.">
 <meta property="og:image" content="sawadogo-mohamed.jpeg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AEEMCI Academy — Double Formation 2026">
+<meta name="twitter:description" content="PowerPoint & IA × Affiches & Vidéo · Dimanche 18 Octobre 2026 à Koumassi. Pass 100% Gratuit.">
+<meta name="twitter:image" content="sawadogo-mohamed.jpeg">
 
 <!-- Favicon (AEEMCI Official Emerald Icon) -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23059669'/%3E%3Ctext x='50' y='68' font-size='50' font-family='Arial,sans-serif' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
@@ -50,6 +59,10 @@
 </script>
 
 <style>
+  html {
+    scroll-padding-top: 5rem;
+  }
+
   body {
     background-color: #f7f7f8;
     color: #0f172a;
@@ -130,11 +143,42 @@
     box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
   }
 
+  /* Micro-interactions & Card Hovers */
+  .card-hover {
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06);
+  }
+
   /* Custom scrollbar */
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
   ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+  /* Print Styles for QR Ticket */
+  @media print {
+    header, footer, #mobile-sticky-cta, #toast, #venue-location, #about-event, .leaflet-control-container {
+      display: none !important;
+    }
+    body {
+      background: white !important;
+    }
+    #ticketModal {
+      position: static !important;
+      display: block !important;
+      background: white !important;
+      padding: 0 !important;
+    }
+    #ticketModal > div {
+      box-shadow: none !important;
+      border: 1px solid #cbd5e1 !important;
+      margin: 0 auto !important;
+      max-width: 100% !important;
+    }
+  }
 </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
@@ -163,15 +207,22 @@
       </a>
 
       <!-- Right Nav actions -->
-      <div class="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm font-medium text-slate-600">
-        <span id="live-utc-time" class="hidden sm:inline-block font-mono text-slate-500 text-xs">08:00 UTC+0</span>
+      <div class="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm font-medium text-slate-600">
+        <span id="live-utc-time" class="hidden sm:inline-flex items-center gap-1.5 font-mono text-slate-500 text-xs bg-slate-100/80 px-2.5 py-1 rounded-lg border border-slate-200/60 select-none">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>08:00 GMT (Abidjan)</span>
+        </span>
         <a href="#venue-location" class="hover:text-emerald-700 transition-colors hidden sm:inline-flex items-center gap-1 font-semibold text-emerald-600">
           <i class="fa-solid fa-location-dot text-xs"></i>
           <span>Plan d'accès</span>
         </a>
-        <a href="#about-event" class="hover:text-slate-900 transition-colors hidden sm:inline-block">Programme</a>
-        <a href="#event-form-state" class="btn-primary text-xs py-2 px-3.5 rounded-xl font-semibold">
-          <i class="fa-solid fa-ticket text-[10px]"></i>
+        <a href="#about-event" class="hover:text-slate-900 transition-colors hidden md:inline-block">Programme</a>
+        <button onclick="openTicketModal()" class="btn-secondary text-xs py-1.5 px-3 rounded-xl hidden lg:inline-flex" title="Consulter mon ticket QR">
+          <i class="fa-solid fa-qrcode text-[11px] text-amber-500"></i>
+          <span>Mon Pass QR</span>
+        </button>
+        <a href="#event-form-state" class="btn-primary text-xs py-2 px-3.5 rounded-xl font-semibold hover:scale-[1.02] active:scale-[0.98]">
+          <i class="fa-solid fa-ticket text-[10px] text-emerald-400"></i>
           <span>Pass Gratuit</span>
         </a>
       </div>
@@ -257,31 +308,40 @@
         <div class="space-y-3 pt-1">
           <h4 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Organisé par</h4>
           
-          <div class="space-y-2.5">
+          <div class="space-y-2">
             <!-- Host 1: AEEMCI -->
-            <div class="flex items-center gap-3">
-              <img src="WhatsApp Image 2026-09-09 at 16.32.41.jpeg" alt="AEEMCI" class="w-7 h-7 rounded-full object-contain p-0.5 border border-slate-200 bg-white">
+            <div class="flex items-center gap-3 p-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs card-hover">
+              <img src="WhatsApp Image 2026-09-09 at 16.32.41.jpeg" alt="AEEMCI" class="w-8 h-8 rounded-lg object-contain p-0.5 border border-slate-200 bg-white shadow-2xs shrink-0">
               <div class="flex-1 min-w-0">
-                <p class="text-sm font-semibold text-slate-900 leading-tight">AEEMCI Sous-comité Koumassi</p>
-                <p class="text-[11px] text-slate-500">Comité d'Organisation</p>
+                <div class="flex items-center gap-1.5">
+                  <p class="text-xs sm:text-sm font-bold text-slate-900 leading-tight truncate">AEEMCI Sous-comité Koumassi</p>
+                  <i class="fa-solid fa-circle-check text-emerald-600 text-[11px]" title="Comité Officiel"></i>
+                </div>
+                <p class="text-[10px] text-slate-500 font-medium">Comité d'Organisation Officiel</p>
               </div>
             </div>
 
             <!-- Host 2: Djim Aboubacar -->
-            <div class="flex items-center gap-3">
-              <img src="WhatsApp Image 2026-09-28 at 22.04.43.jpeg" alt="Djim Aboubacar Mikahillo" class="w-7 h-7 rounded-full object-cover object-top border border-slate-200">
+            <div class="flex items-center gap-3 p-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs card-hover">
+              <img src="WhatsApp Image 2026-09-28 at 22.04.43.jpeg" alt="Djim Aboubacar Mikahillo" class="w-8 h-8 rounded-lg object-cover object-top border border-slate-200 shadow-2xs shrink-0">
               <div class="flex-1 min-w-0">
-                <p class="text-sm font-semibold text-slate-900 leading-tight">Djim Aboubacar Mikahillo</p>
-                <p class="text-[11px] text-slate-500">Formateur PowerPoint & IA</p>
+                <div class="flex items-center gap-1.5">
+                  <p class="text-xs sm:text-sm font-bold text-slate-900 leading-tight truncate">Djim Aboubacar Mikahillo</p>
+                  <span class="text-[9px] font-bold text-amber-700 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-200/60 shrink-0">Formateur</span>
+                </div>
+                <p class="text-[10px] text-slate-500 font-medium">Spécialiste PowerPoint & IA</p>
               </div>
             </div>
 
             <!-- Host 3: Sawadogo Mohamed -->
-            <div class="flex items-center gap-3">
-              <img src="sawadogo-mohamed.jpeg" alt="Sawadogo Mohamed" class="w-7 h-7 rounded-full object-cover border border-slate-200">
+            <div class="flex items-center gap-3 p-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs card-hover">
+              <img src="sawadogo-mohamed.jpeg" alt="Sawadogo Mohamed" class="w-8 h-8 rounded-lg object-cover border border-slate-200 shadow-2xs shrink-0">
               <div class="flex-1 min-w-0">
-                <p class="text-sm font-semibold text-slate-900 leading-tight">Sawadogo Mohamed</p>
-                <p class="text-[11px] text-slate-500">Informaticien, Théologien · Formateur Design & Vidéo</p>
+                <div class="flex items-center gap-1.5">
+                  <p class="text-xs sm:text-sm font-bold text-slate-900 leading-tight truncate">Sawadogo Mohamed</p>
+                  <span class="text-[9px] font-bold text-teal-700 bg-teal-50 px-1.5 py-0.2 rounded border border-teal-200/60 shrink-0">Formateur</span>
+                </div>
+                <p class="text-[10px] text-slate-500 font-medium">Informaticien, Théologien · Design & Vidéo</p>
               </div>
             </div>
           </div>
@@ -437,7 +497,11 @@
               
               <!-- Nom et Prénoms -->
               <div>
-                <label for="f-nom" class="block text-xs font-semibold text-slate-700 mb-1">Nom & Prénoms <span class="text-red-500">*</span></label>
+                <label for="f-nom" class="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5">
+                  <i class="fa-regular fa-user text-slate-400 text-[11px]"></i>
+                  <span>Nom & Prénoms</span>
+                  <span class="text-red-500">*</span>
+                </label>
                 <input type="text" id="f-nom" required class="pro-input" placeholder="Ex : Bamba Siaka" autocomplete="name">
                 <span class="field-error text-[11px] text-red-500 font-medium mt-1 hidden" data-for="f-nom">Veuillez renseigner votre nom complet.</span>
               </div>
@@ -446,14 +510,22 @@
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <!-- WhatsApp -->
                 <div>
-                  <label for="f-whatsapp" class="block text-xs font-semibold text-slate-700 mb-1">WhatsApp <span class="text-red-500">*</span></label>
-                  <input type="tel" id="f-whatsapp" required class="pro-input" placeholder="07 11 98 58 10" autocomplete="tel">
+                  <label for="f-whatsapp" class="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5">
+                    <i class="fa-brands fa-whatsapp text-emerald-600 text-xs"></i>
+                    <span>Numéro WhatsApp</span>
+                    <span class="text-red-500">*</span>
+                  </label>
+                  <input type="tel" id="f-whatsapp" required class="pro-input font-medium" placeholder="07 11 98 58 10" autocomplete="tel">
                   <span class="field-error text-[11px] text-red-500 font-medium mt-1 hidden" data-for="f-whatsapp">Numéro WhatsApp requis (min 8 chiffres).</span>
                 </div>
 
                 <!-- Email -->
                 <div>
-                  <label for="f-email" class="block text-xs font-semibold text-slate-700 mb-1">Adresse Email <span class="text-slate-400 font-normal">(recommandé)</span></label>
+                  <label for="f-email" class="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5">
+                    <i class="fa-regular fa-envelope text-slate-400 text-[11px]"></i>
+                    <span>Adresse Email</span>
+                    <span class="text-slate-400 font-normal text-[10px]">(recommandé)</span>
+                  </label>
                   <input type="email" id="f-email" class="pro-input" placeholder="nom@exemple.com" autocomplete="email">
                   <span class="field-error text-[11px] text-red-500 font-medium mt-1 hidden" data-for="f-email">Email invalide.</span>
                 </div>
@@ -463,8 +535,12 @@
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <!-- Choix de formation -->
                 <div>
-                  <label for="f-formation" class="block text-xs font-semibold text-slate-700 mb-1">Atelier souhaité <span class="text-red-500">*</span></label>
-                  <select id="f-formation" required class="pro-input bg-white cursor-pointer">
+                  <label for="f-formation" class="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5">
+                    <i class="fa-solid fa-graduation-cap text-slate-400 text-[11px]"></i>
+                    <span>Atelier souhaité</span>
+                    <span class="text-red-500">*</span>
+                  </label>
+                  <select id="f-formation" required class="pro-input bg-white cursor-pointer font-medium">
                     <option value="Les deux formations (Pack Complet)" selected>Pack Complet (PowerPoint & IA + Design/Vidéo)</option>
                     <option value="PowerPoint & IA uniquement">PowerPoint & IA uniquement</option>
                     <option value="Création d'Affiches & Montage Vidéo uniquement">Affiches & Montage Vidéo uniquement</option>
@@ -473,8 +549,12 @@
 
                 <!-- Ordinateur -->
                 <div>
-                  <label for="f-ordi" class="block text-xs font-semibold text-slate-700 mb-1">Avez-vous un ordinateur ? <span class="text-red-500">*</span></label>
-                  <select id="f-ordi" required class="pro-input bg-white cursor-pointer">
+                  <label for="f-ordi" class="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5">
+                    <i class="fa-solid fa-laptop text-slate-400 text-[11px]"></i>
+                    <span>Avez-vous un ordinateur ?</span>
+                    <span class="text-red-500">*</span>
+                  </label>
+                  <select id="f-ordi" required class="pro-input bg-white cursor-pointer font-medium">
                     <option value="Oui, j'aurai mon PC" selected>Oui, j'aurai mon ordinateur</option>
                     <option value="Non, je suivrai sur écran/smartphone">Non, je suivrai sur smartphone/écran</option>
                   </select>
@@ -484,8 +564,12 @@
               <!-- Statut / Profil -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label for="f-statut" class="block text-xs font-semibold text-slate-700 mb-1">Vous êtes <span class="text-red-500">*</span></label>
-                  <select id="f-statut" required class="pro-input bg-white cursor-pointer">
+                  <label for="f-statut" class="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5">
+                    <i class="fa-solid fa-id-badge text-slate-400 text-[11px]"></i>
+                    <span>Vous êtes</span>
+                    <span class="text-red-500">*</span>
+                  </label>
+                  <select id="f-statut" required class="pro-input bg-white cursor-pointer font-medium">
                     <option value="Étudiant" selected>Étudiant</option>
                     <option value="Élève">Élève</option>
                     <option value="Professionnel">Professionnel</option>
@@ -494,8 +578,11 @@
                 </div>
 
                 <div>
-                  <label for="f-genre" class="block text-xs font-semibold text-slate-700 mb-1">Genre</label>
-                  <select id="f-genre" class="pro-input bg-white cursor-pointer">
+                  <label for="f-genre" class="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5">
+                    <i class="fa-solid fa-venus-mars text-slate-400 text-[11px]"></i>
+                    <span>Genre</span>
+                  </label>
+                  <select id="f-genre" class="pro-input bg-white cursor-pointer font-medium">
                     <option value="Homme" selected>Homme (Frère)</option>
                     <option value="Femme">Femme (Sœur)</option>
                   </select>
@@ -926,6 +1013,30 @@
     </div>
   </footer>
 
+  <!-- ==============================================
+       BARRE D'ACTION MOBILE FIXE (Sticky Mobile CTA)
+       ============================================== -->
+  <div id="mobile-sticky-cta" class="sm:hidden fixed bottom-3 left-3 right-3 z-30 transition-all duration-300">
+    <div class="bg-slate-900/95 backdrop-blur-md rounded-2xl p-2.5 shadow-2xl border border-slate-800 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2 pl-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <div class="leading-tight">
+          <p class="text-[11px] font-bold text-white">Double Formation 2026</p>
+          <p class="text-[9px] text-emerald-300 font-semibold">Pass 100% Gratuit · 18 Oct.</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-1.5 shrink-0">
+        <button onclick="openTicketModal()" class="px-2.5 py-2 rounded-xl bg-slate-800 text-amber-400 font-semibold text-[11px] border border-slate-700" title="Mon Ticket QR">
+          <i class="fa-solid fa-qrcode"></i>
+        </button>
+        <a href="#event-form-state" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1 shadow-xs">
+          <span>Réserver</span>
+          <i class="fa-solid fa-arrow-right text-[10px]"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
 
   <!-- ==============================================
        MODAL 1: TICKET OFFICIEL & QR CODE (Pop-up)
@@ -1036,8 +1147,8 @@
 
   <!-- SCRIPTS MODULAIRES JS -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase.js?v=20261015_V6_COMPACT"></script>
-  <script src="base_donnees.js?v=20261015_V6_COMPACT"></script>
-  <script src="main.js?v=20261015_V6_COMPACT"></script>
+  <script src="supabase.js?v=20261015_V7_EXECUTIVE"></script>
+  <script src="base_donnees.js?v=20261015_V7_EXECUTIVE"></script>
+  <script src="main.js?v=20261015_V7_EXECUTIVE"></script>
 </body>
 </html>

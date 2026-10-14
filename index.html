@@ -160,17 +160,17 @@
       </a>
 
       <!-- Right Nav actions -->
-      <div class="flex items-center gap-3 sm:gap-5 text-xs sm:text-sm font-medium text-slate-600">
+      <div class="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm font-medium text-slate-600">
         <span id="live-utc-time" class="hidden sm:inline-block font-mono text-slate-500 text-xs">08:00 UTC+0</span>
         <a href="#venue-location" class="hover:text-emerald-700 transition-colors hidden sm:inline-flex items-center gap-1 font-semibold text-emerald-600">
           <i class="fa-solid fa-location-dot text-xs"></i>
           <span>Plan d'accès</span>
         </a>
         <a href="#about-event" class="hover:text-slate-900 transition-colors hidden sm:inline-block">Programme</a>
-        <button onclick="openAdmin()" class="btn-secondary text-xs sm:text-xs">
-          <i class="fa-solid fa-user-lock text-slate-400 text-[10px]"></i>
-          <span>Se connecter</span>
-        </button>
+        <a href="#event-form-state" class="btn-primary text-xs py-2 px-3.5 rounded-xl font-semibold">
+          <i class="fa-solid fa-ticket text-[10px]"></i>
+          <span>Pass Gratuit</span>
+        </a>
       </div>
 
     </div>
@@ -420,14 +420,6 @@
              ACTION CARD (Registration / Approval Status)
              ============================================== -->
         <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-5 sm:p-7 relative transition-all duration-300">
-          
-          <!-- Top Right Countdown Badge Pill (Rouge Harmonisé) -->
-          <div class="flex justify-end mb-3">
-            <span id="countdown-pill" class="text-xs font-bold px-3 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200 inline-flex items-center gap-1.5 shadow-2xs">
-              <span class="w-1.5 h-1.5 rounded-full bg-rose-600 animate-pulse"></span>
-              <span>Commence dans <strong id="cd-pill-text">3d 08h</strong></span>
-            </span>
-          </div>
 
           <!-- ==============================================
                STATE 1: REGISTRATION FORM (Before submit)
@@ -769,20 +761,93 @@
 
 
   <!-- ==============================================
-       FOOTER OFFICIEL AEEMCI ACADEMY
+       FOOTER OFFICIEL AEEMCI ACADEMY (Organisé & Pro)
        ============================================== -->
-  <footer class="border-t border-slate-200 bg-white py-6 sm:py-8 mt-12 text-xs text-slate-500">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-2">
-        <span class="font-black text-emerald-600">AEEMCI ACADEMY</span>
-        <span class="text-slate-300">|</span>
-        <span>&copy; 2026 AEEMCI Sous-comité Koumassi · Tous droits réservés</span>
+  <footer class="border-t border-slate-200 bg-white pt-12 pb-8 mt-16 text-slate-600 text-xs">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 space-y-8">
+      
+      <!-- Grille Principale : 4 Colonnes Structurées -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8">
+        
+        <!-- Colonne 1: Marque & Présentation (5 cols) -->
+        <div class="lg:col-span-5 space-y-3.5">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-xs">
+              <img src="WhatsApp Image 2026-09-09 at 16.32.41.jpeg" alt="AEEMCI" class="w-7 h-7 rounded-lg object-contain bg-white p-0.5">
+            </div>
+            <div>
+              <span class="font-black text-base sm:text-lg text-slate-900 tracking-tight leading-none block">AEEMCI <span class="text-emerald-600">ACADEMY</span></span>
+              <span class="text-[10px] text-slate-400 font-semibold tracking-wider uppercase">Sous-comité de Koumassi</span>
+            </div>
+          </div>
+          
+          <p class="text-xs text-slate-500 leading-relaxed max-w-sm">
+            Association des Élèves et Étudiants Musulmans de Côte d'Ivoire. Plateforme dédiée à la formation pratique, l'excellence académique et la maîtrise des compétences numériques.
+          </p>
+
+          <div class="pt-1 flex flex-wrap items-center gap-2 text-slate-600">
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 font-semibold text-[11px]">
+              <i class="fa-solid fa-shield-halved text-emerald-600"></i> Plateforme Officielle
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 font-semibold text-[11px]">
+              <i class="fa-solid fa-check text-emerald-600"></i> 100% Gratuit
+            </span>
+          </div>
+        </div>
+
+        <!-- Colonne 2: Navigation Rapide (2 cols) -->
+        <div class="lg:col-span-2 space-y-3">
+          <h5 class="text-xs font-bold uppercase tracking-wider text-slate-900">Navigation</h5>
+          <ul class="space-y-2 text-xs text-slate-500">
+            <li><a href="#" class="hover:text-emerald-700 transition-colors">Accueil</a></li>
+            <li><a href="#event-form-state" class="hover:text-emerald-700 transition-colors">S'inscrire (Pass)</a></li>
+            <li><a href="#about-event" class="hover:text-emerald-700 transition-colors">Programme</a></li>
+            <li><a href="#venue-location" class="hover:text-emerald-700 transition-colors">Plan d'accès</a></li>
+            <li><button onclick="openTicketModal()" class="hover:text-emerald-700 transition-colors text-left">Mon Ticket QR</button></li>
+          </ul>
+        </div>
+
+        <!-- Colonne 3: Événement & Lieu (2 cols) -->
+        <div class="lg:col-span-2 space-y-3">
+          <h5 class="text-xs font-bold uppercase tracking-wider text-slate-900">Événement</h5>
+          <ul class="space-y-2 text-xs text-slate-500">
+            <li><span class="font-semibold text-slate-700 block">Date :</span> Dimanche 18 Oct. 2026</li>
+            <li><span class="font-semibold text-slate-700 block">Horaires :</span> 08h00 - 14h00 GMT</li>
+            <li><span class="font-semibold text-slate-700 block">Lieu :</span> Sainte Thérèse (Koumassi)</li>
+            <li><a href="https://maps.google.com/?q=Groupe+Scolaire+Sainte+Therese+Koumassi+Abidjan" target="_blank" rel="noopener noreferrer" class="text-emerald-600 hover:underline inline-flex items-center gap-1">Itinéraire ↗</a></li>
+          </ul>
+        </div>
+
+        <!-- Colonne 4: Infoline & Contact (3 cols) -->
+        <div class="lg:col-span-3 space-y-3">
+          <h5 class="text-xs font-bold uppercase tracking-wider text-slate-900">Infoline & Contact</h5>
+          <p class="text-xs text-slate-500">Comité d'organisation à votre écoute :</p>
+          <div class="space-y-2">
+            <a href="https://wa.me/2250711985810" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 p-2.5 rounded-xl bg-emerald-50 text-emerald-800 hover:bg-emerald-100 transition-colors font-semibold text-xs border border-emerald-200/80">
+              <i class="fa-brands fa-whatsapp text-emerald-600 text-base"></i>
+              <span>+225 07 11 98 58 10</span>
+            </a>
+            <a href="tel:+2250711985810" class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 text-slate-700 hover:bg-slate-100 transition-colors font-medium text-xs border border-slate-200">
+              <i class="fa-solid fa-phone text-slate-400 text-xs"></i>
+              <span>Appel direct Infoline</span>
+            </a>
+          </div>
+        </div>
+
       </div>
-      <div class="flex items-center gap-4 text-slate-500">
-        <a href="https://wa.me/2250711985810" target="_blank" class="hover:text-slate-800 transition-colors">Infoline : +225 07 11 98 58 10</a>
-        <span>·</span>
-        <button onclick="openAdmin()" class="hover:text-slate-800 transition-colors">Espace Organisateur</button>
+
+      <!-- Sous-Footer : Copyright & Accès Organisateur -->
+      <div class="pt-6 border-t border-slate-200/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400">
+        <p>&copy; 2026 AEEMCI Sous-comité de Koumassi · Tous droits réservés.</p>
+        <div class="flex items-center gap-4">
+          <span class="text-slate-500">Formateurs : Djim Aboubacar & Sawadogo Mohamed</span>
+          <span>·</span>
+          <button onclick="openAdmin()" class="text-slate-400 hover:text-slate-700 transition-colors flex items-center gap-1">
+            <i class="fa-solid fa-lock text-[10px]"></i> Espace Organisateur
+          </button>
+        </div>
       </div>
+
     </div>
   </footer>
 

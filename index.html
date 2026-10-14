@@ -3,17 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>AEEMCI Academy — Double Formation Pratique : PowerPoint & IA × Création d’Affiches & Montage Vidéo</title>
+<title>Double Formation Pratique 2026 — Pass Participant | AEEMCI × Luma</title>
 
 <!-- SEO & Open Graph -->
-<meta name="description" content="Plateforme officielle de formation de l'AEEMCI Koumassi. Inscrivez-vous à la double formation pratique gratuite : PowerPoint & IA (Djim Aboubacar Mikahillo) et Création d'Affiches & Montage Vidéo (Sawadogo Mohamed) le Dimanche 18 Octobre 2026 à 08h00 au Groupe Scolaire Sainte Thérèse.">
+<meta name="description" content="Double Formation Pratique Gratuite : PowerPoint & IA (Djim Aboubacar Mikahillo) × Création d’Affiches & Montage Vidéo (Sawadogo Mohamed). Dimanche 18 Octobre 2026 à 08h00 GMT au Groupe Scolaire Sainte Thérèse (Koumassi).">
 <meta property="og:type" content="website">
-<meta property="og:title" content="AEEMCI Academy — Double Formation Pratique : PowerPoint & IA × Affiches & Montage Vidéo">
-<meta property="og:description" content="Formation pratique 100% gratuite. Dimanche 18 Octobre 2026 à 08h00 au Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi).">
+<meta property="og:title" content="Double Formation Pratique 2026 - Pass Participant">
+<meta property="og:description" content="Inscrivez-vous gratuitement à la double formation pratique : PowerPoint & IA × Création d'Affiches & Montage Vidéo le Dimanche 18 Octobre 2026.">
 <meta property="og:image" content="sawadogo-mohamed.jpeg">
 
 <!-- Favicon -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23008751'/%3E%3Ctext x='50' y='68' font-size='55' font-family='Arial,sans-serif' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23ea580c'/%3E%3Ctext x='50' y='68' font-size='55' font-family='Arial,sans-serif' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'%3E*%3C/text%3E%3C/svg%3E">
+
+<!-- Google Fonts: Inter -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <!-- FontAwesome 6 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -24,915 +29,709 @@
   tailwind.config = {
     theme: {
       extend: {
-        colors: {
-          brandNavy: '#0F172A',
-          brandDark: '#1E293B',
-          brandGreen: '#10B981',
-          brandGreenDark: '#059669',
-          brandGold: '#F59E0B',
-          brandBlue: '#2563EB',
-          bgLight: '#F8FAFC'
-        },
         fontFamily: {
-          sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif']
+          sans: ['"Inter"', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace']
+        },
+        colors: {
+          lumaBg: '#f7f7f8',
+          lumaCard: '#ffffff',
+          lumaBorder: '#e5e7eb',
+          lumaOrange: '#ea580c',
+          brandGreen: '#10b981'
         }
       }
     }
   }
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-  body { background-color: #F8FAFC; color: #0F172A; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
-  
-  .glass-card {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(226, 232, 240, 0.8);
+  body {
+    background-color: #f7f7f8;
+    color: #0f172a;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  .pro-shadow {
-    box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.05), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
-  }
-  .pro-shadow-lg {
-    box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.1), 0 8px 20px -4px rgba(15, 23, 42, 0.04);
-  }
-
-  .pro-btn { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
-  .pro-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 24px -6px rgba(16, 185, 129, 0.3); }
-
-  .pro-input {
+  .luma-input {
     width: 100%;
-    padding: 12px 16px;
-    border-radius: 14px;
-    border: 1px solid #E2E8F0;
-    background-color: #FFFFFF;
-    font-size: 0.9rem;
-    transition: all 0.2s ease;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    background-color: #ffffff;
+    font-size: 0.875rem;
+    color: #0f172a;
+    transition: all 0.15s ease-in-out;
     outline: none;
   }
-  @media (min-width: 640px) {
-    .pro-input { padding: 14px 18px; font-size: 0.925rem; }
-  }
-  .pro-input:focus {
-    border-color: #10B981;
-    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.12);
+  .luma-input:focus {
+    border-color: #0f172a;
+    box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.08);
   }
 
-  .faq-arrow { transition: transform .3s ease; }
+  .luma-btn-primary {
+    background-color: #0f172a;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 12px 20px;
+    border-radius: 12px;
+    transition: all 0.15s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+  .luma-btn-primary:hover {
+    background-color: #1e293b;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+  }
+
+  .luma-btn-secondary {
+    background-color: #ffffff;
+    color: #0f172a;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.15s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  }
+  .luma-btn-secondary:hover {
+    background-color: #f8fafc;
+    border-color: #cbd5e1;
+  }
+
+  .faq-arrow { transition: transform .25s ease; }
   .faq-open .faq-arrow { transform: rotate(180deg); }
-  .faq-answer { max-height:0; overflow:hidden; transition:max-height .35s ease; }
-  .faq-open .faq-answer { max-height:300px; }
+  .faq-answer { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
+  .faq-open .faq-answer { max-height: 400px; }
 
-  .modal-overlay { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(6px); }
-  table.admin-table th, table.admin-table td { padding: 12px 14px; text-align:left; font-size:.85rem; }
-  table.admin-table tr:nth-child(even) { background:#F8FAFC; }
+  .modal-overlay { background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(4px); }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+  ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased">
+<body class="min-h-screen flex flex-col justify-between">
 
-  <!-- TOAST NOTIFICATION CONTAINER -->
-  <div id="toast" class="fixed top-16 right-4 sm:top-20 sm:right-5 z-50 bg-slate-900 text-white text-xs font-semibold px-4 py-3 rounded-2xl shadow-2xl transition-all duration-300 opacity-0 pointer-events-none transform translate-y-2 flex items-center gap-2">
-    <i class="fa-solid fa-circle-check text-brandGreen"></i>
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed top-5 right-5 z-50 bg-slate-900 text-white text-xs font-medium px-4 py-3 rounded-xl shadow-xl transition-all duration-300 opacity-0 pointer-events-none transform translate-y-2 flex items-center gap-2">
+    <i class="fa-solid fa-circle-check text-emerald-400"></i>
     <span id="toast-msg">Lien copié dans le presse-papier !</span>
   </div>
 
-  <!-- NAVBAR ACADÉMIQUE MOBILE-FIRST -->
-  <header class="w-full bg-white/95 backdrop-blur-md border-b border-slate-200 sticky top-0 z-40">
-    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-18 flex items-center justify-between py-2 sm:py-3">
+  <!-- LUMA TOPBAR -->
+  <header class="w-full bg-[#f7f7f8]/95 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-40">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
       
-      <!-- Brand Logo -->
-      <a href="#" id="brandLogo" class="flex items-center gap-2.5 sm:gap-3 group select-none cursor-pointer" title="AEEMCI Academy">
-        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white font-black text-base sm:text-xl shadow-md group-hover:scale-105 transition-transform shrink-0">
-          <i class="fa-solid fa-graduation-cap"></i>
-        </div>
-        <div class="flex flex-col">
-          <span class="font-extrabold text-base sm:text-xl text-slate-900 tracking-tight leading-none">AEEMCI <span class="text-brandGreen">ACADEMY</span></span>
-          <span class="text-[9px] sm:text-[10px] text-slate-500 font-semibold tracking-wider uppercase">Sous-comité Koumassi</span>
-        </div>
+      <!-- Brand Logo (Luma* style) -->
+      <a href="#" class="flex items-center gap-1.5 select-none group cursor-pointer" title="Luma × AEEMCI">
+        <span class="font-extrabold text-xl sm:text-2xl text-slate-900 tracking-tight">luma</span>
+        <span class="text-amber-500 font-black text-lg sm:text-xl -ml-0.5 leading-none">*</span>
+        <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider ml-1.5 hidden sm:inline-block">aeemci academy</span>
       </a>
 
-      <!-- Quick Nav Action Button -->
-      <div class="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm">
-        <a href="#registration-card" class="bg-brandGreen hover:bg-brandGreenDark text-white font-extrabold text-xs sm:text-sm px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-xl shadow-sm pro-btn flex items-center gap-1.5 shrink-0">
-          <span>S'inscrire</span>
-          <i class="fa-solid fa-arrow-right text-[10px] sm:text-xs"></i>
-        </a>
+      <!-- Right Nav actions -->
+      <div class="flex items-center gap-3 sm:gap-5 text-xs sm:text-sm font-medium text-slate-600">
+        <span id="live-utc-time" class="hidden sm:inline-block font-mono text-slate-500 text-xs">20:58 UTC+0</span>
+        <a href="#about-event" class="hover:text-slate-900 transition-colors hidden sm:inline-block">Découvrir</a>
+        <button onclick="openAdmin()" class="luma-btn-secondary text-xs sm:text-xs">
+          <i class="fa-solid fa-user-lock text-slate-400 text-[10px]"></i>
+          <span>Se connecter</span>
+        </button>
       </div>
 
     </div>
   </header>
 
-  <!-- HERO SECTION OPTIMISÉE TÉLÉPHONE -->
-  <section class="relative bg-slate-900 text-white overflow-hidden py-10 sm:py-24 border-b border-slate-800">
-    <!-- Background Gradient Orbs -->
-    <div class="absolute top-0 right-1/4 w-72 sm:w-96 h-72 sm:h-96 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute bottom-0 left-10 w-72 sm:w-96 h-72 sm:h-96 bg-blue-600/15 rounded-full blur-3xl pointer-events-none"></div>
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-        
-        <!-- Hero Text Content -->
-        <div class="lg:col-span-7 space-y-4 sm:space-y-6 text-center lg:text-left">
-          
-          <!-- Session Badge Repositionné & Optimisé Mobile -->
-          <div class="inline-flex items-center gap-2 bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[11px] sm:text-sm font-extrabold px-3 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-sm max-w-full">
-            <span class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-brandGreen animate-pulse shrink-0"></span>
-            <span class="truncate">Dimanche 18 Octobre 2026 à 08h00 GMT</span>
-          </div>
-
-          <h1 class="text-2xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
-            Maîtrisez <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-300">PowerPoint & l'IA</span> × Création d'<span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-emerald-400">Affiches & Vidéos</span>
-          </h1>
-
-          <p class="text-xs sm:text-base text-slate-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal">
-            Une double formation pratique et innovante pour élèves, étudiants et professionnels. De la création de présentations captivantes avec l'IA à la conception d'affiches professionnelles et de montages vidéo percutants.
-          </p>
-
-          <!-- Key Highlights Pills -->
-          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2 sm:gap-3 pt-1">
-            <span class="inline-flex items-center gap-1.5 bg-slate-800/80 border border-slate-700/80 px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-semibold text-slate-200">
-              <i class="fa-solid fa-location-dot text-brandGreen"></i> Groupe Scolaire Sainte Thérèse
-            </span>
-            <span class="inline-flex items-center gap-1.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-3 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold">
-              <i class="fa-solid fa-gift"></i> 100% Gratuit
-            </span>
-          </div>
-
-          <!-- Hero CTAs -->
-          <div class="pt-2 sm:pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4">
-            <a href="#registration-card" class="w-full sm:w-auto bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold text-sm sm:text-base px-6 py-3.5 sm:px-8 sm:py-4 rounded-2xl shadow-lg pro-btn text-center flex items-center justify-center gap-2">
-              <i class="fa-solid fa-user-plus"></i>
-              <span>S'inscrire à la formation</span>
-            </a>
-            <a href="#instructors" class="w-full sm:w-auto bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs sm:text-base px-5 py-3 sm:px-6 sm:py-4 rounded-2xl border border-slate-700 text-center transition-colors flex items-center justify-center gap-2">
-              <span>Voir les formateurs</span>
-              <i class="fa-solid fa-chevron-right text-[10px]"></i>
-            </a>
-          </div>
-
-        </div>
-
-        <!-- Live Chrono & Poster Card Mobile-Optimized -->
-        <div class="lg:col-span-5">
-          <div class="bg-slate-800/90 border border-slate-700/80 rounded-3xl p-4 sm:p-6 shadow-2xl space-y-4 sm:space-y-6 relative overflow-hidden backdrop-blur-xl">
-            
-            <div class="flex items-center justify-between border-b border-slate-700/80 pb-3">
-              <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
-                <span class="text-[11px] sm:text-xs font-bold uppercase tracking-widest text-emerald-400">Compte à rebours direct</span>
-              </div>
-              <span class="text-[10px] sm:text-[11px] font-semibold bg-slate-700 text-slate-300 px-2.5 py-0.5 rounded-full">Koumassi</span>
-            </div>
-
-            <!-- Timer Grid Responsive -->
-            <div class="grid grid-cols-4 gap-2 sm:gap-3 text-center">
-              <div class="bg-slate-900/90 rounded-2xl p-2 sm:p-3 border border-slate-700">
-                <span id="cd-days" class="text-xl sm:text-4xl font-black text-white font-mono block">00</span>
-                <span class="text-[9px] sm:text-xs font-bold uppercase text-slate-400 block mt-0.5">Jours</span>
-              </div>
-              <div class="bg-slate-900/90 rounded-2xl p-2 sm:p-3 border border-slate-700">
-                <span id="cd-hours" class="text-xl sm:text-4xl font-black text-brandGold font-mono block">00</span>
-                <span class="text-[9px] sm:text-xs font-bold uppercase text-slate-400 block mt-0.5">Heures</span>
-              </div>
-              <div class="bg-slate-900/90 rounded-2xl p-2 sm:p-3 border border-slate-700">
-                <span id="cd-mins" class="text-xl sm:text-4xl font-black text-white font-mono block">00</span>
-                <span class="text-[9px] sm:text-xs font-bold uppercase text-slate-400 block mt-0.5">Min.</span>
-              </div>
-              <div class="bg-slate-900/90 rounded-2xl p-2 sm:p-3 border border-slate-700">
-                <span id="cd-secs" class="text-xl sm:text-4xl font-black text-emerald-400 font-mono block">00</span>
-                <span class="text-[9px] sm:text-xs font-bold uppercase text-slate-400 block mt-0.5">Sec.</span>
-              </div>
-            </div>
-
-            <!-- Presenter Mini Cards -->
-            <div class="space-y-2.5 pt-1">
-              <div class="flex items-center gap-3 bg-slate-900/70 p-2.5 sm:p-3 rounded-2xl border border-slate-700/60">
-                <img src="WhatsApp Image 2026-09-28 at 22.04.43.jpeg" alt="Djim Aboubacar" class="w-10 h-10 rounded-xl object-cover border border-orange-500 shrink-0">
-                <div class="text-xs text-left">
-                  <span class="text-orange-400 font-bold block text-[10px] uppercase tracking-wider">Module 1 · PowerPoint & IA</span>
-                  <span class="text-white font-extrabold block text-xs sm:text-sm">Djim Aboubacar Mikahillo</span>
-                </div>
-              </div>
-
-              <div class="flex items-center gap-3 bg-slate-900/70 p-2.5 sm:p-3 rounded-2xl border border-slate-700/60">
-                <img src="sawadogo-mohamed.jpeg" alt="Sawadogo Mohamed" class="w-10 h-10 rounded-xl object-cover border border-teal-500 shrink-0">
-                <div class="text-xs text-left">
-                  <span class="text-teal-400 font-bold block text-[10px] uppercase tracking-wider">Module 2 · Affiches & Vidéos</span>
-                  <span class="text-white font-extrabold block text-xs sm:text-sm">Sawadogo Mohamed</span>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-
-  <!-- BARRE DES BÉNÉFICES & ATOUTS MOBILE-FRIENDLY -->
-  <section class="py-8 sm:py-12 bg-white border-b border-slate-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        
-        <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-slate-50 border border-slate-100">
-          <div class="w-10 h-10 rounded-xl bg-emerald-100 text-brandGreen flex items-center justify-center text-lg shrink-0">
-            <i class="fa-solid fa-laptop-code"></i>
-          </div>
-          <div>
-            <h4 class="font-extrabold text-xs sm:text-sm text-slate-900">100% Pratique & Cas Réels</h4>
-            <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">Exercices guidés pas-à-pas orientés monde professionnel.</p>
-          </div>
-        </div>
-
-        <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-slate-50 border border-slate-100">
-          <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-lg shrink-0">
-            <i class="fa-solid fa-user-shield"></i>
-          </div>
-          <div>
-            <h4 class="font-extrabold text-xs sm:text-sm text-slate-900">Formateurs Qualifiés</h4>
-            <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">Experts certifiés et praticiens passionnés.</p>
-          </div>
-        </div>
-
-        <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-slate-50 border border-slate-100">
-          <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-lg shrink-0">
-            <i class="fa-solid fa-users"></i>
-          </div>
-          <div>
-            <h4 class="font-extrabold text-xs sm:text-sm text-slate-900">Réseautage & Entraide</h4>
-            <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">Communauté dynamique d'apprenants à Koumassi.</p>
-          </div>
-        </div>
-
-        <div class="flex items-start gap-3.5 p-4 rounded-2xl bg-slate-50 border border-slate-100">
-          <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-lg shrink-0">
-            <i class="fa-solid fa-award"></i>
-          </div>
-          <div>
-            <h4 class="font-extrabold text-xs sm:text-sm text-slate-900">Accès 100% Gratuit</h4>
-            <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">Offert par l'AEEMCI Sous-comité Koumassi.</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-
-  <!-- MAIN CONTENT AREA -->
-  <main class="flex-1 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-12 sm:space-y-20 w-full">
-    
-    <!-- REGISTRATION WIDGET & DETAILS SECTION GRID -->
-    <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start" id="registration-card">
+  <!-- MAIN EVENT PAGE CONTAINER -->
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10 w-full flex-1">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
       
-      <!-- LEFT FORM CONTAINER -->
-      <div class="lg:col-span-7 bg-white rounded-3xl p-5 sm:p-10 border border-slate-200 pro-shadow-lg space-y-5 sm:space-y-6">
-        
-        <div>
-          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-            <h3 id="form-title" class="text-xl sm:text-2xl font-black text-slate-900">Formulaire d'Inscription Officiel</h3>
-            <div id="capacity-badge" class="hidden sm:inline-flex items-center gap-2 bg-emerald-50 text-brandGreen font-bold text-xs px-3 py-1 rounded-full border border-emerald-200">
-              <span id="capacity-dot" class="w-2 h-2 rounded-full bg-brandGreen animate-pulse"></span>
-              <span id="capacity-text">Chargement...</span>
-            </div>
-          </div>
-          <p id="form-subtitle" class="text-xs text-slate-500 font-medium mt-1">Dimanche 18 Octobre 2026 à 08h00 GMT · Groupe Scolaire Sainte Thérèse</p>
-        </div>
-
-        <!-- Registration Form -->
-        <form id="formInscription" class="space-y-4 sm:space-y-5" novalidate>
-          
-          <div class="grid sm:grid-cols-2 gap-4 sm:gap-5">
-            <!-- Nom & Prénoms -->
-            <div>
-              <label for="f-nom" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1">Nom & Prénoms <span class="text-red-500">*</span></label>
-              <input type="text" id="f-nom" name="nom" class="pro-input" placeholder="Ex: Kouassi Ibrahim">
-              <p class="field-error text-red-500 text-[11px] mt-1 hidden" data-for="f-nom">Veuillez indiquer votre nom complet.</p>
-            </div>
-
-            <!-- Email -->
-            <div>
-              <label for="f-email" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1">Adresse Email <span class="text-red-500">*</span></label>
-              <input type="email" id="f-email" name="email" class="pro-input" placeholder="Ex: exemple@domaine.com">
-              <p class="field-error text-red-500 text-[11px] mt-1 hidden" data-for="f-email">Veuillez indiquer un email valide.</p>
-            </div>
-          </div>
-
-          <div class="grid sm:grid-cols-2 gap-4 sm:gap-5">
-            <!-- WhatsApp -->
-            <div>
-              <label for="f-whatsapp" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1">Numéro WhatsApp <span class="text-red-500">*</span></label>
-              <input type="tel" id="f-whatsapp" name="whatsapp" class="pro-input" placeholder="Ex: +225 07 00 00 00 00">
-              <p class="field-error text-red-500 text-[11px] mt-1 hidden" data-for="f-whatsapp">Format WhatsApp valide requis.</p>
-            </div>
-
-            <!-- Statut -->
-            <div>
-              <label for="f-statut" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1">Statut Actuel <span class="text-red-500">*</span></label>
-              <select id="f-statut" name="statut" class="pro-input font-medium">
-                <option value="" disabled selected>Sélectionnez votre statut</option>
-                <option value="Élève">Élève</option>
-                <option value="Étudiant">Étudiant</option>
-                <option value="Professionnel">Professionnel</option>
-                <option value="Autre">Autre</option>
-              </select>
-              <p class="field-error text-red-500 text-[11px] mt-1 hidden" data-for="f-statut">Veuillez choisir votre statut.</p>
-            </div>
-          </div>
-
-          <div class="grid sm:grid-cols-2 gap-4 sm:gap-5">
-            <!-- Genre / Sexe -->
-            <div>
-              <label for="f-genre" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1">Genre / Sexe <span class="text-red-500">*</span></label>
-              <select id="f-genre" name="genre" class="pro-input font-medium">
-                <option value="" disabled selected>Sélectionnez votre genre</option>
-                <option value="Homme">Homme</option>
-                <option value="Femme">Femme</option>
-              </select>
-              <p class="field-error text-red-500 text-[11px] mt-1 hidden" data-for="f-genre">Veuillez indiquer votre genre.</p>
-            </div>
-
-            <!-- Âge -->
-            <div>
-              <label for="f-age" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1">Votre Âge (ans) <span class="text-red-500">*</span></label>
-              <input type="number" id="f-age" name="age" min="10" max="99" class="pro-input" placeholder="Ex: 22">
-              <p class="field-error text-red-500 text-[11px] mt-1 hidden" data-for="f-age">Indiquez votre âge.</p>
-            </div>
-          </div>
-
-          <div class="grid sm:grid-cols-2 gap-4 sm:gap-5">
-            <!-- Disposer d'un Ordinateur -->
-            <div>
-              <label for="f-ordi" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1">Ordinateur portable disponible ? <span class="text-red-500">*</span></label>
-              <select id="f-ordi" name="ordi" class="pro-input font-medium">
-                <option value="" disabled selected>Avez-vous un ordinateur ?</option>
-                <option value="Oui">Oui, j'ai mon propre ordinateur</option>
-                <option value="Non">Non, je n'en ai pas</option>
-              </select>
-              <p class="field-error text-red-500 text-[11px] mt-1 hidden" data-for="f-ordi">Veuillez préciser la disponibilité d'un ordinateur.</p>
-            </div>
-
-            <!-- Choice of Training -->
-            <div>
-              <label for="f-formation" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1">Formation souhaitée <span class="text-red-500">*</span></label>
-              <select id="f-formation" name="formation_choisie" class="pro-input font-bold text-slate-900 bg-slate-50">
-                <option value="Les deux formations" selected>Les deux formations (PowerPoint IA + Affiches & Vidéo)</option>
-                <option value="PowerPoint & IA">PowerPoint & IA (Djim Aboubacar)</option>
-                <option value="Création d'Affiches & Montage Vidéo">Création d'Affiches & Montage Vidéo (Sawadogo Mohamed)</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Attentes / Motivations -->
-          <div>
-            <label for="f-attentes" class="block text-xs font-extrabold uppercase tracking-wider text-slate-700 mb-1">Vos attentes par rapport à la formation <span class="text-red-500">*</span></label>
-            <textarea id="f-attentes" name="attentes" rows="2" class="pro-input" placeholder="Décrivez brièvement ce que vous aimeriez apprendre ou maîtriser..."></textarea>
-            <p class="field-error text-red-500 text-[11px] mt-1 hidden" data-for="f-attentes">Veuillez décrire vos attentes.</p>
-          </div>
-
-          <!-- Submit Button -->
-          <button type="submit" id="submitBtn" class="w-full bg-brandGreen hover:bg-brandGreenDark text-white font-extrabold text-sm sm:text-base py-3.5 sm:py-4 rounded-2xl shadow-lg pro-btn flex items-center justify-center gap-2 mt-3 transition-all">
-            <i class="fa-solid fa-paper-plane text-base sm:text-lg"></i>
-            <span id="submitLabel">Soumettre ma candidature</span>
-          </button>
-
-          <div class="flex items-center justify-between text-[11px] sm:text-xs text-slate-500 pt-2 border-t border-slate-100">
-            <span class="flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-brandGreen"></i> AEEMCI Koumassi</span>
-            <button type="button" id="calendarBtn2" class="hover:text-slate-900 font-bold underline transition-colors">Exporter .ICS</button>
-          </div>
-
-        </form>
-
-        <!-- SUCCESS CONFIRMATION PANEL (LISTE D'ATTENTE) -->
-        <div id="confirmationBloc" class="hidden text-center py-6 sm:py-8 space-y-4 sm:space-y-6">
-          <div id="confirm-icon-box" class="w-16 h-16 sm:w-20 sm:h-20 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-3xl sm:text-4xl mx-auto shadow-sm border border-amber-200">
-            <i id="confirm-icon" class="fa-solid fa-clock"></i>
-          </div>
-          
-          <div class="space-y-1 sm:space-y-2">
-            <span id="confirm-badge" class="text-[11px] sm:text-xs text-amber-700 font-extrabold uppercase tracking-widest bg-amber-50 px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full border border-amber-200">
-              📋 Candidature en Liste d'Attente
-            </span>
-            <h4 class="text-2xl sm:text-3xl font-black text-slate-900">Merci <span id="confirm-nom"></span> !</h4>
-          </div>
-
-          <p id="confirm-text" class="text-xs sm:text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
-            Votre candidature pour la <strong>Double Formation Pratique (PowerPoint & IA / Création d'Affiches & Montage Vidéo)</strong> du <strong>Dimanche 18 Octobre 2026</strong> a bien été enregistrée et est actuellement sur <strong>liste d'attente</strong>.
-            <br><br>
-            L'équipe organisatrice va examiner votre dossier. Après validation de votre candidature, vous recevrez votre <strong>Reçu d'Inscription Officiel muni de son QR Code</strong> de confirmation.
-          </p>
-
-          <div class="grid sm:grid-cols-2 gap-3 pt-2">
-            <button type="button" onclick="openGoogleCalendar()"
-               class="w-full inline-flex items-center justify-center gap-2 bg-brandGreen hover:bg-brandGreenDark text-white font-extrabold text-xs sm:text-sm py-3.5 px-3 rounded-2xl shadow-md transition-transform hover:scale-[1.01]">
-              <i class="fa-brands fa-google text-base"></i>
-              <span>Google Calendar</span>
-            </button>
-            <button type="button" onclick="downloadICSFile()"
-               class="w-full inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-900 text-white font-extrabold text-xs sm:text-sm py-3.5 px-3 rounded-2xl shadow-md transition-transform hover:scale-[1.01]">
-              <i class="fa-solid fa-calendar-check text-base"></i>
-              <span>Télécharger (.ICS)</span>
-            </button>
-          </div>
-
-          <p class="text-[11px] sm:text-xs text-slate-500 font-medium pt-1 text-center">
-            Une question sur votre dossier ? Infoline / WhatsApp : <a href="https://wa.me/2250711985810" target="_blank" rel="noopener noreferrer" class="text-brandGreen font-extrabold hover:underline">07 11 98 58 10</a>
-          </p>
-        </div>
-
-      </div>
-
-      <!-- RIGHT LOGISTICS & LOCATION CARD -->
+      <!-- ==============================================
+           LEFT COLUMN : POSTER, HOSTS & PARTICIPANTS
+           ============================================== -->
       <div class="lg:col-span-5 space-y-6">
         
-        <div class="bg-white rounded-3xl p-5 sm:p-8 border border-slate-200 pro-shadow space-y-5 sm:space-y-6">
-          <div class="border-b border-slate-100 pb-3 sm:pb-4">
-            <span class="text-xs font-extrabold text-brandGreen uppercase tracking-wider block">Lieu & Logistique</span>
-            <h3 class="text-lg sm:text-xl font-extrabold text-slate-900 mt-1">Accès & Informations Pratiques</h3>
+        <!-- EVENT POSTER (Card Flyer Ultra-Pro) -->
+        <div class="relative w-full aspect-square rounded-2xl overflow-hidden shadow-sm border border-slate-200/90 bg-gradient-to-br from-slate-900 via-slate-800 to-teal-950 flex flex-col justify-between p-5 sm:p-6 text-white group select-none">
+          
+          <!-- Poster Ambient Glows -->
+          <div class="absolute -top-16 -left-16 w-44 h-44 bg-teal-500/20 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="absolute -bottom-16 -right-16 w-44 h-44 bg-amber-500/20 rounded-full blur-3xl pointer-events-none"></div>
+          
+          <!-- Top Header on Poster -->
+          <div class="relative z-10 flex items-center justify-between">
+            <div class="flex items-center gap-2 bg-white/10 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/15">
+              <img src="WhatsApp Image 2026-09-09 at 16.32.41.jpeg" alt="AEEMCI" class="w-4 h-4 rounded-full object-contain bg-white">
+              <span class="text-[10px] font-bold tracking-wider uppercase text-emerald-300">AEEMCI KOUMASSI</span>
+            </div>
+            <span class="text-[10px] font-black uppercase tracking-widest text-amber-300 bg-amber-500/20 border border-amber-400/30 px-2 py-0.5 rounded-md">
+              PASS 100% GRATUIT
+            </span>
           </div>
 
-          <div class="space-y-4 sm:space-y-5 text-xs sm:text-sm">
-            <div class="flex items-start gap-3.5">
-              <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-50 text-brandGreen flex items-center justify-center text-base sm:text-lg shrink-0 border border-emerald-100">
-                <i class="fa-solid fa-location-dot"></i>
-              </div>
-              <div>
-                <strong class="text-slate-900 block font-bold">Lieu exact :</strong>
-                <p class="text-xs text-slate-600 mt-0.5">Groupe Scolaire Sainte Thérèse (non loin du terminus 11 Koumassi, Abidjan)</p>
-              </div>
+          <!-- Center Content on Poster -->
+          <div class="relative z-10 space-y-3 my-auto">
+            <div class="space-y-1">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-teal-300 block">Double Formation Pratique</span>
+              <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight leading-snug">
+                PowerPoint & IA <br>
+                <span class="text-amber-400">&</span> Affiches & Vidéo
+              </h2>
             </div>
 
-            <div class="flex items-start gap-3.5">
-              <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-base sm:text-lg shrink-0 border border-amber-100">
-                <i class="fa-solid fa-clock"></i>
+            <!-- Composite Trainer Visuals on Poster -->
+            <div class="grid grid-cols-2 gap-2.5 pt-1">
+              <!-- Trainer 1 -->
+              <div class="bg-white/10 backdrop-blur-md rounded-xl p-2 border border-white/15 flex items-center gap-2">
+                <img src="WhatsApp Image 2026-09-28 at 22.09.13.jpeg" alt="Djim Aboubacar" class="w-8 h-8 rounded-lg object-cover border border-amber-400/60 shrink-0">
+                <div class="overflow-hidden">
+                  <p class="text-[10px] font-extrabold text-white truncate leading-tight">Djim Aboubacar</p>
+                  <p class="text-[8px] text-amber-200 truncate">PowerPoint & IA</p>
+                </div>
               </div>
-              <div>
-                <strong class="text-slate-900 block font-bold">Horaires :</strong>
-                <p class="text-xs text-slate-600 mt-0.5">Dimanche 18 Octobre 2026 · Début précis à 08h00 GMT</p>
-              </div>
-            </div>
-
-            <div class="flex items-start gap-3.5">
-              <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-base sm:text-lg shrink-0 border border-blue-100">
-                <i class="fa-solid fa-laptop"></i>
-              </div>
-              <div>
-                <strong class="text-slate-900 block font-bold">Matériel recommandé :</strong>
-                <p class="text-xs text-slate-600 mt-0.5">Carnet de notes. Ordinateur portable conseillé pour pratiquer en direct.</p>
+              <!-- Trainer 2 -->
+              <div class="bg-white/10 backdrop-blur-md rounded-xl p-2 border border-white/15 flex items-center gap-2">
+                <img src="sawadogo-mohamed.jpeg" alt="Sawadogo Mohamed" class="w-8 h-8 rounded-lg object-cover border border-teal-400/60 shrink-0">
+                <div class="overflow-hidden">
+                  <p class="text-[10px] font-extrabold text-white truncate leading-tight">Sawadogo Mohamed</p>
+                  <p class="text-[8px] text-teal-200 truncate">Design & Vidéo</p>
+                </div>
               </div>
             </div>
           </div>
 
-          <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-1">
-            <span class="font-bold text-slate-900 block flex items-center gap-1.5"><i class="fa-solid fa-circle-info text-brandGreen"></i> À noter :</span>
-            <p>L'événement est 100% gratuit. Les places en salle sont attribuées par ordre d'arrivée des personnes inscrites.</p>
+          <!-- Bottom Footer on Poster -->
+          <div class="relative z-10 flex items-center justify-between border-t border-white/15 pt-3 text-[10px] text-slate-300">
+            <span class="font-bold flex items-center gap-1.5 text-white">
+              <i class="fa-regular fa-calendar-check text-amber-400"></i>
+              Dimanche 18 Oct. 2026
+            </span>
+            <span class="font-medium text-slate-300 flex items-center gap-1">
+              <i class="fa-solid fa-location-dot text-teal-400"></i>
+              Sainte Thérèse
+            </span>
+          </div>
+
+        </div>
+
+        <!-- ORGANISÉ PAR (Hosts section) -->
+        <div class="space-y-3 pt-1">
+          <h4 class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Organisé par</h4>
+          
+          <div class="space-y-2.5">
+            <!-- Host 1: AEEMCI -->
+            <div class="flex items-center gap-3">
+              <img src="WhatsApp Image 2026-09-09 at 16.32.41.jpeg" alt="AEEMCI" class="w-7 h-7 rounded-full object-contain p-0.5 border border-slate-200 bg-white">
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-semibold text-slate-900 leading-tight">AEEMCI Sous-comité Koumassi</p>
+                <p class="text-[11px] text-slate-500">Comité d'Organisation</p>
+              </div>
+            </div>
+
+            <!-- Host 2: Djim Aboubacar -->
+            <div class="flex items-center gap-3">
+              <img src="WhatsApp Image 2026-09-28 at 22.04.43.jpeg" alt="Djim Aboubacar Mikahillo" class="w-7 h-7 rounded-full object-cover border border-slate-200">
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-semibold text-slate-900 leading-tight">Djim Aboubacar Mikahillo</p>
+                <p class="text-[11px] text-slate-500">Formateur PowerPoint & IA</p>
+              </div>
+            </div>
+
+            <!-- Host 3: Sawadogo Mohamed -->
+            <div class="flex items-center gap-3">
+              <img src="sawadogo-mohamed.jpeg" alt="Sawadogo Mohamed" class="w-7 h-7 rounded-full object-cover border border-slate-200">
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-semibold text-slate-900 leading-tight">Sawadogo Mohamed</p>
+                <p class="text-[11px] text-slate-500">Informaticien, Théologien · Formateur Design & Vidéo</p>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- ORGANIZER CONTACT BADGE -->
-        <div class="bg-white rounded-3xl p-5 border border-slate-200 pro-shadow space-y-4">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <img src="WhatsApp Image 2026-09-09 at 16.32.41.jpeg" alt="AEEMCI Koumassi" class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl object-contain p-1 border border-slate-200 bg-slate-50">
-              <div>
-                <span class="text-[10px] sm:text-[11px] text-slate-500 font-semibold block">Infoline & Assistance</span>
-                <h4 class="text-xs sm:text-sm font-extrabold text-slate-900 flex items-center gap-1">
-                  AEEMCI Koumassi <i class="fa-solid fa-circle-check text-brandGreen text-xs"></i>
-                </h4>
-              </div>
-            </div>
-            <a href="tel:+2250711985810" class="text-xs font-black text-brandGreen bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 hover:bg-emerald-100 transition-colors">
-              07 11 98 58 10
-            </a>
+        <!-- SOCIAL PROOF & PARTICIPANTS -->
+        <div class="pt-4 border-t border-slate-200/80 space-y-2">
+          <p id="participant-count-header" class="text-sm font-semibold text-slate-900">
+            <span id="social-participant-count">825</span> Participant(s)
+          </p>
+
+          <div class="flex items-center -space-x-2 overflow-hidden py-1">
+            <div class="w-7 h-7 rounded-full bg-blue-100 text-blue-700 font-bold text-[10px] flex items-center justify-center border-2 border-white shadow-xs">AG</div>
+            <div class="w-7 h-7 rounded-full bg-pink-100 text-pink-700 font-bold text-[10px] flex items-center justify-center border-2 border-white shadow-xs">SK</div>
+            <div class="w-7 h-7 rounded-full bg-purple-100 text-purple-700 font-bold text-[10px] flex items-center justify-center border-2 border-white shadow-xs">MA</div>
+            <div class="w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 font-bold text-[10px] flex items-center justify-center border-2 border-white shadow-xs">DC</div>
+            <div class="w-7 h-7 rounded-full bg-amber-100 text-amber-700 font-bold text-[10px] flex items-center justify-center border-2 border-white shadow-xs">BS</div>
+            <div class="w-7 h-7 rounded-full bg-slate-200 text-slate-700 font-bold text-[10px] flex items-center justify-center border-2 border-white shadow-xs">+</div>
           </div>
 
-          <div class="grid grid-cols-2 gap-2.5">
-            <a href="https://wa.me/2250711985810?text=Bonjour,%20je%20souhaite%20des%20informations%20sur%20la%20double%20formation" target="_blank" rel="noopener noreferrer" class="bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold text-xs py-3 px-3 rounded-xl shadow-sm text-center flex items-center justify-center gap-2 transition-all">
-              <i class="fa-brands fa-whatsapp text-sm"></i>
-              <span>WhatsApp</span>
-            </a>
-            <a href="tel:+2250711985810" class="bg-slate-800 hover:bg-slate-900 text-white font-extrabold text-xs py-3 px-3 rounded-xl shadow-sm text-center flex items-center justify-center gap-2 transition-all">
-              <i class="fa-solid fa-phone text-xs"></i>
-              <span>Appeler</span>
-            </a>
+          <p id="social-participant-names" class="text-xs text-slate-500 leading-relaxed">
+            Ange Ghislain Djama, Songui Christ-Abdul KONE et <span id="social-others-count">823</span> autres
+          </p>
+        </div>
+
+      </div>
+
+
+      <!-- ==============================================
+           RIGHT COLUMN : TITLE, METAS & LUMA CARD
+           ============================================== -->
+      <div class="lg:col-span-7 space-y-6">
+        
+        <!-- EVENT HEADER TITLE -->
+        <div class="space-y-1">
+          <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+            Double Formation 2026 - Pass Participant
+          </h1>
+          <p class="text-sm sm:text-base text-slate-500 font-medium">
+            PowerPoint & IA × Création d’Affiches et Montages Vidéo
+          </p>
+        </div>
+
+        <!-- DATE & TIME BLOCK -->
+        <div class="flex items-center gap-3.5 pt-1">
+          <div class="w-12 h-12 rounded-xl border border-slate-200 bg-white flex flex-col items-center justify-center shrink-0 shadow-xs">
+            <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">OCT.</span>
+            <span class="text-lg font-black text-slate-900 leading-none">18</span>
           </div>
+          <div>
+            <p class="text-sm sm:text-base font-bold text-slate-900 leading-tight">dimanche 18 octobre</p>
+            <p class="text-xs sm:text-sm text-slate-500 font-medium">08:00 - 14:00 UTC+0</p>
+          </div>
+        </div>
+
+        <!-- LOCATION BLOCK -->
+        <div class="flex items-center gap-3.5">
+          <div class="w-12 h-12 rounded-xl border border-slate-200 bg-white flex items-center justify-center shrink-0 shadow-xs text-slate-500">
+            <i class="fa-solid fa-location-dot text-base text-slate-600"></i>
+          </div>
+          <div>
+            <a href="https://maps.google.com/?q=Groupe+Scolaire+Sainte+Therese+Koumassi+Abidjan" target="_blank" rel="noopener noreferrer" class="text-sm sm:text-base font-bold text-slate-900 hover:text-emerald-700 transition-colors inline-flex items-center gap-1.5 leading-tight">
+              <span>Groupe Scolaire Sainte Thérèse</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-400"></i>
+            </a>
+            <p class="text-xs sm:text-sm text-slate-500 font-medium">Terminus 11, Koumassi, Abidjan, District Autonome d'Abidjan</p>
+          </div>
+        </div>
+
+        <!-- ==============================================
+             THE LUMA CARD (Registration / Approval Status)
+             ============================================== -->
+        <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-5 sm:p-7 relative transition-all duration-300">
+          
+          <!-- Top Right Countdown Badge Pill -->
+          <div class="flex justify-end mb-3">
+            <span id="countdown-pill" class="text-xs font-semibold px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200/80 inline-flex items-center gap-1.5 shadow-2xs">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+              <span>Commence dans <strong id="cd-pill-text">3d 08h</strong></span>
+            </span>
+          </div>
+
+          <!-- ==============================================
+               STATE 1: REGISTRATION FORM (Before submit)
+               ============================================== -->
+          <div id="luma-form-state" class="space-y-4">
+            <div>
+              <h3 class="text-lg sm:text-xl font-bold text-slate-900">Inscription à la formation</h3>
+              <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Accès gratuit aux ateliers. Places limitées avec certification.</p>
+            </div>
+
+            <form id="formInscription" class="space-y-3.5">
+              
+              <!-- Nom et Prénoms -->
+              <div>
+                <label for="f-nom" class="block text-xs font-semibold text-slate-700 mb-1">Nom & Prénoms <span class="text-red-500">*</span></label>
+                <input type="text" id="f-nom" required class="luma-input" placeholder="Ex : Bamba Siaka" autocomplete="name">
+                <span class="field-error text-[11px] text-red-500 font-medium mt-1 hidden" data-for="f-nom">Veuillez renseigner votre nom complet.</span>
+              </div>
+
+              <!-- Contact Grid (WhatsApp & Email) -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <!-- WhatsApp -->
+                <div>
+                  <label for="f-whatsapp" class="block text-xs font-semibold text-slate-700 mb-1">WhatsApp <span class="text-red-500">*</span></label>
+                  <input type="tel" id="f-whatsapp" required class="luma-input" placeholder="07 11 98 58 10" autocomplete="tel">
+                  <span class="field-error text-[11px] text-red-500 font-medium mt-1 hidden" data-for="f-whatsapp">Numéro WhatsApp requis (min 8 chiffres).</span>
+                </div>
+
+                <!-- Email -->
+                <div>
+                  <label for="f-email" class="block text-xs font-semibold text-slate-700 mb-1">Adresse Email <span class="text-slate-400 font-normal">(recommandé)</span></label>
+                  <input type="email" id="f-email" class="luma-input" placeholder="nom@exemple.com" autocomplete="email">
+                  <span class="field-error text-[11px] text-red-500 font-medium mt-1 hidden" data-for="f-email">Email invalide.</span>
+                </div>
+              </div>
+
+              <!-- Options Grid (Formation & Ordinateur) -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <!-- Choix de formation -->
+                <div>
+                  <label for="f-formation" class="block text-xs font-semibold text-slate-700 mb-1">Atelier souhaité <span class="text-red-500">*</span></label>
+                  <select id="f-formation" required class="luma-input bg-white cursor-pointer">
+                    <option value="Les deux formations (Pack Complet)" selected>Pack Complet (PowerPoint & IA + Design/Vidéo)</option>
+                    <option value="PowerPoint & IA uniquement">PowerPoint & IA uniquement</option>
+                    <option value="Création d'Affiches & Montage Vidéo uniquement">Affiches & Montage Vidéo uniquement</option>
+                  </select>
+                </div>
+
+                <!-- Ordinateur -->
+                <div>
+                  <label for="f-ordi" class="block text-xs font-semibold text-slate-700 mb-1">Avez-vous un ordinateur ? <span class="text-red-500">*</span></label>
+                  <select id="f-ordi" required class="luma-input bg-white cursor-pointer">
+                    <option value="Oui, j'aurai mon PC" selected>Oui, j'aurai mon ordinateur</option>
+                    <option value="Non, je suivrai sur écran/smartphone">Non, je suivrai sur smartphone/écran</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Statut / Profil -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label for="f-statut" class="block text-xs font-semibold text-slate-700 mb-1">Vous êtes <span class="text-red-500">*</span></label>
+                  <select id="f-statut" required class="luma-input bg-white cursor-pointer">
+                    <option value="Étudiant" selected>Étudiant</option>
+                    <option value="Élève">Élève</option>
+                    <option value="Professionnel">Professionnel</option>
+                    <option value="Autre">Autre</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="f-genre" class="block text-xs font-semibold text-slate-700 mb-1">Genre</label>
+                  <select id="f-genre" class="luma-input bg-white cursor-pointer">
+                    <option value="Homme" selected>Homme (Frère)</option>
+                    <option value="Femme">Femme (Sœur)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Submit button -->
+              <div class="pt-2">
+                <button type="submit" id="submitBtn" class="luma-btn-primary w-full py-3.5 text-sm">
+                  <span id="submitLabel">S'inscrire à l'événement</span>
+                  <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+              </div>
+
+              <p class="text-[11px] text-slate-400 text-center pt-1">
+                En vous inscrivant, vous recevrez votre confirmation officielle et votre ticket numérique instantanément.
+              </p>
+
+            </form>
+          </div>
+
+          <!-- ==============================================
+               STATE 2: APPROVAL SCREEN (Exactly like Lu.ma screenshots!)
+               ============================================== -->
+          <div id="luma-approved-state" class="hidden space-y-4">
+            
+            <!-- Peach Smiley Avatar Bubble (exact Lu.ma match) -->
+            <div class="w-12 h-12 rounded-full bg-orange-100/90 border border-orange-200/60 flex items-center justify-center text-2xl shadow-inner select-none">
+              😊
+            </div>
+
+            <!-- Approval Title & Note -->
+            <div>
+              <h3 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">En attente d'approbation</h3>
+              <p class="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed">
+                Nous vous informerons lorsque l'organisateur approuvera votre inscription.
+              </p>
+            </div>
+
+            <!-- Calendar action -->
+            <div>
+              <button onclick="openGoogleCalendar()" class="luma-btn-secondary text-xs">
+                <i class="fa-regular fa-calendar-plus text-slate-500"></i>
+                <span>Ajouter au calendrier</span>
+              </button>
+            </div>
+
+            <!-- Gray Sub-card with Envelope (exact Lu.ma match) -->
+            <div class="bg-slate-50/90 border border-slate-200/90 rounded-2xl p-4 sm:p-5 space-y-3.5">
+              <div class="w-10 h-10 rounded-full bg-slate-700 text-white flex items-center justify-center text-sm shadow-xs">
+                <i class="fa-solid fa-envelope"></i>
+              </div>
+
+              <p class="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
+                Veuillez vérifier votre email pour gérer votre inscription et voir plus de détails sur l'événement.
+              </p>
+
+              <div class="flex flex-wrap items-center gap-2 pt-1">
+                <!-- Check Email & View Ticket -->
+                <button onclick="openTicketModal()" class="luma-btn-secondary text-xs font-semibold">
+                  <span>Vérifier l'e-mail</span>
+                  <i class="fa-solid fa-arrow-right text-[10px] text-slate-400"></i>
+                </button>
+
+                <!-- WhatsApp direct button -->
+                <a id="btnGroupWhatsapp" href="https://wa.me/2250711985810?text=Bonjour,%20j'ai%20validé%20mon%20inscription%20pour%20la%20Double%20Formation%20du%2018%20Octobre%202026" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-colors shadow-xs">
+                  <i class="fa-brands fa-whatsapp text-sm"></i>
+                  <span>Groupe WhatsApp</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Secondary link: Register someone else -->
+            <div class="pt-1 flex items-center justify-between text-xs text-slate-400">
+              <button onclick="resetRegistrationForm()" class="hover:text-slate-700 underline transition-colors">
+                Inscrire un autre participant
+              </button>
+              <button onclick="openTicketModal()" class="hover:text-slate-700 font-medium transition-colors">
+                <i class="fa-solid fa-qrcode mr-1"></i> Voir mon Pass & QR Code
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ==============================================
+             ABOUT THE EVENT (À propos de cet événement)
+             ============================================== -->
+        <div id="about-event" class="pt-6 border-t border-slate-200/80 space-y-6 text-slate-800">
+          
+          <div class="space-y-2">
+            <h3 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">À propos de cet événement</h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              L'<strong>AEEMCI Sous-comité de Koumassi</strong> organise une immersion pratique intensive le <strong>Dimanche 18 Octobre 2026</strong>. Cette journée est conçue pour outiller les élèves, étudiants et professionnels aux outils les plus demandés du numérique.
+            </p>
+          </div>
+
+          <!-- MODULES OVERVIEW -->
+          <div class="space-y-4">
+            
+            <!-- Module 1 -->
+            <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-50 border border-amber-200/60 px-2.5 py-0.5 rounded-full">
+                  Atelier 1
+                </span>
+                <span class="text-xs text-slate-400 font-medium">08:30 - 11:00</span>
+              </div>
+              <h4 class="text-base sm:text-lg font-bold text-slate-900">PowerPoint & IA : des bases aux présentations innovantes</h4>
+              <p class="text-xs text-slate-500 font-medium">Formateur : <strong class="text-slate-800">Djim Aboubacar Mikahillo</strong></p>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed pt-1">
+                Découvrez comment structurer un pitch, concevoir des diapositives percutantes et utiliser l'Intelligence Artificielle pour automatiser vos plans, visuels et transitions professionnelles.
+              </p>
+            </div>
+
+            <!-- Module 2 -->
+            <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-wider text-teal-600 bg-teal-50 border border-teal-200/60 px-2.5 py-0.5 rounded-full">
+                  Atelier 2
+                </span>
+                <span class="text-xs text-slate-400 font-medium">11:15 - 13:45</span>
+              </div>
+              <h4 class="text-base sm:text-lg font-bold text-slate-900">Création d’affiches et montages vidéo innovants</h4>
+              <p class="text-xs text-slate-500 font-medium">Formateur : <strong class="text-slate-800">Sawadogo Mohamed</strong> (Informaticien & Théologien)</p>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed pt-1">
+                Apprenez les règles d'or du graphisme, la psychologie des couleurs et maîtrisez le montage vidéo dynamique (dérushage, rythmique, effets visuels et titrage) pour captiver vos audiences.
+              </p>
+            </div>
+
+          </div>
+
+          <!-- PRÉREQUIS & CONSEILS -->
+          <div class="bg-slate-50 rounded-2xl p-4 sm:p-5 border border-slate-200/80 space-y-2">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500">Ce qu'il faut apporter</h4>
+            <ul class="text-xs sm:text-sm text-slate-600 space-y-1.5 list-disc list-inside">
+              <li>Ordinateur portable chargé avec PowerPoint installé (fortement recommandé).</li>
+              <li>Smartphone avec espace disponible pour les exercices de vidéo et affiches.</li>
+              <li>Bloc-notes et stylo pour la prise de notes pratiques.</li>
+            </ul>
+          </div>
+
+          <!-- FAQ ACCORDION -->
+          <div class="space-y-3 pt-2">
+            <h4 class="text-sm font-bold text-slate-900">Questions Fréquentes</h4>
+            
+            <div class="space-y-2">
+              <div class="faq-item bg-white rounded-xl border border-slate-200/90 overflow-hidden">
+                <button class="faq-toggle w-full flex items-center justify-between p-3.5 sm:p-4 text-left font-semibold text-slate-900 text-xs sm:text-sm">
+                  <span>1. La formation est-elle totalement gratuite ?</span>
+                  <i class="fa-solid fa-chevron-down faq-arrow text-slate-400 text-xs"></i>
+                </button>
+                <div class="faq-answer px-3.5 sm:px-4">
+                  <p class="text-xs text-slate-600 pb-3.5 sm:pb-4 leading-relaxed">
+                    Oui, l'accès à la journée de formation est 100% gratuit, offert par l'AEEMCI Sous-comité de Koumassi. L'inscription préalable en ligne est obligatoire pour réserver son pass.
+                  </p>
+                </div>
+              </div>
+
+              <div class="faq-item bg-white rounded-xl border border-slate-200/90 overflow-hidden">
+                <button class="faq-toggle w-full flex items-center justify-between p-3.5 sm:p-4 text-left font-semibold text-slate-900 text-xs sm:text-sm">
+                  <span>2. Où se situe précisément le lieu ?</span>
+                  <i class="fa-solid fa-chevron-down faq-arrow text-slate-400 text-xs"></i>
+                </button>
+                <div class="faq-answer px-3.5 sm:px-4">
+                  <p class="text-xs text-slate-600 pb-3.5 sm:pb-4 leading-relaxed">
+                    Au <strong>Groupe Scolaire Sainte Thérèse</strong>, situé non loin du Terminus des bus 11 à Koumassi (Abidjan).
+                  </p>
+                </div>
+              </div>
+
+              <div class="faq-item bg-white rounded-xl border border-slate-200/90 overflow-hidden">
+                <button class="faq-toggle w-full flex items-center justify-between p-3.5 sm:p-4 text-left font-semibold text-slate-900 text-xs sm:text-sm">
+                  <span>3. Faut-il obligatoirement un ordinateur ?</span>
+                  <i class="fa-solid fa-chevron-down faq-arrow text-slate-400 text-xs"></i>
+                </button>
+                <div class="faq-answer px-3.5 sm:px-4">
+                  <p class="text-xs text-slate-600 pb-3.5 sm:pb-4 leading-relaxed">
+                    Avoir son ordinateur est un vrai avantage pour pratiquer directement les manipulations PowerPoint & IA. Néanmoins, les participants sans ordinateur peuvent suivre les ateliers sur écran et pratiquer la partie affiches et vidéo sur leur smartphone.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
 
       </div>
 
     </div>
-
-
-    <!-- SECTION FORMATEURS & QUALIFICATIONS PRO (ADAPTÉE SOURIS & MOBILE) -->
-    <section id="instructors" class="space-y-8 sm:space-y-10 pt-8 sm:pt-10 border-t border-slate-200">
-      
-      <div class="text-center max-w-3xl mx-auto space-y-2 sm:space-y-3">
-        <span class="text-xs font-black text-brandGreen uppercase tracking-widest bg-emerald-50 px-3.5 py-1.5 rounded-full border border-emerald-200">
-          Instructeurs Qualifiés
-        </span>
-        <h2 class="text-2xl sm:text-4xl font-black text-slate-900">Vos Formateurs & Leurs Compétences</h2>
-        <p class="text-xs sm:text-sm text-slate-600">Des experts passionnés combinant expérience technique, compétences pédagogiques et parcours académiques d'excellence.</p>
-      </div>
-
-      <div class="grid md:grid-cols-2 gap-6 sm:gap-8">
-        
-        <!-- CARD FORMATEUR 1 : DJIM ABOUBACAR MIKAHILLO -->
-        <div class="bg-white rounded-3xl p-5 sm:p-8 border border-slate-200 pro-shadow-lg space-y-5 sm:space-y-6 flex flex-col justify-between hover:border-orange-500 transition-all group">
-          
-          <div class="space-y-5 sm:space-y-6">
-            <!-- Header avec photo officielle -->
-            <div class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 sm:gap-6">
-              <div class="relative shrink-0">
-                <img src="WhatsApp Image 2026-09-28 at 22.04.43.jpeg" alt="Djim Aboubacar Mikahillo" class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover shadow-lg border-2 border-orange-500 group-hover:scale-105 transition-transform">
-                <span class="absolute -bottom-2 -right-2 w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-orange-500 text-white flex items-center justify-center text-xs sm:text-sm shadow">
-                  <i class="fa-solid fa-display"></i>
-                </span>
-              </div>
-
-              <div class="space-y-1">
-                <span class="inline-block text-[10px] font-black uppercase tracking-wider text-orange-700 bg-orange-50 px-2.5 py-0.5 rounded-full border border-orange-200">
-                  Formateur PowerPoint & IA
-                </span>
-                <h3 class="text-xl sm:text-2xl font-black text-slate-900">Djim Aboubacar Mikahillo</h3>
-                <p class="text-xs font-bold text-slate-500">Designer Graphique & Marketeur Digital</p>
-              </div>
-            </div>
-
-            <!-- Qualification Tags -->
-            <div class="space-y-3 pt-3 sm:pt-4 border-t border-slate-100">
-              <h4 class="text-xs font-black uppercase tracking-wider text-slate-800 flex items-center gap-2 justify-center sm:justify-start">
-                <i class="fa-solid fa-award text-orange-500"></i> Spécialités & Profil :
-              </h4>
-
-              <div class="space-y-2 sm:space-y-2.5">
-                <div class="flex items-center gap-3 bg-slate-50 p-2.5 sm:p-3 rounded-xl border border-slate-200/80 text-left">
-                  <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-orange-500 text-white flex items-center justify-center text-xs shrink-0 font-bold">
-                    <i class="fa-solid fa-palette"></i>
-                  </div>
-                  <span class="text-xs font-bold text-slate-800">Designer Graphique</span>
-                </div>
-
-                <div class="flex items-center gap-3 bg-slate-50 p-2.5 sm:p-3 rounded-xl border border-slate-200/80 text-left">
-                  <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-orange-500 text-white flex items-center justify-center text-xs shrink-0 font-bold">
-                    <i class="fa-solid fa-bullhorn"></i>
-                  </div>
-                  <span class="text-xs font-bold text-slate-800">Marketeur Digital</span>
-                </div>
-
-                <div class="flex items-center gap-3 bg-slate-50 p-2.5 sm:p-3 rounded-xl border border-slate-200/80 text-left">
-                  <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-orange-500 text-white flex items-center justify-center text-xs shrink-0 font-bold">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i>
-                  </div>
-                  <span class="text-xs font-bold text-slate-800">Formateur PowerPoint & Présentations IA</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Bottom Footer Badge -->
-          <div class="pt-3 sm:pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-            <span class="font-bold text-orange-600"><i class="fa-solid fa-check-double mr-1"></i> PowerPoint 365 & IA</span>
-            <span class="bg-orange-50 text-orange-700 font-extrabold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full border border-orange-200 text-[10px] sm:text-[11px]">Des bases aux présentations innovantes</span>
-          </div>
-
-        </div>
-
-
-        <!-- CARD FORMATEUR 2 : SAWADOGO MOHAMED -->
-        <div class="bg-white rounded-3xl p-5 sm:p-8 border border-slate-200 pro-shadow-lg space-y-5 sm:space-y-6 flex flex-col justify-between hover:border-teal-500 transition-all group">
-          
-          <div class="space-y-5 sm:space-y-6">
-            <!-- Header avec photo officielle -->
-            <div class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 sm:gap-6">
-              <div class="relative shrink-0">
-                <img src="sawadogo-mohamed.jpeg" alt="Sawadogo Mohamed" class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover shadow-lg border-2 border-teal-500 group-hover:scale-105 transition-transform">
-                <span class="absolute -bottom-2 -right-2 w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-teal-600 text-white flex items-center justify-center text-xs sm:text-sm shadow">
-                  <i class="fa-solid fa-video"></i>
-                </span>
-              </div>
-
-              <div class="space-y-1">
-                <span class="inline-block text-[10px] font-black uppercase tracking-wider text-teal-700 bg-teal-50 px-2.5 py-0.5 rounded-full border border-teal-200">
-                  Formateur Affiches & Montage Vidéo
-                </span>
-                <h3 class="text-xl sm:text-2xl font-black text-slate-900">Sawadogo Mohamed</h3>
-                <p class="text-xs font-bold text-slate-500">Informaticien & Théologien</p>
-              </div>
-            </div>
-
-            <!-- Qualification Tags -->
-            <div class="space-y-3 pt-3 sm:pt-4 border-t border-slate-100">
-              <h4 class="text-xs font-black uppercase tracking-wider text-slate-800 flex items-center gap-2 justify-center sm:justify-start">
-                <i class="fa-solid fa-user-gear text-teal-600"></i> Spécialités & Profil :
-              </h4>
-
-              <div class="space-y-2">
-                <div class="flex items-center gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200/80 text-left">
-                  <div class="w-7 h-7 rounded-lg bg-teal-600 text-white flex items-center justify-center text-xs shrink-0 font-bold">
-                    <i class="fa-solid fa-laptop-code"></i>
-                  </div>
-                  <span class="text-xs font-bold text-slate-800">Informaticien</span>
-                </div>
-
-                <div class="flex items-center gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200/80 text-left">
-                  <div class="w-7 h-7 rounded-lg bg-teal-600 text-white flex items-center justify-center text-xs shrink-0 font-bold">
-                    <i class="fa-solid fa-book-open-reader"></i>
-                  </div>
-                  <span class="text-xs font-bold text-slate-800">Théologien</span>
-                </div>
-
-                <div class="flex items-center gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200/80 text-left">
-                  <div class="w-7 h-7 rounded-lg bg-teal-600 text-white flex items-center justify-center text-xs shrink-0 font-bold">
-                    <i class="fa-solid fa-image"></i>
-                  </div>
-                  <span class="text-xs font-bold text-slate-800">Création d'Affiches Innovantes</span>
-                </div>
-
-                <div class="flex items-center gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200/80 text-left">
-                  <div class="w-7 h-7 rounded-lg bg-teal-600 text-white flex items-center justify-center text-xs shrink-0 font-bold">
-                    <i class="fa-solid fa-film"></i>
-                  </div>
-                  <span class="text-xs font-bold text-slate-800">Montage Vidéo Professionnel</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Bottom Footer Badge -->
-          <div class="pt-3 sm:pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-            <span class="font-bold text-teal-600"><i class="fa-solid fa-clapperboard mr-1"></i> Studio Visuel</span>
-            <span class="bg-teal-50 text-teal-700 font-extrabold px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full border border-teal-200 text-[10px] sm:text-[11px]">Création d'affiches & montages vidéo</span>
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-
-
-    <!-- CURRICULUM DES FORMATIONS -->
-    <section class="space-y-8 sm:space-y-10 pt-8 sm:pt-10 border-t border-slate-200">
-      
-      <div class="text-center max-w-3xl mx-auto space-y-2 sm:space-y-3">
-        <span class="text-xs font-black text-brandBlue uppercase tracking-widest bg-blue-50 px-3.5 py-1.5 rounded-full border border-blue-200">
-          Programme Pédagogique
-        </span>
-        <h2 class="text-2xl sm:text-4xl font-black text-slate-900">Le Contenu des Formations du 18 Octobre</h2>
-      </div>
-
-      <div class="grid md:grid-cols-2 gap-6 sm:gap-8">
-        
-        <!-- Formation 1 : PowerPoint & IA -->
-        <div class="bg-white rounded-3xl p-4 sm:p-8 border border-slate-200 pro-shadow space-y-4 sm:space-y-6 flex flex-col justify-between">
-          <div class="space-y-3 sm:space-y-4">
-            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
-              <span class="px-3 py-1 rounded-full bg-orange-50 text-orange-700 font-extrabold text-[11px] sm:text-xs border border-orange-200 shrink-0">
-                <i class="fa-solid fa-display mr-1"></i> Module 1
-              </span>
-              <span class="text-[10px] sm:text-xs font-extrabold text-orange-500 uppercase tracking-wider shrink-0">POWERPOINT & IA</span>
-            </div>
-
-            <div class="space-y-1">
-              <h3 class="font-black text-lg sm:text-2xl text-slate-900 leading-snug">PowerPoint & IA</h3>
-              <p class="text-xs sm:text-sm font-bold text-orange-600 leading-relaxed">
-                Thème : Des bases à la création de présentations professionnelles et innovantes
-              </p>
-            </div>
-
-            <ul class="space-y-2.5 sm:space-y-3 text-xs sm:text-sm text-slate-700 pt-2">
-              <li class="flex items-start gap-2.5">
-                <i class="fa-solid fa-circle-check text-orange-500 text-base shrink-0 mt-0.5"></i>
-                <span>Structuration et règles d'or du design de présentations percutantes.</span>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <i class="fa-solid fa-circle-check text-orange-500 text-base shrink-0 mt-0.5"></i>
-                <span>Utilisation de l'Intelligence Artificielle pour générer le plan, les textes et les idées visuelles.</span>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <i class="fa-solid fa-circle-check text-orange-500 text-base shrink-0 mt-0.5"></i>
-                <span>Création de diapositives modernes, masques et palettes de couleurs professionnelles.</span>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <i class="fa-solid fa-circle-check text-orange-500 text-base shrink-0 mt-0.5"></i>
-                <span>Animations fluides, transitions élégantes et infographies pour capter l'auditoire.</span>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <i class="fa-solid fa-circle-check text-orange-500 text-base shrink-0 mt-0.5"></i>
-                <span>Atelier pratique : concevoir un pitch percutant et une présentation professionnelle complète.</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Formation 2 : Création d’Affiches & Montage Vidéo -->
-        <div class="bg-white rounded-3xl p-4 sm:p-8 border border-slate-200 pro-shadow space-y-4 sm:space-y-6 flex flex-col justify-between">
-          <div class="space-y-3 sm:space-y-4">
-            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
-              <span class="px-3 py-1 rounded-full bg-teal-50 text-teal-700 font-extrabold text-[11px] sm:text-xs border border-teal-200 shrink-0">
-                <i class="fa-solid fa-video mr-1"></i> Module 2
-              </span>
-              <span class="text-[10px] sm:text-xs font-extrabold text-teal-600/90 uppercase tracking-wider shrink-0">DESIGN & VIDÉO</span>
-            </div>
-
-            <div class="space-y-1">
-              <h3 class="font-black text-lg sm:text-2xl text-slate-900 leading-snug">Affiches & Montages Vidéo</h3>
-              <p class="text-xs sm:text-sm font-bold text-teal-600 leading-relaxed">
-                Thème : Création d’affiches et montages vidéo innovants
-              </p>
-            </div>
-
-            <ul class="space-y-2.5 sm:space-y-3 text-xs sm:text-sm text-slate-700 pt-2">
-              <li class="flex items-start gap-2.5">
-                <i class="fa-solid fa-circle-check text-teal-600 text-base shrink-0 mt-0.5"></i>
-                <span>Principes essentiels de la composition visuelle et psychologie des couleurs.</span>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <i class="fa-solid fa-circle-check text-teal-600 text-base shrink-0 mt-0.5"></i>
-                <span>Conception d'affiches professionnelles pour réseaux sociaux et événements.</span>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <i class="fa-solid fa-circle-check text-teal-600 text-base shrink-0 mt-0.5"></i>
-                <span>Techniques de montage vidéo : dérushage, découpage rythmé et transitions créatives.</span>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <i class="fa-solid fa-circle-check text-teal-600 text-base shrink-0 mt-0.5"></i>
-                <span>Habillage sonore, synchronisation audio, titrage dynamique et effets visuels.</span>
-              </li>
-              <li class="flex items-start gap-2.5">
-                <i class="fa-solid fa-circle-check text-teal-600 text-base shrink-0 mt-0.5"></i>
-                <span>Prise en main d'outils modernes et accessibles sur smartphone et ordinateur.</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-
-    <!-- FAQ ACCORDION SECTION -->
-    <section class="space-y-6 sm:space-y-8 pt-6 border-t border-slate-200">
-      <div class="text-center max-w-2xl mx-auto space-y-2">
-        <h3 class="text-xl sm:text-3xl font-black text-slate-900">Questions Fréquentes</h3>
-        <p class="text-xs text-slate-500">Tout ce que vous devez savoir avant de vous inscrire.</p>
-      </div>
-
-      <div class="max-w-3xl mx-auto space-y-3 sm:space-y-4">
-        <div class="faq-item bg-white rounded-2xl border border-slate-200 pro-shadow overflow-hidden">
-          <button class="faq-toggle w-full flex items-center justify-between p-4 sm:p-6 text-left font-bold text-slate-900 text-xs sm:text-sm">
-            <span>1. Quel est le public visé par cette formation ?</span>
-            <i class="fa-solid fa-chevron-down faq-arrow text-slate-400 text-xs"></i>
-          </button>
-          <div class="faq-answer px-4 sm:px-6"><p class="text-xs text-slate-600 pb-4 sm:pb-6 leading-relaxed">Cette journée est ouverte aux élèves, étudiants et professionnels souhaitant acquérir des compétences pratiques en bureautique avancée (PowerPoint & IA) et en communication visuelle (affiches et vidéo).</p></div>
-        </div>
-
-        <div class="faq-item bg-white rounded-2xl border border-slate-200 pro-shadow overflow-hidden">
-          <button class="faq-toggle w-full flex items-center justify-between p-4 sm:p-6 text-left font-bold text-slate-900 text-xs sm:text-sm">
-            <span>2. Quel est le lieu et l'horaire exact ?</span>
-            <i class="fa-solid fa-chevron-down faq-arrow text-slate-400 text-xs"></i>
-          </button>
-          <div class="faq-answer px-4 sm:px-6"><p class="text-xs text-slate-600 pb-4 sm:pb-6 leading-relaxed">La formation se tiendra en présentiel le <strong>Dimanche 18 Octobre 2026 à partir de 08h00 GMT</strong> au <strong>Groupe Scolaire Sainte Thérèse</strong> (non loin du terminus 11 Koumassi).</p></div>
-        </div>
-
-        <div class="faq-item bg-white rounded-2xl border border-slate-200 pro-shadow overflow-hidden">
-          <button class="faq-toggle w-full flex items-center justify-between p-4 sm:p-6 text-left font-bold text-slate-900 text-xs sm:text-sm">
-            <span>3. Faut-il amener son propre ordinateur ?</span>
-            <i class="fa-solid fa-chevron-down faq-arrow text-slate-400 text-xs"></i>
-          </button>
-          <div class="faq-answer px-4 sm:px-6"><p class="text-xs text-slate-600 pb-4 sm:pb-6 leading-relaxed">Il est fortement conseillé d'apporter votre propre ordinateur portable (ou votre smartphone pour les affiches/vidéos) afin de pratiquer en direct pendant les ateliers.</p></div>
-        </div>
-      </div>
-    </section>
-
   </main>
 
 
-  <!-- FOOTER ACADÉMIQUE MOBILE-RESPONSIVE -->
-  <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 mt-16 sm:mt-20 py-8 sm:py-12 px-4 text-xs">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 text-center md:text-left">
-      
-      <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-lg bg-brandGreen text-white flex items-center justify-center font-bold text-sm shrink-0">
-          <i class="fa-solid fa-graduation-cap"></i>
-        </div>
-        <div>
-          <span class="font-extrabold text-white text-sm block">AEEMCI ACADEMY</span>
-          <span id="footerCopyright">&copy; 2026 AEEMCI Sous-comité de Koumassi. Formateurs : Djim Aboubacar Mikahillo & Sawadogo Mohamed.</span>
-        </div>
+  <!-- LUMA FOOTER -->
+  <footer class="border-t border-slate-200 bg-white py-6 sm:py-8 mt-12 text-xs text-slate-500">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-slate-800">luma*</span>
+        <span class="text-slate-300">|</span>
+        <span>&copy; 2026 AEEMCI Sous-comité Koumassi · Tous droits réservés</span>
       </div>
-
-      <div class="flex items-center gap-3 sm:gap-4 text-slate-400">
-        <a href="#registration-card" class="hover:text-white font-semibold transition-colors">S'inscrire</a>
+      <div class="flex items-center gap-4 text-slate-500">
+        <a href="https://wa.me/2250711985810" target="_blank" class="hover:text-slate-800 transition-colors">Infoline : +225 07 11 98 58 10</a>
         <span>·</span>
-        <a href="#instructors" class="hover:text-white font-semibold transition-colors">Instructeurs</a>
-        <span>·</span>
-        <button type="button" onclick="openAdmin()" class="hover:text-white font-semibold transition-colors">Accès Organisateur</button>
+        <button onclick="openAdmin()" class="hover:text-slate-800 transition-colors">Espace Organisateur</button>
       </div>
-
     </div>
   </footer>
 
 
-  <!-- ORGANIZER CONTACT MODAL -->
-  <div id="contactModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-5 sm:p-6 space-y-4 sm:space-y-5 border border-slate-200">
-      <div class="flex items-center justify-between">
-        <h3 class="text-base sm:text-lg font-bold text-slate-900">Contacter l'Organisateur</h3>
-        <button id="closeContactBtn" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-      </div>
-
-      <div class="space-y-3 text-xs">
-        <a href="https://wa.me/2250711985810?text=Bonjour,%20je%20souhaite%20des%20informations%20sur%20la%20formation" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 p-3.5 rounded-2xl bg-emerald-50 text-emerald-900 font-bold border border-emerald-200 hover:bg-emerald-100 transition-colors">
-          <i class="fa-brands fa-whatsapp text-2xl text-emerald-600"></i>
-          <div>
-            <span class="block font-extrabold">Discuter sur WhatsApp</span>
-            <span class="text-[11px] text-emerald-700 font-semibold">+225 07 11 98 58 10</span>
-          </div>
-        </a>
-
-        <a href="tel:+2250711985810" class="flex items-center gap-3 p-3.5 rounded-2xl bg-slate-50 text-slate-800 font-bold border border-slate-200 hover:bg-slate-100 transition-colors">
-          <i class="fa-solid fa-phone text-xl text-brandGreen"></i>
-          <div>
-            <span class="block font-extrabold">Appel Direct (Infoline)</span>
-            <span class="text-[11px] text-slate-500 font-medium">+225 07 11 98 58 10</span>
-          </div>
-        </a>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- SECRET ORGANIZER ADMIN MODAL -->
-  <div id="adminModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[85vh] flex flex-col overflow-hidden border border-slate-200">
+  <!-- ==============================================
+       MODAL 1: TICKET OFFICIEL & QR CODE (Pop-up)
+       ============================================== -->
+  <div id="ticketModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm sm:max-w-md p-6 space-y-5 border border-slate-200 relative animate-in fade-in zoom-in duration-200">
       
-      <!-- Login Screen -->
-      <div id="adminLoginScreen" class="p-6 sm:p-8 space-y-4">
-        <div class="flex items-center justify-between">
-          <h3 class="text-base sm:text-lg font-bold text-slate-900">Espace Organisateur AEEMCI</h3>
-          <button id="adminCloseBtn1" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-        </div>
-        <p class="text-xs text-slate-500">Entrez le code d'accès organisateur pour consulter la liste des billets émis.</p>
-        <div class="space-y-1">
-          <input type="password" id="adminPassInput" class="pro-input" placeholder="Code d'accès organisateur">
-        </div>
-        <p id="adminPassError" class="text-red-500 text-xs hidden font-bold">Code incorrect. Réessayez.</p>
-        <button id="adminSubmitPass" class="w-full bg-brandGreen hover:bg-brandGreenDark text-white font-extrabold py-3.5 rounded-xl text-sm transition-colors">Accéder au tableau de bord</button>
+      <!-- Close button -->
+      <button onclick="closeTicketModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-2">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <!-- Ticket Header -->
+      <div class="text-center space-y-1">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-amber-700 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full">
+          Pass Participant Officiel
+        </span>
+        <h3 class="text-lg font-black text-slate-900 pt-1">Double Formation 2026</h3>
+        <p class="text-xs text-slate-500">Dimanche 18 Octobre 2026 · Sainte Thérèse</p>
       </div>
 
-      <!-- Dashboard Screen -->
-      <div id="adminDashboard" class="hidden flex flex-col h-full overflow-hidden">
-        <div class="p-4 sm:p-6 border-b border-slate-200 flex items-center justify-between">
-          <div>
-            <h3 class="text-base sm:text-lg font-extrabold text-slate-900">Tableau de Bord des Inscriptions</h3>
-            <p class="text-xs text-slate-500"><span id="adminTotalCount">0</span> inscription(s) enregistrée(s)</p>
-          </div>
+      <!-- Ticket Visual Card -->
+      <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-2xl p-5 space-y-4 shadow-sm border border-slate-700 relative overflow-hidden">
+        
+        <div class="flex items-center justify-between border-b border-white/10 pb-3">
           <div class="flex items-center gap-2">
-            <a href="admin.html" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs px-3 py-2 rounded-xl flex items-center gap-1.5 transition-colors shadow-sm">
-              <i class="fa-solid fa-shield-halved text-xs"></i> Espace Validation & WhatsApp
-            </a>
-            <button id="adminRefreshBtn" class="bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs px-3 py-2 rounded-xl flex items-center gap-1.5 transition-colors">
-              <i class="fa-solid fa-rotate text-xs"></i> Actualiser
-            </button>
-            <a href="https://formspree.io/submissions" target="_blank" rel="noopener noreferrer" class="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-3 py-2 rounded-xl flex items-center gap-1.5 transition-colors">
-              <i class="fa-solid fa-arrow-up-right-from-square"></i> Formspree
-            </a>
-            <button id="adminExportBtn" class="bg-brandGreen text-white font-bold text-xs px-3 py-2 rounded-xl flex items-center gap-1.5">
-              <i class="fa-solid fa-file-csv"></i> Export CSV
-            </button>
-            <button id="adminCloseBtn2" class="text-slate-400 hover:text-slate-600 p-2"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <span class="font-extrabold text-sm tracking-tight">luma*</span>
+            <span class="text-[10px] text-emerald-400 font-bold uppercase">AEEMCI ACADEMY</span>
           </div>
+          <span id="ticket-code-display" class="font-mono text-xs font-bold text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/30">
+            TKT-PPT-DESIGN-XXXXXX
+          </span>
         </div>
 
-        <div class="p-3 sm:p-4 border-b border-slate-100">
-          <input type="text" id="adminSearch" class="pro-input" placeholder="Rechercher par nom, email, whatsapp ou formation...">
+        <div class="space-y-1">
+          <p class="text-[10px] text-slate-400 uppercase tracking-wider">Participant</p>
+          <p id="ticket-nom-display" class="text-base font-bold text-white tracking-tight">Bamba Siaka</p>
+          <p id="ticket-contact-display" class="text-xs text-slate-300 font-mono">+225 07 11 98 58 10</p>
         </div>
 
-        <div class="overflow-auto flex-1">
-          <table class="admin-table w-full">
-            <thead class="bg-slate-50 sticky top-0 border-b border-slate-200">
-              <tr>
-                <th>#</th><th>Nom & Prénoms</th><th>Email</th><th>WhatsApp</th><th>Statut</th><th>Formation Choisie</th><th>Date</th>
-              </tr>
-            </thead>
-            <tbody id="adminTableBody"></tbody>
-          </table>
-          <p id="adminEmptyState" class="text-center text-slate-400 text-xs py-8 hidden">Aucune inscription trouvée.</p>
+        <div class="space-y-1">
+          <p class="text-[10px] text-slate-400 uppercase tracking-wider">Option sélectionnée</p>
+          <p id="ticket-formation-display" class="text-xs font-semibold text-emerald-300">Pack Complet (PowerPoint & IA + Design & Vidéo)</p>
         </div>
+
+        <!-- QR Code Container -->
+        <div class="bg-white rounded-xl p-3 flex items-center justify-center shadow-inner">
+          <img id="ticket-qrcode-img" src="" alt="QR Code" class="w-32 h-32 object-contain">
+        </div>
+
+        <p class="text-[9px] text-slate-400 text-center">
+          Présentez ce QR Code ou votre nom à l'accueil pour accéder aux ateliers.
+        </p>
+
+      </div>
+
+      <!-- Modal Action Buttons -->
+      <div class="space-y-2">
+        <a id="ticket-whatsapp-share" href="#" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs py-3 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-xs">
+          <i class="fa-brands fa-whatsapp text-sm"></i>
+          <span>Recevoir sur mon WhatsApp</span>
+        </a>
+        <button onclick="window.print()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs py-2.5 rounded-xl transition-colors">
+          <i class="fa-solid fa-print mr-1.5"></i> Imprimer / Enregistrer en PDF
+        </button>
       </div>
 
     </div>
   </div>
 
+
+  <!-- ==============================================
+       MODAL 2: ADMIN ACCESS LOGIN
+       ============================================== -->
+  <div id="adminModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-6 space-y-4 border border-slate-200 relative animate-in fade-in zoom-in duration-200">
+      
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="font-extrabold text-slate-900 text-base">luma*</span>
+          <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Espace Organisateur</span>
+        </div>
+        <button onclick="closeAdmin()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <p class="text-xs text-slate-500">
+        Entrez le mot de passe organisateur pour accéder à la liste des inscrits et gérer la session du 18 Octobre 2026.
+      </p>
+
+      <div class="space-y-2">
+        <input type="password" id="adminPassInput" class="luma-input" placeholder="Mot de passe organisateur" autofocus>
+        <p id="adminPassError" class="text-red-500 text-xs hidden font-semibold">Mot de passe incorrect.</p>
+      </div>
+
+      <div class="pt-1 space-y-2">
+        <button id="adminSubmitPass" class="luma-btn-primary w-full py-3 text-xs">
+          Accéder au tableau de bord
+        </button>
+        <a href="admin.html" class="block text-center text-xs text-slate-500 hover:text-slate-800 py-1 transition-colors">
+          Accès direct au tableau d'administration ➔
+        </a>
+      </div>
+
+    </div>
+  </div>
 
   <!-- SCRIPTS MODULAIRES JS -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase.js?v=20261004_ORIGINAL_GLORY_V6000"></script>
-  <script src="base_donnees.js?v=20261004_ORIGINAL_GLORY_V6000"></script>
-  <script src="main.js?v=20261004_ORIGINAL_GLORY_V6000"></script>
+  <script src="supabase.js?v=20261014_LUMA"></script>
+  <script src="base_donnees.js?v=20261014_LUMA"></script>
+  <script src="main.js?v=20261014_LUMA"></script>
 </body>
 </html>

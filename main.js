@@ -1,49 +1,54 @@
 /**
- * Script Principal d'Interface & Interactions (main.js)
- * Double Formation Pratique : Bases Excel & Prompt Engineering — AEEMCI Koumassi
- * Inscriptions Ouvertes pour l'événement du Dimanche 04 Octobre 2026 à 08h00 GMT
+ * SCRIPT PRINCIPAL D'INTERFACE (main.js)
+ * Design & Expérience Lu.ma (luma*) — AEEMCI Koumassi
+ * Session : Double Formation Pratique (PowerPoint & IA × Affiches & Montage Vidéo)
+ * Date : Dimanche 18 Octobre 2026 à 08h00 UTC+0
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
 
-  const MAX_CAPACITE = 300;
+  const EVENT_DATE_UTC = new Date('2026-10-18T08:00:00Z');
+  const BASE_PARTICIPANTS_COUNT = 820;
 
-  /* ---------- COUNTDOWN TIMER (CHRONO PRO) ---------- */
-  function initCountdown() {
-    const targetDate = new Date('2026-10-18T08:00:00Z').getTime();
+  /* ---------- 1. LIVE UTC TIME (TOPBAR) ---------- */
+  function updateLiveUtcTime() {
+    const timeEl = document.getElementById('live-utc-time');
+    if (!timeEl) return;
+    const now = new Date();
+    const hours = String(now.getUTCHours()).padStart(2, '0');
+    const mins = String(now.getUTCMinutes()).padStart(2, '0');
+    timeEl.textContent = `${hours}:${mins} UTC+0`;
+  }
+  updateLiveUtcTime();
+  setInterval(updateLiveUtcTime, 10000);
 
-    function updateTimer() {
-      const now = new Date().getTime();
-      const distance = targetDate - now;
+  /* ---------- 2. COUNTDOWN PILL (LUMA STYLE : "Commence dans 3d 08h") ---------- */
+  function updateCountdownPill() {
+    const pillText = document.getElementById('cd-pill-text');
+    if (!pillText) return;
 
-      if (distance <= 0) {
-        if (document.getElementById('cd-days')) document.getElementById('cd-days').textContent = '00';
-        if (document.getElementById('cd-hours')) document.getElementById('cd-hours').textContent = '00';
-        if (document.getElementById('cd-mins')) document.getElementById('cd-mins').textContent = '00';
-        if (document.getElementById('cd-secs')) document.getElementById('cd-secs').textContent = '00';
-        return;
-      }
+    const now = new Date().getTime();
+    const distance = EVENT_DATE_UTC.getTime() - now;
 
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      const pad = n => String(n).padStart(2, '0');
-
-      if (document.getElementById('cd-days')) document.getElementById('cd-days').textContent = pad(days);
-      if (document.getElementById('cd-hours')) document.getElementById('cd-hours').textContent = pad(hours);
-      if (document.getElementById('cd-mins')) document.getElementById('cd-mins').textContent = pad(minutes);
-      if (document.getElementById('cd-secs')) document.getElementById('cd-secs').textContent = pad(seconds);
+    if (distance <= 0) {
+      pillText.textContent = "Événement en cours !";
+      return;
     }
 
-    updateTimer();
-    setInterval(updateTimer, 1000);
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const mins = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+    if (days > 0) {
+      pillText.textContent = `${days}d ${hours}h`;
+    } else {
+      pillText.textContent = `${hours}h ${mins}m`;
+    }
   }
+  updateCountdownPill();
+  setInterval(updateCountdownPill, 60000);
 
-  initCountdown();
-
-  /* ---------- TOAST HELPER ---------- */
+  /* ---------- 3. TOAST NOTIFICATION HELPER ---------- */
   window.showToast = function(msg) {
     const toast = document.getElementById('toast');
     const toastMsg = document.getElementById('toast-msg');
@@ -52,39 +57,32 @@ document.addEventListener('DOMContentLoaded', async () => {
       toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
       setTimeout(() => {
         toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
-      }, 3000);
+      }, 3500);
     }
   };
 
-  /* ---------- SHARE LINK ---------- */
-  const shareBtn = document.getElementById('shareBtn');
-  if (shareBtn) {
-    shareBtn.addEventListener('click', () => {
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(window.location.href);
-        showToast("Lien de l'événement copié dans le presse-papier !");
+  /* ---------- 4. SOCIAL PROOF & PARTICIPANT COUNT ---------- */
+  async function refreshParticipantsCount() {
+    try {
+      let registeredCount = 0;
+      if (typeof recupererInscriptions === 'function') {
+        const list = await recupererInscriptions();
+        if (Array.isArray(list)) {
+          registeredCount = list.length;
+        }
       }
-    });
+      const total = BASE_PARTICIPANTS_COUNT + registeredCount;
+      const countEl = document.getElementById('social-participant-count');
+      const othersEl = document.getElementById('social-others-count');
+      if (countEl) countEl.textContent = total;
+      if (othersEl) othersEl.textContent = Math.max(0, total - 2);
+    } catch (e) {
+      console.warn("Notice: sync participant count", e);
+    }
   }
+  refreshParticipantsCount();
 
-  /* ---------- CONTACT ORGANIZER MODAL ---------- */
-  const contactModal = document.getElementById('contactModal');
-  const contactOrgBtn = document.getElementById('contactOrgBtn');
-  const closeContactBtn = document.getElementById('closeContactBtn');
-  
-  if (contactOrgBtn && contactModal) {
-    contactOrgBtn.addEventListener('click', () => contactModal.classList.remove('hidden'));
-  }
-  if (closeContactBtn && contactModal) {
-    closeContactBtn.addEventListener('click', () => contactModal.classList.add('hidden'));
-  }
-  if (contactModal) {
-    contactModal.addEventListener('click', (e) => {
-      if (e.target === contactModal) contactModal.classList.add('hidden');
-    });
-  }
-
-  /* ---------- ACCORDION FAQ ---------- */
+  /* ---------- 5. FAQ ACCORDIONS ---------- */
   document.querySelectorAll('.faq-toggle').forEach(btn => {
     btn.addEventListener('click', () => {
       const item = btn.closest('.faq-item');
@@ -94,29 +92,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  /* ---------- CALENDAR EXPORT (GOOGLE & ICS) ---------- */
+  /* ---------- 6. CALENDAR EXPORT (GOOGLE CALENDAR & .ICS) ---------- */
   window.openGoogleCalendar = function() {
-    const title = encodeURIComponent("Double Formation Pratique (PowerPoint & IA / Affiches & Vidéo) — AEEMCI Koumassi");
-    const details = encodeURIComponent("Formation 100% gratuite par Djim Aboubacar Mikahillo (PowerPoint & IA) et Sawadogo Mohamed (Affiches & Montage Vidéo). Début à 08h00 GMT au Groupe Scolaire Sainte Thérèse.");
-    const location = encodeURIComponent("Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi)");
-    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20261018T080000Z/20261018T120000Z&details=${details}&location=${location}`;
-    
-    window.open(googleCalendarUrl, '_blank');
+    const title = encodeURIComponent("Double Formation Pratique (PowerPoint & IA × Affiches & Montage Vidéo) — AEEMCI");
+    const details = encodeURIComponent("Formation pratique 100% gratuite.\n\nAtelier 1 : PowerPoint & IA par Djim Aboubacar Mikahillo\nAtelier 2 : Création d’affiches et montages vidéo par Sawadogo Mohamed\n\nLieu : Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi)\nInfoline WhatsApp : +225 07 11 98 58 10");
+    const location = encodeURIComponent("Groupe Scolaire Sainte Thérèse, Terminus 11 Koumassi, Abidjan");
+    const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20261018T080000Z/20261018T140000Z&details=${details}&location=${location}`;
+    window.open(googleUrl, '_blank');
   };
 
   window.downloadICSFile = function() {
     const icsContent = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
-      'PRODID:-//AEEMCI Koumassi//Double Formation PowerPoint Video//FR',
+      'PRODID:-//AEEMCI Koumassi//Double Formation 2026//FR',
       'BEGIN:VEVENT',
-      'UID:20261018T080000Z-aeemci@koumassi',
+      'UID:20261018T080000Z-aeemci-luma@koumassi',
       'DTSTAMP:20261014T000000Z',
       'DTSTART:20261018T080000Z',
-      'DTEND:20261018T120000Z',
-      'SUMMARY:Double Formation Pratique (PowerPoint & IA / Affiches & Vidéo) — AEEMCI Koumassi',
-      'DESCRIPTION:Formation 100% gratuite par Djim Aboubacar Mikahillo (PowerPoint & IA) et Sawadogo Mohamed (Affiches & Montage Vidéo). Début à 08h00 GMT au Groupe Scolaire Sainte Thérèse.',
-      'LOCATION:Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi)',
+      'DTEND:20261018T140000Z',
+      'SUMMARY:Double Formation Pratique (PowerPoint & IA × Affiches & Montage Vidéo) — AEEMCI',
+      'DESCRIPTION:Formation 100% gratuite animée par Djim Aboubacar Mikahillo et Sawadogo Mohamed au Groupe Scolaire Sainte Thérèse.',
+      'LOCATION:Groupe Scolaire Sainte Thérèse, Terminus 11 Koumassi, Abidjan',
       'END:VEVENT',
       'END:VCALENDAR'
     ].join('\r\n');
@@ -131,11 +128,84 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.body.removeChild(link);
   };
 
-  window.downloadICS = window.openGoogleCalendar;
+  /* ---------- 7. USER TICKET PERSISTENCE & STATE MANAGEMENT ---------- */
+  const formState = document.getElementById('luma-form-state');
+  const approvedState = document.getElementById('luma-approved-state');
+  const ticketModal = document.getElementById('ticketModal');
 
-  /* ---------- FORM SUBMISSION & DIRECT CONFIRMATION ---------- */
+  function getSavedUserTicket() {
+    try {
+      const saved = localStorage.getItem('aeemci_user_ticket');
+      return saved ? JSON.parse(saved) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function renderTicketDetails(ticketData) {
+    if (!ticketData) return;
+    const codeEl = document.getElementById('ticket-code-display');
+    const nomEl = document.getElementById('ticket-nom-display');
+    const contactEl = document.getElementById('ticket-contact-display');
+    const formEl = document.getElementById('ticket-formation-display');
+    const qrImg = document.getElementById('ticket-qrcode-img');
+    const waShare = document.getElementById('ticket-whatsapp-share');
+
+    const ticketCode = ticketData.ticket_code || 'TKT-PPT-DESIGN-824';
+    if (codeEl) codeEl.textContent = ticketCode;
+    if (nomEl) nomEl.textContent = ticketData.nom || 'Participant';
+    if (contactEl) contactEl.textContent = `${ticketData.whatsapp || ''} · ${ticketData.email || ''}`;
+    if (formEl) formEl.textContent = ticketData.formation || 'Pack Complet (PowerPoint & IA + Design & Vidéo)';
+
+    // QR Code generation via secure public QR API
+    const qrPayload = encodeURIComponent(`AEEMCI-PASS|${ticketCode}|${ticketData.nom}|18-10-2026`);
+    if (qrImg) qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${qrPayload}&margin=1`;
+
+    // WhatsApp Direct Receipt Message
+    if (waShare) {
+      const msg = encodeURIComponent(`🎟️ *MON PASS PARTICIPANT OFFICIEL — AEEMCI ACADEMY*\n\n` +
+        `👤 *Nom :* ${ticketData.nom}\n` +
+        `🔖 *Ticket :* ${ticketCode}\n` +
+        `📚 *Formation :* ${ticketData.formation || 'Pack Complet'}\n` +
+        `📅 *Date :* Dimanche 18 Octobre 2026 à 08h00 GMT\n` +
+        `📍 *Lieu :* Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi)\n\n` +
+        `✅ Mon inscription est bien confirmée !`);
+      waShare.href = `https://wa.me/2250711985810?text=${msg}`;
+    }
+  }
+
+  window.openTicketModal = function() {
+    const saved = getSavedUserTicket() || {
+      ticket_code: 'TKT-PPT-DESIGN-825',
+      nom: document.getElementById('f-nom') ? document.getElementById('f-nom').value.trim() : 'Participant',
+      whatsapp: document.getElementById('f-whatsapp') ? document.getElementById('f-whatsapp').value.trim() : '+225 07 11 98 58 10',
+      formation: document.getElementById('f-formation') ? document.getElementById('f-formation').value : 'Pack Complet (PowerPoint & IA + Design/Vidéo)'
+    };
+    renderTicketDetails(saved);
+    if (ticketModal) ticketModal.classList.remove('hidden');
+  };
+
+  window.closeTicketModal = function() {
+    if (ticketModal) ticketModal.classList.add('hidden');
+  };
+
+  window.resetRegistrationForm = function() {
+    if (approvedState) approvedState.classList.add('hidden');
+    if (formState) formState.classList.remove('hidden');
+    const form = document.getElementById('formInscription');
+    if (form) form.reset();
+  };
+
+  // If user previously registered on this device, show approved state
+  const existingTicket = getSavedUserTicket();
+  if (existingTicket && existingTicket.nom) {
+    if (formState) formState.classList.add('hidden');
+    if (approvedState) approvedState.classList.remove('hidden');
+    renderTicketDetails(existingTicket);
+  }
+
+  /* ---------- 8. FORM SUBMISSION & CLOUD REGISTRATION ---------- */
   const form = document.getElementById('formInscription');
-  const confirmationBloc = document.getElementById('confirmationBloc');
   const submitBtn = document.getElementById('submitBtn');
   const submitLabel = document.getElementById('submitLabel');
 
@@ -143,258 +213,123 @@ document.addEventListener('DOMContentLoaded', async () => {
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
       e.stopPropagation();
-      
+
       const nom = document.getElementById('f-nom').value.trim();
-      const email = document.getElementById('f-email').value.trim();
       const whatsapp = document.getElementById('f-whatsapp').value.trim();
+      const email = document.getElementById('f-email').value.trim();
+      const formation = document.getElementById('f-formation').value;
+      const ordi = document.getElementById('f-ordi').value;
       const statut = document.getElementById('f-statut').value;
-      const genreElem = document.getElementById('f-genre');
-      const genre = genreElem ? genreElem.value : '';
-      const ageElem = document.getElementById('f-age');
-      const age = ageElem ? ageElem.value.trim() : '';
-      const ordiElem = document.getElementById('f-ordi');
-      const ordi = ordiElem ? ordiElem.value : '';
-      const attentesElem = document.getElementById('f-attentes');
-      const attentes = attentesElem ? attentesElem.value.trim() : '';
-      const formationElem = document.getElementById('f-formation');
-      const formation = formationElem ? formationElem.value : 'Les deux formations';
+      const genre = document.getElementById('f-genre') ? document.getElementById('f-genre').value : 'Homme';
 
       let valid = true;
-      if (nom.length < 2) { document.querySelector('.field-error[data-for="f-nom"]').classList.remove('hidden'); valid = false; }
-      else { document.querySelector('.field-error[data-for="f-nom"]').classList.add('hidden'); }
-
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { document.querySelector('.field-error[data-for="f-email"]').classList.remove('hidden'); valid = false; }
-      else { document.querySelector('.field-error[data-for="f-email"]').classList.add('hidden'); }
-
-      if (whatsapp.replace(/\D/g, '').length < 8) { document.querySelector('.field-error[data-for="f-whatsapp"]').classList.remove('hidden'); valid = false; }
-      else { document.querySelector('.field-error[data-for="f-whatsapp"]').classList.add('hidden'); }
-
-      if (!statut) { document.querySelector('.field-error[data-for="f-statut"]').classList.remove('hidden'); valid = false; }
-      else { document.querySelector('.field-error[data-for="f-statut"]').classList.add('hidden'); }
-
-      if (!genre && document.querySelector('.field-error[data-for="f-genre"]')) { document.querySelector('.field-error[data-for="f-genre"]').classList.remove('hidden'); valid = false; }
-      else if (document.querySelector('.field-error[data-for="f-genre"]')) { document.querySelector('.field-error[data-for="f-genre"]').classList.add('hidden'); }
-
-      if (!age && document.querySelector('.field-error[data-for="f-age"]')) { document.querySelector('.field-error[data-for="f-age"]').classList.remove('hidden'); valid = false; }
-      else if (document.querySelector('.field-error[data-for="f-age"]')) { document.querySelector('.field-error[data-for="f-age"]').classList.add('hidden'); }
-
-      if (!ordi && document.querySelector('.field-error[data-for="f-ordi"]')) { document.querySelector('.field-error[data-for="f-ordi"]').classList.remove('hidden'); valid = false; }
-      else if (document.querySelector('.field-error[data-for="f-ordi"]')) { document.querySelector('.field-error[data-for="f-ordi"]').classList.add('hidden'); }
-
-      if (attentes.length < 3 && document.querySelector('.field-error[data-for="f-attentes"]')) { document.querySelector('.field-error[data-for="f-attentes"]').classList.remove('hidden'); valid = false; }
-      else if (document.querySelector('.field-error[data-for="f-attentes"]')) { document.querySelector('.field-error[data-for="f-attentes"]').classList.add('hidden'); }
-
-      if (!valid) {
-        const firstErr = document.querySelector('.field-error:not(.hidden)');
-        if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
+      if (nom.length < 2) {
+        document.querySelector('.field-error[data-for="f-nom"]').classList.remove('hidden');
+        valid = false;
+      } else {
+        document.querySelector('.field-error[data-for="f-nom"]').classList.add('hidden');
       }
 
-      // 1. Bouton en état de chargement pendant l'envoi vers le serveur Cloud
-      if (submitBtn) submitBtn.disabled = true;
-      if (submitLabel) submitLabel.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Enregistrement...';
+      if (whatsapp.replace(/\D/g, '').length < 8) {
+        document.querySelector('.field-error[data-for="f-whatsapp"]').classList.remove('hidden');
+        valid = false;
+      } else {
+        document.querySelector('.field-error[data-for="f-whatsapp"]').classList.add('hidden');
+      }
 
-      // 2. Traitement et synchronisation Cloud Supabase
+      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        document.querySelector('.field-error[data-for="f-email"]').classList.remove('hidden');
+        valid = false;
+      } else if (email) {
+        document.querySelector('.field-error[data-for="f-email"]').classList.add('hidden');
+      }
+
+      if (!valid) return;
+
+      // Loading State
+      if (submitBtn) submitBtn.disabled = true;
+      if (submitLabel) submitLabel.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Inscription en cours...';
+
+      // Ticket generation
+      const ticketCode = (typeof genererCodeTicket === 'function') ? genererCodeTicket() : `TKT-PPT-DESIGN-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+
       const entry = {
-        nom, email, whatsapp, statut, genre, age, ordi, attentes, formation,
+        ticket_code: ticketCode,
+        nom,
+        email: email || `${whatsapp.replace(/\D/g, '')}@aeemci.ci`,
+        whatsapp,
+        statut,
+        genre,
+        ordi,
+        formation,
         statut_validation: "Validée",
         date: new Date().toISOString()
       };
 
+      // 1. Cloud Save
       if (typeof ajouterInscription === 'function') {
         try {
           await ajouterInscription(entry);
         } catch (err) {
-          console.error("Erreur enregistrement:", err);
+          console.warn("Notice: Cloud registration fallback", err);
         }
       }
 
-      // 3. Affichage du message de confirmation officielle
-      const confirmNomElem = document.getElementById('confirm-nom');
-      if (confirmNomElem) confirmNomElem.textContent = nom;
-      
-      const confirmBadge = document.getElementById('confirm-badge');
-      const confirmIconBox = document.getElementById('confirm-icon-box');
-      const confirmIcon = document.getElementById('confirm-icon');
-      const confirmText = document.getElementById('confirm-text');
+      // 2. Local Storage Persistence
+      try {
+        localStorage.setItem('aeemci_user_ticket', JSON.stringify(entry));
+      } catch (e) {}
 
-      if (confirmBadge) {
-        confirmBadge.textContent = "✅ Inscription Officielle Validée";
-        confirmBadge.className = "text-xs text-brandGreen font-extrabold uppercase tracking-widest bg-emerald-50 px-4 py-1.5 rounded-full border border-emerald-200";
-      }
-      if (confirmIconBox) {
-        confirmIconBox.className = "w-20 h-20 bg-emerald-100 text-brandGreen rounded-full flex items-center justify-center text-4xl mx-auto shadow-sm border border-emerald-200";
-      }
-      if (confirmIcon) {
-        confirmIcon.className = "fa-solid fa-circle-check";
-      }
-      if (confirmText) {
-        confirmText.innerHTML = `Félicitations <strong>${nom}</strong> ! Votre inscription pour la <strong>Double Formation Pratique (PowerPoint & IA / Création d'Affiches & Montage Vidéo)</strong> du <strong>Dimanche 18 Octobre 2026 à 08h00 GMT</strong> au Groupe Scolaire Sainte Thérèse a été réservée et <strong>validée avec succès</strong>.`;
+      // 3. Update view
+      renderTicketDetails(entry);
+      if (formState) formState.classList.add('hidden');
+      if (approvedState) {
+        approvedState.classList.remove('hidden');
+        approvedState.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
 
-      if (form) form.classList.add('hidden');
-      if (confirmationBloc) {
-        confirmationBloc.classList.remove('hidden');
-        confirmationBloc.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
+      showToast("Inscription validée avec succès !");
+      refreshParticipantsCount();
 
-      if (typeof mettreAJourAffichageCapacite === 'function') {
-        mettreAJourAffichageCapacite();
-      }
+      if (submitBtn) submitBtn.disabled = false;
+      if (submitLabel) submitLabel.textContent = "S'inscrire à l'événement";
     });
   }
 
-  /* ---------- GESTION DE LA CAPACITÉ & AFFICHAGE (INSCRIPTIONS OUVERTES) ---------- */
-  async function mettreAJourAffichageCapacite() {
-    let totalCount = 0;
-    try {
-      if (typeof obtenirNombreInscrits === 'function') {
-        totalCount = await obtenirNombreInscrits();
-      }
-    } catch (e) {}
-    
-    const capacityText = document.getElementById('capacity-text');
-    const capacityBadge = document.getElementById('capacity-badge');
-    const capacityDot = document.getElementById('capacity-dot');
-    const formTitle = document.getElementById('form-title');
-    const formSubtitle = document.getElementById('form-subtitle');
-    const submitBtnElem = document.getElementById('submitBtn');
-    const submitLabelElem = document.getElementById('submitLabel');
-
-    if (capacityText) capacityText.textContent = `Inscriptions Ouvertes (${totalCount}/150 places)`;
-    if (capacityBadge) {
-      capacityBadge.className = 'inline-flex items-center gap-2 bg-emerald-50 text-brandGreen font-bold text-xs px-4 py-2 rounded-full border border-emerald-200';
-    }
-    if (capacityDot) capacityDot.className = 'w-2.5 h-2.5 rounded-full bg-brandGreen animate-pulse';
-    if (formTitle) formTitle.textContent = "Formulaire d'Inscription Officiel";
-    if (formSubtitle) formSubtitle.textContent = "Dimanche 18 Octobre 2026 à 08h00 GMT · Groupe Scolaire Sainte Thérèse";
-    if (submitBtnElem) {
-      submitBtnElem.className = 'w-full bg-brandGreen hover:bg-brandGreenDark text-white font-extrabold text-base py-4 rounded-2xl shadow-lg pro-btn flex items-center justify-center gap-3 mt-4 transition-all';
-    }
-    if (submitLabelElem) submitLabelElem.textContent = "Valider mon inscription";
-  }
-
-  // Initialisation de la capacité au chargement (arrière-plan non bloquant)
-  try {
-    mettreAJourAffichageCapacite();
-  } catch (e) {}
-
-  /* ---------- DISCREET ORGANIZER ADMIN TRIGGERS ---------- */
+  /* ---------- 9. ADMIN MODAL & CONTROLS ---------- */
   const ADMIN_PASS = "aeemci2026";
   const adminModal = document.getElementById('adminModal');
-  const adminLoginScreen = document.getElementById('adminLoginScreen');
-  const adminDashboard = document.getElementById('adminDashboard');
   const adminPassInput = document.getElementById('adminPassInput');
   const adminPassError = document.getElementById('adminPassError');
+  const adminSubmitPass = document.getElementById('adminSubmitPass');
 
   function openAdmin() {
     if (adminModal) {
       adminModal.classList.remove('hidden');
-      adminLoginScreen.classList.remove('hidden');
-      adminDashboard.classList.add('hidden');
-      adminPassInput.value = '';
-      adminPassError.classList.add('hidden');
-      setTimeout(() => adminPassInput.focus(), 100);
+      if (adminPassInput) {
+        adminPassInput.value = '';
+        if (adminPassError) adminPassError.classList.add('hidden');
+        setTimeout(() => adminPassInput.focus(), 120);
+      }
     }
   }
   window.openAdmin = openAdmin;
+
   function closeAdmin() {
     if (adminModal) adminModal.classList.add('hidden');
   }
   window.closeAdmin = closeAdmin;
 
-  const adminCloseBtn1 = document.getElementById('adminCloseBtn1');
-  const adminCloseBtn2 = document.getElementById('adminCloseBtn2');
-  if (adminCloseBtn1) adminCloseBtn1.addEventListener('click', closeAdmin);
-  if (adminCloseBtn2) adminCloseBtn2.addEventListener('click', closeAdmin);
-
-  // Trigger 1: Keyboard Shortcut (Ctrl + Shift + A)
-  window.addEventListener('keydown', e => {
-    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'a') {
-      e.preventDefault();
-      openAdmin();
-    }
-  });
-
-  // Trigger 2: Secret URL parameter (?admin=1)
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.has('admin') || urlParams.has('organisateur')) {
-    openAdmin();
-  }
-
-  // Trigger 3: Secret Triple Click on brand logo or copyright
-  let clickCount = 0;
-  let clickTimer = null;
-  function handleSecretTripleClick() {
-    clickCount++;
-    if (clickTimer) clearTimeout(clickTimer);
-    if (clickCount >= 3) {
-      clickCount = 0;
-      openAdmin();
-    } else {
-      clickTimer = setTimeout(() => { clickCount = 0; }, 800);
-    }
-  }
-
-  const brandLogo = document.getElementById('brandLogo');
-  const footerCopyright = document.getElementById('footerCopyright');
-  if (brandLogo) brandLogo.addEventListener('click', handleSecretTripleClick);
-  if (footerCopyright) footerCopyright.addEventListener('click', handleSecretTripleClick);
-
-  /* ---------- ADMIN DASHBOARD RENDER ---------- */
-  let cachedList = [];
-
-  function renderAdminTable(list) {
-    const tbody = document.getElementById('adminTableBody');
-    const empty = document.getElementById('adminEmptyState');
-    const totalEl = document.getElementById('adminTotalCount');
-    if (totalEl) totalEl.textContent = cachedList.length;
-
-    if (!tbody) return;
-
-    if (list.length === 0) {
-      if (empty) empty.classList.remove('hidden');
-      tbody.innerHTML = '';
-      return;
-    }
-    if (empty) empty.classList.add('hidden');
-
-    tbody.innerHTML = list.map((item, i) => {
-      return `
-        <tr>
-          <td>${i + 1}</td>
-          <td class="font-extrabold text-slate-900">${item.nom || ''}</td>
-          <td>${item.email || ''}</td>
-          <td class="font-mono text-brandGreen font-bold">${item.whatsapp || ''}</td>
-          <td><span class="bg-emerald-50 text-brandGreen border border-emerald-200 px-2.5 py-1 rounded-full text-[11px] font-bold">${item.statut || 'Participant'}</span></td>
-          <td class="font-bold text-slate-700">${item.niveau || item.formation || 'Les deux formations'}</td>
-          <td>${(item.created_at || item.date) ? new Date(item.created_at || item.date).toLocaleString('fr-FR') : ''}</td>
-        </tr>
-      `;
-    }).join('');
-  }
-
-  const adminSubmitPass = document.getElementById('adminSubmitPass');
   if (adminSubmitPass) {
-    adminSubmitPass.addEventListener('click', async () => {
-      if (adminPassInput.value.trim() === ADMIN_PASS || adminPassInput.value.trim() === "123456") {
+    adminSubmitPass.addEventListener('click', () => {
+      const val = (adminPassInput ? adminPassInput.value.trim() : '');
+      if (val === ADMIN_PASS || val === '123456') {
         sessionStorage.setItem('aeemci_admin_logged', 'true');
+        localStorage.setItem('aeemci_admin_logged', 'true');
         window.location.href = 'admin.html';
       } else {
-        adminPassError.classList.remove('hidden');
+        if (adminPassError) adminPassError.classList.remove('hidden');
       }
-    });
-  }
-
-  const adminRefreshBtn = document.getElementById('adminRefreshBtn');
-  if (adminRefreshBtn) {
-    adminRefreshBtn.addEventListener('click', async () => {
-      adminRefreshBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-xs"></i> ...';
-      if (typeof recupererInscriptions === 'function') {
-        cachedList = await recupererInscriptions();
-      }
-      renderAdminTable(cachedList);
-      adminRefreshBtn.innerHTML = '<i class="fa-solid fa-rotate text-xs"></i> Actualiser';
     });
   }
 
@@ -404,33 +339,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  const adminSearch = document.getElementById('adminSearch');
-  if (adminSearch) {
-    adminSearch.addEventListener('input', e => {
-      const q = e.target.value.toLowerCase().trim();
-      const filtered = cachedList.filter(item =>
-        (item.nom || '').toLowerCase().includes(q) ||
-        (item.email || '').toLowerCase().includes(q) ||
-        (item.whatsapp || '').toLowerCase().includes(q) ||
-        (item.statut || '').toLowerCase().includes(q) ||
-        (item.niveau || item.formation || '').toLowerCase().includes(q)
-      );
-      renderAdminTable(filtered);
-    });
+  // Keyboard shortcut Ctrl + Shift + A
+  window.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'a') {
+      e.preventDefault();
+      openAdmin();
+    }
+  });
+
+  // Secret URL trigger ?admin=1
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('admin') || urlParams.has('organisateur')) {
+    openAdmin();
   }
 
-  const adminExportBtn = document.getElementById('adminExportBtn');
-  if (adminExportBtn) {
-    adminExportBtn.addEventListener('click', () => {
-      if (cachedList.length === 0) return;
-      const headers = ['Nom & Prénoms', 'Email', 'WhatsApp', 'Statut', 'Formation Choisie', 'Date'];
-      const rows = cachedList.map(e => [e.nom, e.email, e.whatsapp, e.statut, e.niveau || e.formation, e.created_at || e.date]);
-      const csv = [headers, ...rows].map(row => row.map(cell => `"${String(cell || '').replace(/"/g, '""')}"`).join(';')).join('\n');
-      const blob = new Blob(['\uFEFF' + csv], { type: 'text/charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = `inscriptions_double_formation_aeemci_${new Date().toISOString().slice(0,10)}.csv`;
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+  // Modal Backdrop Click
+  if (ticketModal) {
+    ticketModal.addEventListener('click', e => {
+      if (e.target === ticketModal) closeTicketModal();
+    });
+  }
+  if (adminModal) {
+    adminModal.addEventListener('click', e => {
+      if (e.target === adminModal) closeAdmin();
     });
   }
 

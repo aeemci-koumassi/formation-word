@@ -63,7 +63,7 @@
         </div>
         <div>
           <h1 class="font-bold text-sm sm:text-base text-lumaText leading-tight">AEEMCI Koumassi — Espace Organisateur</h1>
-          <p class="text-[11px] text-lumaMuted">Double Formation Excel & Prompt Engineering 2026</p>
+          <p class="text-[11px] text-lumaMuted">Double Formation PowerPoint & IA × Affiches & Vidéo 2026</p>
         </div>
       </div>
       <a href="index.html" class="text-xs text-lumaMuted hover:text-lumaGreen font-semibold flex items-center gap-1.5 bg-gray-50 px-3.5 py-2 rounded-xl border border-gray-200 transition-colors">
@@ -129,8 +129,9 @@
           <div class="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
             <!-- SESSION SELECTOR -->
             <select id="sessionFilter" class="luma-input font-bold text-xs text-lumaGreen border-lumaGreen/40 bg-emerald-50/60 cursor-pointer w-full sm:w-auto shadow-sm">
-              <option value="new" selected>🎯 Session du 04 Octobre 2026 (Excel & Prompt)</option>
-              <option value="all">📂 Toutes les sessions (Historique Word inclut)</option>
+              <option value="new" selected>🎯 Session du 18 Octobre 2026 (PowerPoint & Vidéo)</option>
+              <option value="prev">📊 Session du 04 Octobre 2026 (Excel & Prompt IA)</option>
+              <option value="all">📂 Toutes les sessions (Historique complet)</option>
             </select>
 
             <div class="w-full sm:w-64">
@@ -229,7 +230,7 @@
           </div>
           <div class="bg-white p-3 rounded-xl border border-slate-200">
             <span class="text-[10px] font-bold text-slate-400 block uppercase">Date & Heure</span>
-            <span class="font-extrabold text-slate-800 block">Dim 04 Oct 2026 · 08h00 GMT</span>
+            <span class="font-extrabold text-slate-800 block">Dim 18 Oct 2026 · 08h00 GMT</span>
           </div>
           <div class="bg-white p-3 rounded-xl border border-slate-200">
             <span class="text-[10px] font-bold text-slate-400 block uppercase">Lieu</span>
@@ -269,7 +270,7 @@
           </div>
           <div>
             <h3 class="font-bold text-base">Message de Remerciement</h3>
-            <p class="text-[11px] text-emerald-100">Diffusion WhatsApp — Session Excel & Prompt IA</p>
+            <p class="text-[11px] text-emerald-100">Diffusion WhatsApp — Session PowerPoint & Vidéo</p>
           </div>
         </div>
         <button id="closeThanksBtn" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition-colors">
@@ -282,9 +283,9 @@
           <label class="text-xs font-bold text-slate-700">Modèle du message à envoyer :</label>
           <textarea id="thanksMsgText" rows="7" class="luma-input text-xs font-sans leading-relaxed text-slate-800" readonly>Assalamou Aleykoum / Bonjour 👋,
 
-Au nom de toute l'équipe organisatrice de l'AEEMCI Koumassi, nous tenons à vous adresser nos plus sincères REMERCIEMENTS pour votre présence et votre participation active à la Double Formation Pratique (Bases Excel & Prompt Engineering) du Dimanche 04 Octobre 2026 au Groupe Scolaire Sainte Thérèse ! 🎓✨
+Au nom de toute l'équipe organisatrice de l'AEEMCI Koumassi, nous tenons à vous adresser nos plus sincères REMERCIEMENTS pour votre présence et votre participation active à la Double Formation Pratique (PowerPoint & IA / Création d'Affiches & Montage Vidéo) du Dimanche 18 Octobre 2026 au Groupe Scolaire Sainte Thérèse ! 🎓✨
 
-Nous espérons que les enseignements de M. Djim Aboubacar Mikahillo (Excel) et M. TUO Mamadou (Prompt IA) vous seront très utiles au quotidien. 📊🤖
+Nous espérons que les enseignements de M. Djim Aboubacar Mikahillo (PowerPoint & IA) et M. Sawadogo Mohamed (Affiches & Montage Vidéo) vous seront très utiles au quotidien. 📊🎬
 
 Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
 
@@ -420,8 +421,15 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
     function applyFilterAndRender() {
       if (sessionFilter && sessionFilter.value === 'new') {
         currentSessionInscriptions = rawInscriptions.filter(item => 
+          (item.ticket_code || '').includes('PPT') || 
+          (item.ticket_code || '').includes('DESIGN') || 
+          (item.ticket_code || '').includes('VIDEO') || 
+          (item.created_at && item.created_at >= '2026-10-14')
+        );
+      } else if (sessionFilter && sessionFilter.value === 'prev') {
+        currentSessionInscriptions = rawInscriptions.filter(item => 
           (item.ticket_code || '').includes('EXCEL-IA') || 
-          (item.created_at && item.created_at >= '2026-09-28')
+          (item.created_at && item.created_at >= '2026-09-28' && item.created_at < '2026-10-14')
         );
       } else {
         currentSessionInscriptions = [...rawInscriptions];
@@ -586,18 +594,18 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
     function envoyerWhatsAppDirect(idx) {
       if (idx < 0 || idx >= rawInscriptions.length) return;
       const item = rawInscriptions[idx];
-      const ticketCode = item.ticket_code || `TKT-EXCEL-IA-${idx+100}`;
+      const ticketCode = item.ticket_code || `TKT-PPT-DESIGN-${idx+100}`;
       const waPhone = meFormaterTelephoneWA(item.whatsapp);
       
       const waMsg = encodeURIComponent(
         `Bonjour ${item.nom} 👋,\n\n` +
-        `Félicitations ! Votre candidature pour la Double Formation Pratique (Bases Excel & Prompt Engineering) du Dimanche 04 Octobre 2026 à 08h00 au Groupe Scolaire Sainte Thérèse a été VALIDÉE ! 🎉\n\n` +
+        `Félicitations ! Votre candidature pour la Double Formation Pratique (PowerPoint & IA / Création d'Affiches & Montage Vidéo) du Dimanche 18 Octobre 2026 à 08h00 au Groupe Scolaire Sainte Thérèse a été VALIDÉE ! 🎉\n\n` +
         `🎫 Vos informations d'accès :\n` +
         `• Code Billet : ${ticketCode}\n` +
-        `• Formation(s) : ${item.niveau || item.formation || 'Excel + Prompt IA'}\n` +
+        `• Formation(s) : ${item.niveau || item.formation || 'PowerPoint & Montage Vidéo'}\n` +
         `• Statut : ${item.statut || 'Participant'} (${item.ordi === 'Oui' ? 'Avec ordinateur' : 'Sans ordinateur'})\n\n` +
         `📍 Lieu : Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi)\n` +
-        `⏰ Heure : Dimanche 04 Octobre 2026 à 08h00 GMT\n\n` +
+        `⏰ Heure : Dimanche 18 Octobre 2026 à 08h00 GMT\n\n` +
         `Présentez ce message à l'entrée de la salle. À dimanche !`
       );
 
@@ -615,8 +623,8 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
 
       const waMsg = encodeURIComponent(
         `Assalamou Aleykoum / Bonjour ${item.nom} 👋,\n\n` +
-        `Au nom de toute l'équipe organisatrice de l'AEEMCI Koumassi, nous tenons à vous adresser nos plus sincères REMERCIEMENTS pour votre présence et votre participation active à la Double Formation Pratique (Bases Excel & Prompt Engineering) du Dimanche 04 Octobre 2026 au Groupe Scolaire Sainte Thérèse ! 🎓✨\n\n` +
-        `Nous espérons que les enseignements de M. Djim Aboubacar Mikahillo (Excel) et M. TUO Mamadou (Prompt IA) vous seront très utiles au quotidien. 📊🤖\n\n` +
+        `Au nom de toute l'équipe organisatrice de l'AEEMCI Koumassi, nous tenons à vous adresser nos plus sincères REMERCIEMENTS pour votre présence et votre participation active à la Double Formation Pratique (PowerPoint & IA / Création d'Affiches & Montage Vidéo) du Dimanche 18 Octobre 2026 au Groupe Scolaire Sainte Thérèse ! 🎓✨\n\n` +
+        `Nous espérons que les enseignements de M. Djim Aboubacar Mikahillo (PowerPoint & IA) et M. Sawadogo Mohamed (Affiches & Montage Vidéo) vous seront très utiles au quotidien. 📊🎬\n\n` +
         `Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲\n\n` +
         `— L'équipe d'Organisation AEEMCI Koumassi`
       );
@@ -628,7 +636,7 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
     function voirTicket(idx) {
       if (idx < 0 || idx >= rawInscriptions.length) return;
       const item = rawInscriptions[idx];
-      const ticketCode = item.ticket_code || `TKT-EXCEL-IA-${idx+100}`;
+      const ticketCode = item.ticket_code || `TKT-PPT-DESIGN-${idx+100}`;
       
       document.getElementById('t-nom').textContent = item.nom || 'Participant';
       document.getElementById('t-code').textContent = ticketCode;
@@ -643,13 +651,13 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
       const waPhone = meFormaterTelephoneWA(item.whatsapp);
       const waMsg = encodeURIComponent(
         `Bonjour ${item.nom} 👋,\n\n` +
-        `Félicitations ! Votre candidature pour la Double Formation Pratique (Bases Excel & Prompt Engineering) du Dimanche 04 Octobre 2026 à 08h00 au Groupe Scolaire Sainte Thérèse a été VALIDÉE ! 🎉\n\n` +
+        `Félicitations ! Votre candidature pour la Double Formation Pratique (PowerPoint & IA / Création d'Affiches & Montage Vidéo) du Dimanche 18 Octobre 2026 à 08h00 au Groupe Scolaire Sainte Thérèse a été VALIDÉE ! 🎉\n\n` +
         `🎫 Voici votre Billet d'Accès Officiel :\n` +
         `• Code Billet : ${ticketCode}\n` +
-        `• Formation(s) : ${item.niveau || item.formation || 'Excel + Prompt IA'}\n` +
+        `• Formation(s) : ${item.niveau || item.formation || 'PowerPoint & Montage Vidéo'}\n` +
         `• Matériel : ${item.ordi === 'Oui' ? 'Apportez votre ordinateur' : 'Carnet de notes'}\n\n` +
         `📍 Lieu : Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi)\n` +
-        `⏰ Heure : Dimanche 04 Octobre 2026 à 08h00 GMT\n\n` +
+        `⏰ Heure : Dimanche 18 Octobre 2026 à 08h00 GMT\n\n` +
         `Présentez ce message ou votre QR Code à l'entrée. À très bientôt !`
       );
       

@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   /* ---------- COUNTDOWN TIMER (CHRONO PRO) ---------- */
   function initCountdown() {
-    const targetDate = new Date('2026-10-04T08:00:00Z').getTime();
+    const targetDate = new Date('2026-10-18T08:00:00Z').getTime();
 
     function updateTimer() {
       const now = new Date().getTime();
@@ -96,10 +96,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   /* ---------- CALENDAR EXPORT (GOOGLE & ICS) ---------- */
   window.openGoogleCalendar = function() {
-    const title = encodeURIComponent("Double Formation Pratique (Bases Excel & Prompt Engineering) — AEEMCI Koumassi");
-    const details = encodeURIComponent("Formation 100% gratuite par Djim Aboubacar Mikahillo (Bases Excel) et TUO Mamadou (Prompt Engineering). Début à 08h00 GMT au Groupe Scolaire Sainte Thérèse.");
+    const title = encodeURIComponent("Double Formation Pratique (PowerPoint & IA / Affiches & Vidéo) — AEEMCI Koumassi");
+    const details = encodeURIComponent("Formation 100% gratuite par Djim Aboubacar Mikahillo (PowerPoint & IA) et Sawadogo Mohamed (Affiches & Montage Vidéo). Début à 08h00 GMT au Groupe Scolaire Sainte Thérèse.");
     const location = encodeURIComponent("Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi)");
-    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20261004T080000Z/20261004T120000Z&details=${details}&location=${location}`;
+    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20261018T080000Z/20261018T120000Z&details=${details}&location=${location}`;
     
     window.open(googleCalendarUrl, '_blank');
   };
@@ -108,14 +108,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     const icsContent = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
-      'PRODID:-//AEEMCI Koumassi//Double Formation Excel IA//FR',
+      'PRODID:-//AEEMCI Koumassi//Double Formation PowerPoint Video//FR',
       'BEGIN:VEVENT',
-      'UID:20261004T080000Z-aeemci@koumassi',
-      'DTSTAMP:20260928T000000Z',
-      'DTSTART:20261004T080000Z',
-      'DTEND:20261004T120000Z',
-      'SUMMARY:Double Formation Pratique (Bases Excel & Prompt Engineering) — AEEMCI Koumassi',
-      'DESCRIPTION:Formation 100% gratuite par Djim Aboubacar Mikahillo (Bases Excel) et TUO Mamadou (Prompt Engineering). Début à 08h00 GMT au Groupe Scolaire Sainte Thérèse.',
+      'UID:20261018T080000Z-aeemci@koumassi',
+      'DTSTAMP:20261014T000000Z',
+      'DTSTART:20261018T080000Z',
+      'DTEND:20261018T120000Z',
+      'SUMMARY:Double Formation Pratique (PowerPoint & IA / Affiches & Vidéo) — AEEMCI Koumassi',
+      'DESCRIPTION:Formation 100% gratuite par Djim Aboubacar Mikahillo (PowerPoint & IA) et Sawadogo Mohamed (Affiches & Montage Vidéo). Début à 08h00 GMT au Groupe Scolaire Sainte Thérèse.',
       'LOCATION:Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi)',
       'END:VEVENT',
       'END:VCALENDAR'
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', 'Formation_AEEMCI_04_Octobre_2026.ics');
+    link.setAttribute('download', 'Formation_AEEMCI_18_Octobre_2026.ics');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         confirmIcon.className = "fa-solid fa-circle-check";
       }
       if (confirmText) {
-        confirmText.innerHTML = `Félicitations <strong>${nom}</strong> ! Votre inscription pour la <strong>Double Formation Pratique (Bases Excel & Prompt Engineering)</strong> du <strong>Dimanche 04 Octobre 2026 à 08h00 GMT</strong> au Groupe Scolaire Sainte Thérèse a été réservée et <strong>validée avec succès</strong>.`;
+        confirmText.innerHTML = `Félicitations <strong>${nom}</strong> ! Votre inscription pour la <strong>Double Formation Pratique (PowerPoint & IA / Création d'Affiches & Montage Vidéo)</strong> du <strong>Dimanche 18 Octobre 2026 à 08h00 GMT</strong> au Groupe Scolaire Sainte Thérèse a été réservée et <strong>validée avec succès</strong>.`;
       }
 
       if (form) form.classList.add('hidden');
@@ -267,7 +267,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     if (capacityDot) capacityDot.className = 'w-2.5 h-2.5 rounded-full bg-brandGreen animate-pulse';
     if (formTitle) formTitle.textContent = "Formulaire d'Inscription Officiel";
-    if (formSubtitle) formSubtitle.textContent = "Dimanche 04 Octobre 2026 à 08h00 GMT · Groupe Scolaire Sainte Thérèse";
+    if (formSubtitle) formSubtitle.textContent = "Dimanche 18 Octobre 2026 à 08h00 GMT · Groupe Scolaire Sainte Thérèse";
     if (submitBtnElem) {
       submitBtnElem.className = 'w-full bg-brandGreen hover:bg-brandGreenDark text-white font-extrabold text-base py-4 rounded-2xl shadow-lg pro-btn flex items-center justify-center gap-3 mt-4 transition-all';
     }

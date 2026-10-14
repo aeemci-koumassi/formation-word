@@ -1,7 +1,7 @@
 /**
  * MODULE BASE DE DONNÉES HYBRIDE (SUPABASE CLOUD + FORMSUBMIT)
- * Projet : Double Formation Excel & Prompt Engineering (AEEMCI Koumassi)
- * Session : Dimanche 04 Octobre 2026
+ * Projet : Double Formation PowerPoint & IA × Affiches & Montage Vidéo (AEEMCI Koumassi)
+ * Session : Dimanche 18 Octobre 2026
  */
 
 let FORMSPREE_ENDPOINT = "https://formsubmit.co/ajax/koumayaya7@gmail.com";
@@ -16,7 +16,7 @@ function genererCodeTicket() {
     for (let i = 0; i < 6; i++) {
         code += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-    return `TKT-EXCEL-IA-${code}`;
+    return `TKT-PPT-DESIGN-${code}`;
 }
 
 function parseSupabaseItem(item) {
@@ -39,7 +39,7 @@ function estInscriptionNouvelleSession(item) {
     if (!item) return false;
     const ticketCode = item.ticket_code || '';
     const dateStr = item.created_at || item.date || '';
-    return ticketCode.includes('EXCEL-IA') || dateStr >= '2026-09-28';
+    return ticketCode.includes('PPT') || ticketCode.includes('DESIGN') || ticketCode.includes('VIDEO') || dateStr >= '2026-10-14';
 }
 
 /**

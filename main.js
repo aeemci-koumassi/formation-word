@@ -1,8 +1,9 @@
 /**
  * SCRIPT PRINCIPAL D'INTERFACE (main.js)
- * Design & Expérience Lu.ma (luma*) — AEEMCI Koumassi
+ * Plateforme Officielle AEEMCI ACADEMY — Sous-comité de Koumassi
  * Session : Double Formation Pratique (PowerPoint & IA × Affiches & Montage Vidéo)
  * Date : Dimanche 18 Octobre 2026 à 08h00 UTC+0
+ * Lieu : Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi, Abidjan)
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -22,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   updateLiveUtcTime();
   setInterval(updateLiveUtcTime, 10000);
 
-  /* ---------- 2. COUNTDOWN PILL (LUMA STYLE : "Commence dans 3d 08h") ---------- */
+  /* ---------- 2. COUNTDOWN PILL ("Commence dans 3d 08h") ---------- */
   function updateCountdownPill() {
     const pillText = document.getElementById('cd-pill-text');
     if (!pillText) return;
@@ -107,7 +108,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       'VERSION:2.0',
       'PRODID:-//AEEMCI Koumassi//Double Formation 2026//FR',
       'BEGIN:VEVENT',
-      'UID:20261018T080000Z-aeemci-luma@koumassi',
+      'UID:20261018T080000Z-aeemci@koumassi',
       'DTSTAMP:20261014T000000Z',
       'DTSTART:20261018T080000Z',
       'DTEND:20261018T140000Z',
@@ -128,9 +129,66 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.body.removeChild(link);
   };
 
-  /* ---------- 7. USER TICKET PERSISTENCE & STATE MANAGEMENT ---------- */
-  const formState = document.getElementById('luma-form-state');
-  const approvedState = document.getElementById('luma-approved-state');
+  /* ---------- 7. INTERACTIVE VENUE MAP (LEAFLET & OPENSTREETMAP) ---------- */
+  function initVenueMap() {
+    const mapContainer = document.getElementById('venue-map');
+    if (!mapContainer) return;
+
+    if (typeof L === 'undefined') {
+      console.warn("Leaflet library not ready");
+      return;
+    }
+
+    try {
+      // Coordonnées GPS exactes du Groupe Scolaire Sainte Thérèse Koumassi
+      const lat = 5.3000902;
+      const lon = -3.9479569;
+
+      const map = L.map('venue-map', {
+        scrollWheelZoom: false,
+        zoomControl: true
+      }).setView([lat, lon], 16);
+
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap'
+      }).addTo(map);
+
+      // Marker
+      const marker = L.marker([lat, lon]).addTo(map);
+      marker.bindPopup(`
+        <div style="font-family:'Inter',sans-serif; font-size:12px; line-height:1.45; min-width:200px;">
+          <strong style="color:#0f172a; font-size:13px; display:block; margin-bottom:3px;">🏫 Groupe Scolaire Sainte Thérèse</strong>
+          <span style="color:#64748b; font-size:11px; display:block;">📍 Terminus 11, Koumassi, Abidjan</span>
+          <span style="color:#059669; font-weight:700; font-size:11px; display:block; margin-top:3px;">Double Formation Pratique (18 Oct.)</span>
+          <div style="margin-top:8px; border-top:1px solid #e2e8f0; padding-top:6px;">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=5.3000902,-3.9479569" target="_blank" rel="noopener noreferrer" style="color:#2563eb; text-decoration:none; font-weight:700; font-size:11px; display:inline-flex; align-items:center; gap:4px;">
+              <span>Ouvrir l'itinéraire Google Maps ↗</span>
+            </a>
+          </div>
+        </div>
+      `).openPopup();
+    } catch (e) {
+      console.warn("Venue map init exception:", e);
+    }
+  }
+
+  // Initialize map when DOM and scripts are loaded
+  setTimeout(initVenueMap, 200);
+
+  window.copyVenueAddress = function() {
+    const address = "Groupe Scolaire Sainte Thérèse, Terminus 11, Koumassi, Abidjan, Côte d'Ivoire";
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(address);
+      showToast("Adresse du lieu copiée dans le presse-papier !");
+    } else {
+      showToast(address);
+    }
+  };
+
+  /* ---------- 8. USER TICKET PERSISTENCE & STATE MANAGEMENT ---------- */
+  const formState = document.getElementById('event-form-state');
+  const approvedState = document.getElementById('event-approved-state');
   const ticketModal = document.getElementById('ticketModal');
 
   function getSavedUserTicket() {
@@ -151,7 +209,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const qrImg = document.getElementById('ticket-qrcode-img');
     const waShare = document.getElementById('ticket-whatsapp-share');
 
-    const ticketCode = ticketData.ticket_code || 'TKT-PPT-DESIGN-824';
+    const ticketCode = ticketData.ticket_code || 'TKT-PPT-DESIGN-825';
     if (codeEl) codeEl.textContent = ticketCode;
     if (nomEl) nomEl.textContent = ticketData.nom || 'Participant';
     if (contactEl) contactEl.textContent = `${ticketData.whatsapp || ''} · ${ticketData.email || ''}`;
@@ -204,7 +262,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderTicketDetails(existingTicket);
   }
 
-  /* ---------- 8. FORM SUBMISSION & CLOUD REGISTRATION ---------- */
+  /* ---------- 9. FORM SUBMISSION & CLOUD REGISTRATION ---------- */
   const form = document.getElementById('formInscription');
   const submitBtn = document.getElementById('submitBtn');
   const submitLabel = document.getElementById('submitLabel');
@@ -296,7 +354,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  /* ---------- 9. ADMIN MODAL & CONTROLS ---------- */
+  /* ---------- 10. ADMIN MODAL & CONTROLS ---------- */
   const ADMIN_PASS = "aeemci2026";
   const adminModal = document.getElementById('adminModal');
   const adminPassInput = document.getElementById('adminPassInput');

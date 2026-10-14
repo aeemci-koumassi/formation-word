@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Double Formation Pratique 2026 — Pass Participant | AEEMCI × Luma</title>
+<title>Double Formation Pratique 2026 — Pass Participant | AEEMCI Academy</title>
 
 <!-- SEO & Open Graph -->
-<meta name="description" content="Double Formation Pratique Gratuite : PowerPoint & IA (Djim Aboubacar Mikahillo) × Création d’Affiches & Montage Vidéo (Sawadogo Mohamed). Dimanche 18 Octobre 2026 à 08h00 GMT au Groupe Scolaire Sainte Thérèse (Koumassi).">
+<meta name="description" content="Double Formation Pratique Gratuite : PowerPoint & IA (Djim Aboubacar Mikahillo) × Création d’Affiches & Montage Vidéo (Sawadogo Mohamed). Dimanche 18 Octobre 2026 à 08h00 GMT au Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi).">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Double Formation Pratique 2026 - Pass Participant">
-<meta property="og:description" content="Inscrivez-vous gratuitement à la double formation pratique : PowerPoint & IA × Création d'Affiches & Montage Vidéo le Dimanche 18 Octobre 2026.">
+<meta property="og:title" content="AEEMCI Academy — Double Formation Pratique 2026 (Pass Participant)">
+<meta property="og:description" content="Inscrivez-vous gratuitement à la double formation pratique : PowerPoint & IA × Création d'Affiches & Montage Vidéo le Dimanche 18 Octobre 2026 au Groupe Scolaire Sainte Thérèse.">
 <meta property="og:image" content="sawadogo-mohamed.jpeg">
 
-<!-- Favicon -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23ea580c'/%3E%3Ctext x='50' y='68' font-size='55' font-family='Arial,sans-serif' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'%3E*%3C/text%3E%3C/svg%3E">
+<!-- Favicon (AEEMCI Official Emerald Icon) -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23059669'/%3E%3Ctext x='50' y='68' font-size='50' font-family='Arial,sans-serif' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
 
 <!-- Google Fonts: Inter -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,6 +22,9 @@
 
 <!-- FontAwesome 6 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<!-- Leaflet CSS for Interactive Location Map -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
 <!-- Tailwind CSS CDN -->
 <script src="https://cdn.tailwindcss.com"></script>
@@ -34,11 +37,9 @@
           mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace']
         },
         colors: {
-          lumaBg: '#f7f7f8',
-          lumaCard: '#ffffff',
-          lumaBorder: '#e5e7eb',
-          lumaOrange: '#ea580c',
-          brandGreen: '#10b981'
+          siteBg: '#f7f7f8',
+          brandGreen: '#059669',
+          brandGreenDark: '#047857'
         }
       }
     }
@@ -54,7 +55,7 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  .luma-input {
+  .pro-input {
     width: 100%;
     padding: 10px 14px;
     border-radius: 12px;
@@ -65,12 +66,12 @@
     transition: all 0.15s ease-in-out;
     outline: none;
   }
-  .luma-input:focus {
-    border-color: #0f172a;
-    box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.08);
+  .pro-input:focus {
+    border-color: #059669;
+    box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.12);
   }
 
-  .luma-btn-primary {
+  .btn-primary {
     background-color: #0f172a;
     color: #ffffff;
     font-weight: 600;
@@ -84,13 +85,13 @@
     gap: 8px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   }
-  .luma-btn-primary:hover {
+  .btn-primary:hover {
     background-color: #1e293b;
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
   }
 
-  .luma-btn-secondary {
+  .btn-secondary {
     background-color: #ffffff;
     color: #0f172a;
     font-weight: 600;
@@ -105,7 +106,7 @@
     gap: 6px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
   }
-  .luma-btn-secondary:hover {
+  .btn-secondary:hover {
     background-color: #f8fafc;
     border-color: #cbd5e1;
   }
@@ -117,6 +118,15 @@
 
   .modal-overlay { background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(4px); }
   
+  /* Leaflet custom map container */
+  #venue-map {
+    z-index: 10;
+  }
+  .leaflet-popup-content-wrapper {
+    border-radius: 12px;
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+  }
+
   /* Custom scrollbar */
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
@@ -132,22 +142,32 @@
     <span id="toast-msg">Lien copié dans le presse-papier !</span>
   </div>
 
-  <!-- LUMA TOPBAR -->
-  <header class="w-full bg-[#f7f7f8]/95 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-40">
+  <!-- ==============================================
+       TOPBAR OFFICIELLE AEEMCI ACADEMY
+       ============================================== -->
+  <header class="w-full bg-white/95 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-40">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
       
-      <!-- Brand Logo (Luma* style) -->
-      <a href="#" class="flex items-center gap-1.5 select-none group cursor-pointer" title="Luma × AEEMCI">
-        <span class="font-extrabold text-xl sm:text-2xl text-slate-900 tracking-tight">luma</span>
-        <span class="text-amber-500 font-black text-lg sm:text-xl -ml-0.5 leading-none">*</span>
-        <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider ml-1.5 hidden sm:inline-block">aeemci academy</span>
+      <!-- Brand Logo (AEEMCI Academy) -->
+      <a href="#" class="flex items-center gap-2.5 select-none group cursor-pointer" title="AEEMCI Academy">
+        <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-xs group-hover:scale-105 transition-transform shrink-0">
+          <img src="WhatsApp Image 2026-09-09 at 16.32.41.jpeg" alt="AEEMCI" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg object-contain bg-white p-0.5">
+        </div>
+        <div class="flex flex-col">
+          <span class="font-black text-base sm:text-xl text-slate-900 tracking-tight leading-none">AEEMCI <span class="text-emerald-600">ACADEMY</span></span>
+          <span class="text-[9px] sm:text-[10px] text-slate-500 font-semibold tracking-wider uppercase">Sous-comité Koumassi</span>
+        </div>
       </a>
 
       <!-- Right Nav actions -->
       <div class="flex items-center gap-3 sm:gap-5 text-xs sm:text-sm font-medium text-slate-600">
-        <span id="live-utc-time" class="hidden sm:inline-block font-mono text-slate-500 text-xs">20:58 UTC+0</span>
-        <a href="#about-event" class="hover:text-slate-900 transition-colors hidden sm:inline-block">Découvrir</a>
-        <button onclick="openAdmin()" class="luma-btn-secondary text-xs sm:text-xs">
+        <span id="live-utc-time" class="hidden sm:inline-block font-mono text-slate-500 text-xs">08:00 UTC+0</span>
+        <a href="#venue-location" class="hover:text-emerald-700 transition-colors hidden sm:inline-flex items-center gap-1 font-semibold text-emerald-600">
+          <i class="fa-solid fa-location-dot text-xs"></i>
+          <span>Plan d'accès</span>
+        </a>
+        <a href="#about-event" class="hover:text-slate-900 transition-colors hidden sm:inline-block">Programme</a>
+        <button onclick="openAdmin()" class="btn-secondary text-xs sm:text-xs">
           <i class="fa-solid fa-user-lock text-slate-400 text-[10px]"></i>
           <span>Se connecter</span>
         </button>
@@ -156,7 +176,9 @@
     </div>
   </header>
 
-  <!-- MAIN EVENT PAGE CONTAINER -->
+  <!-- ==============================================
+       MAIN EVENT PAGE CONTAINER
+       ============================================== -->
   <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10 w-full flex-1">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
       
@@ -165,11 +187,11 @@
            ============================================== -->
       <div class="lg:col-span-5 space-y-6">
         
-        <!-- EVENT POSTER (Card Flyer Ultra-Pro) -->
-        <div class="relative w-full aspect-square rounded-2xl overflow-hidden shadow-sm border border-slate-200/90 bg-gradient-to-br from-slate-900 via-slate-800 to-teal-950 flex flex-col justify-between p-5 sm:p-6 text-white group select-none">
+        <!-- EVENT POSTER (Card Flyer Pro) -->
+        <div class="relative w-full aspect-square rounded-2xl overflow-hidden shadow-sm border border-slate-200/90 bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-950 flex flex-col justify-between p-5 sm:p-6 text-white group select-none">
           
           <!-- Poster Ambient Glows -->
-          <div class="absolute -top-16 -left-16 w-44 h-44 bg-teal-500/20 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="absolute -top-16 -left-16 w-44 h-44 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
           <div class="absolute -bottom-16 -right-16 w-44 h-44 bg-amber-500/20 rounded-full blur-3xl pointer-events-none"></div>
           
           <!-- Top Header on Poster -->
@@ -186,7 +208,7 @@
           <!-- Center Content on Poster -->
           <div class="relative z-10 space-y-3 my-auto">
             <div class="space-y-1">
-              <span class="text-[11px] font-bold uppercase tracking-wider text-teal-300 block">Double Formation Pratique</span>
+              <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-300 block">Double Formation Pratique</span>
               <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight leading-snug">
                 PowerPoint & IA <br>
                 <span class="text-amber-400">&</span> Affiches & Vidéo
@@ -205,10 +227,10 @@
               </div>
               <!-- Trainer 2 -->
               <div class="bg-white/10 backdrop-blur-md rounded-xl p-2 border border-white/15 flex items-center gap-2">
-                <img src="sawadogo-mohamed.jpeg" alt="Sawadogo Mohamed" class="w-8 h-8 rounded-lg object-cover border border-teal-400/60 shrink-0">
+                <img src="sawadogo-mohamed.jpeg" alt="Sawadogo Mohamed" class="w-8 h-8 rounded-lg object-cover border border-emerald-400/60 shrink-0">
                 <div class="overflow-hidden">
                   <p class="text-[10px] font-extrabold text-white truncate leading-tight">Sawadogo Mohamed</p>
-                  <p class="text-[8px] text-teal-200 truncate">Design & Vidéo</p>
+                  <p class="text-[8px] text-emerald-200 truncate">Design & Vidéo</p>
                 </div>
               </div>
             </div>
@@ -221,7 +243,7 @@
               Dimanche 18 Oct. 2026
             </span>
             <span class="font-medium text-slate-300 flex items-center gap-1">
-              <i class="fa-solid fa-location-dot text-teal-400"></i>
+              <i class="fa-solid fa-location-dot text-emerald-400"></i>
               Sainte Thérèse
             </span>
           </div>
@@ -286,7 +308,7 @@
 
 
       <!-- ==============================================
-           RIGHT COLUMN : TITLE, METAS & LUMA CARD
+           RIGHT COLUMN : TITLE, METAS & ACTION CARD
            ============================================== -->
       <div class="lg:col-span-7 space-y-6">
         
@@ -313,21 +335,23 @@
         </div>
 
         <!-- LOCATION BLOCK -->
-        <div class="flex items-center gap-3.5">
-          <div class="w-12 h-12 rounded-xl border border-slate-200 bg-white flex items-center justify-center shrink-0 shadow-xs text-slate-500">
-            <i class="fa-solid fa-location-dot text-base text-slate-600"></i>
+        <div class="flex items-start gap-3.5">
+          <div class="w-12 h-12 rounded-xl border border-slate-200 bg-white flex items-center justify-center shrink-0 shadow-xs text-slate-500 mt-0.5">
+            <i class="fa-solid fa-location-dot text-base text-emerald-600"></i>
           </div>
-          <div>
-            <a href="https://maps.google.com/?q=Groupe+Scolaire+Sainte+Therese+Koumassi+Abidjan" target="_blank" rel="noopener noreferrer" class="text-sm sm:text-base font-bold text-slate-900 hover:text-emerald-700 transition-colors inline-flex items-center gap-1.5 leading-tight">
-              <span>Groupe Scolaire Sainte Thérèse</span>
-              <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-400"></i>
-            </a>
-            <p class="text-xs sm:text-sm text-slate-500 font-medium">Terminus 11, Koumassi, Abidjan, District Autonome d'Abidjan</p>
+          <div class="flex-1">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-sm sm:text-base font-bold text-slate-900 leading-tight">Groupe Scolaire Sainte Thérèse</span>
+              <a href="#venue-location" class="text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2.5 py-0.5 rounded-md hover:bg-emerald-100 transition-colors inline-flex items-center gap-1">
+                <i class="fa-solid fa-map-location-dot text-[11px]"></i> Voir le plan
+              </a>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">Terminus 11, Koumassi, Abidjan, District Autonome d'Abidjan</p>
           </div>
         </div>
 
         <!-- ==============================================
-             THE LUMA CARD (Registration / Approval Status)
+             ACTION CARD (Registration / Approval Status)
              ============================================== -->
         <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-5 sm:p-7 relative transition-all duration-300">
           
@@ -342,7 +366,7 @@
           <!-- ==============================================
                STATE 1: REGISTRATION FORM (Before submit)
                ============================================== -->
-          <div id="luma-form-state" class="space-y-4">
+          <div id="event-form-state" class="space-y-4">
             <div>
               <h3 class="text-lg sm:text-xl font-bold text-slate-900">Inscription à la formation</h3>
               <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Accès gratuit aux ateliers. Places limitées avec certification.</p>
@@ -353,7 +377,7 @@
               <!-- Nom et Prénoms -->
               <div>
                 <label for="f-nom" class="block text-xs font-semibold text-slate-700 mb-1">Nom & Prénoms <span class="text-red-500">*</span></label>
-                <input type="text" id="f-nom" required class="luma-input" placeholder="Ex : Bamba Siaka" autocomplete="name">
+                <input type="text" id="f-nom" required class="pro-input" placeholder="Ex : Bamba Siaka" autocomplete="name">
                 <span class="field-error text-[11px] text-red-500 font-medium mt-1 hidden" data-for="f-nom">Veuillez renseigner votre nom complet.</span>
               </div>
 
@@ -362,14 +386,14 @@
                 <!-- WhatsApp -->
                 <div>
                   <label for="f-whatsapp" class="block text-xs font-semibold text-slate-700 mb-1">WhatsApp <span class="text-red-500">*</span></label>
-                  <input type="tel" id="f-whatsapp" required class="luma-input" placeholder="07 11 98 58 10" autocomplete="tel">
+                  <input type="tel" id="f-whatsapp" required class="pro-input" placeholder="07 11 98 58 10" autocomplete="tel">
                   <span class="field-error text-[11px] text-red-500 font-medium mt-1 hidden" data-for="f-whatsapp">Numéro WhatsApp requis (min 8 chiffres).</span>
                 </div>
 
                 <!-- Email -->
                 <div>
                   <label for="f-email" class="block text-xs font-semibold text-slate-700 mb-1">Adresse Email <span class="text-slate-400 font-normal">(recommandé)</span></label>
-                  <input type="email" id="f-email" class="luma-input" placeholder="nom@exemple.com" autocomplete="email">
+                  <input type="email" id="f-email" class="pro-input" placeholder="nom@exemple.com" autocomplete="email">
                   <span class="field-error text-[11px] text-red-500 font-medium mt-1 hidden" data-for="f-email">Email invalide.</span>
                 </div>
               </div>
@@ -379,7 +403,7 @@
                 <!-- Choix de formation -->
                 <div>
                   <label for="f-formation" class="block text-xs font-semibold text-slate-700 mb-1">Atelier souhaité <span class="text-red-500">*</span></label>
-                  <select id="f-formation" required class="luma-input bg-white cursor-pointer">
+                  <select id="f-formation" required class="pro-input bg-white cursor-pointer">
                     <option value="Les deux formations (Pack Complet)" selected>Pack Complet (PowerPoint & IA + Design/Vidéo)</option>
                     <option value="PowerPoint & IA uniquement">PowerPoint & IA uniquement</option>
                     <option value="Création d'Affiches & Montage Vidéo uniquement">Affiches & Montage Vidéo uniquement</option>
@@ -389,7 +413,7 @@
                 <!-- Ordinateur -->
                 <div>
                   <label for="f-ordi" class="block text-xs font-semibold text-slate-700 mb-1">Avez-vous un ordinateur ? <span class="text-red-500">*</span></label>
-                  <select id="f-ordi" required class="luma-input bg-white cursor-pointer">
+                  <select id="f-ordi" required class="pro-input bg-white cursor-pointer">
                     <option value="Oui, j'aurai mon PC" selected>Oui, j'aurai mon ordinateur</option>
                     <option value="Non, je suivrai sur écran/smartphone">Non, je suivrai sur smartphone/écran</option>
                   </select>
@@ -400,7 +424,7 @@
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label for="f-statut" class="block text-xs font-semibold text-slate-700 mb-1">Vous êtes <span class="text-red-500">*</span></label>
-                  <select id="f-statut" required class="luma-input bg-white cursor-pointer">
+                  <select id="f-statut" required class="pro-input bg-white cursor-pointer">
                     <option value="Étudiant" selected>Étudiant</option>
                     <option value="Élève">Élève</option>
                     <option value="Professionnel">Professionnel</option>
@@ -410,7 +434,7 @@
 
                 <div>
                   <label for="f-genre" class="block text-xs font-semibold text-slate-700 mb-1">Genre</label>
-                  <select id="f-genre" class="luma-input bg-white cursor-pointer">
+                  <select id="f-genre" class="pro-input bg-white cursor-pointer">
                     <option value="Homme" selected>Homme (Frère)</option>
                     <option value="Femme">Femme (Sœur)</option>
                   </select>
@@ -419,7 +443,7 @@
 
               <!-- Submit button -->
               <div class="pt-2">
-                <button type="submit" id="submitBtn" class="luma-btn-primary w-full py-3.5 text-sm">
+                <button type="submit" id="submitBtn" class="btn-primary w-full py-3.5 text-sm">
                   <span id="submitLabel">S'inscrire à l'événement</span>
                   <i class="fa-solid fa-arrow-right text-xs"></i>
                 </button>
@@ -433,11 +457,11 @@
           </div>
 
           <!-- ==============================================
-               STATE 2: APPROVAL SCREEN (Exactly like Lu.ma screenshots!)
+               STATE 2: APPROVAL SCREEN (Clean status card)
                ============================================== -->
-          <div id="luma-approved-state" class="hidden space-y-4">
+          <div id="event-approved-state" class="hidden space-y-4">
             
-            <!-- Peach Smiley Avatar Bubble (exact Lu.ma match) -->
+            <!-- Peach Smiley Avatar Bubble -->
             <div class="w-12 h-12 rounded-full bg-orange-100/90 border border-orange-200/60 flex items-center justify-center text-2xl shadow-inner select-none">
               😊
             </div>
@@ -452,26 +476,26 @@
 
             <!-- Calendar action -->
             <div>
-              <button onclick="openGoogleCalendar()" class="luma-btn-secondary text-xs">
+              <button onclick="openGoogleCalendar()" class="btn-secondary text-xs">
                 <i class="fa-regular fa-calendar-plus text-slate-500"></i>
                 <span>Ajouter au calendrier</span>
               </button>
             </div>
 
-            <!-- Gray Sub-card with Envelope (exact Lu.ma match) -->
+            <!-- Gray Sub-card with Envelope -->
             <div class="bg-slate-50/90 border border-slate-200/90 rounded-2xl p-4 sm:p-5 space-y-3.5">
               <div class="w-10 h-10 rounded-full bg-slate-700 text-white flex items-center justify-center text-sm shadow-xs">
                 <i class="fa-solid fa-envelope"></i>
               </div>
 
               <p class="text-xs sm:text-sm text-slate-700 font-medium leading-relaxed">
-                Veuillez vérifier votre email pour gérer votre inscription et voir plus de détails sur l'événement.
+                Veuillez vérifier votre email ou WhatsApp pour gérer votre inscription et voir plus de détails sur l'événement.
               </p>
 
               <div class="flex flex-wrap items-center gap-2 pt-1">
                 <!-- Check Email & View Ticket -->
-                <button onclick="openTicketModal()" class="luma-btn-secondary text-xs font-semibold">
-                  <span>Vérifier l'e-mail</span>
+                <button onclick="openTicketModal()" class="btn-secondary text-xs font-semibold">
+                  <span>Vérifier l'e-mail & Voir le Ticket</span>
                   <i class="fa-solid fa-arrow-right text-[10px] text-slate-400"></i>
                 </button>
 
@@ -483,7 +507,7 @@
               </div>
             </div>
 
-            <!-- Secondary link: Register someone else -->
+            <!-- Secondary links -->
             <div class="pt-1 flex items-center justify-between text-xs text-slate-400">
               <button onclick="resetRegistrationForm()" class="hover:text-slate-700 underline transition-colors">
                 Inscrire un autre participant
@@ -491,6 +515,78 @@
               <button onclick="openTicketModal()" class="hover:text-slate-700 font-medium transition-colors">
                 <i class="fa-solid fa-qrcode mr-1"></i> Voir mon Pass & QR Code
               </button>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ==============================================
+             LOCALISATION DU LIEU & PLAN D'ACCÈS INTERACTIF
+             ============================================== -->
+        <div id="venue-location" class="pt-6 border-t border-slate-200/80 space-y-4">
+          
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                <h3 class="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">Localisation du lieu</h3>
+              </div>
+              <p class="text-xs text-slate-500 mt-0.5">Groupe Scolaire Sainte Thérèse · Terminus 11, Koumassi, Abidjan</p>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <a href="https://www.google.com/maps/dir/?api=1&destination=Groupe+Scolaire+Sainte+Therese+Koumassi+Abidjan" target="_blank" rel="noopener noreferrer" class="btn-secondary text-xs text-emerald-700 border-emerald-200 hover:bg-emerald-50">
+                <i class="fa-solid fa-diamond-turn-right text-emerald-600"></i>
+                <span>Itinéraire Google Maps ↗</span>
+              </a>
+              <button onclick="copyVenueAddress()" class="btn-secondary text-xs" title="Copier l'adresse">
+                <i class="fa-regular fa-copy text-slate-500"></i>
+                <span class="hidden sm:inline">Copier l'adresse</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Interactive Map Container (Leaflet) -->
+          <div class="w-full h-64 sm:h-80 rounded-2xl overflow-hidden border border-slate-200/90 shadow-sm relative bg-slate-100">
+            <div id="venue-map" class="w-full h-full"></div>
+          </div>
+
+          <!-- Transport & Access Guide Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+            
+            <!-- Bus SOTRA -->
+            <div class="bg-white rounded-xl p-3.5 border border-slate-200/80 space-y-1">
+              <div class="flex items-center gap-2 text-emerald-700 font-bold text-xs">
+                <i class="fa-solid fa-bus"></i>
+                <span>Bus SOTRA</span>
+              </div>
+              <p class="text-[11px] text-slate-600 leading-relaxed">
+                Descendre directement au <strong>Terminus des bus 11</strong>. L'école est à 2 minutes à pied.
+              </p>
+            </div>
+
+            <!-- Taxis / Wôrô-wôrô -->
+            <div class="bg-white rounded-xl p-3.5 border border-slate-200/80 space-y-1">
+              <div class="flex items-center gap-2 text-amber-700 font-bold text-xs">
+                <i class="fa-solid fa-taxi"></i>
+                <span>Taxis & Wôrô-wôrô</span>
+              </div>
+              <p class="text-[11px] text-slate-600 leading-relaxed">
+                Indiquer au chauffeur : <em>« Koumassi Terminus 11, quartier Prodomo, Groupe Scolaire Sainte Thérèse »</em>.
+              </p>
+            </div>
+
+            <!-- VTC & Voitures -->
+            <div class="bg-white rounded-xl p-3.5 border border-slate-200/80 space-y-1">
+              <div class="flex items-center gap-2 text-blue-700 font-bold text-xs">
+                <i class="fa-solid fa-car"></i>
+                <span>VTC (Yango) & Véhicules</span>
+              </div>
+              <p class="text-[11px] text-slate-600 leading-relaxed">
+                Rechercher dans l'application : <strong>Groupe Scolaire Sainte Thérèse Koumassi</strong>.
+              </p>
             </div>
 
           </div>
@@ -579,7 +675,7 @@
                 </button>
                 <div class="faq-answer px-3.5 sm:px-4">
                   <p class="text-xs text-slate-600 pb-3.5 sm:pb-4 leading-relaxed">
-                    Au <strong>Groupe Scolaire Sainte Thérèse</strong>, situé non loin du Terminus des bus 11 à Koumassi (Abidjan).
+                    Au <strong>Groupe Scolaire Sainte Thérèse</strong>, situé non loin du Terminus des bus 11 à Koumassi (Abidjan). Vous pouvez consulter le plan interactif juste au-dessus.
                   </p>
                 </div>
               </div>
@@ -606,11 +702,13 @@
   </main>
 
 
-  <!-- LUMA FOOTER -->
+  <!-- ==============================================
+       FOOTER OFFICIEL AEEMCI ACADEMY
+       ============================================== -->
   <footer class="border-t border-slate-200 bg-white py-6 sm:py-8 mt-12 text-xs text-slate-500">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
       <div class="flex items-center gap-2">
-        <span class="font-bold text-slate-800">luma*</span>
+        <span class="font-black text-emerald-600">AEEMCI ACADEMY</span>
         <span class="text-slate-300">|</span>
         <span>&copy; 2026 AEEMCI Sous-comité Koumassi · Tous droits réservés</span>
       </div>
@@ -636,7 +734,7 @@
 
       <!-- Ticket Header -->
       <div class="text-center space-y-1">
-        <span class="text-[10px] font-bold uppercase tracking-wider text-amber-700 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
           Pass Participant Officiel
         </span>
         <h3 class="text-lg font-black text-slate-900 pt-1">Double Formation 2026</h3>
@@ -648,8 +746,7 @@
         
         <div class="flex items-center justify-between border-b border-white/10 pb-3">
           <div class="flex items-center gap-2">
-            <span class="font-extrabold text-sm tracking-tight">luma*</span>
-            <span class="text-[10px] text-emerald-400 font-bold uppercase">AEEMCI ACADEMY</span>
+            <span class="font-extrabold text-sm tracking-tight text-emerald-400">AEEMCI ACADEMY</span>
           </div>
           <span id="ticket-code-display" class="font-mono text-xs font-bold text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/30">
             TKT-PPT-DESIGN-XXXXXX
@@ -701,8 +798,8 @@
       
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
-          <span class="font-extrabold text-slate-900 text-base">luma*</span>
-          <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Espace Organisateur</span>
+          <span class="font-black text-slate-900 text-base">AEEMCI ACADEMY</span>
+          <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">· Organisateur</span>
         </div>
         <button onclick="closeAdmin()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
@@ -712,12 +809,12 @@
       </p>
 
       <div class="space-y-2">
-        <input type="password" id="adminPassInput" class="luma-input" placeholder="Mot de passe organisateur" autofocus>
+        <input type="password" id="adminPassInput" class="pro-input" placeholder="Mot de passe organisateur" autofocus>
         <p id="adminPassError" class="text-red-500 text-xs hidden font-semibold">Mot de passe incorrect.</p>
       </div>
 
       <div class="pt-1 space-y-2">
-        <button id="adminSubmitPass" class="luma-btn-primary w-full py-3 text-xs">
+        <button id="adminSubmitPass" class="btn-primary w-full py-3 text-xs">
           Accéder au tableau de bord
         </button>
         <a href="admin.html" class="block text-center text-xs text-slate-500 hover:text-slate-800 py-1 transition-colors">
@@ -728,10 +825,13 @@
     </div>
   </div>
 
+  <!-- LEAFLET JS FOR VENUE MAP -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
   <!-- SCRIPTS MODULAIRES JS -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase.js?v=20261014_LUMA"></script>
-  <script src="base_donnees.js?v=20261014_LUMA"></script>
-  <script src="main.js?v=20261014_LUMA"></script>
+  <script src="supabase.js?v=20261014_MAP"></script>
+  <script src="base_donnees.js?v=20261014_MAP"></script>
+  <script src="main.js?v=20261014_MAP"></script>
 </body>
 </html>

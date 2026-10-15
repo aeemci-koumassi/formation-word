@@ -284,6 +284,10 @@
               <i class="fa-solid fa-file-excel text-sm text-emerald-200"></i>
               <span>Exporter Excel (CSV)</span>
             </button>
+            <button id="clearDbBtn" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold text-xs border border-rose-200 transition-colors shadow-2xs" title="Vider la base de données">
+              <i class="fa-solid fa-trash-can text-xs text-rose-500"></i>
+              <span>Vider la base</span>
+            </button>
           </div>
         </div>
 
@@ -1242,6 +1246,40 @@
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
         showToast("Fichier CSV téléchargé avec succès !");
+      });
+    }
+
+    const clearDbBtn = document.getElementById('clearDbBtn');
+    if (clearDbBtn) {
+      clearDbBtn.addEventListener('click', async () => {
+        const pin = prompt("⚠️ ZONE DE DANGER : Vous allez vider la base de données.\nEntrez le code secret administrateur pour confirmer :");
+        if (!pin || !ADMIN_PASSWORDS.includes(pin.trim().toLowerCase())) {
+          showToast("Code administrateur incorrect ou opération annulée.", false);
+          return;
+        }
+        if (!confirm("Êtes-vous certain de vouloir supprimer toutes les inscriptions de la base de données ?")) {
+          return;
+        }
+        try {
+          showToast("Tentative de suppression en cours...", true);
+          const res = await fetch("https://iktoigkruredsudprndu.supabase.co/rest/v1/inscriptions_word?id=gt.0", {
+            method: "DELETE",
+            headers: {
+              "apikey": SUPABASE_KEY,
+              "Authorization": `Bearer ${SUPABASE_KEY}`,
+              "Prefer": "return=representation"
+            }
+          });
+          const deleted = await res.json();
+          if (Array.isArray(deleted) && deleted.length > 0) {
+            showToast(`${deleted.length} inscription(s) supprimée(s) avec succès !`, true);
+            loadData();
+          } else {
+            alert("🔒 Sécurité Supabase (RLS) active :\nPar mesure de protection de la base de données, la suppression directe par le navigateur est bloquée par Supabase.\n\nPour vider la table immédiatement en 5 secondes :\n1. Connectez-vous sur votre dashboard Supabase (projet iktoigkruredsudprndu)\n2. Ouvrez le SQL Editor\n3. Exécutez :\nTRUNCATE TABLE inscriptions_word RESTART IDENTITY;");
+          }
+        } catch (e) {
+          alert("Erreur lors de la suppression : " + e.message);
+        }
       });
     }
 

@@ -101,6 +101,12 @@
           <span class="hidden sm:inline">Messages & Diffusion</span>
         </button>
 
+        <!-- Logout button (visible when authenticated) -->
+        <button id="logoutBtn" onclick="deconnexionAdmin()" class="hidden inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold border border-rose-200/80 transition-colors shadow-2xs" title="Verrouiller la base de données et se déconnecter">
+          <i class="fa-solid fa-lock text-rose-600 text-xs"></i>
+          <span class="hidden sm:inline">Verrouiller</span>
+        </button>
+
         <!-- Back to site -->
         <a href="index.html" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition-colors shadow-2xs">
           <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
@@ -113,46 +119,44 @@
   <!-- MAIN CONTAINER -->
   <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
 
-    <!-- LOGIN SCREEN -->
-    <div id="loginCard" class="max-w-md mx-auto my-10 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 card-shadow-lg text-center space-y-5">
-      <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl mx-auto border border-emerald-100 shadow-inner">
+    <!-- LOGIN SCREEN (SÉCURISÉ) -->
+    <div id="loginCard" class="max-w-md mx-auto my-12 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 card-shadow-lg text-center space-y-5">
+      <div class="w-16 h-16 bg-emerald-50 text-emerald-700 rounded-3xl flex items-center justify-center text-2xl mx-auto border border-emerald-200/80 shadow-inner">
         <i class="fa-solid fa-shield-halved"></i>
       </div>
       <div class="space-y-1.5">
-        <h2 class="text-xl sm:text-2xl font-black text-slate-900">Espace Organisateur AEEMCI</h2>
-        <p class="text-xs text-slate-500">Gestion des candidatures, émission des billets officiels et validation des participants.</p>
+        <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">Accès Sécurisé Organisateur</h2>
+        <p class="text-xs text-slate-500 leading-relaxed">
+          Cet espace et les coordonnées des participants sont strictement réservés aux organisateurs autorisés de l'AEEMCI Koumassi.
+        </p>
       </div>
 
-      <!-- Mot de passe affiché en clair -->
-      <div class="p-3 bg-emerald-50/80 border border-emerald-200 rounded-2xl text-left space-y-1">
-        <div class="flex items-center justify-between text-xs font-bold text-emerald-800">
-          <span class="flex items-center gap-1.5"><i class="fa-solid fa-key text-amber-500"></i> Mot de passe sécurisé :</span>
-          <span class="font-mono bg-white px-2 py-0.5 rounded border border-emerald-300 text-emerald-900 select-all font-bold">aeemci2026</span>
+      <!-- Saisie sécurisée du code secret -->
+      <div class="space-y-3 pt-1 text-left">
+        <div>
+          <label for="passInput" class="block text-xs font-bold text-slate-700 mb-1.5">
+            <i class="fa-solid fa-key text-amber-500 mr-1"></i> Code d'accès organisateur :
+          </label>
+          <div class="relative">
+            <input type="password" id="passInput" class="luma-input text-center font-mono tracking-widest text-base pr-10" placeholder="Entrez le code secret..." autocomplete="current-password" autofocus>
+            <button type="button" onclick="togglePassVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-sm p-1" title="Afficher/Masquer le code">
+              <i id="passEyeIcon" class="fa-solid fa-eye"></i>
+            </button>
+          </div>
         </div>
-      </div>
 
-      <!-- Bouton 1-Clic Direct -->
-      <button type="button" onclick="quickLogin()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-2xl shadow-md transition-all flex items-center justify-center gap-2 text-sm">
-        <i class="fa-solid fa-bolt text-amber-300"></i> Accéder en 1-Clic
-      </button>
+        <p id="passError" class="text-xs text-rose-600 font-semibold bg-rose-50 border border-rose-200 p-2.5 rounded-xl hidden">
+          <i class="fa-solid fa-circle-exclamation mr-1"></i> Code secret incorrect. Seuls les organisateurs autorisés disposent du code d'accès.
+        </p>
 
-      <div class="relative flex py-1 items-center">
-        <div class="flex-grow border-t border-slate-200"></div>
-        <span class="flex-shrink mx-3 text-[10px] text-slate-400 uppercase font-semibold">Ou saisie du mot de passe</span>
-        <div class="flex-grow border-t border-slate-200"></div>
-      </div>
-
-      <div class="space-y-2.5">
-        <div class="relative">
-          <input type="password" id="passInput" class="luma-input text-center font-mono tracking-widest text-base pr-10" placeholder="aeemci2026" value="aeemci2026">
-          <button type="button" onclick="togglePassVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-sm p-1" title="Afficher/Masquer le mot de passe">
-            <i id="passEyeIcon" class="fa-solid fa-eye"></i>
-          </button>
-        </div>
-        <p id="passError" class="text-xs text-red-500 font-semibold hidden">Code incorrect. Le mot de passe est <strong>aeemci2026</strong> ou cliquez sur le bouton vert ci-dessus.</p>
-        <button id="loginBtn" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl transition-all flex items-center justify-center gap-2 text-xs">
-          <i class="fa-solid fa-lock-open text-amber-400"></i> Déverrouiller la Console
+        <button id="loginBtn" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-2xl transition-all flex items-center justify-center gap-2 text-xs shadow-md">
+          <i class="fa-solid fa-lock-open text-amber-400"></i> Déverrouiller la Base de Données
         </button>
+      </div>
+
+      <div class="pt-2 border-t border-slate-100 flex items-center justify-center gap-1.5 text-[11px] text-slate-400">
+        <i class="fa-solid fa-lock text-slate-400 text-[10px]"></i>
+        <span>Accès restreint · AEEMCI Academy 2026</span>
       </div>
     </div>
 
@@ -592,10 +596,12 @@
       return digits;
     }
 
-    /* ---------- AUTHENTICATION ---------- */
+    /* ---------- AUTHENTICATION & SECURITY ---------- */
+    const ADMIN_PASSWORDS = ["aeemci2026", "2026"];
+
     function isPasswordValid(val) {
       if (!val) return false;
-      return VALID_PASSWORDS.includes(val.trim().toLowerCase());
+      return ADMIN_PASSWORDS.includes(val.trim());
     }
 
     function togglePassVisibility() {
@@ -612,37 +618,47 @@
     }
     window.togglePassVisibility = togglePassVisibility;
 
-    function quickLogin() {
-      localStorage.setItem('aeemci_admin_logged', 'true');
-      sessionStorage.setItem('aeemci_admin_logged', 'true');
-      showDashboard();
+    function deconnexionAdmin() {
+      sessionStorage.removeItem('aeemci_admin_logged');
+      localStorage.removeItem('aeemci_admin_logged');
+      dashboardCard.classList.add('hidden');
+      loginCard.classList.remove('hidden');
+      const logoutBtn = document.getElementById('logoutBtn');
+      if (logoutBtn) logoutBtn.classList.add('hidden');
+      if (passInput) {
+        passInput.value = '';
+        passInput.focus();
+      }
+      showToast("Session verrouillée", false);
     }
-    window.quickLogin = quickLogin;
+    window.deconnexionAdmin = deconnexionAdmin;
 
     function checkAuth() {
-      try {
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('auth') === '1' || urlParams.get('autologin') === '1' ||
-            urlParams.get('pass') === 'aeemci2026' || urlParams.get('pass') === 'aeemci' ||
-            localStorage.getItem('aeemci_admin_logged') === 'true' || 
-            sessionStorage.getItem('aeemci_admin_logged') === 'true') {
-          localStorage.setItem('aeemci_admin_logged', 'true');
-          sessionStorage.setItem('aeemci_admin_logged', 'true');
-          showDashboard();
-        }
-      } catch (e) {
+      if (sessionStorage.getItem('aeemci_admin_logged') === 'true' || localStorage.getItem('aeemci_admin_logged') === 'true') {
         showDashboard();
+      } else {
+        loginCard.classList.remove('hidden');
+        dashboardCard.classList.add('hidden');
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) logoutBtn.classList.add('hidden');
       }
     }
 
     if (loginBtn) {
       loginBtn.addEventListener('click', () => {
-        if (isPasswordValid(passInput.value) || passInput.value.trim() === '') {
-          localStorage.setItem('aeemci_admin_logged', 'true');
+        const val = passInput ? passInput.value.trim() : '';
+        if (isPasswordValid(val)) {
+          passError.classList.add('hidden');
           sessionStorage.setItem('aeemci_admin_logged', 'true');
+          localStorage.setItem('aeemci_admin_logged', 'true');
           showDashboard();
+          showToast("Code validé ! Bienvenue sur la console.");
         } else {
           passError.classList.remove('hidden');
+          if (passInput) {
+            passInput.focus();
+            passInput.select();
+          }
         }
       });
     }
@@ -656,6 +672,8 @@
     async function showDashboard() {
       loginCard.classList.add('hidden');
       dashboardCard.classList.remove('hidden');
+      const logoutBtn = document.getElementById('logoutBtn');
+      if (logoutBtn) logoutBtn.classList.remove('hidden');
       await loadData();
     }
 

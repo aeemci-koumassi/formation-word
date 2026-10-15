@@ -451,7 +451,7 @@ async function initApp() {
   }
 
   /* ---------- 10. ADMIN MODAL & CONTROLS ---------- */
-  const ADMIN_PASS = "aeemci2026";
+  const VALID_ADMIN_PASSWORDS = ["aeemci2026", "2026"];
   const adminModal = document.getElementById('adminModal');
   const adminPassInput = document.getElementById('adminPassInput');
   const adminPassError = document.getElementById('adminPassError');
@@ -461,7 +461,7 @@ async function initApp() {
     if (adminModal) {
       adminModal.classList.remove('hidden');
       if (adminPassInput) {
-        adminPassInput.value = 'aeemci2026';
+        adminPassInput.value = '';
         if (adminPassError) adminPassError.classList.add('hidden');
         setTimeout(() => adminPassInput.focus(), 120);
       }
@@ -474,17 +474,19 @@ async function initApp() {
   }
   window.closeAdmin = closeAdmin;
 
-  const VALID_ADMIN_PASSWORDS = ["aeemci2026", "aeemci", "123456", "1234", "admin", "koumassi"];
-
   if (adminSubmitPass) {
     adminSubmitPass.addEventListener('click', () => {
-      const val = (adminPassInput ? adminPassInput.value.trim().toLowerCase() : '');
-      if (VALID_ADMIN_PASSWORDS.includes(val) || val === '') {
+      const val = (adminPassInput ? adminPassInput.value.trim() : '');
+      if (val !== '' && VALID_ADMIN_PASSWORDS.includes(val)) {
         sessionStorage.setItem('aeemci_admin_logged', 'true');
         localStorage.setItem('aeemci_admin_logged', 'true');
-        window.location.href = 'admin.html?auth=1';
+        window.location.href = 'admin.html';
       } else {
         if (adminPassError) adminPassError.classList.remove('hidden');
+        if (adminPassInput) {
+          adminPassInput.focus();
+          adminPassInput.select();
+        }
       }
     });
   }

@@ -250,7 +250,7 @@ async function initApp() {
       marker.bindPopup(`
         <div style="font-family:'Inter',sans-serif; font-size:12px; line-height:1.45; min-width:200px;">
           <strong style="color:#0f172a; font-size:13px; display:block; margin-bottom:3px;">🏫 ISTCO La Colombe</strong>
-          <span style="color:#64748b; font-size:11px; display:block;">📍 En face de la Cité SIR, Koumassi</span>
+          <span style="color:#047857; font-weight:700; font-size:11px; display:block;">📍 Cité SIR (en face), Koumassi</span>
           <span style="color:#059669; font-weight:700; font-size:11px; display:block; margin-top:3px;">Double Formation Pratique (18 Oct.)</span>
           <div style="margin-top:8px; border-top:1px solid #e2e8f0; padding-top:6px;">
             <a href="https://www.google.com/maps/dir/?api=1&destination=5.3041,-3.96171" target="_blank" rel="noopener noreferrer" style="color:#2563eb; text-decoration:none; font-weight:700; font-size:11px; display:inline-flex; align-items:center; gap:4px;">

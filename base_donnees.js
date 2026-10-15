@@ -38,8 +38,15 @@ function parseSupabaseItem(item) {
 function estInscriptionNouvelleSession(item) {
     if (!item) return false;
     const ticketCode = item.ticket_code || '';
+    const niveau = (item.niveau || '').toLowerCase();
     const dateStr = item.created_at || item.date || '';
-    return ticketCode.includes('PPT') || ticketCode.includes('DESIGN') || ticketCode.includes('VIDEO') || dateStr >= '2026-10-14';
+    return ticketCode.includes('PPT') || 
+           ticketCode.includes('DESIGN') || 
+           ticketCode.includes('VIDEO') || 
+           niveau.includes('powerpoint') || 
+           niveau.includes('affiche') || 
+           niveau.includes('pack complet') || 
+           dateStr >= '2026-10-14';
 }
 
 /**
@@ -87,7 +94,8 @@ async function recupererInscriptions() {
 async function obtenirNombreInscrits() {
     try {
         const list = await recupererInscriptions();
-        return list.length;
+        const activeList = list.filter(estInscriptionNouvelleSession);
+        return activeList.length;
     } catch (e) {
         return 0;
     }

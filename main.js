@@ -84,15 +84,27 @@ async function initApp() {
     try {
       let list = [];
       if (typeof recupererInscriptions === 'function') {
-        list = await recupererInscriptions();
+        const fullList = await recupererInscriptions();
+        list = fullList.filter(item => {
+          if (typeof estInscriptionNouvelleSession === 'function') {
+            return estInscriptionNouvelleSession(item);
+          }
+          const code = item.ticket_code || '';
+          const niveau = (item.niveau || '').toLowerCase();
+          const date = item.created_at || item.date || '';
+          return code.includes('PPT') || code.includes('DESIGN') || code.includes('VIDEO') || niveau.includes('powerpoint') || niveau.includes('affiche') || niveau.includes('pack complet') || date >= '2026-10-14';
+        });
       }
 
-      // Si l'utilisateur local vient de s'inscrire sur son navigateur
+      // Si l'utilisateur local vient de s'inscrire sur son navigateur pour la session actuelle
       const saved = getSavedUserTicket();
       if (saved && saved.nom) {
-        const alreadyInList = list.some(item => (item.whatsapp && item.whatsapp === saved.whatsapp) || (item.nom && item.nom.toLowerCase() === saved.nom.toLowerCase()));
-        if (!alreadyInList) {
-          list.unshift(saved);
+        const isCurrentSession = (saved.ticket_code || '').includes('PPT') || (saved.formation || '').includes('PowerPoint') || (saved.formation || '').includes('Design');
+        if (isCurrentSession) {
+          const alreadyInList = list.some(item => (item.whatsapp && item.whatsapp === saved.whatsapp) || (item.nom && item.nom.toLowerCase() === saved.nom.toLowerCase()));
+          if (!alreadyInList) {
+            list.unshift(saved);
+          }
         }
       }
 

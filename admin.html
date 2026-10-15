@@ -129,9 +129,9 @@
           <div class="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
             <!-- SESSION SELECTOR -->
             <select id="sessionFilter" class="luma-input font-bold text-xs text-lumaGreen border-lumaGreen/40 bg-emerald-50/60 cursor-pointer w-full sm:w-auto shadow-sm">
-              <option value="new" selected>🎯 Session du 18 Octobre 2026 (PowerPoint & Vidéo)</option>
+              <option value="all" selected>📂 Toutes les inscriptions (Base complète · 370+ candidats)</option>
+              <option value="new">🎯 Session du 18 Octobre 2026 (PowerPoint & Vidéo)</option>
               <option value="prev">📊 Session du 04 Octobre 2026 (Excel & Prompt IA)</option>
-              <option value="all">📂 Toutes les sessions (Historique complet)</option>
             </select>
 
             <div class="w-full sm:w-64">
@@ -307,8 +307,8 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
 
   <!-- JAVASCRIPT LOGIC -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase.js?v=20261004_ORIGINAL_GLORY_V6000"></script>
-  <script src="base_donnees.js?v=20261004_ORIGINAL_GLORY_V6000"></script>
+  <script src="supabase.js?v=20261015_V7_EXECUTIVE"></script>
+  <script src="base_donnees.js?v=20261015_V7_EXECUTIVE"></script>
   <script>
     const ADMIN_PASS = "aeemci2026";
     let rawInscriptions = [];
@@ -420,12 +420,13 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
 
     function applyFilterAndRender() {
       if (sessionFilter && sessionFilter.value === 'new') {
-        currentSessionInscriptions = rawInscriptions.filter(item => 
+        const specific = rawInscriptions.filter(item => 
           (item.ticket_code || '').includes('PPT') || 
           (item.ticket_code || '').includes('DESIGN') || 
           (item.ticket_code || '').includes('VIDEO') || 
           (item.created_at && item.created_at >= '2026-10-14')
         );
+        currentSessionInscriptions = specific.length > 0 ? specific : [...rawInscriptions];
       } else if (sessionFilter && sessionFilter.value === 'prev') {
         currentSessionInscriptions = rawInscriptions.filter(item => 
           (item.ticket_code || '').includes('EXCEL-IA') || 

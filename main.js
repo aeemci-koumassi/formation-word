@@ -219,15 +219,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   /* ---------- 7. INTERACTIVE VENUE MAP (LEAFLET & OPENSTREETMAP) ---------- */
   function initVenueMap() {
     const mapContainer = document.getElementById('venue-map');
+    const iframeFallback = document.getElementById('venue-map-iframe');
     if (!mapContainer) return;
+    if (mapContainer._leaflet_id) return;
 
     if (typeof L === 'undefined') {
-      console.warn("Leaflet library not ready");
+      if (!window._venueMapRetries) window._venueMapRetries = 0;
+      if (window._venueMapRetries < 15) {
+        window._venueMapRetries++;
+        setTimeout(initVenueMap, 250);
+      }
       return;
     }
 
     try {
-      // Coordonnées GPS exactes du Groupe Scolaire Sainte Thérèse Koumassi
+      mapContainer.classList.remove('hidden');
       const lat = 5.3000902;
       const lon = -3.9479569;
 
@@ -236,10 +242,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         zoomControl: true
       }).setView([lat, lon], 16);
 
-      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
+        subdomains: ['a', 'b', 'c'],
         attribution: '&copy; OpenStreetMap'
       }).addTo(map);
+
+      // Rafraîchir les dimensions de rendu
+      setTimeout(() => map.invalidateSize(), 250);
+      setTimeout(() => map.invalidateSize(), 700);
+      window.addEventListener('resize', () => map.invalidateSize());
 
       // Marker
       const marker = L.marker([lat, lon]).addTo(map);
@@ -255,13 +267,18 @@ document.addEventListener('DOMContentLoaded', async () => {
           </div>
         </div>
       `).openPopup();
+
+      if (iframeFallback) iframeFallback.style.display = 'none';
     } catch (e) {
-      console.warn("Venue map init exception:", e);
+      console.warn("Venue map init error:", e);
+      mapContainer.classList.add('hidden');
+      if (iframeFallback) iframeFallback.style.display = 'block';
     }
   }
 
   // Initialize map when DOM and scripts are loaded
-  setTimeout(initVenueMap, 200);
+  setTimeout(initVenueMap, 150);
+  window.addEventListener('load', initVenueMap);
 
   window.copyVenueAddress = function() {
     const address = "Groupe Scolaire Sainte Thérèse, Terminus 11, Koumassi, Abidjan, Côte d'Ivoire";

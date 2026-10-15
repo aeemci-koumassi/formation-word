@@ -35,8 +35,9 @@
 <!-- FontAwesome 6 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-<!-- Leaflet CSS for Interactive Location Map -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<!-- Leaflet CSS & JS for Interactive Location Map (cdnjs high reliability) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 
 <!-- Tailwind CSS CDN -->
 <script src="https://cdn.tailwindcss.com"></script>
@@ -678,9 +679,18 @@
             </div>
           </div>
 
-          <!-- Interactive Map Container (Leaflet) -->
-          <div class="w-full h-64 sm:h-80 rounded-2xl overflow-hidden border border-slate-200/90 shadow-sm relative bg-slate-100">
-            <div id="venue-map" class="w-full h-full"></div>
+          <!-- Interactive Map Container (Dual Layer: Instant OSM Map + Leaflet Layer) -->
+          <div class="w-full h-72 sm:h-80 rounded-2xl overflow-hidden border border-slate-200/90 shadow-sm relative bg-slate-100">
+            <!-- 1. Carte Interactive Native OSM (chargement immédiat, zéro risque d'écran blanc) -->
+            <iframe 
+              id="venue-map-iframe"
+              title="Plan interactif — Groupe Scolaire Sainte Thérèse Koumassi"
+              src="https://www.openstreetmap.org/export/embed.html?bbox=-3.955%2C5.295%2C-3.940%2C5.305&amp;layer=mapnik&amp;marker=5.30009%2C-3.94796" 
+              class="w-full h-full border-0 block" 
+              loading="lazy">
+            </iframe>
+            <!-- 2. Couche Leaflet interactive enrichie par-dessus -->
+            <div id="venue-map" class="w-full h-full absolute inset-0 hidden"></div>
           </div>
 
           <!-- Transport & Access Guide Cards -->
@@ -1131,13 +1141,10 @@
     </div>
   </div>
 
-  <!-- LEAFLET JS FOR VENUE MAP -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
   <!-- SCRIPTS MODULAIRES JS -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase.js?v=20261015_V7_EXECUTIVE"></script>
-  <script src="base_donnees.js?v=20261015_V7_EXECUTIVE"></script>
-  <script src="main.js?v=20261015_V7_EXECUTIVE"></script>
+  <script src="supabase.js?v=20261015_V8_MAPFIX"></script>
+  <script src="base_donnees.js?v=20261015_V8_MAPFIX"></script>
+  <script src="main.js?v=20261015_V8_MAPFIX"></script>
 </body>
 </html>

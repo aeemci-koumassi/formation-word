@@ -3,13 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tableau de Bord Administrateur — AEEMCI Koumassi</title>
+<title>AEEMCI Academy — Console d'Administration & Base de Données</title>
 
 <!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23008751'/%3E%3Ctext x='50' y='68' font-size='55' font-family='Arial,sans-serif' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'%3EE%3C/text%3E%3C/svg%3E">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
 <!-- FontAwesome 6 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -21,18 +26,17 @@
     theme: {
       extend: {
         colors: {
-          lumaBg: '#F3F7F4',
+          lumaBg: '#F8FAFC',
           lumaCard: '#FFFFFF',
-          lumaGreen: '#2D8A4E',
-          lumaGreenDark: '#226A3B',
-          lumaText: '#1A1A1A',
-          lumaMuted: '#667085',
+          lumaGreen: '#059669',
+          lumaGreenDark: '#047857',
           vert: '#008751',
-          or: '#F4C430',
+          or: '#D97706',
           bleu: '#002050'
         },
         fontFamily: {
-          sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif']
+          sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'monospace']
         }
       }
     }
@@ -40,39 +44,67 @@
 </script>
 
 <style>
-  body { background-color: #F3F7F4; color: #1A1A1A; }
-  .luma-shadow { box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.03); }
-  .luma-shadow-lg { box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.04); }
+  body { background-color: #F8FAFC; color: #0F172A; font-family: 'Plus Jakarta Sans', sans-serif; }
+  .card-shadow { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04); }
+  .card-shadow-lg { box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.03); }
   .luma-input {
-    width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid #E4E7EC;
-    background-color: #FAFAFA; font-size: 0.9rem; outline: none; transition: all 0.2s;
+    width: 100%; padding: 10px 14px; border-radius: 12px; border: 1px solid #E2E8F0;
+    background-color: #FFFFFF; font-size: 0.85rem; outline: none; transition: all 0.2s;
   }
-  .luma-input:focus { background-color: #FFFFFF; border-color: #2D8A4E; box-shadow: 0 0 0 3px rgba(45, 138, 78, 0.12); }
-  table.admin-table th, table.admin-table td { padding: 14px 16px; text-align: left; font-size: .85rem; }
-  table.admin-table tr:nth-child(even) { background: #F9FAFB; }
+  .luma-input:focus { border-color: #059669; box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.12); }
+  table.admin-table th { padding: 12px 14px; text-align: left; font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 700; color: #64748B; background: #F8FAFC; }
+  table.admin-table td { padding: 13px 14px; text-align: left; font-size: 0.82rem; vertical-align: middle; }
+  table.admin-table tr:hover { background-color: #F1F5F9; }
+  @media print {
+    body * { visibility: hidden; }
+    #printableTicket, #printableTicket * { visibility: visible; }
+    #printableTicket { position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 20px; }
+  }
 </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased">
 
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed top-5 right-5 z-50 bg-slate-900 text-white text-xs font-semibold px-4 py-3 rounded-2xl shadow-xl transition-all duration-300 opacity-0 pointer-events-none transform translate-y-2 flex items-center gap-2.5 border border-slate-700">
+    <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>
+    <span id="toast-msg">Action effectuée avec succès</span>
+  </div>
+
   <!-- HEADER NAVBAR -->
-  <header class="bg-white border-b border-gray-200 sticky top-0 z-30">
+  <header class="bg-white/95 backdrop-blur-md border-b border-slate-200/90 sticky top-0 z-30 shadow-2xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-xl bg-lumaGreen text-white flex items-center justify-center font-bold text-lg shadow-sm">
-          <i class="fa-solid fa-graduation-cap text-sm"></i>
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white flex items-center justify-center font-bold text-lg shadow-xs">
+          <i class="fa-solid fa-graduation-cap"></i>
         </div>
         <div>
-          <h1 class="font-bold text-sm sm:text-base text-lumaText leading-tight">AEEMCI Koumassi — Espace Organisateur</h1>
-          <p class="text-[11px] text-lumaMuted">Double Formation PowerPoint & IA × Affiches & Vidéo 2026</p>
+          <div class="flex items-center gap-2">
+            <h1 class="font-extrabold text-sm sm:text-base text-slate-900 leading-tight">AEEMCI Koumassi</h1>
+            <span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-extrabold border border-emerald-200/80">
+              Console Organisateur
+            </span>
+          </div>
+          <p class="text-[11px] text-slate-500 font-medium">Double Formation : PowerPoint & IA × Affiches & Montage Vidéo (18 Octobre 2026)</p>
         </div>
       </div>
+
       <div class="flex items-center gap-2 sm:gap-3">
-        <span class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] font-bold">
+        <!-- Live status -->
+        <span class="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50/90 border border-emerald-200/80 text-emerald-800 text-[11px] font-bold">
           <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span>Base Supabase Connectée</span>
+          <span>Cloud Supabase Connecté</span>
         </span>
-        <a href="index.html" class="text-xs text-lumaMuted hover:text-lumaGreen font-semibold flex items-center gap-1.5 bg-gray-50 px-3 py-2 rounded-xl border border-gray-200 transition-colors">
-          <i class="fa-solid fa-arrow-left"></i> Voir le site
+
+        <!-- Messages Centre Modal Button -->
+        <button id="navMessagesBtn" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-teal-50 hover:bg-teal-100 text-teal-800 text-xs font-bold border border-teal-200/80 transition-colors shadow-2xs">
+          <i class="fa-brands fa-whatsapp text-emerald-600 text-sm"></i>
+          <span class="hidden sm:inline">Messages & Diffusion</span>
+        </button>
+
+        <!-- Back to site -->
+        <a href="index.html" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition-colors shadow-2xs">
+          <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+          <span>Voir le site</span>
         </a>
       </div>
     </div>
@@ -82,44 +114,44 @@
   <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
 
     <!-- LOGIN SCREEN -->
-    <div id="loginCard" class="max-w-md mx-auto my-8 bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 luma-shadow-lg text-center space-y-5">
-      <div class="w-14 h-14 bg-emerald-50 text-lumaGreen rounded-2xl flex items-center justify-center text-2xl mx-auto border border-emerald-100 shadow-inner">
-        <i class="fa-solid fa-database text-emerald-600"></i>
+    <div id="loginCard" class="max-w-md mx-auto my-10 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 card-shadow-lg text-center space-y-5">
+      <div class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl mx-auto border border-emerald-100 shadow-inner">
+        <i class="fa-solid fa-shield-halved"></i>
       </div>
       <div class="space-y-1.5">
-        <h2 class="text-xl sm:text-2xl font-extrabold text-lumaText">Base de Données — AEEMCI</h2>
-        <p class="text-xs text-lumaMuted">Consultez la liste des 370+ candidats inscrits et validez les dossiers.</p>
+        <h2 class="text-xl sm:text-2xl font-black text-slate-900">Espace Organisateur AEEMCI</h2>
+        <p class="text-xs text-slate-500">Gestion des candidatures, émission des billets officiels et validation des participants.</p>
       </div>
 
       <!-- Mot de passe affiché en clair -->
       <div class="p-3 bg-emerald-50/80 border border-emerald-200 rounded-2xl text-left space-y-1">
         <div class="flex items-center justify-between text-xs font-bold text-emerald-800">
-          <span class="flex items-center gap-1.5"><i class="fa-solid fa-key text-amber-500"></i> Mot de passe :</span>
+          <span class="flex items-center gap-1.5"><i class="fa-solid fa-key text-amber-500"></i> Mot de passe sécurisé :</span>
           <span class="font-mono bg-white px-2 py-0.5 rounded border border-emerald-300 text-emerald-900 select-all font-bold">aeemci2026</span>
         </div>
       </div>
 
       <!-- Bouton 1-Clic Direct -->
       <button type="button" onclick="quickLogin()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-2xl shadow-md transition-all flex items-center justify-center gap-2 text-sm">
-        <i class="fa-solid fa-bolt text-amber-300"></i> Connexion Directe en 1-Clic
+        <i class="fa-solid fa-bolt text-amber-300"></i> Accéder en 1-Clic
       </button>
 
       <div class="relative flex py-1 items-center">
-        <div class="flex-grow border-t border-gray-200"></div>
-        <span class="flex-shrink mx-3 text-[10px] text-gray-400 uppercase font-semibold">Ou saisie manuelle</span>
-        <div class="flex-grow border-t border-gray-200"></div>
+        <div class="flex-grow border-t border-slate-200"></div>
+        <span class="flex-shrink mx-3 text-[10px] text-slate-400 uppercase font-semibold">Ou saisie du mot de passe</span>
+        <div class="flex-grow border-t border-slate-200"></div>
       </div>
 
       <div class="space-y-2.5">
         <div class="relative">
           <input type="password" id="passInput" class="luma-input text-center font-mono tracking-widest text-base pr-10" placeholder="aeemci2026" value="aeemci2026">
-          <button type="button" onclick="togglePassVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-sm p-1" title="Afficher/Masquer le mot de passe">
+          <button type="button" onclick="togglePassVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-sm p-1" title="Afficher/Masquer le mot de passe">
             <i id="passEyeIcon" class="fa-solid fa-eye"></i>
           </button>
         </div>
         <p id="passError" class="text-xs text-red-500 font-semibold hidden">Code incorrect. Le mot de passe est <strong>aeemci2026</strong> ou cliquez sur le bouton vert ci-dessus.</p>
         <button id="loginBtn" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl transition-all flex items-center justify-center gap-2 text-xs">
-          <i class="fa-solid fa-lock-open text-amber-400"></i> Valider et Entrer
+          <i class="fa-solid fa-lock-open text-amber-400"></i> Déverrouiller la Console
         </button>
       </div>
     </div>
@@ -127,57 +159,126 @@
     <!-- DASHBOARD PANEL -->
     <div id="dashboardCard" class="hidden space-y-6">
 
-      <!-- STATS CARDS -->
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-4">
-        <div class="bg-white p-3.5 sm:p-5 rounded-2xl border border-gray-200 luma-shadow">
-          <span class="text-[10px] sm:text-xs font-semibold text-lumaMuted uppercase block">Total Inscrits</span>
-          <span id="statTotal" class="text-2xl sm:text-3xl font-extrabold text-lumaGreen mt-1 block">0</span>
+      <!-- EXECUTIVE KPI STATS CARDS -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+        <!-- Total Inscrits -->
+        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 card-shadow flex flex-col justify-between relative overflow-hidden group hover:border-emerald-300 transition-colors">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider">Total Inscrits</span>
+            <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm">
+              <i class="fa-solid fa-users"></i>
+            </div>
+          </div>
+          <div class="mt-2">
+            <span id="statTotal" class="text-2xl sm:text-3xl font-black text-slate-900 block leading-tight">0</span>
+            <span class="text-[11px] text-emerald-700 font-semibold flex items-center gap-1 mt-0.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span>
+              Session active
+            </span>
+          </div>
         </div>
-        <div class="bg-white p-3.5 sm:p-5 rounded-2xl border border-gray-200 luma-shadow">
-          <span class="text-[10px] sm:text-xs font-semibold text-lumaMuted uppercase block">Validés</span>
-          <span id="statPrincipales" class="text-2xl sm:text-3xl font-extrabold text-emerald-600 mt-1 block">0 Validé(s)</span>
+
+        <!-- Validés -->
+        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 card-shadow flex flex-col justify-between relative overflow-hidden group hover:border-emerald-300 transition-colors">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider">Validés</span>
+            <div class="w-8 h-8 rounded-xl bg-green-50 text-green-600 flex items-center justify-center text-sm">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+          </div>
+          <div class="mt-2">
+            <span id="statPrincipales" class="text-2xl sm:text-3xl font-black text-emerald-700 block leading-tight">0</span>
+            <span class="text-[11px] text-slate-500 font-medium">Billets d'accès émis</span>
+          </div>
         </div>
-        <div class="bg-white p-3.5 sm:p-5 rounded-2xl border border-gray-200 luma-shadow">
-          <span class="text-[10px] sm:text-xs font-semibold text-lumaMuted uppercase block">En Attente</span>
-          <span id="statAttente" class="text-2xl sm:text-3xl font-extrabold text-amber-600 mt-1 block">0</span>
+
+        <!-- En Attente -->
+        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 card-shadow flex flex-col justify-between relative overflow-hidden group hover:border-amber-300 transition-colors">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider">En Attente</span>
+            <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-sm">
+              <i class="fa-solid fa-clock"></i>
+            </div>
+          </div>
+          <div class="mt-2">
+            <span id="statAttente" class="text-2xl sm:text-3xl font-black text-amber-600 block leading-tight">0</span>
+            <span class="text-[11px] text-slate-500 font-medium">À confirmer</span>
+          </div>
         </div>
-        <div class="bg-white p-3.5 sm:p-5 rounded-2xl border border-gray-200 luma-shadow">
-          <span class="text-[10px] sm:text-xs font-semibold text-lumaMuted uppercase block">Élèves / Étudiants</span>
-          <span id="statElevesEtudiants" class="text-xl sm:text-2xl font-bold text-lumaText mt-1 block">0</span>
+
+        <!-- Élèves / Étudiants -->
+        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 card-shadow flex flex-col justify-between relative overflow-hidden group hover:border-blue-300 transition-colors">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider">Élèves & Étudiants</span>
+            <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-sm">
+              <i class="fa-solid fa-user-graduate"></i>
+            </div>
+          </div>
+          <div class="mt-2">
+            <span id="statElevesEtudiants" class="text-2xl sm:text-3xl font-black text-blue-700 block leading-tight">0</span>
+            <span class="text-[11px] text-slate-500 font-medium">Public académique</span>
+          </div>
         </div>
-        <div class="bg-white p-3.5 sm:p-5 rounded-2xl border border-gray-200 luma-shadow col-span-2 sm:col-span-1">
-          <span class="text-[10px] sm:text-xs font-semibold text-lumaMuted uppercase block">Professionnels</span>
-          <span id="statPros" class="text-xl sm:text-2xl font-bold text-lumaText mt-1 block">0</span>
+
+        <!-- Avec Ordinateur PC -->
+        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/90 card-shadow flex flex-col justify-between relative overflow-hidden group hover:border-purple-300 transition-colors col-span-2 sm:col-span-1">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-wider">Avec Ordinateur</span>
+            <div class="w-8 h-8 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-sm">
+              <i class="fa-solid fa-laptop"></i>
+            </div>
+          </div>
+          <div class="mt-2">
+            <span id="statOrdi" class="text-2xl sm:text-3xl font-black text-purple-700 block leading-tight">0</span>
+            <span class="text-[11px] text-slate-500 font-medium">Pratique directe</span>
+          </div>
         </div>
       </div>
 
-      <!-- TABLE CONTAINER CARD -->
-      <div class="bg-white rounded-3xl border border-gray-200 luma-shadow-lg overflow-hidden flex flex-col">
+      <!-- MAIN DATA CARD -->
+      <div class="bg-white rounded-3xl border border-slate-200/90 card-shadow-lg overflow-hidden flex flex-col">
         
         <!-- TOOLBAR -->
-        <div class="p-4 sm:p-6 border-b border-gray-100 flex flex-col lg:flex-row items-center justify-between gap-4">
-          <div class="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
+        <div class="p-4 sm:p-5 border-b border-slate-100 flex flex-col lg:flex-row items-center justify-between gap-3.5 bg-slate-50/40">
+          <div class="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto flex-1">
+            
             <!-- SESSION SELECTOR -->
-            <select id="sessionFilter" class="luma-input font-bold text-xs text-lumaGreen border-lumaGreen/40 bg-emerald-50/60 cursor-pointer w-full sm:w-auto shadow-sm">
-              <option value="new" selected>🎯 Double Formation 2026 (PowerPoint & IA × Affiches & Vidéo) — 18 Octobre</option>
-              <option value="archive">📁 Archives — Session précédente (Excel & IA — 374 inscrits)</option>
-              <option value="all">📂 Vue consolidée (Toutes les sessions confondues)</option>
-            </select>
-
-            <div class="w-full sm:w-64">
-              <input type="text" id="searchInput" class="luma-input text-xs" placeholder="Rechercher par nom, email, whatsapp...">
+            <div class="relative w-full sm:w-auto">
+              <select id="sessionFilter" class="luma-input font-bold text-xs text-emerald-800 border-emerald-300/80 bg-emerald-50/70 cursor-pointer w-full sm:w-auto pr-8 shadow-2xs">
+                <option value="new" selected>🎯 Double Formation 2026 (PowerPoint & IA × Affiches & Vidéo) — 18 Octobre</option>
+                <option value="archive">📁 Archives — Session précédente (Excel & IA — 374 inscrits)</option>
+                <option value="all">📂 Vue consolidée (Toutes les sessions)</option>
+              </select>
             </div>
+
+            <!-- SEARCH INPUT -->
+            <div class="relative w-full sm:w-80">
+              <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+              <input type="text" id="searchInput" class="luma-input text-xs pl-9 pr-8" placeholder="Rechercher par nom, téléphone, code ticket, email...">
+              <button id="clearSearchBtn" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-500 text-xs p-1 hidden">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+
+            <!-- RESULT COUNT BADGE -->
+            <span id="filterCountBadge" class="hidden sm:inline-flex text-[11px] font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-xl">
+              <span id="filteredRowsCount">0</span> candidat(s)
+            </span>
           </div>
 
-          <div class="flex items-center gap-2 w-full lg:w-auto justify-end">
-            <button id="refreshBtn" class="bg-gray-100 hover:bg-gray-200 text-lumaText font-bold text-xs px-4 py-3 rounded-xl transition-colors flex items-center gap-2">
-              <i class="fa-solid fa-rotate text-sm"></i> Actualiser
+          <!-- ACTION BUTTONS -->
+          <div class="flex items-center gap-2 w-full lg:w-auto justify-end flex-wrap">
+            <button id="refreshBtn" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs border border-slate-200 transition-colors shadow-2xs">
+              <i class="fa-solid fa-rotate text-xs text-slate-500"></i>
+              <span>Actualiser</span>
             </button>
-            <button id="thanksBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-3 rounded-xl shadow-md transition-colors flex items-center gap-2">
-              <i class="fa-brands fa-whatsapp text-sm"></i> Remerciements
+            <button id="broadcastBtn" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs transition-colors shadow-2xs">
+              <i class="fa-brands fa-whatsapp text-sm"></i>
+              <span>Centre Messages</span>
             </button>
-            <button id="exportBtn" class="bg-lumaGreen hover:bg-lumaGreenDark text-white font-bold text-xs px-4 py-3 rounded-xl shadow-md transition-colors flex items-center gap-2">
-              <i class="fa-solid fa-file-excel text-sm"></i> Exporter en Excel (CSV)
+            <button id="exportBtn" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs transition-colors shadow-2xs">
+              <i class="fa-solid fa-file-excel text-sm text-emerald-200"></i>
+              <span>Exporter Excel (CSV)</span>
             </button>
           </div>
         </div>
@@ -185,45 +286,46 @@
         <!-- TABLE DATA -->
         <div class="overflow-x-auto">
           <table class="admin-table w-full">
-            <thead class="bg-gray-50 border-b border-gray-200">
+            <thead>
               <tr>
-                <th class="w-10">#</th>
-                <th>Nom & Prénoms</th>
-                <th>Genre / Âge</th>
-                <th>Contact</th>
-                <th>Ordinateur</th>
-                <th>Attentes & Motivations</th>
-                <th>Formation</th>
-                <th>Statut Dossier</th>
-                <th class="text-center">Action / Billet QR</th>
+                <th class="w-12 text-center">#</th>
+                <th class="min-w-[220px]">Candidat & Code Billet</th>
+                <th class="min-w-[190px]">Contact & WhatsApp</th>
+                <th class="min-w-[120px]">Profil</th>
+                <th class="min-w-[110px]">Ordinateur</th>
+                <th class="min-w-[200px]">Atelier / Formation</th>
+                <th class="min-w-[110px]">Statut Dossier</th>
+                <th class="min-w-[220px] text-center">Actions & Messages WhatsApp</th>
               </tr>
             </thead>
-            <tbody id="tableBody" class="divide-y divide-gray-100"></tbody>
+            <tbody id="tableBody" class="divide-y divide-slate-100 bg-white"></tbody>
           </table>
           
-          <div id="loadingState" class="py-12 text-center text-gray-400 text-xs">
-            <i class="fa-solid fa-spinner fa-spin text-2xl text-lumaGreen mb-2"></i>
-            <p>Chargement des candidatures depuis Supabase Cloud...</p>
+          <!-- LOADING STATE -->
+          <div id="loadingState" class="py-14 text-center text-slate-400 text-xs">
+            <i class="fa-solid fa-spinner fa-spin text-2xl text-emerald-600 mb-2"></i>
+            <p class="font-medium">Chargement des données en direct depuis Supabase Cloud...</p>
           </div>
 
-          <div id="emptyState" class="py-16 text-center text-gray-500 text-xs hidden space-y-3 max-w-md mx-auto">
+          <!-- EMPTY STATE -->
+          <div id="emptyState" class="py-16 text-center text-slate-500 text-xs hidden space-y-3.5 max-w-md mx-auto px-4">
             <div class="w-16 h-16 rounded-3xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mx-auto border border-emerald-100 shadow-xs">
               <i class="fa-solid fa-graduation-cap"></i>
             </div>
             <div class="space-y-1">
               <h3 class="text-base font-bold text-slate-800">Base prête pour la Double Formation 2026</h3>
               <p class="text-xs text-slate-500 leading-relaxed">
-                Les coordonnées des anciennes sessions ont été archivées. La base est désormais 100% adaptée au nouveau programme du 18 Octobre 2026 (PowerPoint & IA × Affiches & Vidéo).
+                Les coordonnées des anciennes sessions ont été archivées avec succès. La base est désormais 100% active et dédiée au programme du Dimanche 18 Octobre 2026 (PowerPoint & IA × Affiches & Vidéo).
               </p>
             </div>
-            <p class="text-[11px] text-emerald-700 font-semibold bg-emerald-50/80 border border-emerald-200/80 px-3 py-1.5 rounded-xl inline-block">
+            <p class="text-[11px] text-emerald-700 font-semibold bg-emerald-50 border border-emerald-200/80 px-3.5 py-1.5 rounded-xl inline-block">
               <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse inline-block mr-1"></span>
               En attente des nouvelles inscriptions en direct...
             </p>
             <div class="pt-2">
               <a href="index.html#event-form-state" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-colors shadow-xs">
                 <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                <span>Voir le formulaire d'inscription sur le site</span>
+                <span>Tester le formulaire d'inscription sur le site</span>
               </a>
             </div>
           </div>
@@ -235,116 +337,162 @@
 
   </main>
 
-  <!-- MODAL REÇU D'INSCRIPTION & TICKET QR CODE -->
-  <div id="ticketModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden border border-slate-200 flex flex-col max-h-[90vh]">
+  <!-- ==============================================
+       MODAL 1: BILLET OFFICIEL & QR CODE (Boarding Pass VIP)
+       ============================================== -->
+  <div id="ticketModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden border border-slate-200 flex flex-col max-h-[92vh] animate-in fade-in zoom-in duration-150">
       
       <!-- Modal Header -->
       <div class="bg-slate-900 text-white p-4 sm:p-5 flex items-center justify-between">
         <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold text-sm">
+          <div class="w-8 h-8 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold text-sm shadow-xs">
             <i class="fa-solid fa-qrcode"></i>
           </div>
           <div>
-            <h3 class="font-extrabold text-sm sm:text-base text-white">Reçu d'Inscription Officiel</h3>
-            <p class="text-[10px] text-slate-300">AEEMCI Koumassi · Double Formation 2026</p>
+            <h3 class="font-bold text-sm text-white">Billet d'Accès Officiel</h3>
+            <p class="text-[10px] text-slate-300">AEEMCI Academy • Dimanche 18 Octobre 2026</p>
           </div>
         </div>
-        <button id="closeTicketBtn" class="text-slate-400 hover:text-white p-1 text-lg"><i class="fa-solid fa-xmark"></i></button>
+        <button id="closeTicketBtn" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center text-sm transition-colors">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
       </div>
 
       <!-- Ticket Printable Body -->
-      <div id="printableTicket" class="p-6 overflow-y-auto space-y-5 bg-gradient-to-b from-white to-slate-50">
+      <div id="printableTicket" class="p-5 sm:p-6 overflow-y-auto space-y-4 bg-gradient-to-b from-white to-slate-50/80">
         
         <!-- Pass Header Badge -->
-        <div class="border-2 border-emerald-500/30 bg-emerald-50/60 p-4 rounded-2xl text-center space-y-1 relative">
-          <span class="bg-emerald-600 text-white font-black text-[10px] uppercase tracking-widest px-3 py-0.5 rounded-full inline-block">
+        <div class="border-2 border-emerald-500/30 bg-emerald-50/70 p-4 rounded-2xl text-center space-y-1.5 relative">
+          <span class="bg-emerald-600 text-white font-black text-[9px] uppercase tracking-widest px-3 py-0.5 rounded-full inline-block shadow-2xs">
             CANDIDATURE VALIDÉE · BILLET ACCÈS SALLE
           </span>
-          <h4 id="t-nom" class="text-xl font-black text-slate-900 pt-1">---</h4>
-          <p id="t-code" class="text-xs font-mono font-bold text-emerald-700">TKT-PPT-DESIGN-XXXXXX</p>
+          <h4 id="t-nom" class="text-xl font-black text-slate-900 pt-0.5">---</h4>
+          
+          <!-- Code Ticket avec bouton copie -->
+          <div class="flex items-center justify-center gap-2 pt-0.5">
+            <span id="t-code" class="font-mono text-xs sm:text-sm font-bold text-emerald-800 bg-white border border-emerald-200 px-3 py-1 rounded-lg shadow-2xs">
+              TKT-PPT-DESIGN-XXXXXX
+            </span>
+            <button id="copyTicketCodeModalBtn" class="w-7 h-7 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-800 flex items-center justify-center text-xs transition-colors" title="Copier le code billet">
+              <i class="fa-regular fa-copy"></i>
+            </button>
+          </div>
         </div>
 
         <!-- Details Grid -->
-        <div class="grid grid-cols-2 gap-3 text-xs">
-          <div class="bg-white p-3 rounded-xl border border-slate-200">
-            <span class="text-[10px] font-bold text-slate-400 block uppercase">Formation</span>
-            <span id="t-formation" class="font-extrabold text-slate-800 block">--</span>
+        <div class="grid grid-cols-2 gap-2.5 text-xs">
+          <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-2xs">
+            <span class="text-[9px] font-bold text-slate-400 block uppercase">Formation</span>
+            <span id="t-formation" class="font-extrabold text-slate-800 block text-xs truncate">--</span>
           </div>
-          <div class="bg-white p-3 rounded-xl border border-slate-200">
-            <span class="text-[10px] font-bold text-slate-400 block uppercase">Statut & Ordinateur</span>
-            <span id="t-statut" class="font-extrabold text-slate-800 block">--</span>
+          <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-2xs">
+            <span class="text-[9px] font-bold text-slate-400 block uppercase">Statut & Matériel</span>
+            <span id="t-statut" class="font-extrabold text-slate-800 block text-xs truncate">--</span>
           </div>
-          <div class="bg-white p-3 rounded-xl border border-slate-200">
-            <span class="text-[10px] font-bold text-slate-400 block uppercase">Date & Heure</span>
-            <span class="font-extrabold text-slate-800 block">Dim 18 Oct 2026 · 08h00 GMT</span>
+          <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-2xs">
+            <span class="text-[9px] font-bold text-slate-400 block uppercase">Date & Horaires</span>
+            <span class="font-extrabold text-slate-800 block text-xs">Dim 18 Oct 2026 · 08h-14h</span>
           </div>
-          <div class="bg-white p-3 rounded-xl border border-slate-200">
-            <span class="text-[10px] font-bold text-slate-400 block uppercase">Lieu</span>
-            <span class="font-extrabold text-slate-800 block">Gr. Scolaire Ste Thérèse</span>
+          <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-2xs">
+            <span class="text-[9px] font-bold text-slate-400 block uppercase">Lieu de la formation</span>
+            <span class="font-extrabold text-slate-800 block text-xs">Ste Thérèse (Terminus 11)</span>
           </div>
         </div>
 
         <!-- QR Code Centered Display -->
-        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm text-center space-y-2">
-          <img id="t-qrcode" src="" alt="QR Code d'Accès" class="w-36 h-36 mx-auto rounded-xl border p-1 bg-white">
-          <p class="text-[10px] text-slate-500 font-semibold">Présentez ce QR Code le jour J à l'entrée de la salle.</p>
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs text-center space-y-2">
+          <img id="t-qrcode" src="" alt="QR Code d'Accès" class="w-36 h-36 mx-auto rounded-xl border border-slate-100 p-1.5 bg-white shadow-2xs">
+          <p class="text-[10px] text-slate-500 font-semibold">Présentez ce QR Code ou votre code d'accès à l'accueil.</p>
         </div>
 
       </div>
 
       <!-- Action Buttons -->
-      <div class="p-4 bg-white border-t border-slate-200 flex flex-col sm:flex-row gap-2.5">
-        <button id="printTicketBtn" onclick="window.print()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs py-3 rounded-xl flex items-center justify-center gap-2">
-          <i class="fa-solid fa-print"></i> Imprimer le Reçu
-        </button>
-        <a id="sendWaTicketBtn" href="#" target="_blank" rel="noopener noreferrer" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 rounded-xl flex items-center justify-center gap-2 text-center">
-          <i class="fa-brands fa-whatsapp text-sm"></i> Envoyer au participant
+      <div class="p-4 bg-white border-t border-slate-200 flex flex-col gap-2">
+        <a id="sendWaTicketBtn" href="#" target="_blank" rel="noopener noreferrer" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 rounded-xl flex items-center justify-center gap-2 transition-colors shadow-xs text-center">
+          <i class="fa-brands fa-whatsapp text-sm"></i>
+          <span>Envoyer le Billet complet par WhatsApp</span>
         </a>
+        <div class="grid grid-cols-2 gap-2">
+          <button id="copyTicketFullMsgBtn" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs py-2.5 rounded-xl transition-colors flex items-center justify-center gap-1.5">
+            <i class="fa-regular fa-copy text-xs"></i>
+            <span>Copier le texte</span>
+          </button>
+          <button id="printTicketBtn" onclick="window.print()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs py-2.5 rounded-xl transition-colors flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-print text-xs"></i>
+            <span>Imprimer / PDF</span>
+          </button>
+        </div>
       </div>
 
     </div>
   </div>
 
-  <!-- THANKS BROADCAST MODAL -->
-  <div id="thanksModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100 flex flex-col max-h-[90vh]">
+  <!-- ==============================================
+       MODAL 2: CENTRE DE MESSAGERIE & DIFFUSION WHATSAPP
+       ============================================== -->
+  <div id="messagesModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100 flex flex-col max-h-[92vh] animate-in fade-in zoom-in duration-150">
       
+      <!-- Modal Header -->
       <div class="p-5 bg-gradient-to-r from-emerald-600 to-teal-700 text-white flex items-center justify-between">
         <div class="flex items-center gap-2.5">
           <div class="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center text-lg">
             <i class="fa-brands fa-whatsapp text-white"></i>
           </div>
           <div>
-            <h3 class="font-bold text-base">Message de Remerciement</h3>
-            <p class="text-[11px] text-emerald-100">Diffusion WhatsApp — Session PowerPoint & Vidéo</p>
+            <h3 class="font-extrabold text-base">Centre de Messagerie WhatsApp</h3>
+            <p class="text-[11px] text-emerald-100">Modèles officiels pré-rédigés pour la session du 18 Octobre 2026</p>
           </div>
         </div>
-        <button id="closeThanksBtn" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition-colors">
+        <button id="closeMessagesBtn" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition-colors">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
+      <!-- Message Type Tabs -->
+      <div class="flex border-b border-slate-200 bg-slate-50 text-xs font-bold p-1 gap-1">
+        <button type="button" onclick="switchMsgTemplate('billet')" id="tab-billet" class="flex-1 py-2 px-2 rounded-xl bg-white text-emerald-800 shadow-2xs border border-slate-200/60 transition-all text-center">
+          🎟️ 1. Billet & Confirmation
+        </button>
+        <button type="button" onclick="switchMsgTemplate('rappel')" id="tab-rappel" class="flex-1 py-2 px-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all text-center">
+          ⏰ 2. Rappel J-1
+        </button>
+        <button type="button" onclick="switchMsgTemplate('remerciement')" id="tab-remerciement" class="flex-1 py-2 px-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all text-center">
+          ✨ 3. Remerciements
+        </button>
+      </div>
+
+      <!-- Modal Body -->
       <div class="p-5 space-y-4 overflow-y-auto flex-1">
-        <div class="space-y-1.5">
-          <label class="text-xs font-bold text-slate-700">Modèle du message à envoyer :</label>
-          <textarea id="thanksMsgText" rows="7" class="luma-input text-xs font-sans leading-relaxed text-slate-800" readonly>Assalamou Aleykoum / Bonjour 👋,
-
-Au nom de toute l'équipe organisatrice de l'AEEMCI Koumassi, nous tenons à vous adresser nos plus sincères REMERCIEMENTS pour votre présence et votre participation active à la Double Formation Pratique (PowerPoint & IA / Création d'Affiches & Montage Vidéo) du Dimanche 18 Octobre 2026 au Groupe Scolaire Sainte Thérèse ! 🎓✨
-
-Nous espérons que les enseignements de M. Djim Aboubacar Mikahillo (PowerPoint & IA) et M. Sawadogo Mohamed (Affiches & Montage Vidéo) vous seront très utiles au quotidien. 📊🎬
-
-Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
-
-— L'équipe d'Organisation AEEMCI Koumassi</textarea>
+        
+        <!-- Live recipient preview selector -->
+        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-1">
+          <label class="text-[11px] font-bold text-slate-600 uppercase tracking-wider block">Prévisualiser avec le candidat :</label>
+          <select id="msgCandidateSelect" class="luma-input text-xs font-semibold text-slate-800 bg-white">
+            <option value="">Sélectionner un participant...</option>
+          </select>
         </div>
 
-        <div class="flex flex-col gap-2">
-          <button id="copyThanksMsgBtn" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
-            <i class="fa-solid fa-copy"></i> Copier le texte du message
+        <!-- Textarea of the message -->
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-bold text-slate-700">Texte officiel du message :</span>
+            <span class="text-[10px] text-slate-400 font-mono">Formaté pour WhatsApp (*gras*, emojis)</span>
+          </div>
+          <textarea id="templateMsgText" rows="9" class="luma-input text-xs font-sans leading-relaxed text-slate-800 bg-slate-50" readonly></textarea>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="flex flex-col gap-2 pt-1">
+          <button id="copyCurrentMsgBtn" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs py-3 rounded-xl transition-colors flex items-center justify-center gap-2 shadow-2xs">
+            <i class="fa-regular fa-copy"></i>
+            <span>Copier le texte du message</span>
           </button>
-          <button id="copyPhonesBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 rounded-xl shadow-md transition-colors flex items-center justify-center gap-2">
-            <i class="fa-solid fa-address-book"></i> Copier les numéros (+225) pour WhatsApp Business / Diffusion
+          <button id="copyAllPhonesBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 rounded-xl shadow-md transition-colors flex items-center justify-center gap-2">
+            <i class="fa-solid fa-address-book"></i>
+            <span id="copyPhonesLabel">Copier tous les numéros (+225) de la session</span>
           </button>
         </div>
       </div>
@@ -354,13 +502,16 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
 
   <!-- JAVASCRIPT LOGIC -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase.js?v=20261015_V7_EXECUTIVE"></script>
-  <script src="base_donnees.js?v=20261015_V7_EXECUTIVE"></script>
+  <script src="supabase.js?v=20261015_V8_PRO"></script>
+  <script src="base_donnees.js?v=20261015_V8_PRO"></script>
   <script>
     const VALID_PASSWORDS = ["aeemci2026", "aeemci", "123456", "1234", "admin", "koumassi"];
     let rawInscriptions = [];
     let currentSessionInscriptions = [];
+    let currentSelectedCandidate = null;
+    let currentMsgType = 'billet';
 
+    // DOM Elements
     const loginCard = document.getElementById('loginCard');
     const dashboardCard = document.getElementById('dashboardCard');
     const passInput = document.getElementById('passInput');
@@ -370,49 +521,81 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
     const emptyState = document.getElementById('emptyState');
     const loadingState = document.getElementById('loadingState');
     const searchInput = document.getElementById('searchInput');
+    const clearSearchBtn = document.getElementById('clearSearchBtn');
     const sessionFilter = document.getElementById('sessionFilter');
     const refreshBtn = document.getElementById('refreshBtn');
     const exportBtn = document.getElementById('exportBtn');
+    const broadcastBtn = document.getElementById('broadcastBtn');
+    const navMessagesBtn = document.getElementById('navMessagesBtn');
 
-    // Ticket & Thanks Modal Elements
+    // Modals
     const ticketModal = document.getElementById('ticketModal');
     const closeTicketBtn = document.getElementById('closeTicketBtn');
-    if (closeTicketBtn) closeTicketBtn.addEventListener('click', () => ticketModal.classList.add('hidden'));
+    const messagesModal = document.getElementById('messagesModal');
+    const closeMessagesBtn = document.getElementById('closeMessagesBtn');
+    const copyTicketCodeModalBtn = document.getElementById('copyTicketCodeModalBtn');
+    const copyTicketFullMsgBtn = document.getElementById('copyTicketFullMsgBtn');
+    const copyCurrentMsgBtn = document.getElementById('copyCurrentMsgBtn');
+    const copyAllPhonesBtn = document.getElementById('copyAllPhonesBtn');
+    const msgCandidateSelect = document.getElementById('msgCandidateSelect');
+    const templateMsgText = document.getElementById('templateMsgText');
 
-    const thanksModal = document.getElementById('thanksModal');
-    const thanksBtn = document.getElementById('thanksBtn');
-    const closeThanksBtn = document.getElementById('closeThanksBtn');
-    const copyThanksMsgBtn = document.getElementById('copyThanksMsgBtn');
-    const copyPhonesBtn = document.getElementById('copyPhonesBtn');
+    /* ---------- TOAST SYSTEM ---------- */
+    function showToast(msg, isSuccess = true) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-msg');
+      const toastIcon = document.getElementById('toast-icon');
+      if (!toast || !toastMsg) return;
+      toastMsg.textContent = msg;
+      if (isSuccess) {
+        toastIcon.className = "fa-solid fa-circle-check text-emerald-400 text-sm";
+      } else {
+        toastIcon.className = "fa-solid fa-triangle-exclamation text-amber-400 text-sm";
+      }
+      toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
+      }, 3000);
+    }
+    window.showToast = showToast;
 
-    if (thanksBtn && thanksModal) {
-      thanksBtn.addEventListener('click', () => thanksModal.classList.remove('hidden'));
-    }
-    if (closeThanksBtn && thanksModal) {
-      closeThanksBtn.addEventListener('click', () => thanksModal.classList.add('hidden'));
-    }
-    if (copyThanksMsgBtn) {
-      copyThanksMsgBtn.addEventListener('click', () => {
-        const text = document.getElementById('thanksMsgText').value;
-        navigator.clipboard.writeText(text);
-        alert('Message de remerciement copié dans le presse-papier !');
-      });
-    }
-    if (copyPhonesBtn) {
-      copyPhonesBtn.addEventListener('click', () => {
-        const phones = currentSessionInscriptions
-          .map(item => meFormaterTelephoneWA(item.whatsapp))
-          .filter(Boolean)
-          .join('\n');
-        navigator.clipboard.writeText(phones);
-        alert(`${currentSessionInscriptions.length} numéros WhatsApp (+225) copiés pour votre liste de diffusion !`);
-      });
+    /* ---------- CLIPBOARD COPY HELPER ---------- */
+    window.copierTexte = function(text, successMsg = "Copié dans le presse-papier !") {
+      if (!text) return;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => showToast(successMsg)).catch(() => fallbackCopy(text, successMsg));
+      } else {
+        fallbackCopy(text, successMsg);
+      }
+    };
+
+    function fallbackCopy(text, successMsg) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showToast(successMsg);
+      } catch (err) {}
+      document.body.removeChild(ta);
     }
 
+    /* ---------- PHONE SANITIZER (+225) ---------- */
+    function meFormaterTelephoneWA(numStr) {
+      if (!numStr) return '';
+      let digits = String(numStr).replace(/\D/g, '');
+      if (digits.startsWith('00225')) digits = digits.slice(5);
+      if (!digits.startsWith('225')) {
+        digits = '225' + digits;
+      }
+      return digits;
+    }
+
+    /* ---------- AUTHENTICATION ---------- */
     function isPasswordValid(val) {
       if (!val) return false;
-      const clean = val.trim().toLowerCase();
-      return VALID_PASSWORDS.includes(clean);
+      return VALID_PASSWORDS.includes(val.trim().toLowerCase());
     }
 
     function togglePassVisibility() {
@@ -421,12 +604,10 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
       if (!input || !icon) return;
       if (input.type === 'password') {
         input.type = 'text';
-        icon.classList.remove('fa-eye');
-        icon.classList.add('fa-eye-slash');
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
       } else {
         input.type = 'password';
-        icon.classList.remove('fa-eye-slash');
-        icon.classList.add('fa-eye');
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
       }
     }
     window.togglePassVisibility = togglePassVisibility;
@@ -454,19 +635,23 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
       }
     }
 
-    loginBtn.addEventListener('click', () => {
-      if (isPasswordValid(passInput.value) || passInput.value.trim() === '') {
-        localStorage.setItem('aeemci_admin_logged', 'true');
-        sessionStorage.setItem('aeemci_admin_logged', 'true');
-        showDashboard();
-      } else {
-        passError.classList.remove('hidden');
-      }
-    });
+    if (loginBtn) {
+      loginBtn.addEventListener('click', () => {
+        if (isPasswordValid(passInput.value) || passInput.value.trim() === '') {
+          localStorage.setItem('aeemci_admin_logged', 'true');
+          sessionStorage.setItem('aeemci_admin_logged', 'true');
+          showDashboard();
+        } else {
+          passError.classList.remove('hidden');
+        }
+      });
+    }
 
-    passInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') loginBtn.click();
-    });
+    if (passInput) {
+      passInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') loginBtn.click();
+      });
+    }
 
     async function showDashboard() {
       loginCard.classList.add('hidden');
@@ -474,6 +659,7 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
       await loadData();
     }
 
+    /* ---------- DATA LOADING ---------- */
     async function loadData() {
       loadingState.classList.remove('hidden');
       emptyState.classList.add('hidden');
@@ -485,7 +671,7 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
         rawInscriptions = [];
       }
 
-      // Fusion avec le registre local des candidatures validées
+      // Merge local validated status map
       try {
         if (typeof localStorage !== 'undefined') {
           const valMap = JSON.parse(localStorage.getItem('aeemci_validations_map') || '{}');
@@ -502,19 +688,21 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
 
       loadingState.classList.add('hidden');
       applyFilterAndRender();
+      populateCandidateSelect();
     }
 
+    /* ---------- SESSION FILTER & SEARCH ---------- */
     function applyFilterAndRender() {
       if (sessionFilter && sessionFilter.value === 'new') {
-        currentSessionInscriptions = rawInscriptions.filter(item => 
-          (item.ticket_code || '').includes('PPT') || 
-          (item.ticket_code || '').includes('DESIGN') || 
-          (item.ticket_code || '').includes('VIDEO') || 
-          ((item.niveau || '').toLowerCase().includes('powerpoint')) ||
-          ((item.niveau || '').toLowerCase().includes('affiche')) ||
-          ((item.niveau || '').toLowerCase().includes('pack complet')) ||
-          (item.created_at && item.created_at >= '2026-10-14')
-        );
+        currentSessionInscriptions = rawInscriptions.filter(item => {
+          if (typeof estInscriptionNouvelleSession === 'function') {
+            return estInscriptionNouvelleSession(item);
+          }
+          const code = item.ticket_code || '';
+          const niv = (item.niveau || '').toLowerCase();
+          const d = item.created_at || '';
+          return code.includes('PPT') || code.includes('DESIGN') || code.includes('VIDEO') || niv.includes('powerpoint') || niv.includes('affiche') || niv.includes('pack complet') || d >= '2026-10-14';
+        });
       } else if (sessionFilter && (sessionFilter.value === 'archive' || sessionFilter.value === 'prev')) {
         currentSessionInscriptions = rawInscriptions.filter(item => 
           (item.ticket_code || '').includes('EXCEL-IA') || 
@@ -524,18 +712,22 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
         currentSessionInscriptions = [...rawInscriptions];
       }
 
-      // Mise à jour des cartes de statistiques de la session choisie
+      // Update KPI widgets
       updateStats(currentSessionInscriptions);
 
-      // Filtrage supplémentaire par terme de recherche
+      // Search filtering
       const q = searchInput.value.toLowerCase().trim();
       const filtered = currentSessionInscriptions.filter(item =>
         (item.nom || '').toLowerCase().includes(q) ||
+        (item.ticket_code || '').toLowerCase().includes(q) ||
         (item.email || '').toLowerCase().includes(q) ||
         (item.whatsapp || '').toLowerCase().includes(q) ||
         (item.niveau || item.formation || '').toLowerCase().includes(q) ||
         (item.attentes || '').toLowerCase().includes(q)
       );
+
+      const countEl = document.getElementById('filteredRowsCount');
+      if (countEl) countEl.textContent = filtered.length;
 
       renderTable(filtered);
     }
@@ -543,18 +735,40 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
     function updateStats(list) {
       const dbCount = list.length;
       const attenteCount = list.filter(i => (i.statut_validation || '').includes('attente') || !(i.statut_validation || '').includes('Valid')).length;
-      const principalesCount = list.length - attenteCount;
+      const validCount = dbCount - attenteCount;
 
-      document.getElementById('statTotal').textContent = dbCount;
-      document.getElementById('statPrincipales').textContent = `${principalesCount} Validé(s)`;
-      document.getElementById('statAttente').textContent = attenteCount;
-      document.getElementById('statElevesEtudiants').textContent = list.filter(i => {
+      const ordiCount = list.filter(i => {
+        const o = (i.ordi || '').toLowerCase();
+        return o.includes('oui') || o.includes('pc') || o.includes('ordinateur');
+      }).length;
+
+      const etudiantsCount = list.filter(i => {
         const s = (i.statut || '').toLowerCase();
         return s.includes('élève') || s.includes('étudiant');
       }).length;
-      document.getElementById('statPros').textContent = list.filter(i => (i.statut || '').toLowerCase().includes('pro')).length;
+
+      document.getElementById('statTotal').textContent = dbCount;
+      document.getElementById('statPrincipales').textContent = validCount;
+      document.getElementById('statAttente').textContent = attenteCount;
+      document.getElementById('statElevesEtudiants').textContent = etudiantsCount;
+      document.getElementById('statOrdi').textContent = ordiCount;
+
+      const phoneBtnLabel = document.getElementById('copyPhonesLabel');
+      if (phoneBtnLabel) {
+        phoneBtnLabel.textContent = `Copier les ${list.length} numéros (+225) de la session`;
+      }
     }
 
+    function getInitials(name) {
+      if (!name) return 'P';
+      const clean = name.trim().replace(/[^a-zA-ZÀ-ÿ\s]/g, '');
+      const parts = clean.split(/\s+/).filter(Boolean);
+      if (parts.length === 0) return 'P';
+      if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+
+    /* ---------- TABLE RENDERER ---------- */
     function renderTable(list) {
       if (list.length === 0) {
         emptyState.classList.remove('hidden');
@@ -565,57 +779,106 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
 
       tableBody.innerHTML = list.map((item, i) => {
         const isValidated = (item.statut_validation || '').includes('Valid') || (item.statut || '').includes('Confirm');
-        const badgeStyle = isValidated 
-          ? 'bg-emerald-50 text-lumaGreen border border-emerald-200 font-extrabold'
-          : 'bg-amber-50 text-amber-700 border border-amber-200 font-extrabold';
+        const statusBadge = isValidated 
+          ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200"><i class="fa-solid fa-circle-check text-[10px]"></i> Validée</span>`
+          : `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-50 text-amber-700 border border-amber-200"><i class="fa-solid fa-clock text-[10px]"></i> En attente</span>`;
 
-        const statusText = isValidated ? 'Validée' : "En attente";
-        const ticketCode = item.ticket_code || `TKT-${(item.nom || 'EXCEL').slice(0,3).toUpperCase()}-${i+100}`;
+        const ticketCode = item.ticket_code || `TKT-PPT-DESIGN-${(item.nom || 'AEEMCI').slice(0,3).toUpperCase()}${i+100}`;
         const indexInAll = rawInscriptions.indexOf(item);
-        const key = 'aeemci_thanked_' + (item.ticket_code || item.whatsapp || item.nom);
-        const isThanked = item.is_thanked || (typeof localStorage !== 'undefined' && localStorage.getItem(key) === 'true');
+        const initials = getInitials(item.nom);
+
+        // Visual format for Formation
+        const formStr = (item.niveau || item.formation || 'Pack Complet').toLowerCase();
+        let formBadge = `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-bold bg-purple-50 text-purple-700 border border-purple-200"><i class="fa-solid fa-layer-group text-[10px]"></i> Pack Complet (Les 2)</span>`;
+        if (formStr.includes('powerpoint') && !formStr.includes('affiche') && !formStr.includes('vidéo') && !formStr.includes('complet')) {
+          formBadge = `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-bold bg-amber-50 text-amber-800 border border-amber-200"><i class="fa-solid fa-file-powerpoint text-[10px]"></i> PowerPoint & IA</span>`;
+        } else if ((formStr.includes('affiche') || formStr.includes('vidéo')) && !formStr.includes('powerpoint') && !formStr.includes('complet')) {
+          formBadge = `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-bold bg-teal-50 text-teal-800 border border-teal-200"><i class="fa-solid fa-photo-film text-[10px]"></i> Affiches & Vidéo</span>`;
+        }
+
+        // PC badge
+        const hasPC = (item.ordi || '').toLowerCase().includes('oui') || (item.ordi || '').toLowerCase().includes('pc');
+        const pcBadge = hasPC
+          ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200"><i class="fa-solid fa-laptop"></i> Avec PC</span>`
+          : `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-medium bg-slate-100 text-slate-600">Sans PC</span>`;
+
+        const waPhone = meFormaterTelephoneWA(item.whatsapp);
 
         return `
-          <tr class="hover:bg-gray-50 text-xs">
-            <td class="font-bold text-gray-400">${i + 1}</td>
-            <td class="font-bold text-lumaText">
-              <div>${escapeHtml(item.nom || 'Anonyme')}</div>
-              <span class="text-[10px] text-slate-400 font-mono">${escapeHtml(ticketCode)}</span>
-            </td>
+          <tr class="hover:bg-slate-50/80 transition-colors">
+            <td class="text-center font-bold text-slate-400 text-xs">${i + 1}</td>
+            
+            <!-- CANDIDAT & CODE BILLET -->
             <td>
-              <span class="font-bold text-slate-700">${escapeHtml(item.genre || '-')}</span>, 
-              <span class="text-slate-500">${escapeHtml(item.age ? item.age + ' ans' : '-')}</span>
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center shrink-0 border border-white shadow-2xs">
+                  ${initials}
+                </div>
+                <div class="min-w-0">
+                  <div class="font-bold text-slate-900 text-sm truncate">${escapeHtml(item.nom || 'Participant')}</div>
+                  <div class="flex items-center gap-1 mt-0.5">
+                    <span class="inline-flex items-center gap-1 font-mono text-[10px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-md select-all">
+                      <i class="fa-solid fa-ticket text-emerald-600 text-[9px]"></i>
+                      ${escapeHtml(ticketCode)}
+                    </span>
+                    <button onclick="copierTexte('${escapeHtml(ticketCode)}', 'Code ticket copié !')" class="text-slate-400 hover:text-emerald-700 p-1 text-xs transition-colors" title="Copier le code">
+                      <i class="fa-regular fa-copy"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
             </td>
+
+            <!-- CONTACT & WHATSAPP -->
             <td>
-              <div class="text-gray-700">${escapeHtml(item.email || '-')}</div>
-              <a href="https://wa.me/${(item.whatsapp || '').replace(/\D/g, '')}" target="_blank" class="font-mono font-bold text-brandGreen hover:underline">${escapeHtml(item.whatsapp || '-')}</a>
+              <div class="space-y-0.5">
+                <div class="text-slate-600 text-xs truncate max-w-[170px]" title="${escapeHtml(item.email || '')}">
+                  <i class="fa-regular fa-envelope text-[10px] text-slate-400 mr-1"></i>${escapeHtml(item.email || '-')}
+                </div>
+                <a href="https://wa.me/${waPhone}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 font-mono font-bold text-[11px] text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200/60 px-2 py-0.5 rounded-md transition-colors" title="Ouvrir WhatsApp direct">
+                  <i class="fa-brands fa-whatsapp text-emerald-600"></i>
+                  <span>${escapeHtml(item.whatsapp || '-')}</span>
+                </a>
+              </div>
             </td>
+
+            <!-- PROFIL -->
             <td>
-              <span class="px-2 py-0.5 rounded-md text-[10px] font-bold ${item.ordi === 'Oui' ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'bg-slate-100 text-slate-600'}">
-                <i class="fa-solid fa-laptop mr-1"></i>${item.ordi || 'Non précisé'}
-              </span>
+              <div class="text-xs">
+                <span class="font-bold text-slate-700">${escapeHtml(item.genre || '-')}</span>
+                <span class="text-slate-400 text-[11px] block">${escapeHtml(item.age ? item.age + ' ans' : item.statut || '-')}</span>
+              </div>
             </td>
-            <td class="max-w-xs truncate text-gray-600 text-[11px]" title="${escapeHtml(item.attentes || '')}">
-              ${escapeHtml(item.attentes || 'Aucune précision')}
-            </td>
-            <td class="text-gray-700 font-semibold">${escapeHtml(item.niveau || item.formation || 'Les deux formations')}</td>
-            <td>
-              <span class="${badgeStyle} px-2.5 py-1 rounded-full text-[11px] inline-block">${statusText}</span>
-            </td>
+
+            <!-- ORDINATEUR -->
+            <td>${pcBadge}</td>
+
+            <!-- FORMATION -->
+            <td>${formBadge}</td>
+
+            <!-- STATUT -->
+            <td>${statusBadge}</td>
+
+            <!-- ACTIONS & MESSAGES -->
             <td class="text-center">
-              <div class="flex items-center justify-center gap-1.5">
-                <button onclick="envoyerRemerciementWhatsApp(${indexInAll})" class="${isThanked ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-teal-600 hover:bg-teal-700'} text-white font-bold text-[11px] px-2 py-1.5 rounded-xl shadow-sm transition-colors flex items-center gap-1" title="Envoyer un message de remerciement sur WhatsApp">
-                  <i class="fa-solid ${isThanked ? 'fa-circle-check' : 'fa-heart'} text-xs"></i> ${isThanked ? '✓ Remercié' : 'Merci'}
+              <div class="flex items-center justify-center gap-1.5 flex-wrap">
+                <!-- WhatsApp Billet Direct -->
+                <button onclick="envoyerBilletWhatsAppDirect(${indexInAll})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] px-2.5 py-1.5 rounded-xl shadow-2xs transition-all flex items-center gap-1" title="Envoyer le Billet Officiel + Code Ticket sur WhatsApp">
+                  <i class="fa-brands fa-whatsapp text-xs"></i>
+                  <span>Billet WhatsApp</span>
                 </button>
-                ${isValidated ? `
-                  <button onclick="voirTicket(${indexInAll})" class="bg-slate-800 hover:bg-slate-900 text-white font-bold text-[11px] px-2.5 py-1.5 rounded-xl shadow-sm transition-colors flex items-center gap-1">
-                    <i class="fa-solid fa-qrcode text-xs"></i> QR Code
-                  </button>
-                ` : `
-                  <button onclick="validerCandidature(${indexInAll})" class="bg-lumaGreen hover:bg-lumaGreenDark text-white font-bold text-[11px] px-3 py-1.5 rounded-xl shadow-md transition-all flex items-center gap-1">
-                    <i class="fa-solid fa-circle-check text-xs"></i> Valider
-                  </button>
-                `}
+
+                <!-- Pass QR Modal -->
+                <button onclick="voirTicket(${indexInAll})" class="bg-slate-900 hover:bg-slate-800 text-white font-bold text-[11px] px-2.5 py-1.5 rounded-xl shadow-2xs transition-colors flex items-center gap-1" title="Consulter le Pass officiel et le QR Code">
+                  <i class="fa-solid fa-qrcode text-xs text-amber-400"></i>
+                  <span>Pass QR</span>
+                </button>
+
+                <!-- Rappel J-1 -->
+                <button onclick="envoyerRappelWhatsAppDirect(${indexInAll})" class="bg-amber-500 hover:bg-amber-600 text-white font-bold text-[10px] px-2 py-1.5 rounded-xl shadow-2xs transition-colors flex items-center gap-1" title="Envoyer le rappel des horaires et du matériel pour dimanche">
+                  <i class="fa-regular fa-clock text-xs"></i>
+                  <span>Rappel</span>
+                </button>
               </div>
             </td>
           </tr>
@@ -623,9 +886,73 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
       }).join('');
     }
 
-    function validerCandidature(idx) {
+    /* ---------- MESSAGE GENERATORS ---------- */
+    function genererMessageBilletComplet(item) {
+      const ticketCode = item.ticket_code || 'TKT-PPT-DESIGN-OFFICIEL';
+      const nom = item.nom || 'Cher Participant';
+      const formation = item.niveau || item.formation || 'Pack Complet (PowerPoint & IA + Affiches/Vidéo)';
+      const hasPC = (item.ordi || '').toLowerCase().includes('oui') || (item.ordi || '').toLowerCase().includes('pc');
+      const ordiConsigne = hasPC 
+        ? "Apportez votre ordinateur portable bien chargé avec vos chargeurs."
+        : "Un carnet de notes et un stylo sont vivement recommandés.";
+
+      return `🎟️ *BILLET D'ACCÈS OFFICIEL — AEEMCI ACADEMY*\n` +
+        `----------------------------------------------\n` +
+        `Bonjour *${nom}* 👋,\n\n` +
+        `Félicitations ! Votre candidature pour la *Double Formation Pratique* est officiellement *VALIDÉE* ! 🎉\n\n` +
+        `📋 *VOS INFORMATIONS D'ACCÈS :*\n` +
+        `• *Code Billet :* \`${ticketCode}\`\n` +
+        `• *Option :* ${formation}\n` +
+        `• *Date :* Dimanche 18 Octobre 2026 dès 08h00 GMT\n` +
+        `• *Lieu :* Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi, Abidjan)\n\n` +
+        `👨‍🏫 *FORMATEURS & ATELIERS :*\n` +
+        `1. M. Djim Aboubacar Mikahillo — PowerPoint Professionnel & Prompt IA\n` +
+        `2. M. Sawadogo Mohamed — Conception d'Affiches & Montage Vidéo Mobile/PC\n\n` +
+        `🌐 *VOTRE PASS OFFICIEL EN LIGNE :*\n` +
+        `https://aeemci-koumassi.github.io/formation-word/\n\n` +
+        `⚠️ *CONSIGNES IMPORTANTES :*\n` +
+        `- Arrivée dès 07h45 pour l'émargement et la vérification des billets.\n` +
+        `- ${ordiConsigne}\n` +
+        `- Présentez ce message ou votre code \`${ticketCode}\` à l'entrée de la salle.\n\n` +
+        `À dimanche incha'Allah ! 🚀\n` +
+        `— *L'équipe d'Organisation AEEMCI Koumassi*\n` +
+        `Infoline : +225 07 11 98 58 10`;
+    }
+
+    function genererMessageRappel(item) {
+      const ticketCode = item.ticket_code || 'TKT-PPT-DESIGN-OFFICIEL';
+      const nom = item.nom || 'Participant';
+      const formation = item.niveau || item.formation || 'Double Formation Pratique';
+
+      return `⏰ *RAPPEL IMPORTANT — DOUBLE FORMATION AEEMCI*\n` +
+        `----------------------------------------------\n` +
+        `Bonjour *${nom}* 👋,\n\n` +
+        `Rappel amical : Votre atelier pratique a lieu ce *Dimanche 18 Octobre 2026 à 08h00 GMT* au *Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi)* !\n\n` +
+        `🎫 *Votre Code Billet :* \`${ticketCode}\`\n` +
+        `📚 *Formation :* ${formation}\n` +
+        `📍 *Repère Lieu :* Terminus bus 11 Koumassi, quartier Prodomo\n\n` +
+        `Pensez à venir dès 07h45 avec votre ordinateur chargé et votre carnet de notes. Nous avons hâte de vous accueillir ! ✨\n\n` +
+        `Infoline : +225 07 11 98 58 10\n` +
+        `— *AEEMCI Koumassi*`;
+    }
+
+    function genererMessageRemerciement(item) {
+      const nom = item.nom || 'Cher(e) Participant(e)';
+      return `✨ *REMERCIEMENTS OFFICIELS — AEEMCI KOUMASSI*\n` +
+        `----------------------------------------------\n` +
+        `Assalamou Aleykoum / Bonjour *${nom}* 👋,\n\n` +
+        `Au nom de toute l'équipe organisatrice de l'AEEMCI Koumassi, nous vous adressons nos plus sincères *REMERCIEMENTS* pour votre présence et votre participation active à la Double Formation Pratique (PowerPoint & IA / Affiches & Montage Vidéo) du Dimanche 18 Octobre 2026 au Groupe Scolaire Sainte Thérèse ! 🎓\n\n` +
+        `Nous espérons que les techniques transmises par nos experts M. Djim Aboubacar Mikahillo et M. Sawadogo Mohamed vous permettront d'exceller dans vos études et projets professionnels. 📊🎬\n\n` +
+        `Qu'Allah / Dieu bénisse votre apprentissage et couronne vos projets de plein succès ! 🤲\n\n` +
+        `— *L'équipe d'Organisation AEEMCI Koumassi*`;
+    }
+
+    /* ---------- VALIDATION & DIRECT WHATSAPP ACTIONS ---------- */
+    window.envoyerBilletWhatsAppDirect = function(idx) {
       if (idx < 0 || idx >= rawInscriptions.length) return;
       const item = rawInscriptions[idx];
+      
+      // Auto-validate and generate ticket code if missing
       item.statut_validation = "Validée";
       item.statut = "Validé";
       if (!item.ticket_code) {
@@ -635,7 +962,35 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
         item.ticket_code = `TKT-PPT-DESIGN-${code}`;
       }
 
-      // 1. Sauvegarde dans le registre local persistant
+      // Save validation locally and attempt cloud sync
+      sauvegarderValidation(item);
+
+      const waPhone = meFormaterTelephoneWA(item.whatsapp);
+      const text = genererMessageBilletComplet(item);
+      const url = `https://wa.me/${waPhone}?text=${encodeURIComponent(text)}`;
+      window.open(url, '_blank');
+
+      applyFilterAndRender();
+      showToast(`Billet officiel prêt pour ${item.nom}`);
+    };
+
+    window.envoyerRappelWhatsAppDirect = function(idx) {
+      if (idx < 0 || idx >= rawInscriptions.length) return;
+      const item = rawInscriptions[idx];
+      const waPhone = meFormaterTelephoneWA(item.whatsapp);
+      const text = genererMessageRappel(item);
+      window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(text)}`, '_blank');
+    };
+
+    window.envoyerRemerciementWhatsApp = function(idx) {
+      if (idx < 0 || idx >= rawInscriptions.length) return;
+      const item = rawInscriptions[idx];
+      const waPhone = meFormaterTelephoneWA(item.whatsapp);
+      const text = genererMessageRemerciement(item);
+      window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(text)}`, '_blank');
+    };
+
+    function sauvegarderValidation(item) {
       try {
         if (typeof localStorage !== 'undefined') {
           const valMap = JSON.parse(localStorage.getItem('aeemci_validations_map') || '{}');
@@ -648,11 +1003,10 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
             };
             localStorage.setItem('aeemci_validations_map', JSON.stringify(valMap));
           }
-          localStorage.setItem('aeemci_inscriptions_octobre_2026_v2', JSON.stringify(rawInscriptions));
         }
       } catch (e) {}
 
-      // 2. Synchronisation Supabase Cloud en arrière-plan
+      // Cloud PATCH attempt
       try {
         if (item.id && typeof SUPABASE_PRIMARY_URL !== 'undefined') {
           fetch(`${SUPABASE_PRIMARY_URL}?id=eq.${item.id}`, {
@@ -663,154 +1017,228 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({ statut: "Validé", ticket_code: item.ticket_code })
-          }).catch(err => console.error("Mise à jour Supabase", err));
+          }).catch(() => {});
         }
       } catch (e) {}
-
-      applyFilterAndRender();
-      voirTicket(idx);
     }
 
-    function meFormaterTelephoneWA(numStr) {
-      let digits = (numStr || '').replace(/\D/g, '');
-      if (digits.startsWith('00225')) digits = digits.slice(5);
-      if (!digits.startsWith('225')) {
-        digits = '225' + digits;
-      }
-      return digits;
-    }
-
-    function envoyerWhatsAppDirect(idx) {
+    /* ---------- VIEW TICKET MODAL ---------- */
+    window.voirTicket = function(idx) {
       if (idx < 0 || idx >= rawInscriptions.length) return;
       const item = rawInscriptions[idx];
-      const ticketCode = item.ticket_code || `TKT-PPT-DESIGN-${idx+100}`;
-      const waPhone = meFormaterTelephoneWA(item.whatsapp);
-      
-      const waMsg = encodeURIComponent(
-        `Bonjour ${item.nom} 👋,\n\n` +
-        `Félicitations ! Votre candidature pour la Double Formation Pratique (PowerPoint & IA / Création d'Affiches & Montage Vidéo) du Dimanche 18 Octobre 2026 à 08h00 au Groupe Scolaire Sainte Thérèse a été VALIDÉE ! 🎉\n\n` +
-        `🎫 Vos informations d'accès :\n` +
-        `• Code Billet : ${ticketCode}\n` +
-        `• Formation(s) : ${item.niveau || item.formation || 'PowerPoint & Montage Vidéo'}\n` +
-        `• Statut : ${item.statut || 'Participant'} (${item.ordi === 'Oui' ? 'Avec ordinateur' : 'Sans ordinateur'})\n\n` +
-        `📍 Lieu : Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi)\n` +
-        `⏰ Heure : Dimanche 18 Octobre 2026 à 08h00 GMT\n\n` +
-        `Présentez ce message à l'entrée de la salle. À dimanche !`
-      );
+      currentSelectedCandidate = item;
 
-      window.open(`https://wa.me/${waPhone}?text=${waMsg}`, '_blank');
-    }
-
-    function envoyerRemerciementWhatsApp(idx) {
-      if (idx < 0 || idx >= rawInscriptions.length) return;
-      const item = rawInscriptions[idx];
-      const waPhone = meFormaterTelephoneWA(item.whatsapp);
-      
-      const key = 'aeemci_thanked_' + (item.ticket_code || item.whatsapp || item.nom);
-      try { localStorage.setItem(key, 'true'); } catch (e) {}
-      item.is_thanked = true;
-
-      const waMsg = encodeURIComponent(
-        `Assalamou Aleykoum / Bonjour ${item.nom} 👋,\n\n` +
-        `Au nom de toute l'équipe organisatrice de l'AEEMCI Koumassi, nous tenons à vous adresser nos plus sincères REMERCIEMENTS pour votre présence et votre participation active à la Double Formation Pratique (PowerPoint & IA / Création d'Affiches & Montage Vidéo) du Dimanche 18 Octobre 2026 au Groupe Scolaire Sainte Thérèse ! 🎓✨\n\n` +
-        `Nous espérons que les enseignements de M. Djim Aboubacar Mikahillo (PowerPoint & IA) et M. Sawadogo Mohamed (Affiches & Montage Vidéo) vous seront très utiles au quotidien. 📊🎬\n\n` +
-        `Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲\n\n` +
-        `— L'équipe d'Organisation AEEMCI Koumassi`
-      );
-
-      window.open(`https://wa.me/${waPhone}?text=${waMsg}`, '_blank');
-      applyFilterAndRender();
-    }
-
-    function voirTicket(idx) {
-      if (idx < 0 || idx >= rawInscriptions.length) return;
-      const item = rawInscriptions[idx];
-      const ticketCode = item.ticket_code || `TKT-PPT-DESIGN-${idx+100}`;
-      
+      const ticketCode = item.ticket_code || `TKT-PPT-DESIGN-825`;
       document.getElementById('t-nom').textContent = item.nom || 'Participant';
       document.getElementById('t-code').textContent = ticketCode;
-      document.getElementById('t-formation').textContent = item.niveau || item.formation || 'Les deux formations';
-      document.getElementById('t-statut').textContent = `${item.statut || 'Participant'} (${item.ordi === 'Oui' ? 'PC disponible' : 'Sans PC'})`;
+      document.getElementById('t-formation').textContent = item.niveau || item.formation || 'Pack Complet (Les 2)';
+      document.getElementById('t-statut').textContent = `${item.statut || 'Participant'} (${item.ordi === 'Oui' ? 'Avec PC' : 'Sans PC'})`;
       
-      // QR Code via QuickChart / QRServer API
-      const qrData = encodeURIComponent(`RECU-OFFICIEL|AEEMCI-KOUMASSI|${ticketCode}|${item.nom}|${item.whatsapp}`);
-      document.getElementById('t-qrcode').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${qrData}`;
+      // QR Code
+      const qrData = encodeURIComponent(`AEEMCI-PASS|${ticketCode}|${item.nom}|18-10-2026`);
+      document.getElementById('t-qrcode').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${qrData}&margin=1`;
 
-      // WhatsApp Message Link avec indicatif international +225 garanti
+      // WhatsApp Button Link
       const waPhone = meFormaterTelephoneWA(item.whatsapp);
-      const waMsg = encodeURIComponent(
-        `Bonjour ${item.nom} 👋,\n\n` +
-        `Félicitations ! Votre candidature pour la Double Formation Pratique (PowerPoint & IA / Création d'Affiches & Montage Vidéo) du Dimanche 18 Octobre 2026 à 08h00 au Groupe Scolaire Sainte Thérèse a été VALIDÉE ! 🎉\n\n` +
-        `🎫 Voici votre Billet d'Accès Officiel :\n` +
-        `• Code Billet : ${ticketCode}\n` +
-        `• Formation(s) : ${item.niveau || item.formation || 'PowerPoint & Montage Vidéo'}\n` +
-        `• Matériel : ${item.ordi === 'Oui' ? 'Apportez votre ordinateur' : 'Carnet de notes'}\n\n` +
-        `📍 Lieu : Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi)\n` +
-        `⏰ Heure : Dimanche 18 Octobre 2026 à 08h00 GMT\n\n` +
-        `Présentez ce message ou votre QR Code à l'entrée. À très bientôt !`
-      );
-      
+      const waMsg = genererMessageBilletComplet(item);
       const waBtn = document.getElementById('sendWaTicketBtn');
-      if (waBtn) waBtn.href = `https://wa.me/${waPhone}?text=${waMsg}`;
+      if (waBtn) waBtn.href = `https://wa.me/${waPhone}?text=${encodeURIComponent(waMsg)}`;
 
       ticketModal.classList.remove('hidden');
+    };
+
+    if (closeTicketBtn) closeTicketBtn.addEventListener('click', () => ticketModal.classList.add('hidden'));
+
+    if (copyTicketCodeModalBtn) {
+      copyTicketCodeModalBtn.addEventListener('click', () => {
+        const code = document.getElementById('t-code').textContent.trim();
+        copierTexte(code, `Code ${code} copié !`);
+      });
+    }
+
+    if (copyTicketFullMsgBtn) {
+      copyTicketFullMsgBtn.addEventListener('click', () => {
+        if (!currentSelectedCandidate) return;
+        const msg = genererMessageBilletComplet(currentSelectedCandidate);
+        copierTexte(msg, "Message officiel copié !");
+      });
+    }
+
+    /* ---------- MESSAGES & BROADCAST MODAL ---------- */
+    function populateCandidateSelect() {
+      if (!msgCandidateSelect) return;
+      const activeList = currentSessionInscriptions.length > 0 ? currentSessionInscriptions : rawInscriptions;
+      msgCandidateSelect.innerHTML = '<option value="">-- Choisir un participant de la liste --</option>' +
+        activeList.map((item, idx) => {
+          const code = item.ticket_code || `TKT-PPT-${idx+1}`;
+          return `<option value="${idx}">${item.nom} (${code})</option>`;
+        }).join('');
+      
+      updateTemplatePreview();
+    }
+
+    window.switchMsgTemplate = function(type) {
+      currentMsgType = type;
+      ['billet', 'rappel', 'remerciement'].forEach(t => {
+        const tab = document.getElementById(`tab-${t}`);
+        if (!tab) return;
+        if (t === type) {
+          tab.className = "flex-1 py-2 px-2 rounded-xl bg-white text-emerald-800 shadow-2xs border border-slate-200/60 transition-all text-center font-bold";
+        } else {
+          tab.className = "flex-1 py-2 px-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all text-center font-bold";
+        }
+      });
+      updateTemplatePreview();
+    };
+
+    function updateTemplatePreview() {
+      if (!templateMsgText) return;
+      const activeList = currentSessionInscriptions.length > 0 ? currentSessionInscriptions : rawInscriptions;
+      const selectedIdx = msgCandidateSelect ? msgCandidateSelect.value : '';
+      const sampleItem = (selectedIdx !== '' && activeList[selectedIdx]) ? activeList[selectedIdx] : (activeList[0] || {
+        nom: "Kouma Yaya",
+        ticket_code: "TKT-PPT-DESIGN-RNQ7EP",
+        niveau: "Pack Complet (PowerPoint & IA + Affiches/Vidéo)",
+        statut: "Participant",
+        ordi: "Oui"
+      });
+
+      if (currentMsgType === 'billet') {
+        templateMsgText.value = genererMessageBilletComplet(sampleItem);
+      } else if (currentMsgType === 'rappel') {
+        templateMsgText.value = genererMessageRappel(sampleItem);
+      } else {
+        templateMsgText.value = genererMessageRemerciement(sampleItem);
+      }
+    }
+
+    if (msgCandidateSelect) {
+      msgCandidateSelect.addEventListener('change', () => updateTemplatePreview());
+    }
+
+    function openMessagesModal() {
+      populateCandidateSelect();
+      updateTemplatePreview();
+      if (messagesModal) messagesModal.classList.remove('hidden');
+    }
+
+    if (broadcastBtn) broadcastBtn.addEventListener('click', openMessagesModal);
+    if (navMessagesBtn) navMessagesBtn.addEventListener('click', openMessagesModal);
+    if (closeMessagesBtn) closeMessagesBtn.addEventListener('click', () => messagesModal.classList.add('hidden'));
+
+    if (copyCurrentMsgBtn) {
+      copyCurrentMsgBtn.addEventListener('click', () => {
+        const text = templateMsgText.value;
+        copierTexte(text, "Texte du message copié pour WhatsApp !");
+      });
+    }
+
+    if (copyAllPhonesBtn) {
+      copyAllPhonesBtn.addEventListener('click', () => {
+        const list = currentSessionInscriptions.length > 0 ? currentSessionInscriptions : rawInscriptions;
+        const phones = list
+          .map(item => meFormaterTelephoneWA(item.whatsapp))
+          .filter(Boolean);
+        
+        // Remove duplicates
+        const uniquePhones = [...new Set(phones)].join('\n');
+        copierTexte(uniquePhones, `${phones.length} numéros WhatsApp (+225) copiés pour la diffusion !`);
+      });
+    }
+
+    /* ---------- SEARCH & TOOLBAR LISTENERS ---------- */
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        if (clearSearchBtn) {
+          clearSearchBtn.classList.toggle('hidden', searchInput.value.length === 0);
+        }
+        applyFilterAndRender();
+      });
+    }
+
+    if (clearSearchBtn) {
+      clearSearchBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        clearSearchBtn.classList.add('hidden');
+        applyFilterAndRender();
+      });
+    }
+
+    if (sessionFilter) {
+      sessionFilter.addEventListener('change', () => {
+        applyFilterAndRender();
+        populateCandidateSelect();
+      });
+    }
+
+    if (refreshBtn) {
+      refreshBtn.addEventListener('click', () => {
+        try {
+          if (typeof localStorage !== 'undefined') {
+            localStorage.removeItem('aeemci_inscriptions_octobre_2026_v2');
+          }
+        } catch (e) {}
+        loadData();
+        showToast("Données actualisées en direct");
+      });
+    }
+
+    /* ---------- CSV EXPORT ---------- */
+    if (exportBtn) {
+      exportBtn.addEventListener('click', () => {
+        const list = currentSessionInscriptions.length > 0 ? currentSessionInscriptions : rawInscriptions;
+        if (list.length === 0) {
+          showToast("Aucune donnée à exporter", false);
+          return;
+        }
+
+        const headers = ['#', 'Code Billet', 'Nom & Prénoms', 'Genre', 'Âge', 'Email', 'WhatsApp (+225)', 'Statut Pro', 'Ordinateur', 'Attentes', 'Formation', 'Statut Dossier', 'Date Inscription'];
+        const rows = list.map((e, idx) => [
+          idx + 1, 
+          e.ticket_code || '', 
+          e.nom || '', 
+          e.genre || '', 
+          e.age || '', 
+          e.email || '', 
+          meFormaterTelephoneWA(e.whatsapp), 
+          e.statut || '', 
+          e.ordi || '', 
+          e.attentes || '', 
+          e.niveau || e.formation || '', 
+          e.statut_validation || "Validée", 
+          e.created_at || e.date || ''
+        ]);
+
+        const csv = [headers, ...rows].map(row => row.map(cell => `"${String(cell || '').replace(/"/g, '""')}"`).join(';')).join('\n');
+        const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        const sessionLabel = sessionFilter.value === 'new' ? 'powerpoint_video_2026' : 'export_complet';
+        a.download = `inscriptions_aeemci_${sessionLabel}_${new Date().toISOString().slice(0,10)}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast("Fichier CSV téléchargé avec succès !");
+      });
     }
 
     function escapeHtml(str) {
-      return String(str).replace(/[&<>"']/g, function(m) {
+      return String(str || '').replace(/[&<>"']/g, function(m) {
         return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
       });
     }
 
-    searchInput.addEventListener('input', () => applyFilterAndRender());
-    sessionFilter.addEventListener('change', () => applyFilterAndRender());
-    refreshBtn.addEventListener('click', () => {
-      try {
-        if (typeof localStorage !== 'undefined') {
-          localStorage.removeItem('aeemci_inscriptions_octobre_2026_v2');
-        }
-      } catch (e) {}
-      loadData();
-    });
-
-    exportBtn.addEventListener('click', () => {
-      if (currentSessionInscriptions.length === 0) return;
-      const headers = ['#', 'Ticket Code', 'Nom & Prénoms', 'Genre', 'Âge', 'Email', 'WhatsApp', 'Statut Pro', 'Ordinateur', 'Attentes', 'Formation', 'Statut Validation', 'Date'];
-      const rows = currentSessionInscriptions.map((e, idx) => [
-        idx + 1, 
-        e.ticket_code || '', 
-        e.nom || '', 
-        e.genre || '', 
-        e.age || '', 
-        e.email || '', 
-        e.whatsapp || '', 
-        e.statut || '', 
-        e.ordi || '', 
-        e.attentes || '', 
-        e.niveau || e.formation || '', 
-        e.statut_validation || "Liste d'attente", 
-        e.created_at || e.date || ''
-      ]);
-
-      const csv = [headers, ...rows].map(row => row.map(cell => `"${String(cell || '').replace(/"/g, '""')}"`).join(';')).join('\n');
-      const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url;
-      const sessionLabel = sessionFilter.value === 'new' ? 'oct2026' : 'complet';
-      a.download = `inscriptions_aeemci_${sessionLabel}_${new Date().toISOString().slice(0,10)}.csv`;
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    });
-
-    // Check auth on load
+    // Initialize Auth check
     checkAuth();
 
-    // Actualisation automatique en arrière-plan toutes les 10 secondes (Temps Réel Direct)
+    // Auto-refresh every 12 seconds in background
     setInterval(() => {
       if (localStorage.getItem('aeemci_admin_logged') === 'true' || sessionStorage.getItem('aeemci_admin_logged') === 'true') {
         loadData();
       }
-    }, 10000);
+    }, 12000);
   </script>
 </body>
 </html>

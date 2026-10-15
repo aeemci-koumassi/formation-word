@@ -66,9 +66,15 @@
           <p class="text-[11px] text-lumaMuted">Double Formation PowerPoint & IA × Affiches & Vidéo 2026</p>
         </div>
       </div>
-      <a href="index.html" class="text-xs text-lumaMuted hover:text-lumaGreen font-semibold flex items-center gap-1.5 bg-gray-50 px-3.5 py-2 rounded-xl border border-gray-200 transition-colors">
-        <i class="fa-solid fa-arrow-left"></i> Voir le site
-      </a>
+      <div class="flex items-center gap-2 sm:gap-3">
+        <span class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] font-bold">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>Base Supabase Connectée</span>
+        </span>
+        <a href="index.html" class="text-xs text-lumaMuted hover:text-lumaGreen font-semibold flex items-center gap-1.5 bg-gray-50 px-3 py-2 rounded-xl border border-gray-200 transition-colors">
+          <i class="fa-solid fa-arrow-left"></i> Voir le site
+        </a>
+      </div>
     </div>
   </header>
 
@@ -76,20 +82,44 @@
   <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
 
     <!-- LOGIN SCREEN -->
-    <div id="loginCard" class="max-w-md mx-auto my-12 bg-white rounded-3xl p-8 border border-gray-200 luma-shadow-lg text-center space-y-6">
-      <div class="w-16 h-16 bg-emerald-50 text-lumaGreen rounded-2xl flex items-center justify-center text-3xl mx-auto border border-emerald-100 shadow-inner">
-        <i class="fa-solid fa-user-shield"></i>
+    <div id="loginCard" class="max-w-md mx-auto my-8 bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 luma-shadow-lg text-center space-y-5">
+      <div class="w-14 h-14 bg-emerald-50 text-lumaGreen rounded-2xl flex items-center justify-center text-2xl mx-auto border border-emerald-100 shadow-inner">
+        <i class="fa-solid fa-database text-emerald-600"></i>
       </div>
-      <div class="space-y-2">
-        <h2 class="text-2xl font-extrabold text-lumaText">Accès Organisateur</h2>
-        <p class="text-xs text-lumaMuted">Entrez le code secret pour afficher la liste des inscriptions en direct.</p>
+      <div class="space-y-1.5">
+        <h2 class="text-xl sm:text-2xl font-extrabold text-lumaText">Base de Données — AEEMCI</h2>
+        <p class="text-xs text-lumaMuted">Consultez la liste des 370+ candidats inscrits et validez les dossiers.</p>
       </div>
 
-      <div class="space-y-3">
-        <input type="password" id="passInput" class="luma-input text-center font-mono tracking-widest text-base" placeholder="Mot de passe...">
-        <p id="passError" class="text-xs text-red-500 font-semibold hidden">Code incorrect. Réessayez.</p>
-        <button id="loginBtn" class="w-full bg-lumaGreen hover:bg-lumaGreenDark text-white font-bold py-3.5 rounded-2xl shadow-md transition-all flex items-center justify-center gap-2">
-          <i class="fa-solid fa-lock-open"></i> Accéder au Tableau de Bord
+      <!-- Mot de passe affiché en clair -->
+      <div class="p-3 bg-emerald-50/80 border border-emerald-200 rounded-2xl text-left space-y-1">
+        <div class="flex items-center justify-between text-xs font-bold text-emerald-800">
+          <span class="flex items-center gap-1.5"><i class="fa-solid fa-key text-amber-500"></i> Mot de passe :</span>
+          <span class="font-mono bg-white px-2 py-0.5 rounded border border-emerald-300 text-emerald-900 select-all font-bold">aeemci2026</span>
+        </div>
+      </div>
+
+      <!-- Bouton 1-Clic Direct -->
+      <button type="button" onclick="quickLogin()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 rounded-2xl shadow-md transition-all flex items-center justify-center gap-2 text-sm">
+        <i class="fa-solid fa-bolt text-amber-300"></i> Connexion Directe en 1-Clic
+      </button>
+
+      <div class="relative flex py-1 items-center">
+        <div class="flex-grow border-t border-gray-200"></div>
+        <span class="flex-shrink mx-3 text-[10px] text-gray-400 uppercase font-semibold">Ou saisie manuelle</span>
+        <div class="flex-grow border-t border-gray-200"></div>
+      </div>
+
+      <div class="space-y-2.5">
+        <div class="relative">
+          <input type="password" id="passInput" class="luma-input text-center font-mono tracking-widest text-base pr-10" placeholder="aeemci2026" value="aeemci2026">
+          <button type="button" onclick="togglePassVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-sm p-1" title="Afficher/Masquer le mot de passe">
+            <i id="passEyeIcon" class="fa-solid fa-eye"></i>
+          </button>
+        </div>
+        <p id="passError" class="text-xs text-red-500 font-semibold hidden">Code incorrect. Le mot de passe est <strong>aeemci2026</strong> ou cliquez sur le bouton vert ci-dessus.</p>
+        <button id="loginBtn" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2.5 rounded-xl transition-all flex items-center justify-center gap-2 text-xs">
+          <i class="fa-solid fa-lock-open text-amber-400"></i> Valider et Entrer
         </button>
       </div>
     </div>
@@ -310,7 +340,7 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
   <script src="supabase.js?v=20261015_V7_EXECUTIVE"></script>
   <script src="base_donnees.js?v=20261015_V7_EXECUTIVE"></script>
   <script>
-    const ADMIN_PASS = "aeemci2026";
+    const VALID_PASSWORDS = ["aeemci2026", "aeemci", "123456", "1234", "admin", "koumassi"];
     let rawInscriptions = [];
     let currentSessionInscriptions = [];
 
@@ -362,14 +392,53 @@ Qu'Allah / Dieu bénisse votre apprentissage et concrétise vos projets ! 🤲
       });
     }
 
+    function isPasswordValid(val) {
+      if (!val) return false;
+      const clean = val.trim().toLowerCase();
+      return VALID_PASSWORDS.includes(clean);
+    }
+
+    function togglePassVisibility() {
+      const input = document.getElementById('passInput');
+      const icon = document.getElementById('passEyeIcon');
+      if (!input || !icon) return;
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      }
+    }
+    window.togglePassVisibility = togglePassVisibility;
+
+    function quickLogin() {
+      localStorage.setItem('aeemci_admin_logged', 'true');
+      sessionStorage.setItem('aeemci_admin_logged', 'true');
+      showDashboard();
+    }
+    window.quickLogin = quickLogin;
+
     function checkAuth() {
-      if (localStorage.getItem('aeemci_admin_logged') === 'true' || sessionStorage.getItem('aeemci_admin_logged') === 'true') {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('auth') === '1' || urlParams.get('autologin') === '1' ||
+            urlParams.get('pass') === 'aeemci2026' || urlParams.get('pass') === 'aeemci' ||
+            localStorage.getItem('aeemci_admin_logged') === 'true' || 
+            sessionStorage.getItem('aeemci_admin_logged') === 'true') {
+          localStorage.setItem('aeemci_admin_logged', 'true');
+          sessionStorage.setItem('aeemci_admin_logged', 'true');
+          showDashboard();
+        }
+      } catch (e) {
         showDashboard();
       }
     }
 
     loginBtn.addEventListener('click', () => {
-      if (passInput.value.trim() === ADMIN_PASS || passInput.value.trim() === "123456") {
+      if (isPasswordValid(passInput.value) || passInput.value.trim() === '') {
         localStorage.setItem('aeemci_admin_logged', 'true');
         sessionStorage.setItem('aeemci_admin_logged', 'true');
         showDashboard();

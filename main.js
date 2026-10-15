@@ -1,7 +1,7 @@
 /**
  * SCRIPT PRINCIPAL D'INTERFACE (main.js)
  * Plateforme Officielle AEEMCI ACADEMY — Sous-comité de Koumassi
- * Session : Double Formation Pratique (PowerPoint & IA × Affiches & Montage Vidéo)
+ * Session : Double Formation Pratique (Excel & IA × Affiches & Montage Vidéo)
  * Date : Dimanche 18 Octobre 2026 à 08h00 UTC+0
  * Lieu : ISTCO La Colombe (Koumassi, en face de la Cité SIR, Abidjan)
  */
@@ -92,14 +92,14 @@ async function initApp() {
           const code = item.ticket_code || '';
           const niveau = (item.niveau || '').toLowerCase();
           const date = item.created_at || item.date || '';
-          return code.includes('PPT') || code.includes('DESIGN') || code.includes('VIDEO') || niveau.includes('powerpoint') || niveau.includes('affiche') || niveau.includes('pack complet') || date >= '2026-10-14';
+          return code.includes('EXCEL') || code.includes('PPT') || code.includes('DESIGN') || code.includes('VIDEO') || niveau.includes('excel') || niveau.includes('powerpoint') || niveau.includes('affiche') || niveau.includes('pack complet') || date >= '2026-10-14';
         });
       }
 
       // Si l'utilisateur local vient de s'inscrire sur son navigateur pour la session actuelle
       const saved = getSavedUserTicket();
       if (saved && saved.nom) {
-        const isCurrentSession = (saved.ticket_code || '').includes('PPT') || (saved.formation || '').includes('PowerPoint') || (saved.formation || '').includes('Design');
+        const isCurrentSession = (saved.ticket_code || '').includes('EXCEL') || (saved.ticket_code || '').includes('PPT') || (saved.formation || '').includes('Excel') || (saved.formation || '').includes('PowerPoint') || (saved.formation || '').includes('Design');
         if (isCurrentSession) {
           const alreadyInList = list.some(item => (item.whatsapp && item.whatsapp === saved.whatsapp) || (item.nom && item.nom.toLowerCase() === saved.nom.toLowerCase()));
           if (!alreadyInList) {
@@ -174,8 +174,8 @@ async function initApp() {
 
   /* ---------- 6. CALENDAR EXPORT (GOOGLE CALENDAR & .ICS) ---------- */
   window.openGoogleCalendar = function() {
-    const title = encodeURIComponent("Double Formation Pratique (PowerPoint & IA × Affiches & Montage Vidéo) — AEEMCI");
-    const details = encodeURIComponent("Formation pratique 100% gratuite.\n\nAtelier 1 : PowerPoint & IA par Djim Aboubacar Mikahillo\nAtelier 2 : Création d’affiches et montages vidéo par Sawadogo Mohamed\n\nLieu : ISTCO La Colombe (Koumassi, en face de la Cité SIR)\nInfoline WhatsApp : +225 07 11 98 58 10");
+    const title = encodeURIComponent("Double Formation Pratique (Excel & IA × Affiches & Montage Vidéo) — AEEMCI");
+    const details = encodeURIComponent("Formation pratique 100% gratuite.\n\nAtelier 1 : Excel & IA par Djim Aboubacar Mikahillo\nAtelier 2 : Création d’affiches et montages vidéo par Sawadogo Mohamed\n\nLieu : ISTCO La Colombe (Koumassi, en face de la Cité SIR)\nInfoline WhatsApp : +225 07 11 98 58 10");
     const location = encodeURIComponent("ISTCO La Colombe, en face de la Cité SIR, Koumassi, Abidjan");
     const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20261018T080000Z/20261018T140000Z&details=${details}&location=${location}`;
     window.open(googleUrl, '_blank');
@@ -191,8 +191,8 @@ async function initApp() {
       'DTSTAMP:20261014T000000Z',
       'DTSTART:20261018T080000Z',
       'DTEND:20261018T140000Z',
-      'SUMMARY:Double Formation Pratique (PowerPoint & IA × Affiches & Montage Vidéo) — AEEMCI',
-      'DESCRIPTION:Formation 100% gratuite animée par Djim Aboubacar Mikahillo et Sawadogo Mohamed à l\'ISTCO La Colombe.',
+      'SUMMARY:Double Formation Pratique (Excel & IA × Affiches & Montage Vidéo) — AEEMCI',
+      'DESCRIPTION:Formation 100% gratuite animée par Djim Aboubacar Mikahillo (Excel & IA) et Sawadogo Mohamed (Design & Vidéo) à l\'ISTCO La Colombe.',
       'LOCATION:ISTCO La Colombe, en face de la Cité SIR, Koumassi, Abidjan',
       'END:VEVENT',
       'END:VCALENDAR'
@@ -305,11 +305,11 @@ async function initApp() {
     const qrImg = document.getElementById('ticket-qrcode-img');
     const waShare = document.getElementById('ticket-whatsapp-share');
 
-    const ticketCode = ticketData.ticket_code || 'TKT-PPT-DESIGN-825';
+    const ticketCode = ticketData.ticket_code || 'TKT-EXCEL-DESIGN-825';
     if (codeEl) codeEl.textContent = ticketCode;
     if (nomEl) nomEl.textContent = ticketData.nom || 'Participant';
     if (contactEl) contactEl.textContent = `${ticketData.whatsapp || ''} · ${ticketData.email || ''}`;
-    if (formEl) formEl.textContent = ticketData.formation || 'Pack Complet (PowerPoint & IA + Design & Vidéo)';
+    if (formEl) formEl.textContent = ticketData.formation || 'Pack Complet (Excel & IA + Design & Vidéo)';
 
     // QR Code generation via secure public QR API
     const qrPayload = encodeURIComponent(`AEEMCI-PASS|${ticketCode}|${ticketData.nom}|18-10-2026`);
@@ -330,10 +330,10 @@ async function initApp() {
 
   window.openTicketModal = function() {
     const saved = getSavedUserTicket() || {
-      ticket_code: 'TKT-PPT-DESIGN-825',
+      ticket_code: 'TKT-EXCEL-DESIGN-825',
       nom: document.getElementById('f-nom') ? document.getElementById('f-nom').value.trim() : 'Participant',
       whatsapp: document.getElementById('f-whatsapp') ? document.getElementById('f-whatsapp').value.trim() : '+225 07 11 98 58 10',
-      formation: document.getElementById('f-formation') ? document.getElementById('f-formation').value : 'Pack Complet (PowerPoint & IA + Design/Vidéo)'
+      formation: document.getElementById('f-formation') ? document.getElementById('f-formation').value : 'Pack Complet (Excel & IA + Design/Vidéo)'
     };
     renderTicketDetails(saved);
     if (ticketModal) ticketModal.classList.remove('hidden');
@@ -405,7 +405,7 @@ async function initApp() {
       if (submitLabel) submitLabel.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Inscription en cours...';
 
       // Ticket generation
-      const ticketCode = (typeof genererCodeTicket === 'function') ? genererCodeTicket() : `TKT-PPT-DESIGN-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+      const ticketCode = (typeof genererCodeTicket === 'function') ? genererCodeTicket() : `TKT-EXCEL-DESIGN-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
 
       const entry = {
         ticket_code: ticketCode,

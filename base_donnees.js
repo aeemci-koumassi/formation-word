@@ -1,6 +1,6 @@
 /**
  * MODULE BASE DE DONNÉES HYBRIDE (SUPABASE CLOUD + FORMSUBMIT)
- * Projet : Double Formation PowerPoint & IA × Affiches & Montage Vidéo (AEEMCI Koumassi)
+ * Projet : Double Formation Excel & IA × Affiches & Montage Vidéo (AEEMCI Koumassi)
  * Session : Dimanche 18 Octobre 2026
  */
 
@@ -16,7 +16,7 @@ function genererCodeTicket() {
     for (let i = 0; i < 6; i++) {
         code += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-    return `TKT-PPT-DESIGN-${code}`;
+    return `TKT-EXCEL-DESIGN-${code}`;
 }
 
 function parseSupabaseItem(item) {
@@ -40,9 +40,11 @@ function estInscriptionNouvelleSession(item) {
     const ticketCode = item.ticket_code || '';
     const niveau = (item.niveau || '').toLowerCase();
     const dateStr = item.created_at || item.date || '';
-    return ticketCode.includes('PPT') || 
+    return ticketCode.includes('EXCEL') ||
+           ticketCode.includes('PPT') || 
            ticketCode.includes('DESIGN') || 
            ticketCode.includes('VIDEO') || 
+           niveau.includes('excel') ||
            niveau.includes('powerpoint') || 
            niveau.includes('affiche') || 
            niveau.includes('pack complet') || 

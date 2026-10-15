@@ -84,7 +84,7 @@
               Console Organisateur
             </span>
           </div>
-          <p class="text-[11px] text-slate-500 font-medium">Double Formation : PowerPoint & IA × Affiches & Montage Vidéo (18 Octobre 2026)</p>
+          <p class="text-[11px] text-slate-500 font-medium">Double Formation : Excel & IA × Affiches & Montage Vidéo (18 Octobre 2026)</p>
         </div>
       </div>
 
@@ -249,7 +249,7 @@
             <!-- SESSION SELECTOR -->
             <div class="relative w-full sm:w-auto">
               <select id="sessionFilter" class="luma-input font-bold text-xs text-emerald-800 border-emerald-300/80 bg-emerald-50/70 cursor-pointer w-full sm:w-auto pr-8 shadow-2xs">
-                <option value="new" selected>🎯 Double Formation 2026 (PowerPoint & IA × Affiches & Vidéo) — 18 Octobre</option>
+                <option value="new" selected>🎯 Double Formation 2026 (Excel & IA × Affiches & Vidéo) — 18 Octobre</option>
                 <option value="archive">📁 Archives — Session précédente (Excel & IA — 374 inscrits)</option>
                 <option value="all">📂 Vue consolidée (Toutes les sessions)</option>
               </select>
@@ -319,7 +319,7 @@
             <div class="space-y-1">
               <h3 class="text-base font-bold text-slate-800">Base prête pour la Double Formation 2026</h3>
               <p class="text-xs text-slate-500 leading-relaxed">
-                Les coordonnées des anciennes sessions ont été archivées avec succès. La base est désormais 100% active et dédiée au programme du Dimanche 18 Octobre 2026 (PowerPoint & IA × Affiches & Vidéo).
+                Les coordonnées des anciennes sessions ont été archivées avec succès. La base est désormais 100% active et dédiée au programme du Dimanche 18 Octobre 2026 (Excel & IA × Affiches & Vidéo).
               </p>
             </div>
             <p class="text-[11px] text-emerald-700 font-semibold bg-emerald-50 border border-emerald-200/80 px-3.5 py-1.5 rounded-xl inline-block">
@@ -376,7 +376,7 @@
           <!-- Code Ticket avec bouton copie -->
           <div class="flex items-center justify-center gap-2 pt-0.5">
             <span id="t-code" class="font-mono text-xs sm:text-sm font-bold text-emerald-800 bg-white border border-emerald-200 px-3 py-1 rounded-lg shadow-2xs">
-              TKT-PPT-DESIGN-XXXXXX
+              TKT-EXCEL-DESIGN-XXXXXX
             </span>
             <button id="copyTicketCodeModalBtn" class="w-7 h-7 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-800 flex items-center justify-center text-xs transition-colors" title="Copier le code billet">
               <i class="fa-regular fa-copy"></i>
@@ -722,7 +722,7 @@
           const code = item.ticket_code || '';
           const niv = (item.niveau || '').toLowerCase();
           const d = item.created_at || '';
-          return code.includes('PPT') || code.includes('DESIGN') || code.includes('VIDEO') || niv.includes('powerpoint') || niv.includes('affiche') || niv.includes('pack complet') || d >= '2026-10-14';
+          return code.includes('EXCEL') || code.includes('PPT') || code.includes('DESIGN') || code.includes('VIDEO') || niv.includes('excel') || niv.includes('powerpoint') || niv.includes('affiche') || niv.includes('pack complet') || d >= '2026-10-14';
         });
       } else if (sessionFilter && (sessionFilter.value === 'archive' || sessionFilter.value === 'prev')) {
         currentSessionInscriptions = rawInscriptions.filter(item => 
@@ -804,16 +804,16 @@
           ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200"><i class="fa-solid fa-circle-check text-[10px]"></i> Validée</span>`
           : `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-50 text-amber-700 border border-amber-200"><i class="fa-solid fa-clock text-[10px]"></i> En attente</span>`;
 
-        const ticketCode = item.ticket_code || `TKT-PPT-DESIGN-${(item.nom || 'AEEMCI').slice(0,3).toUpperCase()}${i+100}`;
+        const ticketCode = item.ticket_code || `TKT-EXCEL-DESIGN-${(item.nom || 'AEEMCI').slice(0,3).toUpperCase()}${i+100}`;
         const indexInAll = rawInscriptions.indexOf(item);
         const initials = getInitials(item.nom);
 
         // Visual format for Formation
         const formStr = (item.niveau || item.formation || 'Pack Complet').toLowerCase();
         let formBadge = `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-bold bg-purple-50 text-purple-700 border border-purple-200"><i class="fa-solid fa-layer-group text-[10px]"></i> Pack Complet (Les 2)</span>`;
-        if (formStr.includes('powerpoint') && !formStr.includes('affiche') && !formStr.includes('vidéo') && !formStr.includes('complet')) {
-          formBadge = `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-bold bg-amber-50 text-amber-800 border border-amber-200"><i class="fa-solid fa-file-powerpoint text-[10px]"></i> PowerPoint & IA</span>`;
-        } else if ((formStr.includes('affiche') || formStr.includes('vidéo')) && !formStr.includes('powerpoint') && !formStr.includes('complet')) {
+        if ((formStr.includes('excel') || formStr.includes('powerpoint')) && !formStr.includes('affiche') && !formStr.includes('vidéo') && !formStr.includes('complet')) {
+          formBadge = `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200"><i class="fa-solid fa-file-excel text-[10px]"></i> Excel & IA</span>`;
+        } else if ((formStr.includes('affiche') || formStr.includes('vidéo')) && !formStr.includes('excel') && !formStr.includes('powerpoint') && !formStr.includes('complet')) {
           formBadge = `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-bold bg-teal-50 text-teal-800 border border-teal-200"><i class="fa-solid fa-photo-film text-[10px]"></i> Affiches & Vidéo</span>`;
         }
 
@@ -909,9 +909,9 @@
 
     /* ---------- MESSAGE GENERATORS ---------- */
     function genererMessageBilletComplet(item) {
-      const ticketCode = item.ticket_code || 'TKT-PPT-DESIGN-OFFICIEL';
+      const ticketCode = item.ticket_code || 'TKT-EXCEL-DESIGN-OFFICIEL';
       const nom = item.nom || 'Cher Participant';
-      const formation = item.niveau || item.formation || 'Pack Complet (PowerPoint & IA + Affiches/Vidéo)';
+      const formation = item.niveau || item.formation || 'Pack Complet (Excel & IA + Affiches/Vidéo)';
       const hasPC = (item.ordi || '').toLowerCase().includes('oui') || (item.ordi || '').toLowerCase().includes('pc');
       const ordiConsigne = hasPC 
         ? "Apportez votre ordinateur portable bien chargé avec vos chargeurs."
@@ -927,7 +927,7 @@
         `• *Date :* Dimanche 18 Octobre 2026 dès 08h00 GMT\n` +
         `• *Lieu :* ISTCO La Colombe (Koumassi, en face de la Cité SIR)\n\n` +
         `👨‍🏫 *FORMATEURS & ATELIERS :*\n` +
-        `1. M. Djim Aboubacar Mikahillo — PowerPoint Professionnel & Prompt IA\n` +
+        `1. M. Djim Aboubacar Mikahillo — Maîtrise d'Excel Professionnel & Prompt IA\n` +
         `2. M. Sawadogo Mohamed — Conception d'Affiches & Montage Vidéo Mobile/PC\n\n` +
         `🌐 *VOTRE PASS OFFICIEL EN LIGNE :*\n` +
         `https://aeemci-koumassi.github.io/formation-word/\n\n` +
@@ -941,7 +941,7 @@
     }
 
     function genererMessageRappel(item) {
-      const ticketCode = item.ticket_code || 'TKT-PPT-DESIGN-OFFICIEL';
+      const ticketCode = item.ticket_code || 'TKT-EXCEL-DESIGN-OFFICIEL';
       const nom = item.nom || 'Participant';
       const formation = item.niveau || item.formation || 'Double Formation Pratique';
 
@@ -962,7 +962,7 @@
       return `✨ *REMERCIEMENTS OFFICIELS — AEEMCI KOUMASSI*\n` +
         `----------------------------------------------\n` +
         `Assalamou Aleykoum / Bonjour *${nom}* 👋,\n\n` +
-        `Au nom de toute l'équipe organisatrice de l'AEEMCI Koumassi, nous vous adressons nos plus sincères *REMERCIEMENTS* pour votre présence et votre participation active à la Double Formation Pratique (PowerPoint & IA / Affiches & Montage Vidéo) du Dimanche 18 Octobre 2026 à l'ISTCO La Colombe ! 🎓\n\n` +
+        `Au nom de toute l'équipe organisatrice de l'AEEMCI Koumassi, nous vous adressons nos plus sincères *REMERCIEMENTS* pour votre présence et votre participation active à la Double Formation Pratique (Excel & IA / Affiches & Montage Vidéo) du Dimanche 18 Octobre 2026 à l'ISTCO La Colombe ! 🎓\n\n` +
         `Nous espérons que les techniques transmises par nos experts M. Djim Aboubacar Mikahillo et M. Sawadogo Mohamed vous permettront d'exceller dans vos études et projets professionnels. 📊🎬\n\n` +
         `Qu'Allah / Dieu bénisse votre apprentissage et couronne vos projets de plein succès ! 🤲\n\n` +
         `— *L'équipe d'Organisation AEEMCI Koumassi*`;
@@ -980,7 +980,7 @@
         const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
         let code = '';
         for (let i = 0; i < 6; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
-        item.ticket_code = `TKT-PPT-DESIGN-${code}`;
+        item.ticket_code = `TKT-EXCEL-DESIGN-${code}`;
       }
 
       // Save validation locally and attempt cloud sync
@@ -1049,7 +1049,7 @@
       const item = rawInscriptions[idx];
       currentSelectedCandidate = item;
 
-      const ticketCode = item.ticket_code || `TKT-PPT-DESIGN-825`;
+      const ticketCode = item.ticket_code || `TKT-EXCEL-DESIGN-825`;
       document.getElementById('t-nom').textContent = item.nom || 'Participant';
       document.getElementById('t-code').textContent = ticketCode;
       document.getElementById('t-formation').textContent = item.niveau || item.formation || 'Pack Complet (Les 2)';
@@ -1091,7 +1091,7 @@
       const activeList = currentSessionInscriptions.length > 0 ? currentSessionInscriptions : rawInscriptions;
       msgCandidateSelect.innerHTML = '<option value="">-- Choisir un participant de la liste --</option>' +
         activeList.map((item, idx) => {
-          const code = item.ticket_code || `TKT-PPT-${idx+1}`;
+          const code = item.ticket_code || `TKT-EXCEL-${idx+1}`;
           return `<option value="${idx}">${item.nom} (${code})</option>`;
         }).join('');
       
@@ -1118,8 +1118,8 @@
       const selectedIdx = msgCandidateSelect ? msgCandidateSelect.value : '';
       const sampleItem = (selectedIdx !== '' && activeList[selectedIdx]) ? activeList[selectedIdx] : (activeList[0] || {
         nom: "Kouma Yaya",
-        ticket_code: "TKT-PPT-DESIGN-RNQ7EP",
-        niveau: "Pack Complet (PowerPoint & IA + Affiches/Vidéo)",
+        ticket_code: "TKT-EXCEL-DESIGN-RNQ7EP",
+        niveau: "Pack Complet (Excel & IA + Affiches/Vidéo)",
         statut: "Participant",
         ordi: "Oui"
       });
@@ -1235,7 +1235,7 @@
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        const sessionLabel = sessionFilter.value === 'new' ? 'powerpoint_video_2026' : 'export_complet';
+        const sessionLabel = sessionFilter.value === 'new' ? 'excel_video_2026' : 'export_complet';
         a.download = `inscriptions_aeemci_${sessionLabel}_${new Date().toISOString().slice(0,10)}.csv`;
         document.body.appendChild(a);
         a.click();

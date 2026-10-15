@@ -3,7 +3,7 @@
  * Plateforme Officielle AEEMCI ACADEMY — Sous-comité de Koumassi
  * Session : Double Formation Pratique (PowerPoint & IA × Affiches & Montage Vidéo)
  * Date : Dimanche 18 Octobre 2026 à 08h00 UTC+0
- * Lieu : Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi, Abidjan)
+ * Lieu : ISTCO La Colombe (Koumassi Remblais, Carrefour Colombe, Abidjan)
  */
 
 const EVENT_DATE_UTC = new Date('2026-10-18T08:00:00Z');
@@ -175,8 +175,8 @@ async function initApp() {
   /* ---------- 6. CALENDAR EXPORT (GOOGLE CALENDAR & .ICS) ---------- */
   window.openGoogleCalendar = function() {
     const title = encodeURIComponent("Double Formation Pratique (PowerPoint & IA × Affiches & Montage Vidéo) — AEEMCI");
-    const details = encodeURIComponent("Formation pratique 100% gratuite.\n\nAtelier 1 : PowerPoint & IA par Djim Aboubacar Mikahillo\nAtelier 2 : Création d’affiches et montages vidéo par Sawadogo Mohamed\n\nLieu : Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi)\nInfoline WhatsApp : +225 07 11 98 58 10");
-    const location = encodeURIComponent("Groupe Scolaire Sainte Thérèse, Terminus 11 Koumassi, Abidjan");
+    const details = encodeURIComponent("Formation pratique 100% gratuite.\n\nAtelier 1 : PowerPoint & IA par Djim Aboubacar Mikahillo\nAtelier 2 : Création d’affiches et montages vidéo par Sawadogo Mohamed\n\nLieu : ISTCO La Colombe (Koumassi Remblais, Carrefour Colombe)\nInfoline WhatsApp : +225 07 11 98 58 10");
+    const location = encodeURIComponent("ISTCO La Colombe, Koumassi Remblais, Carrefour Colombe, Abidjan");
     const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20261018T080000Z/20261018T140000Z&details=${details}&location=${location}`;
     window.open(googleUrl, '_blank');
   };
@@ -192,8 +192,8 @@ async function initApp() {
       'DTSTART:20261018T080000Z',
       'DTEND:20261018T140000Z',
       'SUMMARY:Double Formation Pratique (PowerPoint & IA × Affiches & Montage Vidéo) — AEEMCI',
-      'DESCRIPTION:Formation 100% gratuite animée par Djim Aboubacar Mikahillo et Sawadogo Mohamed au Groupe Scolaire Sainte Thérèse.',
-      'LOCATION:Groupe Scolaire Sainte Thérèse, Terminus 11 Koumassi, Abidjan',
+      'DESCRIPTION:Formation 100% gratuite animée par Djim Aboubacar Mikahillo et Sawadogo Mohamed à l\'ISTCO La Colombe.',
+      'LOCATION:ISTCO La Colombe, Koumassi Remblais, Carrefour Colombe, Abidjan',
       'END:VEVENT',
       'END:VCALENDAR'
     ].join('\r\n');
@@ -226,8 +226,8 @@ async function initApp() {
 
     try {
       mapContainer.classList.remove('hidden');
-      const lat = 5.3000902;
-      const lon = -3.9479569;
+      const lat = 5.3041;
+      const lon = -3.96171;
 
       const map = L.map('venue-map', {
         scrollWheelZoom: false,
@@ -249,11 +249,11 @@ async function initApp() {
       const marker = L.marker([lat, lon]).addTo(map);
       marker.bindPopup(`
         <div style="font-family:'Inter',sans-serif; font-size:12px; line-height:1.45; min-width:200px;">
-          <strong style="color:#0f172a; font-size:13px; display:block; margin-bottom:3px;">🏫 Groupe Scolaire Sainte Thérèse</strong>
-          <span style="color:#64748b; font-size:11px; display:block;">📍 Terminus 11, Koumassi, Abidjan</span>
+          <strong style="color:#0f172a; font-size:13px; display:block; margin-bottom:3px;">🏫 ISTCO La Colombe</strong>
+          <span style="color:#64748b; font-size:11px; display:block;">📍 Remblais, Carrefour Colombe (en face Cité SIR)</span>
           <span style="color:#059669; font-weight:700; font-size:11px; display:block; margin-top:3px;">Double Formation Pratique (18 Oct.)</span>
           <div style="margin-top:8px; border-top:1px solid #e2e8f0; padding-top:6px;">
-            <a href="https://www.google.com/maps/dir/?api=1&destination=5.3000902,-3.9479569" target="_blank" rel="noopener noreferrer" style="color:#2563eb; text-decoration:none; font-weight:700; font-size:11px; display:inline-flex; align-items:center; gap:4px;">
+            <a href="https://www.google.com/maps/dir/?api=1&destination=5.3041,-3.96171" target="_blank" rel="noopener noreferrer" style="color:#2563eb; text-decoration:none; font-weight:700; font-size:11px; display:inline-flex; align-items:center; gap:4px;">
               <span>Ouvrir l'itinéraire Google Maps ↗</span>
             </a>
           </div>
@@ -273,7 +273,7 @@ async function initApp() {
   window.addEventListener('load', initVenueMap);
 
   window.copyVenueAddress = function() {
-    const address = "Groupe Scolaire Sainte Thérèse, Terminus 11, Koumassi, Abidjan, Côte d'Ivoire";
+    const address = "ISTCO La Colombe, Koumassi Remblais, Carrefour Colombe (en face de la Cité SIR), Abidjan, Côte d'Ivoire";
     if (navigator.clipboard) {
       navigator.clipboard.writeText(address);
       showToast("Adresse du lieu copiée dans le presse-papier !");
@@ -322,7 +322,7 @@ async function initApp() {
         `🔖 *Ticket :* ${ticketCode}\n` +
         `📚 *Formation :* ${ticketData.formation || 'Pack Complet'}\n` +
         `📅 *Date :* Dimanche 18 Octobre 2026 à 08h00 GMT\n` +
-        `📍 *Lieu :* Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi)\n\n` +
+        `📍 *Lieu :* ISTCO La Colombe (Koumassi Remblais, Carrefour Colombe)\n\n` +
         `✅ Mon inscription est bien confirmée !`);
       waShare.href = `https://wa.me/2250711985810?text=${msg}`;
     }

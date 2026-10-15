@@ -6,68 +6,48 @@
  * Lieu : Groupe Scolaire Sainte Thérèse (Terminus 11 Koumassi, Abidjan)
  */
 
-document.addEventListener('DOMContentLoaded', async () => {
+const EVENT_DATE_UTC = new Date('2026-10-18T08:00:00Z');
 
-  const EVENT_DATE_UTC = new Date('2026-10-18T08:00:00Z');
+/* ---------- CHRONO LIVE COMPTE À REBOURS OFFICIEL ---------- */
+function updateCountdown() {
+  const pillText = document.getElementById('cd-pill-text');
+  const dEl = document.getElementById('pro-cd-days');
+  const hEl = document.getElementById('pro-cd-hours');
+  const mEl = document.getElementById('pro-cd-mins');
+  const sEl = document.getElementById('pro-cd-secs');
 
-  /* ---------- 1. LIVE UTC TIME (TOPBAR) ---------- */
-  function updateLiveUtcTime() {
-    const timeEl = document.getElementById('live-utc-time');
-    if (!timeEl) return;
-    const now = new Date();
-    const hours = String(now.getUTCHours()).padStart(2, '0');
-    const mins = String(now.getUTCMinutes()).padStart(2, '0');
-    timeEl.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span><span>${hours}:${mins} GMT (Abidjan)</span>`;
+  const now = new Date().getTime();
+  const distance = EVENT_DATE_UTC.getTime() - now;
+  const pad = n => String(Math.max(0, n)).padStart(2, '0');
+
+  if (distance <= 0) {
+    if (pillText) pillText.textContent = "Événement en cours !";
+    if (dEl) dEl.textContent = '00';
+    if (hEl) hEl.textContent = '00';
+    if (mEl) mEl.textContent = '00';
+    if (sEl) sEl.textContent = '00';
+    return;
   }
-  updateLiveUtcTime();
-  setInterval(updateLiveUtcTime, 10000);
 
-  /* ---------- 2. COUNTDOWN CHRONO PRO (CHAMP ROUGE & TICKER) ---------- */
-  function updateCountdown() {
-    const pillText = document.getElementById('cd-pill-text');
-    const dEl = document.getElementById('pro-cd-days');
-    const hEl = document.getElementById('pro-cd-hours');
-    const mEl = document.getElementById('pro-cd-mins');
-    const sEl = document.getElementById('pro-cd-secs');
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const mins = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  const secs = Math.floor((distance % (1000 * 60)) / 1000);
 
-    const now = new Date().getTime();
-    const distance = EVENT_DATE_UTC.getTime() - now;
+  if (dEl) dEl.textContent = pad(days);
+  if (hEl) hEl.textContent = pad(hours);
+  if (mEl) mEl.textContent = pad(mins);
+  if (sEl) sEl.textContent = pad(secs);
 
-    const pad = n => String(Math.max(0, n)).padStart(2, '0');
-
-    if (distance <= 0) {
-      if (pillText) pillText.textContent = "Événement en cours !";
-      if (dEl) dEl.textContent = '00';
-      if (hEl) hEl.textContent = '00';
-      if (mEl) mEl.textContent = '00';
-      if (sEl) sEl.textContent = '00';
-      return;
-    }
-
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const mins = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const secs = Math.floor((distance % (1000 * 60)) / 1000);
-
-    // Boîtes Digitales du champ rouge
-    if (dEl) dEl.textContent = pad(days);
-    if (hEl) hEl.textContent = pad(hours);
-    if (mEl) mEl.textContent = pad(mins);
-    if (sEl) sEl.textContent = pad(secs);
-
-    // Pastille de la carte d'inscription
-    if (pillText) {
-      if (days > 0) {
-        pillText.textContent = `${days}j ${pad(hours)}h ${pad(mins)}m`;
-      } else {
-        pillText.textContent = `${pad(hours)}h ${pad(mins)}m ${pad(secs)}s`;
-      }
-    }
+  if (pillText) {
+    pillText.textContent = days > 0 ? `${days}j ${pad(hours)}h ${pad(mins)}m` : `${pad(hours)}h ${pad(mins)}m ${pad(secs)}s`;
   }
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
 
-  /* ---------- 3. TOAST NOTIFICATION HELPER ---------- */
+async function initApp() {
+  /* ---------- 1. TOAST NOTIFICATION HELPER ---------- */
   window.showToast = function(msg) {
     const toast = document.getElementById('toast');
     const toastMsg = document.getElementById('toast-msg');
@@ -527,6 +507,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     adminModal.addEventListener('click', e => {
       if (e.target === adminModal) closeAdmin();
     });
+  }
+
   // Mobile Sticky CTA Visibility Handler
   const mobileCta = document.getElementById('mobile-sticky-cta');
   const formSection = document.getElementById('event-form-state');
@@ -540,5 +522,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }, { passive: true });
   }
+}
 
-});
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}

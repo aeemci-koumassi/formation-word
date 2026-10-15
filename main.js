@@ -478,8 +478,8 @@ async function initApp() {
     adminSubmitPass.addEventListener('click', () => {
       const val = (adminPassInput ? adminPassInput.value.trim() : '');
       if (val !== '' && VALID_ADMIN_PASSWORDS.includes(val)) {
-        sessionStorage.setItem('aeemci_admin_logged', 'true');
-        localStorage.setItem('aeemci_admin_logged', 'true');
+        try { localStorage.removeItem('aeemci_admin_logged'); } catch(e) {}
+        sessionStorage.setItem('aeemci_session_unlocked', 'true');
         window.location.href = 'admin.html';
       } else {
         if (adminPassError) adminPassError.classList.remove('hidden');

@@ -619,8 +619,9 @@
     window.togglePassVisibility = togglePassVisibility;
 
     function deconnexionAdmin() {
+      sessionStorage.removeItem('aeemci_session_unlocked');
       sessionStorage.removeItem('aeemci_admin_logged');
-      localStorage.removeItem('aeemci_admin_logged');
+      try { localStorage.removeItem('aeemci_admin_logged'); } catch(e) {}
       dashboardCard.classList.add('hidden');
       loginCard.classList.remove('hidden');
       const logoutBtn = document.getElementById('logoutBtn');
@@ -634,7 +635,10 @@
     window.deconnexionAdmin = deconnexionAdmin;
 
     function checkAuth() {
-      if (sessionStorage.getItem('aeemci_admin_logged') === 'true' || localStorage.getItem('aeemci_admin_logged') === 'true') {
+      // Purge tout ancien accès persistant dans le navigateur
+      try { localStorage.removeItem('aeemci_admin_logged'); } catch(e) {}
+
+      if (sessionStorage.getItem('aeemci_session_unlocked') === 'true') {
         showDashboard();
       } else {
         loginCard.classList.remove('hidden');
@@ -647,10 +651,9 @@
     if (loginBtn) {
       loginBtn.addEventListener('click', () => {
         const val = passInput ? passInput.value.trim() : '';
-        if (isPasswordValid(val)) {
+        if (val !== '' && isPasswordValid(val)) {
           passError.classList.add('hidden');
-          sessionStorage.setItem('aeemci_admin_logged', 'true');
-          localStorage.setItem('aeemci_admin_logged', 'true');
+          sessionStorage.setItem('aeemci_session_unlocked', 'true');
           showDashboard();
           showToast("Code validé ! Bienvenue sur la console.");
         } else {
@@ -1251,9 +1254,9 @@
     // Initialize Auth check
     checkAuth();
 
-    // Auto-refresh every 12 seconds in background
+    // Auto-refresh every 12 seconds in background if authenticated
     setInterval(() => {
-      if (localStorage.getItem('aeemci_admin_logged') === 'true' || sessionStorage.getItem('aeemci_admin_logged') === 'true') {
+      if (sessionStorage.getItem('aeemci_session_unlocked') === 'true') {
         loadData();
       }
     }, 12000);

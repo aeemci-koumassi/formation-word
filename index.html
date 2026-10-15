@@ -926,12 +926,12 @@
 
           <ul class="space-y-1 text-xs">
             <li>
-              <a href="admin.html" class="flex items-center justify-between px-2 py-1 rounded-md bg-emerald-950/70 hover:bg-emerald-900 border border-emerald-600/70 text-emerald-300 hover:text-white transition-colors group font-bold">
+              <button onclick="openAdmin()" class="w-full flex items-center justify-between px-2 py-1 rounded-md bg-emerald-950/70 hover:bg-emerald-900 border border-emerald-600/70 text-emerald-300 hover:text-white transition-colors group font-bold text-left">
                 <span class="flex items-center gap-1.5 text-[10px]">
                   <i class="fa-solid fa-database text-amber-300 text-[9px]"></i> Base de Données
                 </span>
-                <i class="fa-solid fa-arrow-right text-[8px] text-emerald-400 group-hover:translate-x-0.5 transition-transform"></i>
-              </a>
+                <i class="fa-solid fa-lock text-[8px] text-emerald-400 group-hover:translate-x-0.5 transition-transform"></i>
+              </button>
             </li>
             <li>
               <button onclick="openTicketModal()" class="w-full flex items-center justify-between px-2 py-1 rounded-md bg-slate-900/60 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white transition-colors group text-left">
@@ -971,10 +971,10 @@
         <div class="flex items-center gap-2.5">
           <span class="text-slate-400">Formation 100% Gratuite</span>
           <span class="text-slate-700">·</span>
-          <a href="admin.html" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-emerald-900 hover:bg-emerald-800 border border-emerald-600 text-emerald-100 hover:text-white font-bold text-[10px] transition-colors" title="Accès sécurisé à la base de données">
-            <i class="fa-solid fa-database text-amber-300 text-[9px]"></i>
-            <span>Accès Base de Données</span>
-          </a>
+          <button onclick="openAdmin()" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-emerald-900 hover:bg-emerald-800 border border-emerald-600 text-emerald-100 hover:text-white font-bold text-[10px] transition-colors" title="Accès réservé aux organisateurs">
+            <i class="fa-solid fa-lock text-amber-300 text-[9px]"></i>
+            <span>Accès Organisateur</span>
+          </button>
         </div>
       </div>
 

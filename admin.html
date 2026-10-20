@@ -276,6 +276,10 @@
               <i class="fa-solid fa-rotate text-xs text-slate-500"></i>
               <span>Actualiser</span>
             </button>
+            <button id="seqSenderBtn" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs transition-colors shadow-2xs" title="Envoyer le message de remerciement personnalisé candidat par candidat">
+              <i class="fa-solid fa-paper-plane text-xs text-indigo-200"></i>
+              <span>Envoi Individuel (1 par 1)</span>
+            </button>
             <button id="broadcastBtn" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs transition-colors shadow-2xs">
               <i class="fa-brands fa-whatsapp text-sm"></i>
               <span>Centre Messages</span>
@@ -506,6 +510,91 @@
             <i class="fa-solid fa-address-book text-slate-500"></i>
             <span id="copyPhonesLabel">Copier tous les numéros (+225) de la session</span>
           </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==============================================
+       MODAL 3: ASSISTANT D'ENVOI INDIVIDUEL PAS-À-PAS
+       ============================================== -->
+  <div id="sequentialModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100 flex flex-col max-h-[92vh] animate-in fade-in zoom-in duration-150">
+      
+      <!-- Modal Header -->
+      <div class="p-5 bg-gradient-to-r from-indigo-600 to-purple-700 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-paper-plane text-white"></i>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-base">Envoi Individuel Pas-à-Pas</h3>
+            <p class="text-[11px] text-indigo-100">Envoi personnalisé candidat par candidat avec suivi</p>
+          </div>
+        </div>
+        <button id="closeSeqModalBtn" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition-colors">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-5 space-y-4 overflow-y-auto flex-1">
+        <!-- Progress bar -->
+        <div>
+          <div class="flex justify-between items-center text-xs font-bold text-slate-600 mb-1.5">
+            <span>Progression : <strong id="seqProgressText" class="text-indigo-600">0 / 0 envoyé(s)</strong></span>
+            <span id="seqPercentText" class="text-slate-400">0%</span>
+          </div>
+          <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+            <div id="seqProgressBar" class="bg-indigo-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Current candidate card -->
+        <div class="bg-indigo-50/60 border border-indigo-100 rounded-2xl p-4 flex items-center justify-between">
+          <div class="min-w-0 pr-2">
+            <div class="text-[10px] font-bold text-indigo-500 uppercase tracking-wider">Candidat actuel (<span id="seqCurrentIndex">1</span>/<span id="seqTotalCount">0</span>)</div>
+            <h4 id="seqCandidateName" class="text-base font-extrabold text-slate-900 mt-0.5 truncate">Participant</h4>
+            <div class="flex items-center gap-2 mt-1 text-xs text-slate-600 flex-wrap">
+              <span class="font-mono font-bold text-indigo-700" id="seqCandidatePhone">+225 00 00 00 00</span>
+              <span>•</span>
+              <span id="seqCandidateOption" class="text-slate-500 text-[11px] truncate">Double Formation</span>
+            </div>
+          </div>
+          <div id="seqStatusBadge" class="shrink-0">
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">
+              <i class="fa-solid fa-hourglass-start"></i> À envoyer
+            </span>
+          </div>
+        </div>
+
+        <!-- Personalized message preview -->
+        <div class="space-y-1">
+          <div class="flex items-center justify-between text-xs">
+            <label class="font-bold text-slate-700">Message personnalisé :</label>
+            <span class="text-[10px] text-indigo-600 font-semibold"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Prénom inséré automatiquement</span>
+          </div>
+          <textarea id="seqMessagePreview" rows="8" class="luma-input text-xs font-sans leading-relaxed text-slate-800 bg-slate-50" readonly></textarea>
+        </div>
+
+        <!-- Actions -->
+        <div class="space-y-2 pt-1">
+          <button id="seqSendBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm py-3.5 rounded-xl shadow-lg shadow-emerald-600/20 transition-all flex items-center justify-center gap-2">
+            <i class="fa-brands fa-whatsapp text-lg"></i>
+            <span>1. Ouvrir WhatsApp & Envoyer</span>
+          </button>
+          
+          <div class="flex items-center gap-2">
+            <button id="seqPrevBtn" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs py-2.5 rounded-xl transition-colors flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-chevron-left text-[10px]"></i>
+              <span>Précédent</span>
+            </button>
+            <button id="seqNextBtn" class="flex-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-2.5 rounded-xl shadow-2xs transition-colors flex items-center justify-center gap-1.5">
+              <span>Marquer Envoyé & Suivant</span>
+              <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -833,6 +922,17 @@
 
         const waPhone = meFormaterTelephoneWA(item.whatsapp);
 
+        const isRemercie = isParticipantRemercie(item);
+        const remercieBadge = isRemercie 
+          ? `<div class="mt-1"><span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200" title="Message de remerciement envoyé"><i class="fa-solid fa-check text-[9px] text-emerald-600"></i> Remercié(e)</span></div>` 
+          : '';
+
+        const remercieBtnClass = isRemercie 
+          ? "bg-slate-100 hover:bg-indigo-50 text-indigo-700 border border-indigo-200" 
+          : "bg-indigo-600 hover:bg-indigo-700 text-white shadow-2xs";
+        const remercieBtnIcon = isRemercie ? "fa-solid fa-check-double text-emerald-600" : "fa-solid fa-star text-amber-300";
+        const remercieBtnText = isRemercie ? "Remercié ✓" : "Remerciement & Avis";
+
         return `
           <tr class="hover:bg-slate-50/80 transition-colors">
             <td class="text-center font-bold text-slate-400 text-xs">${i + 1}</td>
@@ -886,15 +986,18 @@
             <td>${formBadge}</td>
 
             <!-- STATUT -->
-            <td>${statusBadge}</td>
+            <td>
+              ${statusBadge}
+              ${remercieBadge}
+            </td>
 
             <!-- ACTIONS & MESSAGES -->
             <td class="text-center">
               <div class="flex items-center justify-center gap-1.5 flex-wrap">
                 <!-- WhatsApp Remerciement & Avis Direct -->
-                <button onclick="envoyerRemerciementWhatsApp(${indexInAll})" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[11px] px-2.5 py-1.5 rounded-xl shadow-2xs transition-all flex items-center gap-1" title="Envoyer le message de Remerciements & Enquête de satisfaction sur WhatsApp">
-                  <i class="fa-solid fa-star text-xs text-amber-300"></i>
-                  <span>Remerciement & Avis</span>
+                <button onclick="envoyerRemerciementWhatsApp(${indexInAll})" class="${remercieBtnClass} font-bold text-[11px] px-2.5 py-1.5 rounded-xl transition-all flex items-center gap-1" title="Envoyer le message de Remerciements & Enquête de satisfaction sur WhatsApp">
+                  <i class="${remercieBtnIcon} text-xs"></i>
+                  <span>${remercieBtnText}</span>
                 </button>
 
                 <!-- WhatsApp Billet Direct -->
@@ -1035,12 +1138,44 @@
       window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(text)}`, '_blank');
     };
 
+    function getRemercieMap() {
+      try {
+        return JSON.parse(localStorage.getItem('aeemci_remercie_map') || '{}');
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function isParticipantRemercie(item) {
+      if (!item) return false;
+      const key = item.id || item.ticket_code || item.whatsapp;
+      const map = getRemercieMap();
+      return !!map[key];
+    }
+
+    function marquerRemercie(item, status = true) {
+      if (!item) return;
+      const key = item.id || item.ticket_code || item.whatsapp;
+      const map = getRemercieMap();
+      if (status) {
+        map[key] = new Date().toISOString();
+      } else {
+        delete map[key];
+      }
+      try {
+        localStorage.setItem('aeemci_remercie_map', JSON.stringify(map));
+      } catch (e) {}
+    }
+
     window.envoyerRemerciementWhatsApp = function(idx) {
       if (idx < 0 || idx >= rawInscriptions.length) return;
       const item = rawInscriptions[idx];
       const waPhone = meFormaterTelephoneWA(item.whatsapp);
       const text = genererMessageRemerciement(item);
+      marquerRemercie(item, true);
       window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(text)}`, '_blank');
+      applyFilterAndRender();
+      showToast(`Remerciement ouvert pour ${item.nom} !`);
     };
 
     function sauvegarderValidation(item) {
@@ -1224,6 +1359,123 @@
         // Remove duplicates
         const uniquePhones = [...new Set(phones)].join('\n');
         copierTexte(uniquePhones, `${phones.length} numéros WhatsApp (+225) copiés pour la diffusion !`);
+      });
+    }
+
+    /* ---------- SEQUENTIAL INDIVIDUAL SENDER (PAS-À-PAS) ---------- */
+    const seqSenderBtn = document.getElementById('seqSenderBtn');
+    const sequentialModal = document.getElementById('sequentialModal');
+    const closeSeqModalBtn = document.getElementById('closeSeqModalBtn');
+    const seqSendBtn = document.getElementById('seqSendBtn');
+    const seqNextBtn = document.getElementById('seqNextBtn');
+    const seqPrevBtn = document.getElementById('seqPrevBtn');
+    let seqCurrentIdx = 0;
+
+    function openSeqSenderModal() {
+      const activeList = currentSessionInscriptions.length > 0 ? currentSessionInscriptions : rawInscriptions;
+      if (activeList.length === 0) {
+        showToast("Aucun participant dans la liste", false);
+        return;
+      }
+      // Find the first unsent participant
+      const firstUnsent = activeList.findIndex(item => !isParticipantRemercie(item));
+      seqCurrentIdx = firstUnsent !== -1 ? firstUnsent : 0;
+      updateSeqModalUI();
+      if (sequentialModal) sequentialModal.classList.remove('hidden');
+    }
+
+    function updateSeqModalUI() {
+      const activeList = currentSessionInscriptions.length > 0 ? currentSessionInscriptions : rawInscriptions;
+      const total = activeList.length;
+      if (total === 0) return;
+
+      if (seqCurrentIdx < 0) seqCurrentIdx = 0;
+      if (seqCurrentIdx >= total) seqCurrentIdx = total - 1;
+
+      const item = activeList[seqCurrentIdx];
+      const sentCount = activeList.filter(it => isParticipantRemercie(it)).length;
+      const percent = Math.round((sentCount / total) * 100);
+
+      const progressText = document.getElementById('seqProgressText');
+      const percentText = document.getElementById('seqPercentText');
+      const progressBar = document.getElementById('seqProgressBar');
+      const currentIndexEl = document.getElementById('seqCurrentIndex');
+      const totalCountEl = document.getElementById('seqTotalCount');
+      const nameEl = document.getElementById('seqCandidateName');
+      const phoneEl = document.getElementById('seqCandidatePhone');
+      const optionEl = document.getElementById('seqCandidateOption');
+      const statusBadge = document.getElementById('seqStatusBadge');
+      const previewEl = document.getElementById('seqMessagePreview');
+      const sendBtnSpan = document.querySelector('#seqSendBtn span');
+
+      if (progressText) progressText.textContent = `${sentCount} / ${total} envoyé(s)`;
+      if (percentText) percentText.textContent = `${percent}%`;
+      if (progressBar) progressBar.style.width = `${percent}%`;
+      if (currentIndexEl) currentIndexEl.textContent = seqCurrentIdx + 1;
+      if (totalCountEl) totalCountEl.textContent = total;
+
+      if (nameEl) nameEl.textContent = item.nom || 'Participant';
+      if (phoneEl) phoneEl.textContent = item.whatsapp || '-';
+      if (optionEl) optionEl.textContent = item.niveau || item.formation || 'Double Formation';
+
+      const alreadySent = isParticipantRemercie(item);
+      if (statusBadge) {
+        statusBadge.innerHTML = alreadySent 
+          ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800"><i class="fa-solid fa-circle-check"></i> Déjà envoyé</span>`
+          : `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800"><i class="fa-solid fa-hourglass-start"></i> À envoyer</span>`;
+      }
+
+      const msg = genererMessageRemerciement(item);
+      if (previewEl) previewEl.value = msg;
+      if (sendBtnSpan) {
+        const firstName = (item.nom || '').split(' ')[0] || 'ce candidat';
+        sendBtnSpan.textContent = alreadySent ? `Renvoyer sur WhatsApp à ${firstName}` : `1. Ouvrir WhatsApp & Envoyer à ${firstName}`;
+      }
+    }
+
+    if (seqSenderBtn) seqSenderBtn.addEventListener('click', openSeqSenderModal);
+    if (closeSeqModalBtn) closeSeqModalBtn.addEventListener('click', () => sequentialModal.classList.add('hidden'));
+
+    if (seqSendBtn) {
+      seqSendBtn.addEventListener('click', () => {
+        const activeList = currentSessionInscriptions.length > 0 ? currentSessionInscriptions : rawInscriptions;
+        if (seqCurrentIdx >= activeList.length) return;
+        const item = activeList[seqCurrentIdx];
+        const waPhone = meFormaterTelephoneWA(item.whatsapp);
+        const msg = genererMessageRemerciement(item);
+        
+        marquerRemercie(item, true);
+        window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(msg)}`, '_blank');
+        updateSeqModalUI();
+        applyFilterAndRender();
+        showToast(`Discussion WhatsApp ouverte pour ${item.nom}`);
+      });
+    }
+
+    if (seqNextBtn) {
+      seqNextBtn.addEventListener('click', () => {
+        const activeList = currentSessionInscriptions.length > 0 ? currentSessionInscriptions : rawInscriptions;
+        if (seqCurrentIdx < activeList.length) {
+          marquerRemercie(activeList[seqCurrentIdx], true);
+        }
+        if (seqCurrentIdx < activeList.length - 1) {
+          seqCurrentIdx++;
+          updateSeqModalUI();
+          applyFilterAndRender();
+        } else {
+          updateSeqModalUI();
+          applyFilterAndRender();
+          showToast("Vous avez atteint la fin de la liste ! 🎉", true);
+        }
+      });
+    }
+
+    if (seqPrevBtn) {
+      seqPrevBtn.addEventListener('click', () => {
+        if (seqCurrentIdx > 0) {
+          seqCurrentIdx--;
+          updateSeqModalUI();
+        }
       });
     }
 

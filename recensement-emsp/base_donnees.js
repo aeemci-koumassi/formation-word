@@ -76,7 +76,7 @@ async function enregistrerNouveauMembre(data) {
     console.warn("Erreur de connexion Supabase, utilisation du cache local:", err);
   }
 
-  // Stocker le matricule du membre actuel pour affichage automatique de sa carte
+  // Stocker la référence du membre actuel pour consultation de son récépissé
   try {
     localStorage.setItem(LOCAL_STORAGE_MON_MATRICULE_KEY, JSON.stringify(data));
   } catch (e) {}

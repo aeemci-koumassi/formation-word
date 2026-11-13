@@ -1,6 +1,6 @@
 /**
  * SCRIPT PRINCIPAL INTERFACE MEMBRE (main.js)
- * Section AEEMCI EMSP Abidjan — Recensement & Cartes de Membre
+ * Section AEEMCI EMSP Abidjan — Portail de Recensement Officiel
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -15,7 +15,7 @@ async function initApp() {
 }
 
 /**
- * Met à jour le compteur en direct des membres recensés
+ * Met à jour l'effectif en direct des membres recensés
  */
 async function actualiserCompteurMembres() {
   try {
@@ -25,7 +25,7 @@ async function actualiserCompteurMembres() {
       countEl.textContent = allMembresCache.length;
     }
   } catch (e) {
-    console.warn("Erreur chargement compteur:", e);
+    console.warn("Erreur chargement effectif:", e);
   }
 }
 
@@ -42,7 +42,7 @@ function initFormListener() {
     const submitBtn = document.getElementById('submitBtn');
     const submitLabel = document.getElementById('submitLabel');
     if (submitBtn) submitBtn.disabled = true;
-    if (submitLabel) submitLabel.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Enregistrement en cours...';
+    if (submitLabel) submitLabel.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Enregistrement officiel en cours...';
 
     // Récupération des commissions cochées
     const commissionsChecked = Array.from(document.querySelectorAll('input[name="commissions"]:checked'))
@@ -72,119 +72,66 @@ function initFormListener() {
 
     try {
       const res = await enregistrerNouveauMembre(formData);
-      afficherCarteMembre(res.data);
+      afficherRecepisseEnregistrement(res.data);
       form.reset();
       actualiserCompteurMembres();
     } catch (err) {
-      alert("Une erreur est survenue lors de l'enregistrement. Vos données ont été sauvegardées localement.");
-      afficherCarteMembre(formData);
+      alert("Vos informations ont bien été enregistrées dans le registre local.");
+      afficherRecepisseEnregistrement(formData);
     } finally {
       if (submitBtn) submitBtn.disabled = false;
-      if (submitLabel) submitLabel.textContent = "Valider mon Recensement & Obtenir ma Carte";
+      if (submitLabel) submitLabel.textContent = "Confirmer et Enregistrer ma Fiche de Recensement";
     }
   });
 }
 
 /**
- * Affiche la carte de membre digitale avec QR Code
+ * Affiche l'attestation / récépissé officiel de recensement
  */
-function afficherCarteMembre(membre) {
+function afficherRecepisseEnregistrement(membre) {
   if (!membre) return;
 
-  document.getElementById('c-matricule').textContent = membre.matricule;
-  const alertMatricule = document.getElementById('c-matricule-alert');
-  if (alertMatricule) alertMatricule.textContent = membre.matricule;
+  const matEl = document.getElementById('rec-matricule');
+  if (matEl) matEl.textContent = membre.matricule;
 
-  document.getElementById('c-nom').textContent = membre.nom;
-  document.getElementById('c-genre-badge').textContent = membre.genre;
-  document.getElementById('c-filiere').textContent = `${membre.filiere} (${membre.niveau})`;
-  document.getElementById('c-residence').textContent = `${membre.residence} — ${membre.precision_residence || ''}`;
-  document.getElementById('c-nationalite').textContent = `Nationalité : ${membre.nationalite}`;
+  const nomEl = document.getElementById('rec-nom');
+  if (nomEl) nomEl.textContent = membre.nom;
 
-  // QR Code officiel
-  const qrData = encodeURIComponent(`AEEMCI-EMSP|${membre.matricule}|${membre.nom}|${membre.filiere}|2026-2027`);
-  const qrImg = document.getElementById('c-qrcode');
-  if (qrImg) {
-    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${qrData}&margin=1`;
-  }
+  const genreEl = document.getElementById('rec-genre');
+  if (genreEl) genreEl.textContent = membre.genre;
 
-  // Bouton de partage WhatsApp
-  const shareWaBtn = document.getElementById('shareWaBtn');
+  const filiereEl = document.getElementById('rec-filiere');
+  if (filiereEl) filiereEl.textContent = `${membre.filiere} — ${membre.niveau}`;
+
+  const resEl = document.getElementById('rec-residence');
+  if (resEl) resEl.textContent = `${membre.residence} (${membre.precision_residence || 'Non précisé'})`;
+
+  const waEl = document.getElementById('rec-whatsapp');
+  if (waEl) waEl.textContent = membre.whatsapp;
+
+  // Configuration du bouton de partage / confirmation WhatsApp
+  const shareWaBtn = document.getElementById('recWhatsappShareBtn');
   if (shareWaBtn) {
     const waText = 
-      `🌙 *CARTE DE MEMBRE OFFICIELLE — SECTION AEEMCI EMSP ABIDJAN*\n` +
-      `━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
-      `Assalamou Aleykoum 👋,\n` +
-      `Je suis officiellement recensé(e) au sein de la section AEEMCI EMSP Abidjan !\n\n` +
-      `🪪 *Mon Matricule Officiel :* \`${membre.matricule}\`\n` +
-      `👤 *Nom :* ${membre.nom}\n` +
-      `🎓 *Filière :* ${membre.filiere} (${membre.niveau})\n` +
-      `🏢 *Résidence :* ${membre.residence}\n` +
-      `🌍 *Section :* AEEMCI EMSP Abidjan\n\n` +
-      `🔗 *Lien du portail officiel :*\n` +
-      `https://aeemci-koumassi.github.io/formation-word/recensement-emsp/`;
+      `Assalamou Aleykoum cher Secrétaire Général 👋,\n\n` +
+      `Je viens de valider ma fiche de recensement au sein de la *Section AEEMCI EMSP Abidjan* !\n\n` +
+      `📋 *RÉCÉPISSÉ D'ENREGISTREMENT :*\n` +
+      `• *Réf. Dossier :* \`${membre.matricule}\`\n` +
+      `• *Nom :* ${membre.nom}\n` +
+      `• *Statut :* ${membre.statut}\n` +
+      `• *Filière :* ${membre.filiere} (${membre.niveau})\n` +
+      `• *Résidence :* ${membre.residence} — ${membre.precision_residence || ''}\n\n` +
+      `Merci pour l'initiative et bon mandat à toute l'équipe dirigeante ! 🤲✨`;
 
-    const cleanPhone = String(membre.whatsapp || '').replace(/\D/g, '');
-    shareWaBtn.href = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(waText)}`;
+    const sgPhone = "2250711985810";
+    shareWaBtn.href = `https://wa.me/${sgPhone}?text=${encodeURIComponent(waText)}`;
   }
 
-  const modal = document.getElementById('carteModal');
+  const modal = document.getElementById('confirmationModal');
   if (modal) modal.classList.remove('hidden');
 }
 
-window.closeCarteModal = function() {
-  const modal = document.getElementById('carteModal');
+window.closeConfirmationModal = function() {
+  const modal = document.getElementById('confirmationModal');
   if (modal) modal.classList.add('hidden');
-};
-
-/* Modal Retrouver Ma Carte */
-window.openRetrouverCarteModal = function() {
-  const err = document.getElementById('searchCarteError');
-  if (err) err.classList.add('hidden');
-  const modal = document.getElementById('retrouverCarteModal');
-  if (modal) modal.classList.remove('hidden');
-};
-
-window.closeRetrouverCarteModal = function() {
-  const modal = document.getElementById('retrouverCarteModal');
-  if (modal) modal.classList.add('hidden');
-};
-
-window.rechercherMaCarte = async function() {
-  const input = document.getElementById('searchMembreQuery');
-  const err = document.getElementById('searchCarteError');
-  if (!input) return;
-
-  const query = input.value.trim().toLowerCase();
-  if (!query) {
-    if (err) {
-      err.textContent = "Veuillez entrer un numéro WhatsApp ou un matricule.";
-      err.classList.remove('hidden');
-    }
-    return;
-  }
-
-  if (allMembresCache.length === 0) {
-    allMembresCache = await recupererTousLesMembres();
-  }
-
-  const queryDigits = query.replace(/\D/g, '');
-
-  const match = allMembresCache.find(m => {
-    const matMatch = (m.matricule || '').toLowerCase().includes(query);
-    const nomMatch = (m.nom || '').toLowerCase().includes(query);
-    const phoneDigits = String(m.whatsapp || '').replace(/\D/g, '');
-    const phoneMatch = queryDigits && phoneDigits && (phoneDigits.includes(queryDigits) || queryDigits.includes(phoneDigits));
-    return matMatch || nomMatch || phoneMatch;
-  });
-
-  if (match) {
-    closeRetrouverCarteModal();
-    afficherCarteMembre(match);
-  } else {
-    if (err) {
-      err.textContent = "Aucun membre trouvé correspondant à ces informations. Vérifiez le numéro ou remplissez le formulaire de recensement.";
-      err.classList.remove('hidden');
-    }
-  }
 };

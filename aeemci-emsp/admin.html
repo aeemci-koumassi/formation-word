@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Espace Secrétariat Général — Section AEEMCI EMSP Abidjan</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+  
+  <!-- Google Fonts & Font Awesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          },
+          colors: {
+            aeemci: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              200: '#a7f3d0',
+              300: '#6ee7b7',
+              400: '#34d399',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#064e3b',
+              900: '#022c22'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen antialiased selection:bg-emerald-600 selection:text-white">
+
+  <!-- ==============================================
+       LOCK SCREEN (AUTHENTICATION PIN)
+       ============================================== -->
+  <div id="loginCard" class="min-h-screen flex items-center justify-center p-4 bg-slate-900">
+    <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl border border-slate-800 text-center space-y-6 animate-in fade-in duration-300">
+      
+      <div class="w-16 h-16 rounded-2xl bg-aeemci-800 text-amber-400 flex items-center justify-center text-2xl mx-auto shadow-lg border border-emerald-600/40">
+        <i class="fa-solid fa-user-shield"></i>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-extrabold text-slate-900">Espace Secrétariat Général</h2>
+        <p class="text-xs text-slate-500 mt-1">Section AEEMCI EMSP Abidjan · Registre des Membres</p>
+      </div>
+
+      <form id="loginForm" class="space-y-4" onsubmit="event.preventDefault(); verifierCodeSecret();">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5 text-left" for="passInput">Code Secret Administrateur</label>
+          <div class="relative">
+            <i class="fa-solid fa-key absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+            <input type="password" id="passInput" autofocus placeholder="Entrez le code secret..." class="w-full pl-9 pr-3.5 py-3 text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-600 font-mono">
+          </div>
+          <p id="passError" class="text-xs text-rose-600 font-semibold mt-1.5 text-left hidden">Code incorrect. Veuillez réessayer.</p>
+        </div>
+
+        <button type="submit" id="loginBtn" class="w-full py-3 rounded-xl bg-aeemci-800 hover:bg-aeemci-900 text-white font-extrabold text-xs shadow-md transition-all flex items-center justify-center gap-2">
+          <span>Déverrouiller le Registre</span>
+          <i class="fa-solid fa-arrow-right text-xs"></i>
+        </button>
+      </form>
+
+      <div class="text-[11px] text-slate-400 pt-2 border-t border-slate-100 flex items-center justify-center gap-1.5">
+        <i class="fa-solid fa-lock text-[10px]"></i>
+        <span>Accès restreint aux membres du Bureau Exécutif EMSP</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==============================================
+       MAIN DASHBOARD CARD (VISIBLE WHEN UNLOCKED)
+       ============================================== -->
+  <div id="dashboardCard" class="hidden min-h-screen flex flex-col">
+    
+    <!-- Top Navbar -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+        
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-aeemci-800 text-amber-400 flex items-center justify-center text-lg font-bold shadow-sm">
+            <i class="fa-solid fa-moon"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="text-sm sm:text-base font-extrabold text-slate-900">Registre AEEMCI EMSP</h1>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">Secrétariat</span>
+            </div>
+            <p class="text-[11px] text-slate-500 font-medium">Gestion & Cartographie des membres musulmans de l'EMSP</p>
+          </div>
+        </div>
+
+        <!-- Top Right Actions -->
+        <div class="flex items-center gap-2">
+          <a href="index.html" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-emerald-700 hover:bg-slate-50 transition-colors">
+            <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i>
+            <span class="hidden sm:inline">Formulaire Public</span>
+          </a>
+
+          <button onclick="deconnexion()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-rose-600 hover:bg-rose-50 transition-colors border border-rose-200">
+            <i class="fa-solid fa-power-off text-xs"></i>
+            <span class="hidden sm:inline">Déconnexion</span>
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6 flex-1 w-full">
+      
+      <!-- STATS KPI CARDS -->
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-3.5">
+        
+        <!-- Total Membres -->
+        <div class="col-span-2 sm:col-span-1 bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Total Membres</span>
+            <span class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center text-xs font-bold"><i class="fa-solid fa-users"></i></span>
+          </div>
+          <div class="mt-2 text-2xl font-extrabold text-slate-900 font-mono" id="statTotal">0</div>
+          <div class="text-[10px] text-emerald-600 font-medium mt-1">Recensement actif</div>
+        </div>
+
+        <!-- Frères -->
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Frères</span>
+            <span class="w-7 h-7 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center text-xs font-bold"><i class="fa-solid fa-person"></i></span>
+          </div>
+          <div class="mt-2 text-2xl font-extrabold text-blue-900 font-mono" id="statFreres">0</div>
+          <div class="text-[10px] text-slate-500 font-medium mt-1" id="statFreresPct">0%</div>
+        </div>
+
+        <!-- Sœurs -->
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Sœurs</span>
+            <span class="w-7 h-7 rounded-lg bg-pink-50 text-pink-700 flex items-center justify-center text-xs font-bold"><i class="fa-solid fa-person-dress"></i></span>
+          </div>
+          <div class="mt-2 text-2xl font-extrabold text-pink-900 font-mono" id="statSoeurs">0</div>
+          <div class="text-[10px] text-slate-500 font-medium mt-1" id="statSoeursPct">0%</div>
+        </div>
+
+        <!-- Campus EMSP -->
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Campus EMSP</span>
+            <span class="w-7 h-7 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center text-xs font-bold"><i class="fa-solid fa-building"></i></span>
+          </div>
+          <div class="mt-2 text-2xl font-extrabold text-purple-900 font-mono" id="statCampus">0</div>
+          <div class="text-[10px] text-slate-500 font-medium mt-1">Résidents Cité</div>
+        </div>
+
+        <!-- Hors Campus -->
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Hors Campus</span>
+            <span class="w-7 h-7 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center text-xs font-bold"><i class="fa-solid fa-house"></i></span>
+          </div>
+          <div class="mt-2 text-2xl font-extrabold text-amber-900 font-mono" id="statHorsCampus">0</div>
+          <div class="text-[10px] text-slate-500 font-medium mt-1">Communes d'Abidjan</div>
+        </div>
+
+      </div>
+
+      <!-- MAIN DATA CARD & TOOLBAR -->
+      <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+        
+        <!-- TOOLBAR & FILTERS -->
+        <div class="p-4 sm:p-5 border-b border-slate-100 bg-slate-50/50 space-y-3">
+          
+          <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
+            
+            <!-- SEARCH BAR -->
+            <div class="relative flex-1 min-w-[260px]">
+              <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+              <input type="text" id="searchInput" placeholder="Rechercher par nom, téléphone, matricule, chambre, filière..." class="w-full pl-9 pr-8 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-600 bg-white">
+              <button id="clearSearchBtn" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-500 text-xs hidden">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div class="flex items-center gap-2 flex-wrap">
+              <button onclick="chargerDonnees()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs border border-slate-200 transition-colors shadow-2xs">
+                <i class="fa-solid fa-rotate text-xs text-slate-500"></i>
+                <span>Actualiser</span>
+              </button>
+
+              <button onclick="openSeqSenderModal()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs transition-colors shadow-2xs">
+                <i class="fa-solid fa-paper-plane text-xs text-indigo-200"></i>
+                <span>Envoi WhatsApp (1 par 1)</span>
+              </button>
+
+              <button onclick="openMessagesModal()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs transition-colors shadow-2xs">
+                <i class="fa-brands fa-whatsapp text-sm"></i>
+                <span>Centre Messages</span>
+              </button>
+
+              <button onclick="exporterCSV()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs transition-colors shadow-2xs">
+                <i class="fa-solid fa-file-excel text-sm text-emerald-200"></i>
+                <span>Exporter Registre (CSV)</span>
+              </button>
+
+              <button onclick="openSqlModal()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-colors shadow-2xs" title="Afficher le script SQL Supabase">
+                <i class="fa-solid fa-database text-xs text-amber-300"></i>
+                <span>SQL Supabase</span>
+              </button>
+            </div>
+
+          </div>
+
+          <!-- FILTER PILLS -->
+          <div class="flex items-center gap-2 flex-wrap pt-1 text-xs">
+            <span class="text-slate-400 font-bold text-[11px] mr-1">Filtrer par :</span>
+
+            <!-- Genre Filter -->
+            <select id="genreFilter" class="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white font-medium text-slate-700 focus:outline-none focus:ring-1 focus:ring-emerald-500">
+              <option value="all">Tous les genres (Frères & Sœurs)</option>
+              <option value="Frère">👨 Frères uniquement</option>
+              <option value="Sœur">🧕 Sœurs uniquement</option>
+            </select>
+
+            <!-- Residence Filter -->
+            <select id="residenceFilter" class="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white font-medium text-slate-700 focus:outline-none focus:ring-1 focus:ring-emerald-500">
+              <option value="all">Toutes résidences</option>
+              <option value="Campus">🏢 Campus EMSP (Cité)</option>
+              <option value="Hors Campus">🏠 Hors Campus (Abidjan)</option>
+            </select>
+
+            <!-- Filiere Filter -->
+            <select id="filiereFilter" class="px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white font-medium text-slate-700 focus:outline-none focus:ring-1 focus:ring-emerald-500">
+              <option value="all">Toutes les filières</option>
+              <option value="Télécommunications">Réseaux & Télécoms</option>
+              <option value="Systèmes d'Information">Systèmes d'Information</option>
+              <option value="Postale">Gestion Postale & Finances</option>
+              <option value="Logistique">Logistique & Supply Chain</option>
+            </select>
+
+            <!-- Count indicator -->
+            <span id="filteredCountBadge" class="ml-auto text-[11px] font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-lg">
+              <span id="filteredRowsCount">0</span> membre(s) affiché(s)
+            </span>
+          </div>
+
+        </div>
+
+        <!-- TABLE OF MEMBERS -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50/80 text-slate-600 font-bold uppercase text-[10px] tracking-wider border-b border-slate-200">
+              <tr>
+                <th class="py-3 px-4 w-12 text-center">#</th>
+                <th class="py-3 px-4 min-w-[200px]">Membre & Matricule</th>
+                <th class="py-3 px-4 min-w-[160px]">Contact WhatsApp</th>
+                <th class="py-3 px-4 min-w-[180px]">Cursus EMSP</th>
+                <th class="py-3 px-4 min-w-[170px]">Résidence & Logement</th>
+                <th class="py-3 px-4 min-w-[150px]">Commissions d'intérêt</th>
+                <th class="py-3 px-4 text-center min-w-[160px]">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody" class="divide-y divide-slate-100 font-medium text-slate-700">
+              <!-- Rendered via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden p-12 text-center space-y-3">
+          <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center text-xl mx-auto">
+            <i class="fa-solid fa-users-slash"></i>
+          </div>
+          <h3 class="font-bold text-slate-800 text-sm">Aucun membre ne correspond aux critères</h3>
+          <p class="text-xs text-slate-500 max-w-sm mx-auto">Vérifiez vos filtres ou effectuez un nouveau recensement depuis le formulaire public.</p>
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- ==============================================
+       MODAL : CENTRE DE MESSAGERIE WHATSAPP
+       ============================================== -->
+  <div id="messagesModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100 flex flex-col max-h-[92vh] animate-in fade-in duration-150">
+      
+      <!-- Modal Header -->
+      <div class="p-5 bg-gradient-to-r from-teal-700 to-emerald-800 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center text-lg">
+            <i class="fa-brands fa-whatsapp text-white"></i>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-base">Centre de Communication WhatsApp</h3>
+            <p class="text-[11px] text-emerald-100">Modèles officiels Section AEEMCI EMSP</p>
+          </div>
+        </div>
+        <button onclick="closeMessagesModal()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Template Tabs -->
+      <div class="flex border-b border-slate-200 bg-slate-50 text-xs font-bold p-1 gap-1">
+        <button type="button" onclick="switchMsgTemplate('bienvenue')" id="tab-bienvenue" class="flex-1 py-2 px-2 rounded-xl bg-white text-emerald-800 shadow-2xs border border-slate-200/60 transition-all text-center">
+          🪪 1. Bienvenue & Matricule
+        </button>
+        <button type="button" onclick="switchMsgTemplate('reunion')" id="tab-reunion" class="flex-1 py-2 px-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all text-center">
+          📢 2. Convocation Réunion
+        </button>
+        <button type="button" onclick="switchMsgTemplate('iftar')" id="tab-iftar" class="flex-1 py-2 px-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all text-center">
+          🕌 3. Activité / Prière
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-5 space-y-4 overflow-y-auto flex-1">
+        
+        <!-- Recipient selector -->
+        <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-1">
+          <label class="text-[11px] font-bold text-slate-600 uppercase tracking-wider block">Destinataire :</label>
+          <select id="msgCandidateSelect" class="w-full px-3 py-2 text-xs font-semibold text-slate-800 bg-white rounded-xl border border-slate-200">
+            <option value="global">📢 Message Collectif (Pour Groupe de la Section)</option>
+          </select>
+        </div>
+
+        <!-- Textarea -->
+        <div class="space-y-1">
+          <label class="text-xs font-bold text-slate-700 block">Texte officiel prêt à envoyer :</label>
+          <textarea id="templateMsgText" rows="10" class="w-full p-3 text-xs font-sans leading-relaxed text-slate-800 bg-slate-50 rounded-xl border border-slate-200" readonly></textarea>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="flex flex-col gap-2 pt-1">
+          <button id="sendDirectWaMsgBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 rounded-xl shadow-md transition-colors flex items-center justify-center gap-2">
+            <i class="fa-brands fa-whatsapp text-sm"></i>
+            <span id="sendDirectWaMsgLabel">Ouvrir WhatsApp Web / Application</span>
+          </button>
+          <button onclick="copierTexteModal()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs py-2.5 rounded-xl transition-colors flex items-center justify-center gap-2">
+            <i class="fa-regular fa-copy"></i>
+            <span>Copier le texte du message</span>
+          </button>
+          <button onclick="copierTousLesNumeros()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs py-2.5 rounded-xl border border-slate-200 transition-colors flex items-center justify-center gap-2">
+            <i class="fa-solid fa-address-book text-slate-500"></i>
+            <span id="copyPhonesLabel">Copier tous les numéros WhatsApp (+225 & internationaux)</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==============================================
+       MODAL : ASSISTANT D'ENVOI INDIVIDUEL (1 PAR 1)
+       ============================================== -->
+  <div id="sequentialModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-100 flex flex-col max-h-[92vh] animate-in fade-in duration-150">
+      
+      <div class="p-5 bg-gradient-to-r from-indigo-700 to-purple-800 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-paper-plane text-white"></i>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-base">Envoi Individuel Pas-à-Pas</h3>
+            <p class="text-[11px] text-indigo-100">Envoi nominatif à chaque membre avec son matricule</p>
+          </div>
+        </div>
+        <button onclick="closeSeqModal()" class="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-4 overflow-y-auto flex-1">
+        <!-- Progress -->
+        <div>
+          <div class="flex justify-between items-center text-xs font-bold text-slate-600 mb-1.5">
+            <span>Progression : <strong id="seqProgressText" class="text-indigo-600">0 / 0</strong></span>
+            <span id="seqPercentText" class="text-slate-400">0%</span>
+          </div>
+          <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+            <div id="seqProgressBar" class="bg-indigo-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Current candidate card -->
+        <div class="bg-indigo-50/60 border border-indigo-100 rounded-2xl p-4 flex items-center justify-between">
+          <div class="min-w-0 pr-2">
+            <div class="text-[10px] font-bold text-indigo-500 uppercase tracking-wider">Membre actuel (<span id="seqCurrentIndex">1</span>/<span id="seqTotalCount">0</span>)</div>
+            <h4 id="seqCandidateName" class="text-base font-extrabold text-slate-900 mt-0.5 truncate">Participant</h4>
+            <div class="flex items-center gap-2 mt-1 text-xs text-slate-600 flex-wrap">
+              <span class="font-mono font-bold text-indigo-700" id="seqCandidatePhone">+225 00 00 00 00</span>
+              <span>•</span>
+              <span id="seqCandidateMatricule" class="font-mono text-[11px] text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">MEM-EMSP</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Preview -->
+        <div class="space-y-1">
+          <label class="text-xs font-bold text-slate-700">Message personnalisé :</label>
+          <textarea id="seqMessagePreview" rows="8" class="w-full p-3 text-xs font-sans leading-relaxed text-slate-800 bg-slate-50 rounded-xl border border-slate-200" readonly></textarea>
+        </div>
+
+        <!-- Actions -->
+        <div class="space-y-2 pt-1">
+          <button id="seqSendBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm py-3 rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
+            <i class="fa-brands fa-whatsapp text-lg"></i>
+            <span>1. Ouvrir WhatsApp & Envoyer</span>
+          </button>
+          
+          <div class="flex items-center gap-2">
+            <button id="seqPrevBtn" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs py-2.5 rounded-xl transition-colors flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-chevron-left text-[10px]"></i>
+              <span>Précédent</span>
+            </button>
+            <button id="seqNextBtn" class="flex-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-2.5 rounded-xl shadow-2xs transition-colors flex items-center justify-center gap-1.5">
+              <span>Marquer Envoyé & Suivant</span>
+              <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==============================================
+       MODAL : SCRIPT SQL SUPABASE
+       ============================================== -->
+  <div id="sqlModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-xl w-full overflow-hidden shadow-2xl border border-slate-100 p-6 space-y-4 max-h-[90vh] flex flex-col">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-slate-900 text-amber-400 flex items-center justify-center text-sm font-bold">
+            <i class="fa-solid fa-database"></i>
+          </div>
+          <h3 class="font-extrabold text-base text-slate-900">Script SQL pour Supabase</h3>
+        </div>
+        <button onclick="closeSqlModal()" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-slate-600">
+        Si vous ne l'avez pas encore fait, copiez ce script et collez-le dans le <strong>SQL Editor</strong> de votre projet Supabase (<code class="bg-slate-100 px-1 py-0.5 rounded text-emerald-800">dashboard.supabase.com</code>) pour créer la table officielle :
+      </p>
+
+      <div class="flex-1 overflow-y-auto">
+        <pre class="bg-slate-900 text-emerald-400 p-4 rounded-xl text-[11px] font-mono leading-relaxed select-all" id="sqlContent">
+CREATE TABLE IF NOT EXISTS public.recensement_emsp (
+    id BIGINT GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    matricule TEXT UNIQUE NOT NULL,
+    nom TEXT NOT NULL,
+    genre TEXT NOT NULL,
+    nationalite TEXT DEFAULT 'Côte d''Ivoire',
+    date_naissance DATE,
+    whatsapp TEXT NOT NULL,
+    telephone_urgence TEXT,
+    email TEXT,
+    statut TEXT NOT NULL,
+    cycle TEXT NOT NULL,
+    filiere TEXT NOT NULL,
+    niveau TEXT NOT NULL,
+    residence TEXT NOT NULL,
+    precision_residence TEXT,
+    commissions TEXT[],
+    competences TEXT,
+    remarques TEXT,
+    statut_validation TEXT DEFAULT 'Validé'
+);
+
+ALTER TABLE public.recensement_emsp ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Lecture et insertion publiques" ON public.recensement_emsp FOR ALL TO public USING (true) WITH CHECK (true);
+        </pre>
+      </div>
+
+      <button onclick="copierSqlScript()" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition-colors flex items-center justify-center gap-2">
+        <i class="fa-regular fa-copy"></i>
+        <span>Copier le script SQL</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-2.5 text-xs font-bold transition-all duration-300 opacity-0 pointer-events-none translate-y-2">
+    <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400"></i>
+    <span id="toast-msg">Opération réussie</span>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js?v=20261113_EMSP_V1"></script>
+  <script src="base_donnees.js?v=20261113_EMSP_V1"></script>
+  <script>
+    const VALID_ADMIN_PINS = ["emsp2026", "aeemci2026", "admin", "sg2026", "1234"];
+    let rawMembres = [];
+    let filteredMembres = [];
+    let currentMsgType = 'bienvenue';
+    let seqCurrentIdx = 0;
+
+    // Initialize Auth
+    function verifierCodeSecret() {
+      const pin = document.getElementById('passInput').value.trim().toLowerCase();
+      const err = document.getElementById('passError');
+      if (VALID_ADMIN_PINS.includes(pin)) {
+        sessionStorage.setItem('aeemci_emsp_auth', 'true');
+        err.classList.add('hidden');
+        afficherTableauBord();
+      } else {
+        err.classList.remove('hidden');
+      }
+    }
+
+    function afficherTableauBord() {
+      document.getElementById('loginCard').classList.add('hidden');
+      document.getElementById('dashboardCard').classList.remove('hidden');
+      chargerDonnees();
+    }
+
+    function deconnexion() {
+      sessionStorage.removeItem('aeemci_emsp_auth');
+      location.reload();
+    }
+
+    // Charger les données
+    async function chargerDonnees() {
+      showToast("Actualisation des membres...");
+      rawMembres = await recupererTousLesMembres();
+      calculerStatistiques();
+      appliquerFiltres();
+    }
+
+    // Statistiques
+    function calculerStatistiques() {
+      const total = rawMembres.length;
+      const freres = rawMembres.filter(m => (m.genre || '').includes('Frère') || (m.genre || '').includes('Homme')).length;
+      const soeurs = rawMembres.filter(m => (m.genre || '').includes('Sœur') || (m.genre || '').includes('Femme')).length;
+      const campus = rawMembres.filter(m => (m.residence || '').includes('Campus')).length;
+      const horsCampus = total - campus;
+
+      document.getElementById('statTotal').textContent = total;
+      document.getElementById('statFreres').textContent = freres;
+      document.getElementById('statSoeurs').textContent = soeurs;
+      document.getElementById('statCampus').textContent = campus;
+      document.getElementById('statHorsCampus').textContent = horsCampus;
+
+      document.getElementById('statFreresPct').textContent = total ? `${Math.round((freres/total)*100)}% de l'effectif` : '0%';
+      document.getElementById('statSoeursPct').textContent = total ? `${Math.round((soeurs/total)*100)}% de l'effectif` : '0%';
+    }
+
+    // Filtrage et Rendu
+    function appliquerFiltres() {
+      const q = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+      const genre = document.getElementById('genreFilter').value;
+      const res = document.getElementById('residenceFilter').value;
+      const fil = document.getElementById('filiereFilter').value;
+
+      filteredMembres = rawMembres.filter(m => {
+        // Search
+        if (q) {
+          const match = (m.nom || '').toLowerCase().includes(q) ||
+                        (m.matricule || '').toLowerCase().includes(q) ||
+                        (m.whatsapp || '').includes(q) ||
+                        (m.filiere || '').toLowerCase().includes(q) ||
+                        (m.precision_residence || '').toLowerCase().includes(q);
+          if (!match) return false;
+        }
+        // Genre
+        if (genre !== 'all' && m.genre !== genre) return false;
+        // Residence
+        if (res !== 'all' && !((m.residence || '').includes(res))) return false;
+        // Filiere
+        if (fil !== 'all' && !((m.filiere || '').includes(fil))) return false;
+
+        return true;
+      });
+
+      document.getElementById('filteredRowsCount').textContent = filteredMembres.length;
+      rendreTableau();
+    }
+
+    function rendreTableau() {
+      const tbody = document.getElementById('tableBody');
+      const empty = document.getElementById('emptyState');
+
+      if (filteredMembres.length === 0) {
+        tbody.innerHTML = '';
+        empty.classList.remove('hidden');
+        return;
+      }
+      empty.classList.add('hidden');
+
+      tbody.innerHTML = filteredMembres.map((m, idx) => {
+        const initials = (m.nom || 'M').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+        const cleanWa = String(m.whatsapp || '').replace(/[^\d+]/g, '');
+        const waLink = `https://wa.me/${cleanWa.replace('+', '')}`;
+        
+        // Commissions badges
+        let commBadges = '';
+        if (Array.isArray(m.commissions) && m.commissions.length > 0) {
+          commBadges = m.commissions.slice(0, 2).map(c => 
+            `<span class="inline-block px-1.5 py-0.5 rounded bg-slate-100 text-slate-700 text-[9px] truncate max-w-[120px]">${escapeHtml(c)}</span>`
+          ).join(' ');
+          if (m.commissions.length > 2) commBadges += ` <span class="text-[9px] text-slate-400 font-bold">+${m.commissions.length - 2}</span>`;
+        } else {
+          commBadges = '<span class="text-slate-400 text-[10px]">Non renseigné</span>';
+        }
+
+        const isCampus = (m.residence || '').includes('Campus');
+        const resBadge = isCampus 
+          ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-50 text-purple-700 border border-purple-200"><i class="fa-solid fa-building text-[9px]"></i> Campus</span>`
+          : `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200"><i class="fa-solid fa-house text-[9px]"></i> Ville</span>`;
+
+        return `
+          <tr class="hover:bg-slate-50/80 transition-colors">
+            <td class="py-3 px-4 text-center font-bold text-slate-400">${idx + 1}</td>
+            
+            <!-- MEMBRE & MATRICULE -->
+            <td class="py-3 px-4">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center shrink-0">
+                  ${initials}
+                </div>
+                <div class="min-w-0">
+                  <div class="font-bold text-slate-900 truncate">${escapeHtml(m.nom)}</div>
+                  <div class="flex items-center gap-1 mt-0.5">
+                    <span class="font-mono text-[10px] font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">
+                      ${escapeHtml(m.matricule)}
+                    </span>
+                    <button onclick="copierTexte('${escapeHtml(m.matricule)}', 'Matricule copié !')" class="text-slate-400 hover:text-emerald-700 p-0.5" title="Copier matricule">
+                      <i class="fa-regular fa-copy text-[10px]"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </td>
+
+            <!-- CONTACT -->
+            <td class="py-3 px-4">
+              <a href="${waLink}" target="_blank" class="inline-flex items-center gap-1 font-mono font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/80">
+                <i class="fa-brands fa-whatsapp text-emerald-600"></i>
+                <span>${escapeHtml(m.whatsapp || '-')}</span>
+              </a>
+              <div class="text-[10px] text-slate-400 mt-0.5 truncate">${escapeHtml(m.email || 'Pas d\'email')}</div>
+            </td>
+
+            <!-- CURSUS -->
+            <td class="py-3 px-4">
+              <div class="font-bold text-slate-800 truncate">${escapeHtml(m.filiere)}</div>
+              <div class="text-[11px] text-slate-500">${escapeHtml(m.cycle)} · ${escapeHtml(m.niveau)}</div>
+            </td>
+
+            <!-- RESIDENCE -->
+            <td class="py-3 px-4">
+              <div>${resBadge}</div>
+              <div class="text-[10px] text-slate-500 mt-0.5 truncate font-medium">${escapeHtml(m.precision_residence || '-')}</div>
+            </td>
+
+            <!-- COMMISSIONS -->
+            <td class="py-3 px-4">
+              <div class="flex flex-wrap gap-1">${commBadges}</div>
+            </td>
+
+            <!-- ACTIONS -->
+            <td class="py-3 px-4 text-center">
+              <div class="flex items-center justify-center gap-1.5">
+                <button onclick="envoyerMsgIndividuel(${idx})" class="p-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200" title="Envoyer matricule sur WhatsApp">
+                  <i class="fa-brands fa-whatsapp text-xs"></i>
+                </button>
+                <button onclick="supprimerMembreBtn(${idx})" class="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200" title="Supprimer du registre">
+                  <i class="fa-solid fa-trash-can text-xs"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // WhatsApp Message Templates
+    function genererMessageBienvenue(item) {
+      const isGlobal = !item || item === 'global';
+      const nom = !isGlobal ? item.nom : 'Cher Frère / Chère Sœur';
+      const matricule = !isGlobal ? item.matricule : '[VOTRE-MATRICULE]';
+      const filiere = !isGlobal ? `${item.filiere} (${item.niveau})` : 'Votre filière';
+
+      return `🌙 *CONFIRMATION DE RECENSEMENT — AEEMCI EMSP* 🌙\n` +
+        `━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
+        `Assalamou Aleykoum 👋 *${nom}*,\n\n` +
+        `Le Bureau de la *Section AEEMCI EMSP Abidjan* vous confirme avec joie votre enregistrement officiel au registre des membres pour l'année universitaire 2026-2027 ! 🎓✨\n\n` +
+        `🪪 *VOS INFORMATIONS OFFICIELLES :*\n` +
+        `• *Matricule de Membre :* \`${matricule}\`\n` +
+        `• *Filière / Niveau :* ${filiere}\n` +
+        `• *Section :* AEEMCI EMSP (Treichville, Abidjan)\n\n` +
+        `Qu'Allah bénisse votre parcours académique à l'EMSP et fasse de notre section un lieu de fraternité et de réussite.\n\n` +
+        `— *Le Secrétariat Général — Section AEEMCI EMSP*\n` +
+        `📞 Infoline : +225 07 11 98 58 10`;
+    }
+
+    function genererMessageReunion(item) {
+      const isGlobal = !item || item === 'global';
+      const nom = !isGlobal ? item.nom : 'Chers frères et sœurs';
+
+      return `📢 *CONVOCATION / RÉUNION OFFICIELLE — AEEMCI EMSP*\n` +
+        `━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
+        `Assalamou Aleykoum 👋 *${nom}*,\n\n` +
+        `Le Secrétaire Général et le Bureau de la Section AEEMCI EMSP vous convient à une rencontre fraternelle :\n\n` +
+        `🗓️ *Date :* [À préciser]\n` +
+        `⏰ *Heure :* [À préciser]\n` +
+        `📍 *Lieu :* Campus EMSP (Mosquée / Salle polyvalente)\n\n` +
+        `📌 *Ordre du jour :*\n` +
+        `1. Accueil et nouvelles de la communauté\n` +
+        `2. Présentation du programme d'activités 2026-2027\n` +
+        `3. Divers & Échanges\n\n` +
+        `Votre présence effective et ponctuelle est vivement souhaitée !\n\n` +
+        `— *Le Secrétariat Général — AEEMCI EMSP*`;
+    }
+
+    function genererMessageIftar(item) {
+      return `🕌 *ACTIVITÉ SPIRITUELLE & FRATERNELLE — AEEMCI EMSP*\n` +
+        `━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
+        `Assalamou Aleykoum chers frères et sœurs de l'EMSP 👋,\n\n` +
+        `La Section AEEMCI EMSP organise une activité spirituelle fraternelle au campus :\n\n` +
+        `✨ *Programme :* Prière en commun, rappel spirituel et partage fraternel.\n` +
+        `📍 *Lieu :* Campus EMSP\n\n` +
+        `Venez nombreux partager ce moment béni dans la fraternité islamique !\n\n` +
+        `— *Bureau de Section AEEMCI EMSP*`;
+    }
+
+    // Modal Messages & Diffusion
+    function openMessagesModal() {
+      populateMsgSelect();
+      updateMsgTemplatePreview();
+      document.getElementById('messagesModal').classList.remove('hidden');
+    }
+
+    function closeMessagesModal() {
+      document.getElementById('messagesModal').classList.add('hidden');
+    }
+
+    function populateMsgSelect() {
+      const sel = document.getElementById('msgCandidateSelect');
+      sel.innerHTML = '<option value="global" selected>📢 Message Collectif (Pour Groupe WhatsApp de la Section)</option>' +
+        filteredMembres.map((m, idx) => `<option value="${idx}">${m.nom} (${m.matricule})</option>`).join('');
+    }
+
+    function switchMsgTemplate(type) {
+      currentMsgType = type;
+      ['bienvenue', 'reunion', 'iftar'].forEach(t => {
+        const tab = document.getElementById(`tab-${t}`);
+        if (!tab) return;
+        if (t === type) {
+          tab.className = "flex-1 py-2 px-2 rounded-xl bg-white text-emerald-800 shadow-2xs border border-slate-200/60 transition-all text-center";
+        } else {
+          tab.className = "flex-1 py-2 px-2 rounded-xl text-slate-600 hover:text-slate-900 transition-all text-center";
+        }
+      });
+      updateMsgTemplatePreview();
+    }
+
+    function updateMsgTemplatePreview() {
+      const selVal = document.getElementById('msgCandidateSelect').value;
+      const target = (selVal !== 'global' && filteredMembres[selVal]) ? filteredMembres[selVal] : 'global';
+      const txt = document.getElementById('templateMsgText');
+      
+      if (currentMsgType === 'bienvenue') {
+        txt.value = genererMessageBienvenue(target);
+      } else if (currentMsgType === 'reunion') {
+        txt.value = genererMessageReunion(target);
+      } else {
+        txt.value = genererMessageIftar(target);
+      }
+    }
+
+    document.getElementById('msgCandidateSelect').addEventListener('change', updateMsgTemplatePreview);
+
+    document.getElementById('sendDirectWaMsgBtn').addEventListener('click', () => {
+      const selVal = document.getElementById('msgCandidateSelect').value;
+      const msg = document.getElementById('templateMsgText').value;
+      if (selVal === 'global') {
+        copierTexte(msg, "Message copié ! Collez-le dans votre groupe WhatsApp.");
+        window.open('https://web.whatsapp.com/', '_blank');
+      } else {
+        const m = filteredMembres[selVal];
+        if (!m) return;
+        const cleanWa = String(m.whatsapp || '').replace(/[^\d+]/g, '').replace('+', '');
+        window.open(`https://wa.me/${cleanWa}?text=${encodeURIComponent(msg)}`, '_blank');
+      }
+    });
+
+    function copierTexteModal() {
+      const msg = document.getElementById('templateMsgText').value;
+      copierTexte(msg, "Texte du message copié pour WhatsApp !");
+    }
+
+    function copierTousLesNumeros() {
+      const phones = rawMembres.map(m => formaterNumeroTelephone(m.whatsapp)).filter(Boolean);
+      const unique = [...new Set(phones)].join('\n');
+      copierTexte(unique, `${phones.length} numéros WhatsApp copiés !`);
+    }
+
+    // Envoi individuel direct depuis la ligne
+    function envoyerMsgIndividuel(idx) {
+      const m = filteredMembres[idx];
+      if (!m) return;
+      const cleanWa = String(m.whatsapp || '').replace(/[^\d+]/g, '').replace('+', '');
+      const msg = genererMessageBienvenue(m);
+      window.open(`https://wa.me/${cleanWa}?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    // Suppression
+    async function supprimerMembreBtn(idx) {
+      const m = filteredMembres[idx];
+      if (!m) return;
+      if (confirm(`Êtes-vous certain de vouloir supprimer le membre "${m.nom}" (${m.matricule}) ?`)) {
+        await supprimerMembre(m);
+        showToast("Membre supprimé avec succès.");
+        chargerDonnees();
+      }
+    }
+
+    // Assistant séquentiel (Pas-à-pas)
+    function openSeqSenderModal() {
+      if (filteredMembres.length === 0) {
+        showToast("Aucun membre dans la liste", false);
+        return;
+      }
+      seqCurrentIdx = 0;
+      updateSeqUI();
+      document.getElementById('sequentialModal').classList.remove('hidden');
+    }
+
+    function closeSeqModal() {
+      document.getElementById('sequentialModal').classList.add('hidden');
+    }
+
+    function updateSeqUI() {
+      const total = filteredMembres.length;
+      if (total === 0) return;
+      if (seqCurrentIdx >= total) seqCurrentIdx = total - 1;
+      if (seqCurrentIdx < 0) seqCurrentIdx = 0;
+
+      const m = filteredMembres[seqCurrentIdx];
+      const percent = Math.round(((seqCurrentIdx + 1) / total) * 100);
+
+      document.getElementById('seqProgressText').textContent = `${seqCurrentIdx + 1} / ${total}`;
+      document.getElementById('seqPercentText').textContent = `${percent}%`;
+      document.getElementById('seqProgressBar').style.width = `${percent}%`;
+      document.getElementById('seqCurrentIndex').textContent = seqCurrentIdx + 1;
+      document.getElementById('seqTotalCount').textContent = total;
+
+      document.getElementById('seqCandidateName').textContent = m.nom;
+      document.getElementById('seqCandidatePhone').textContent = m.whatsapp;
+      document.getElementById('seqCandidateMatricule').textContent = m.matricule;
+
+      const msg = genererMessageBienvenue(m);
+      document.getElementById('seqMessagePreview').value = msg;
+    }
+
+    document.getElementById('seqSendBtn').addEventListener('click', () => {
+      const m = filteredMembres[seqCurrentIdx];
+      if (!m) return;
+      const cleanWa = String(m.whatsapp || '').replace(/[^\d+]/g, '').replace('+', '');
+      const msg = genererMessageBienvenue(m);
+      window.open(`https://wa.me/${cleanWa}?text=${encodeURIComponent(msg)}`, '_blank');
+    });
+
+    document.getElementById('seqNextBtn').addEventListener('click', () => {
+      if (seqCurrentIdx < filteredMembres.length - 1) {
+        seqCurrentIdx++;
+        updateSeqUI();
+      } else {
+        showToast("Tous les membres de la sélection ont été passés en revue ! 🎉");
+      }
+    });
+
+    document.getElementById('seqPrevBtn').addEventListener('click', () => {
+      if (seqCurrentIdx > 0) {
+        seqCurrentIdx--;
+        updateSeqUI();
+      }
+    });
+
+    // Export CSV
+    function exporterCSV() {
+      if (filteredMembres.length === 0) {
+        showToast("Aucune donnée à exporter", false);
+        return;
+      }
+      const headers = ['#', 'Matricule', 'Nom & Prénoms', 'Genre', 'Nationalité', 'WhatsApp', 'Email', 'Statut EMSP', 'Cycle', 'Filière', 'Niveau', 'Résidence', 'Détail Logement', 'Commissions', 'Date Recensement'];
+      const rows = filteredMembres.map((m, i) => [
+        i + 1,
+        m.matricule || '',
+        m.nom || '',
+        m.genre || '',
+        m.nationalite || '',
+        m.whatsapp || '',
+        m.email || '',
+        m.statut || '',
+        m.cycle || '',
+        m.filiere || '',
+        m.niveau || '',
+        m.residence || '',
+        m.precision_residence || '',
+        (m.commissions || []).join(', '),
+        m.created_at || ''
+      ]);
+
+      const csvContent = [headers, ...rows].map(row => row.map(c => `"${String(c || '').replace(/"/g, '""')}"`).join(';')).join('\n');
+      const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `registre_aeemci_emsp_${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast("Fichier CSV téléchargé avec succès !");
+    }
+
+    // Modal SQL
+    function openSqlModal() {
+      document.getElementById('sqlModal').classList.remove('hidden');
+    }
+    function closeSqlModal() {
+      document.getElementById('sqlModal').classList.add('hidden');
+    }
+    function copierSqlScript() {
+      const sql = document.getElementById('sqlContent').textContent;
+      copierTexte(sql, "Script SQL copié dans le presse-papier !");
+    }
+
+    // Helpers
+    function copierTexte(txt, successMsg = "Copié !") {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(txt).then(() => showToast(successMsg));
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = txt;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast(successMsg);
+      }
+    }
+
+    function showToast(msg, isSuccess = true) {
+      const t = document.getElementById('toast');
+      const m = document.getElementById('toast-msg');
+      const i = document.getElementById('toast-icon');
+      if (!t || !m) return;
+      m.textContent = msg;
+      i.className = isSuccess ? "fa-solid fa-circle-check text-emerald-400" : "fa-solid fa-circle-exclamation text-rose-400";
+      t.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
+      setTimeout(() => t.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2'), 3000);
+    }
+
+    function escapeHtml(str) {
+      return String(str || '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[m]);
+    }
+
+    // Event listeners
+    document.getElementById('searchInput').addEventListener('input', appliquerFiltres);
+    document.getElementById('genreFilter').addEventListener('change', appliquerFiltres);
+    document.getElementById('residenceFilter').addEventListener('change', appliquerFiltres);
+    document.getElementById('filiereFilter').addEventListener('change', appliquerFiltres);
+
+    // Auto-check auth
+    if (sessionStorage.getItem('aeemci_emsp_auth') === 'true') {
+      afficherTableauBord();
+    }
+  </script>
+</body>
+</html>

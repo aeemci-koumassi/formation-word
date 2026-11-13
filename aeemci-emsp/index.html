@@ -2,7 +2,7 @@
 <html lang="fr" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>Portail Officiel de Recensement — Section AEEMCI EMSP Abidjan</title>
   <meta name="description" content="Portail officiel de recensement et d'identification de la communauté musulmane de l'École Multinationale Supérieure des Postes (EMSP) Abidjan. AEEMCI Section Universitaire EMSP.">
   
@@ -47,42 +47,40 @@
       background: linear-gradient(90deg, #064e3b 0%, #047857 40%, #d97706 70%, #064e3b 100%);
       height: 3px;
     }
-    .institutional-hero {
-      background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 60%, #ffffff 100%);
-      border-bottom: 1px solid #e2e8f0;
-    }
-    .feature-card {
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 1rem;
-      padding: 1.25rem;
-      transition: all 0.2s ease;
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
-    }
-    .feature-card:hover {
-      border-color: #cbd5e1;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07);
-      transform: translateY(-2px);
-    }
-    .subtle-border {
-      border: 1px solid rgba(226, 232, 240, 0.9);
-    }
+    
+    /* Optimisation Touch & Mobile Input : 16px minimum pour empêcher le zoom forcé sur iPhone */
     .form-input {
       width: 100%;
-      padding: 0.65rem 0.875rem;
-      font-size: 0.8125rem;
+      padding: 0.75rem 0.875rem;
+      font-size: 16px;
+      line-height: 1.4;
+      min-height: 46px;
       border-radius: 0.75rem;
       border: 1px solid #cbd5e1;
       background-color: #f8fafc;
       color: #0f172a;
       transition: all 0.2s ease;
       font-weight: 500;
+      -webkit-tap-highlight-color: transparent;
+    }
+    @media (min-width: 640px) {
+      .form-input {
+        font-size: 0.875rem;
+        padding: 0.625rem 0.875rem;
+        min-height: 42px;
+      }
     }
     .form-input:focus {
       outline: none;
       background-color: #ffffff;
       border-color: #047857;
       box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.15);
+    }
+    
+    /* Touch friendly styles */
+    .touch-target {
+      min-height: 44px;
+      min-width: 44px;
     }
   </style>
 </head>
@@ -92,20 +90,26 @@
   <div class="academic-header-bar"></div>
 
   <!-- ==============================================
-       HEADER INSTITUTIONNEL
+       HEADER INSTITUTIONNEL ULTRA-RESPONSIVE
        ============================================== -->
   <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 transition-all">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between py-3">
+    <div class="max-w-4xl mx-auto px-3.5 sm:px-6 h-15 sm:h-16 flex items-center justify-between py-2 sm:py-3">
       
-      <!-- Logo et Identité Institutionnelle (100% Épuré) -->
-      <a href="index.html" class="flex items-center gap-3.5 group">
-        <div class="w-10 h-10 rounded-xl bg-slate-900 text-amber-400 flex items-center justify-center font-bold text-lg shadow-xs border border-slate-800 shrink-0">
+      <!-- Logo et Identité Institutionnelle -->
+      <a href="index.html" class="flex items-center gap-2.5 sm:gap-3.5 group min-w-0">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-900 text-amber-400 flex items-center justify-center font-bold text-base sm:text-lg shadow-xs border border-slate-800 shrink-0">
           <i class="fa-solid fa-mosque"></i>
         </div>
-        <div class="leading-tight">
-          <span class="font-extrabold text-sm sm:text-base text-slate-900 tracking-tight block">AEEMCI · SECTION EMSP</span>
-          <p class="text-[11px] text-slate-500 font-medium">Association des Élèves et Étudiants Musulmans de Côte d'Ivoire</p>
+        <div class="leading-tight min-w-0">
+          <span class="font-extrabold text-xs sm:text-base text-slate-900 tracking-tight block truncate">AEEMCI · SECTION EMSP</span>
+          <p class="text-[10px] sm:text-[11px] text-slate-500 font-medium truncate">Association des Élèves et Étudiants Musulmans</p>
         </div>
+      </a>
+
+      <!-- Lien discret Admin / Espace Bureau -->
+      <a href="admin.html" class="text-slate-400 hover:text-emerald-700 p-2 text-xs flex items-center gap-1 font-semibold rounded-lg hover:bg-slate-50 transition-colors shrink-0" title="Accès Secrétariat">
+        <i class="fa-solid fa-lock text-[11px]"></i>
+        <span class="hidden md:inline">Secrétariat</span>
       </a>
 
     </div>
@@ -114,16 +118,16 @@
   <!-- ==============================================
        PRÉSENTATION INSTITUTIONNELLE SOBRE & PRESTIGIEUSE
        ============================================== -->
-  <section class="bg-gradient-to-b from-slate-50 to-white pt-8 pb-4 px-4 sm:px-6 border-b border-slate-100">
-    <div class="max-w-3xl mx-auto text-center space-y-2">
+  <section class="bg-gradient-to-b from-slate-50 to-white pt-6 pb-3 sm:pt-8 sm:pb-4 px-3.5 sm:px-6 border-b border-slate-100">
+    <div class="max-w-3xl mx-auto text-center space-y-1.5 sm:space-y-2">
       
       <!-- Titre d'Autorité Académique -->
-      <h1 class="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900">
+      <h1 class="text-lg sm:text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900 leading-snug">
         Portail Officiel de Recensement des Membres
       </h1>
 
-      <p class="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto leading-relaxed">
-        Répertoire confidentiel administré par le <strong>Secrétariat Général de la Section AEEMCI EMSP</strong> pour l'accompagnement académique, la fraternité et la communication officielle.
+      <p class="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto leading-relaxed px-1">
+        Répertoire officiel administré par le <strong>Secrétariat Général de la Section AEEMCI EMSP</strong> pour l'accompagnement académique, la fraternité et la communication.
       </p>
 
     </div>
@@ -132,29 +136,29 @@
   <!-- ==============================================
        FORMULAIRE DE RECENSEMENT INSTITUTIONNEL (STEPPER 3 ÉTAPES)
        ============================================== -->
-  <main class="max-w-3xl mx-auto px-4 sm:px-6 py-5 flex-1 w-full" id="formContainer">
+  <main class="max-w-3xl mx-auto px-2.5 sm:px-6 py-4 sm:py-5 flex-1 w-full" id="formContainer">
     
-    <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
+    <div class="bg-white rounded-xl sm:rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
       
       <!-- Entête du Formulaire avec Progression -->
-      <div class="p-5 sm:p-6 border-b border-slate-200 bg-slate-50/80 flex items-center justify-between gap-4">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-emerald-800 text-white flex items-center justify-center font-bold text-base shadow-xs shrink-0">
+      <div class="p-3.5 sm:p-6 border-b border-slate-200 bg-slate-50/80 flex items-center justify-between gap-2.5">
+        <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-800 text-white flex items-center justify-center font-bold text-sm sm:text-base shadow-xs shrink-0">
             <i class="fa-solid fa-id-card"></i>
           </div>
-          <div>
-            <h2 class="text-sm sm:text-base font-extrabold text-slate-900 tracking-tight">Fiche Individuelle d'Identification</h2>
-            <p class="text-xs text-slate-500 mt-0.5">Enregistrement numérique · Section AEEMCI EMSP</p>
+          <div class="min-w-0">
+            <h2 class="text-xs sm:text-base font-extrabold text-slate-900 tracking-tight truncate sm:whitespace-normal">Fiche Individuelle d'Identification</h2>
+            <p class="text-[10px] sm:text-xs text-slate-500 truncate sm:whitespace-normal">Enregistrement numérique · Section AEEMCI EMSP</p>
           </div>
         </div>
-        <div class="text-right">
-          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Progression</span>
-          <span id="currentStepBadge" class="text-xs font-bold text-emerald-800 bg-emerald-100/70 px-2.5 py-0.5 rounded-full border border-emerald-200">Étape 1 sur 3</span>
+        <div class="text-right shrink-0">
+          <span class="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Progression</span>
+          <span id="currentStepBadge" class="inline-block text-[10px] sm:text-xs font-bold text-emerald-800 bg-emerald-100/80 px-2 py-0.5 sm:px-2.5 rounded-full border border-emerald-200 whitespace-nowrap">Étape 1 sur 3</span>
         </div>
       </div>
 
-      <!-- Barre de Stepper Visuelle -->
-      <div class="px-6 pt-5 pb-3 border-b border-slate-100 bg-white">
+      <!-- Barre de Stepper Visuelle Optimisée Mobile -->
+      <div class="px-3 sm:px-6 pt-3.5 sm:pt-5 pb-2.5 sm:pb-3 border-b border-slate-100 bg-white">
         <div class="max-w-xl mx-auto relative">
           <!-- Ligne de fond -->
           <div class="absolute left-6 right-6 top-4 h-1 bg-slate-200 -translate-y-1/2 z-0"></div>
@@ -168,7 +172,7 @@
                 <span class="step-num">1</span>
                 <i class="fa-solid fa-check text-xs hidden step-check"></i>
               </div>
-              <span class="step-label text-[11px] font-extrabold text-slate-900 mt-1.5 hidden sm:block">Identité & Contact</span>
+              <span class="step-label text-[10px] sm:text-[11px] font-extrabold text-slate-900 mt-1 block text-center">Identité<span class="hidden sm:inline"> & Contact</span></span>
             </button>
 
             <!-- Étape 2 -->
@@ -177,7 +181,7 @@
                 <span class="step-num">2</span>
                 <i class="fa-solid fa-check text-xs hidden step-check"></i>
               </div>
-              <span class="step-label text-[11px] font-semibold text-slate-400 mt-1.5 hidden sm:block">Cursus EMSP</span>
+              <span class="step-label text-[10px] sm:text-[11px] font-semibold text-slate-400 mt-1 block text-center">Cursus<span class="hidden sm:inline"> EMSP</span></span>
             </button>
 
             <!-- Étape 3 -->
@@ -186,28 +190,28 @@
                 <span class="step-num">3</span>
                 <i class="fa-solid fa-check text-xs hidden step-check"></i>
               </div>
-              <span class="step-label text-[11px] font-semibold text-slate-400 mt-1.5 hidden sm:block">Résidence & Engagement</span>
+              <span class="step-label text-[10px] sm:text-[11px] font-semibold text-slate-400 mt-1 block text-center">Résidence<span class="hidden sm:inline"> & Engagement</span></span>
             </button>
           </div>
         </div>
       </div>
 
       <!-- Corps du formulaire -->
-      <form id="recensementForm" class="p-6 sm:p-8">
+      <form id="recensementForm" class="p-4 sm:p-8">
         
         <!-- ==============================================
              PANEL ÉTAPE 1 : IDENTITÉ & CONTACTS
              ============================================== -->
-        <div id="step-1" class="step-panel space-y-6">
-          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div id="step-1" class="step-panel space-y-4 sm:space-y-6">
+          <div class="flex items-center justify-between pb-2.5 sm:pb-3 border-b border-slate-100">
             <div class="flex items-center gap-2">
               <span class="w-6 h-6 rounded-md bg-emerald-100 text-emerald-800 text-xs font-bold flex items-center justify-center">1</span>
-              <h3 class="font-extrabold text-sm text-slate-900">État Civil & Contacts Officiels</h3>
+              <h3 class="font-extrabold text-xs sm:text-sm text-slate-900">État Civil & Contacts Officiels</h3>
             </div>
-            <span class="text-[11px] text-slate-400">Champs obligatoires (<span class="text-rose-500">*</span>)</span>
+            <span class="text-[10px] sm:text-[11px] text-slate-400">Requis (<span class="text-rose-500">*</span>)</span>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <!-- Nom et Prénoms -->
             <div class="sm:col-span-2">
               <label class="block text-xs font-bold text-slate-700 mb-1" for="f-nom">
@@ -255,7 +259,7 @@
                 Numéro WhatsApp officiel <span class="text-rose-500">*</span>
               </label>
               <input type="tel" id="f-whatsapp" required placeholder="+225 07 00 00 00 00" class="form-input font-mono">
-              <p class="text-[10px] text-slate-400 mt-1">Précisez l'indicatif international (+225, +226, +223, etc.)</p>
+              <p class="text-[10px] text-slate-400 mt-1">Précisez l'indicatif (+225, +226, +223, etc.)</p>
             </div>
 
             <!-- Téléphone d'urgence -->
@@ -284,8 +288,8 @@
           </div>
 
           <!-- Navigation Étape 1 -->
-          <div class="pt-5 border-t border-slate-100 flex justify-end">
-            <button type="button" onclick="allerAEtape(2)" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold text-xs shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer">
+          <div class="pt-4 sm:pt-5 border-t border-slate-100 flex justify-end">
+            <button type="button" onclick="allerAEtape(2)" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 active:scale-[0.98] text-white font-extrabold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer min-h-[46px]">
               <span>Continuer vers Cursus EMSP</span>
               <i class="fa-solid fa-arrow-right text-xs"></i>
             </button>
@@ -295,16 +299,16 @@
         <!-- ==============================================
              PANEL ÉTAPE 2 : CURSUS & STATUT À L'EMSP
              ============================================== -->
-        <div id="step-2" class="step-panel space-y-6 hidden">
-          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div id="step-2" class="step-panel space-y-4 sm:space-y-6 hidden">
+          <div class="flex items-center justify-between pb-2.5 sm:pb-3 border-b border-slate-100">
             <div class="flex items-center gap-2">
               <span class="w-6 h-6 rounded-md bg-emerald-100 text-emerald-800 text-xs font-bold flex items-center justify-center">2</span>
-              <h3 class="font-extrabold text-sm text-slate-900">Cursus Académique à l'EMSP</h3>
+              <h3 class="font-extrabold text-xs sm:text-sm text-slate-900">Cursus Académique à l'EMSP</h3>
             </div>
-            <span class="text-[11px] text-slate-400">Cursus & Département</span>
+            <span class="text-[10px] sm:text-[11px] text-slate-400">Cursus & Département</span>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <!-- Statut Institutionnel -->
             <div>
               <label class="block text-xs font-bold text-slate-700 mb-1" for="f-statut">
@@ -377,13 +381,13 @@
           </div>
 
           <!-- Navigation Étape 2 -->
-          <div class="pt-5 border-t border-slate-100 flex items-center justify-between gap-3">
-            <button type="button" onclick="allerAEtape(1)" class="px-5 py-3 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 font-bold text-xs transition-colors flex items-center gap-2 cursor-pointer">
+          <div class="pt-4 sm:pt-5 border-t border-slate-100 flex items-center justify-between gap-2.5 sm:gap-3">
+            <button type="button" onclick="allerAEtape(1)" class="w-auto px-4 sm:px-5 py-3 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 active:scale-[0.98] font-bold text-xs sm:text-sm transition-colors flex items-center justify-center gap-2 cursor-pointer min-h-[46px]">
               <i class="fa-solid fa-arrow-left text-xs"></i>
               <span>Retour</span>
             </button>
-            <button type="button" onclick="allerAEtape(3)" class="px-6 py-3 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold text-xs shadow-md transition-all flex items-center gap-2 cursor-pointer">
-              <span>Continuer vers Résidence & Engagement</span>
+            <button type="button" onclick="allerAEtape(3)" class="flex-1 sm:flex-initial px-5 sm:px-6 py-3 rounded-xl bg-emerald-800 hover:bg-emerald-900 active:scale-[0.98] text-white font-extrabold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer min-h-[46px]">
+              <span>Continuer vers Résidence</span>
               <i class="fa-solid fa-arrow-right text-xs"></i>
             </button>
           </div>
@@ -392,17 +396,17 @@
         <!-- ==============================================
              PANEL ÉTAPE 3 : RÉSIDENCE & ENGAGEMENT
              ============================================== -->
-        <div id="step-3" class="step-panel space-y-6 hidden">
-          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div id="step-3" class="step-panel space-y-4 sm:space-y-6 hidden">
+          <div class="flex items-center justify-between pb-2.5 sm:pb-3 border-b border-slate-100">
             <div class="flex items-center gap-2">
               <span class="w-6 h-6 rounded-md bg-emerald-100 text-emerald-800 text-xs font-bold flex items-center justify-center">3</span>
-              <h3 class="font-extrabold text-sm text-slate-900">Résidence & Vie Associative</h3>
+              <h3 class="font-extrabold text-xs sm:text-sm text-slate-900">Résidence & Vie Associative</h3>
             </div>
-            <span class="text-[11px] text-slate-400">Dernière étape</span>
+            <span class="text-[10px] sm:text-[11px] text-slate-400">Dernière étape</span>
           </div>
 
-          <div class="space-y-4">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-3 sm:space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <!-- Type de résidence -->
               <div>
                 <label class="block text-xs font-bold text-slate-700 mb-1" for="f-residence">
@@ -419,38 +423,38 @@
                 <label class="block text-xs font-bold text-slate-700 mb-1" for="f-precision-residence">
                   Précision Résidence / Logement <span class="text-rose-500">*</span>
                 </label>
-                <input type="text" id="f-precision-residence" required placeholder="Ex : Pavillon B, Chambre 12 OU Treichville Arras / Marcory" class="form-input">
-                <p class="text-[10px] text-slate-400 mt-1">Numéro de chambre (si campus) ou Commune et quartier</p>
+                <input type="text" id="f-precision-residence" required placeholder="Ex : Pavillon B, Chambre 12 OU Treichville Arras" class="form-input">
+                <p class="text-[10px] text-slate-400 mt-1">N° de chambre (si campus) ou Commune et quartier</p>
               </div>
             </div>
 
             <!-- Commissions -->
             <div class="pt-2">
-              <label class="block text-xs font-bold text-slate-700 mb-2">Commissions ou activités auxquelles vous souhaitez vous associer :</label>
+              <label class="block text-xs font-bold text-slate-700 mb-2">Commissions ou activités de votre choix (facultatif) :</label>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                <label class="flex items-center gap-2.5 p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-colors bg-white">
-                  <input type="checkbox" name="commissions" value="Prédication & Dawa" class="rounded text-brand-700 focus:ring-brand-600">
-                  <span class="font-medium text-slate-700">Prédication, Rappels & Enseignements</span>
+                <label class="flex items-center gap-2.5 p-2.5 sm:p-3 rounded-xl border border-slate-200 hover:bg-slate-50 active:bg-emerald-50/40 cursor-pointer transition-colors bg-white min-h-[44px]">
+                  <input type="checkbox" name="commissions" value="Prédication & Dawa" class="w-4 h-4 rounded text-brand-700 focus:ring-brand-600">
+                  <span class="font-medium text-slate-700 text-xs">Prédication, Rappels & Enseignements</span>
                 </label>
-                <label class="flex items-center gap-2.5 p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-colors bg-white">
-                  <input type="checkbox" name="commissions" value="Organisation & Logistique" class="rounded text-brand-700 focus:ring-brand-600">
-                  <span class="font-medium text-slate-700">Organisation & Logistique événementielle</span>
+                <label class="flex items-center gap-2.5 p-2.5 sm:p-3 rounded-xl border border-slate-200 hover:bg-slate-50 active:bg-emerald-50/40 cursor-pointer transition-colors bg-white min-h-[44px]">
+                  <input type="checkbox" name="commissions" value="Organisation & Logistique" class="w-4 h-4 rounded text-brand-700 focus:ring-brand-600">
+                  <span class="font-medium text-slate-700 text-xs">Organisation & Logistique</span>
                 </label>
-                <label class="flex items-center gap-2.5 p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-colors bg-white">
-                  <input type="checkbox" name="commissions" value="Communication & Médias" class="rounded text-brand-700 focus:ring-brand-600">
-                  <span class="font-medium text-slate-700">Communication, Infographie & Réseaux</span>
+                <label class="flex items-center gap-2.5 p-2.5 sm:p-3 rounded-xl border border-slate-200 hover:bg-slate-50 active:bg-emerald-50/40 cursor-pointer transition-colors bg-white min-h-[44px]">
+                  <input type="checkbox" name="commissions" value="Communication & Médias" class="w-4 h-4 rounded text-brand-700 focus:ring-brand-600">
+                  <span class="font-medium text-slate-700 text-xs">Communication, Médias & Réseaux</span>
                 </label>
-                <label class="flex items-center gap-2.5 p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-colors bg-white">
-                  <input type="checkbox" name="commissions" value="Trésorerie & Finances" class="rounded text-brand-700 focus:ring-brand-600">
-                  <span class="font-medium text-slate-700">Finances & Mobilisation de ressources</span>
+                <label class="flex items-center gap-2.5 p-2.5 sm:p-3 rounded-xl border border-slate-200 hover:bg-slate-50 active:bg-emerald-50/40 cursor-pointer transition-colors bg-white min-h-[44px]">
+                  <input type="checkbox" name="commissions" value="Trésorerie & Finances" class="w-4 h-4 rounded text-brand-700 focus:ring-brand-600">
+                  <span class="font-medium text-slate-700 text-xs">Finances & Mobilisation</span>
                 </label>
-                <label class="flex items-center gap-2.5 p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-colors bg-white">
-                  <input type="checkbox" name="commissions" value="Social & Solidarité" class="rounded text-brand-700 focus:ring-brand-600">
-                  <span class="font-medium text-slate-700">Solidarité, Santé & Accueil des nouveaux</span>
+                <label class="flex items-center gap-2.5 p-2.5 sm:p-3 rounded-xl border border-slate-200 hover:bg-slate-50 active:bg-emerald-50/40 cursor-pointer transition-colors bg-white min-h-[44px]">
+                  <input type="checkbox" name="commissions" value="Social & Solidarité" class="w-4 h-4 rounded text-brand-700 focus:ring-brand-600">
+                  <span class="font-medium text-slate-700 text-xs">Solidarité & Accueil des nouveaux</span>
                 </label>
-                <label class="flex items-center gap-2.5 p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition-colors bg-white">
-                  <input type="checkbox" name="commissions" value="Cellule Féminine" class="rounded text-brand-700 focus:ring-brand-600">
-                  <span class="font-medium text-slate-700">Cellule Féminine (Activités sœurs)</span>
+                <label class="flex items-center gap-2.5 p-2.5 sm:p-3 rounded-xl border border-slate-200 hover:bg-slate-50 active:bg-emerald-50/40 cursor-pointer transition-colors bg-white min-h-[44px]">
+                  <input type="checkbox" name="commissions" value="Cellule Féminine" class="w-4 h-4 rounded text-brand-700 focus:ring-brand-600">
+                  <span class="font-medium text-slate-700 text-xs">Cellule Féminine (Activités sœurs)</span>
                 </label>
               </div>
             </div>
@@ -460,34 +464,34 @@
               <label class="block text-xs font-bold text-slate-700 mb-1" for="f-competences">
                 Compétences particulières / Domaines d'expertise (optionnel)
               </label>
-              <input type="text" id="f-competences" placeholder="Ex : Infographie, Développement Web, Excel avancé, Prise de parole, Secourisme..." class="form-input">
+              <input type="text" id="f-competences" placeholder="Ex : Infographie, Développement Web, Excel, Secourisme..." class="form-input">
             </div>
 
             <!-- Remarques -->
             <div>
               <label class="block text-xs font-bold text-slate-700 mb-1" for="f-remarques">
-                Remarques ou besoins particuliers à l'attention du Secrétariat Général
+                Remarques ou besoins particuliers à l'attention du Bureau
               </label>
-              <textarea id="f-remarques" rows="2" placeholder="Ex : Besoin d'orientation académique, proposition d'activité, etc." class="form-input"></textarea>
+              <textarea id="f-remarques" rows="2" placeholder="Ex : Besoin d'orientation académique, proposition..." class="form-input"></textarea>
             </div>
           </div>
 
           <!-- Navigation Étape 3 & Validation Finale -->
-          <div class="pt-5 border-t border-slate-100 space-y-3">
-            <div class="flex items-center justify-between gap-3">
-              <button type="button" onclick="allerAEtape(2)" class="px-5 py-3 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 font-bold text-xs transition-colors flex items-center gap-2 cursor-pointer">
+          <div class="pt-4 sm:pt-5 border-t border-slate-100 space-y-3">
+            <div class="flex items-center justify-between gap-2.5 sm:gap-3">
+              <button type="button" onclick="allerAEtape(2)" class="w-auto px-4 sm:px-5 py-3 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 active:scale-[0.98] font-bold text-xs sm:text-sm transition-colors flex items-center justify-center gap-2 cursor-pointer min-h-[46px]">
                 <i class="fa-solid fa-arrow-left text-xs"></i>
                 <span>Retour</span>
               </button>
-              <button type="submit" id="submitBtn" class="flex-1 py-3.5 px-6 rounded-xl bg-brand-800 hover:bg-brand-900 text-white font-extrabold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer">
+              <button type="submit" id="submitBtn" class="flex-1 py-3.5 px-4 sm:px-6 rounded-xl bg-brand-800 hover:bg-brand-900 active:scale-[0.98] text-white font-extrabold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer min-h-[48px]">
                 <i class="fa-solid fa-circle-check text-emerald-300"></i>
-                <span id="submitLabel">Confirmer et Valider mon Inscription Officielle</span>
+                <span id="submitLabel">Confirmer et Valider mon Inscription</span>
               </button>
             </div>
 
-            <div class="flex items-center justify-center gap-2 text-[11px] text-slate-500 text-center pt-1">
+            <div class="flex items-center justify-center gap-1.5 text-[11px] text-slate-500 text-center pt-1">
               <i class="fa-solid fa-shield-halved text-emerald-700 text-xs"></i>
-              <span>Enregistrement sécurisé · Strictement réservé à l'administration de la Section AEEMCI EMSP.</span>
+              <span>Enregistrement officiel réservé à la Section AEEMCI EMSP.</span>
             </div>
           </div>
         </div>
@@ -495,91 +499,75 @@
       </form>
     </div>
 
-    <!-- Bannière Officielle Groupe WhatsApp de la Communauté -->
-    <div class="mt-6 bg-gradient-to-r from-emerald-950 via-slate-900 to-emerald-950 rounded-2xl p-4 sm:p-5 text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm border border-emerald-800/50">
-      <div class="flex items-center gap-3.5 text-center sm:text-left">
-        <div class="w-11 h-11 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl shrink-0 border border-emerald-500/30">
-          <i class="fa-brands fa-whatsapp"></i>
-        </div>
-        <div>
-          <h3 class="font-extrabold text-sm text-white">Groupe WhatsApp Officiel de la Communauté</h3>
-          <p class="text-xs text-slate-300 mt-0.5">Élèves, étudiants, stagiaires et cadres musulmans de l'EMSP</p>
-        </div>
-      </div>
-      <a href="https://chat.whatsapp.com/CPbi9IODDx2CfZ45gydkbL" target="_blank" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-2 shadow-sm transition-all whitespace-nowrap">
-        <span>Rejoindre le Groupe WhatsApp</span>
-        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-      </a>
-    </div>
-
   </main>
 
   <!-- ==============================================
        MODAL : RÉCÉPISSÉ D'ENREGISTREMENT OFFICIEL
+       (Optimisé Bottom-Sheet sur mobile et modal centré sur desktop)
        ============================================== -->
-  <div id="confirmationModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-200 flex flex-col max-h-[92vh] animate-in fade-in duration-150">
+  <div id="confirmationModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 overflow-y-auto">
+    <div class="bg-white rounded-t-3xl sm:rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-200 flex flex-col max-h-[92vh] animate-in fade-in duration-200">
       
       <!-- Top Modal Bar -->
       <div class="p-4 bg-brand-950 text-white flex items-center justify-between border-b border-brand-900">
-        <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs shrink-0">
             <i class="fa-solid fa-check-double text-sm"></i>
           </div>
-          <div>
-            <h3 class="font-extrabold text-xs uppercase tracking-wider text-white">Récépissé de Recensement</h3>
-            <p class="text-[10px] text-emerald-300">Section AEEMCI EMSP Abidjan · Registre 2026-2027</p>
+          <div class="min-w-0">
+            <h3 class="font-extrabold text-xs uppercase tracking-wider text-white truncate">Récépissé de Recensement</h3>
+            <p class="text-[10px] text-emerald-300 truncate">Section AEEMCI EMSP Abidjan · Registre 2026-2027</p>
           </div>
         </div>
-        <button onclick="closeConfirmationModal()" class="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors">
-          <i class="fa-solid fa-xmark text-xs"></i>
+        <button onclick="closeConfirmationModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/30 text-white flex items-center justify-center transition-colors shrink-0">
+          <i class="fa-solid fa-xmark text-sm"></i>
         </button>
       </div>
 
       <!-- Receipt Content -->
-      <div class="p-6 space-y-5 overflow-y-auto">
+      <div class="p-4 sm:p-6 space-y-4 overflow-y-auto">
         
         <!-- Document Sheet -->
-        <div id="printableReceipt" class="border border-slate-200 rounded-xl p-5 bg-slate-50/50 space-y-4 text-xs">
+        <div id="printableReceipt" class="border border-slate-200 rounded-xl p-4 sm:p-5 bg-slate-50/60 space-y-3.5 text-xs">
           
           <!-- Document Header -->
-          <div class="flex items-start justify-between border-b border-slate-200 pb-3">
+          <div class="flex items-start justify-between border-b border-slate-200 pb-3 gap-2">
             <div>
-              <div class="font-extrabold text-slate-900 text-sm">AEEMCI · SECTION EMSP ABIDJAN</div>
-              <div class="text-[10px] text-slate-500">Sous-comité Treichville · République de Côte d'Ivoire</div>
+              <div class="font-extrabold text-slate-900 text-xs sm:text-sm">AEEMCI · SECTION EMSP ABIDJAN</div>
+              <div class="text-[10px] text-slate-500">Sous-comité Treichville · RCI</div>
             </div>
-            <div class="text-right">
-              <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">Référence Dossier</span>
-              <span id="rec-matricule" class="font-mono text-xs font-bold text-brand-800 bg-emerald-100/70 px-2 py-0.5 rounded border border-emerald-300/60">
+            <div class="text-right shrink-0">
+              <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">N° Dossier</span>
+              <span id="rec-matricule" class="font-mono text-xs font-bold text-brand-800 bg-emerald-100/80 px-2 py-0.5 rounded border border-emerald-300/60">
                 REF-EMSP-26-0000
               </span>
             </div>
           </div>
 
           <!-- Member Details Summary -->
-          <div class="space-y-2 py-1">
+          <div class="space-y-1.5 py-1 text-xs">
             <div class="flex justify-between py-1 border-b border-slate-200/60">
               <span class="text-slate-500">Nom et Prénoms :</span>
-              <strong id="rec-nom" class="text-slate-900 font-bold">KOUASSI Ibrahim</strong>
+              <strong id="rec-nom" class="text-slate-900 font-bold text-right">KOUASSI Ibrahim</strong>
             </div>
             <div class="flex justify-between py-1 border-b border-slate-200/60">
               <span class="text-slate-500">Qualité / Genre :</span>
-              <span id="rec-genre" class="text-slate-800 font-semibold">Frère</span>
+              <span id="rec-genre" class="text-slate-800 font-semibold text-right">Frère</span>
             </div>
             <div class="flex justify-between py-1 border-b border-slate-200/60">
               <span class="text-slate-500">Filière & Niveau :</span>
-              <span id="rec-filiere" class="text-slate-800 font-semibold">Logistique et Numérique (Licence 2)</span>
+              <span id="rec-filiere" class="text-slate-800 font-semibold text-right">Logistique et Numérique (L2)</span>
             </div>
             <div class="flex justify-between py-1 border-b border-slate-200/60">
               <span class="text-slate-500">Lieu de Résidence :</span>
-              <span id="rec-residence" class="text-slate-800 font-semibold">Campus EMSP</span>
+              <span id="rec-residence" class="text-slate-800 font-semibold text-right">Campus EMSP</span>
             </div>
             <div class="flex justify-between py-1 border-b border-slate-200/60">
-              <span class="text-slate-500">Contact Enregistré :</span>
-              <span id="rec-whatsapp" class="text-slate-800 font-mono font-semibold">+225 00 00 00 00</span>
+              <span class="text-slate-500">WhatsApp :</span>
+              <span id="rec-whatsapp" class="text-slate-800 font-mono font-semibold text-right">+225 00 00 00 00</span>
             </div>
             <div class="flex justify-between py-1">
-              <span class="text-slate-500">Statut au Registre :</span>
+              <span class="text-slate-500">Statut :</span>
               <span class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full">
                 <i class="fa-solid fa-circle-check text-[9px]"></i> Validé & Recensé
               </span>
@@ -588,29 +576,29 @@
 
           <!-- Confirmation Note -->
           <div class="bg-white p-3 rounded-lg border border-slate-200 text-[11px] text-slate-600 leading-relaxed">
-            Vos informations ont bien été transmises au <strong>Secrétariat Général de la Section AEEMCI EMSP</strong>. Vous êtes désormais inscrit sur la liste officielle de la communauté pour l'année académique 2026-2027.
+            Vos informations ont bien été enregistrées au <strong>Secrétariat Général de la Section AEEMCI EMSP</strong> pour l'année académique 2026-2027.
           </div>
 
         </div>
 
         <!-- Action Buttons -->
-        <div class="space-y-2 pt-1">
+        <div class="space-y-2.5 pt-1">
           <!-- 1. Bouton Principal : Intégrer le Groupe WhatsApp Officiel -->
-          <a href="https://chat.whatsapp.com/CPbi9IODDx2CfZ45gydkbL" target="_blank" class="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2.5 shadow-md transition-all">
-            <i class="fa-brands fa-whatsapp text-lg"></i>
-            <span>Rejoindre la Communauté sur le Groupe WhatsApp</span>
+          <a href="https://chat.whatsapp.com/CPbi9IODDx2CfZ45gydkbL" target="_blank" class="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2.5 shadow-md transition-all min-h-[48px]">
+            <i class="fa-brands fa-whatsapp text-xl"></i>
+            <span>Rejoindre le Groupe WhatsApp Officiel</span>
           </a>
 
           <!-- 2. Notifier le Secrétariat Général en privé -->
-          <a id="recWhatsappShareBtn" href="#" target="_blank" class="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs flex items-center justify-center gap-2 border border-slate-300/80 transition-colors">
+          <a id="recWhatsappShareBtn" href="#" target="_blank" class="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 active:scale-[0.98] text-slate-800 font-bold text-xs flex items-center justify-center gap-2 border border-slate-300/80 transition-colors min-h-[42px]">
             <i class="fa-solid fa-paper-plane text-emerald-700 text-xs"></i>
             <span>Notifier le Secrétariat Général en privé</span>
           </a>
 
           <!-- 3. Imprimer l'Attestation -->
-          <button onclick="window.print()" class="w-full py-2 px-4 rounded-xl bg-white hover:bg-slate-50 text-slate-600 font-semibold text-xs flex items-center justify-center gap-2 border border-slate-200 transition-colors">
+          <button onclick="window.print()" class="w-full py-2 px-4 rounded-xl bg-white hover:bg-slate-50 active:scale-[0.98] text-slate-600 font-semibold text-xs flex items-center justify-center gap-2 border border-slate-200 transition-colors min-h-[38px]">
             <i class="fa-solid fa-print text-xs text-slate-400"></i>
-            <span>Imprimer / Sauvegarder l'Attestation en PDF</span>
+            <span>Imprimer / Sauvegarder l'Attestation (PDF)</span>
           </button>
         </div>
 
@@ -620,10 +608,10 @@
   </div>
 
   <!-- ==============================================
-       FOOTER INSTITUTIONNEL
+       FOOTER INSTITUTIONNEL ULTRA-RESPONSIVE
        ============================================== -->
-  <footer class="bg-slate-900 text-slate-400 py-10 px-4 sm:px-6 border-t border-slate-800 text-xs mt-12">
-    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+  <footer class="bg-slate-900 text-slate-400 py-8 px-3.5 sm:px-6 border-t border-slate-800 text-xs mt-8 sm:mt-12">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-5 text-center sm:text-left">
       <div>
         <div class="flex items-center justify-center sm:justify-start gap-2 text-white font-extrabold text-sm mb-1">
           <i class="fa-solid fa-mosque text-emerald-400"></i>
@@ -637,11 +625,11 @@
         </a>
         <span>•</span>
         <a href="admin.html" class="text-slate-400 hover:text-slate-300 flex items-center gap-1.5">
-          <i class="fa-solid fa-lock text-[10px]"></i> Espace Secrétariat Général
+          <i class="fa-solid fa-lock text-[10px]"></i> Espace Secrétariat
         </a>
         <span>•</span>
         <a href="https://wa.me/2250711985810" target="_blank" class="text-slate-400 hover:text-white flex items-center gap-1.5">
-          <i class="fa-solid fa-phone text-[10px]"></i> Infoline Secrétariat
+          <i class="fa-solid fa-phone text-[10px]"></i> Contact Bureau
         </a>
       </div>
     </div>
@@ -649,8 +637,8 @@
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase.js?v=20261113_EMSP_WA_GROUP_V1"></script>
-  <script src="base_donnees.js?v=20261113_EMSP_WA_GROUP_V1"></script>
-  <script src="main.js?v=20261113_EMSP_WA_GROUP_V1"></script>
+  <script src="supabase.js?v=20261113_EMSP_WA_OPT_V2"></script>
+  <script src="base_donnees.js?v=20261113_EMSP_WA_OPT_V2"></script>
+  <script src="main.js?v=20261113_EMSP_WA_OPT_V2"></script>
 </body>
 </html>

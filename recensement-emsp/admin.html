@@ -49,15 +49,15 @@
   <!-- ==============================================
        LOCK SCREEN (AUTHENTICATION PIN)
        ============================================== -->
-  <div id="loginCard" class="min-h-screen flex items-center justify-center p-4 bg-slate-900">
-    <div class="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl border border-slate-800 text-center space-y-6 animate-in fade-in duration-300">
+  <div id="loginCard" class="min-h-screen flex items-center justify-center p-3.5 sm:p-4 bg-slate-900">
+    <div class="bg-white rounded-2xl sm:rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-800 text-center space-y-6 animate-in fade-in duration-300">
       
-      <div class="w-16 h-16 rounded-2xl bg-aeemci-800 text-amber-400 flex items-center justify-center text-2xl mx-auto shadow-lg border border-emerald-600/40">
+      <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-aeemci-800 text-amber-400 flex items-center justify-center text-xl sm:text-2xl mx-auto shadow-lg border border-emerald-600/40">
         <i class="fa-solid fa-user-shield"></i>
       </div>
 
       <div>
-        <h2 class="text-xl font-extrabold text-slate-900">Espace Secrétariat Général</h2>
+        <h2 class="text-lg sm:text-xl font-extrabold text-slate-900">Espace Secrétariat Général</h2>
         <p class="text-xs text-slate-500 mt-1">Section AEEMCI EMSP Abidjan · Registre des Membres</p>
       </div>
 
@@ -66,12 +66,12 @@
           <label class="block text-xs font-bold text-slate-700 mb-1.5 text-left" for="passInput">Code Secret Administrateur</label>
           <div class="relative">
             <i class="fa-solid fa-key absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-            <input type="password" id="passInput" autofocus placeholder="Entrez le code secret..." class="w-full pl-9 pr-3.5 py-3 text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-600 font-mono">
+            <input type="password" id="passInput" autofocus placeholder="Entrez le code secret..." class="w-full pl-9 pr-3.5 py-3 text-base sm:text-sm rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-600 font-mono">
           </div>
           <p id="passError" class="text-xs text-rose-600 font-semibold mt-1.5 text-left hidden">Code incorrect. Veuillez réessayer.</p>
         </div>
 
-        <button type="submit" id="loginBtn" class="w-full py-3 rounded-xl bg-aeemci-800 hover:bg-aeemci-900 text-white font-extrabold text-xs shadow-md transition-all flex items-center justify-center gap-2">
+        <button type="submit" id="loginBtn" class="w-full py-3.5 sm:py-3 rounded-xl bg-aeemci-800 hover:bg-aeemci-900 active:scale-[0.98] text-white font-extrabold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer min-h-[46px]">
           <span>Déverrouiller le Registre</span>
           <i class="fa-solid fa-arrow-right text-xs"></i>
         </button>
@@ -192,7 +192,7 @@
             <!-- SEARCH BAR -->
             <div class="relative flex-1 min-w-[260px]">
               <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-              <input type="text" id="searchInput" placeholder="Rechercher par nom, téléphone, matricule, chambre, filière..." class="w-full pl-9 pr-8 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-600 bg-white">
+              <input type="text" id="searchInput" placeholder="Rechercher par nom, téléphone, matricule, chambre, filière..." class="w-full pl-9 pr-8 py-2.5 text-base sm:text-xs rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-600 bg-white">
               <button id="clearSearchBtn" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-500 text-xs hidden">
                 <i class="fa-solid fa-xmark"></i>
               </button>

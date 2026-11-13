@@ -156,19 +156,19 @@ function mettreAJourIndicateursStepper() {
     if (s < etapeActuelle) {
       // Étape antérieure : complétée
       if (circle) circle.className = "w-8 h-8 rounded-full bg-emerald-600 text-white font-extrabold text-xs flex items-center justify-center shadow-xs transition-all border-2 border-white";
-      if (label) label.className = "step-label text-[11px] font-bold text-emerald-800 mt-1.5 hidden sm:block";
+      if (label) label.className = "step-label text-[10px] sm:text-[11px] font-bold text-emerald-800 mt-1 block text-center";
       if (num) num.classList.add('hidden');
       if (check) check.classList.remove('hidden');
     } else if (s === etapeActuelle) {
       // Étape active
       if (circle) circle.className = "w-8 h-8 rounded-full bg-emerald-700 text-white font-extrabold text-xs flex items-center justify-center shadow-md transition-all border-2 border-white ring-4 ring-emerald-600/20";
-      if (label) label.className = "step-label text-[11px] font-extrabold text-slate-900 mt-1.5 hidden sm:block";
+      if (label) label.className = "step-label text-[10px] sm:text-[11px] font-extrabold text-slate-900 mt-1 block text-center";
       if (num) num.classList.remove('hidden');
       if (check) check.classList.add('hidden');
     } else {
       // Étape future
       if (circle) circle.className = "w-8 h-8 rounded-full bg-slate-100 text-slate-500 font-bold text-xs flex items-center justify-center shadow-2xs transition-all border-2 border-white";
-      if (label) label.className = "step-label text-[11px] font-semibold text-slate-400 mt-1.5 hidden sm:block";
+      if (label) label.className = "step-label text-[10px] sm:text-[11px] font-semibold text-slate-400 mt-1 block text-center";
       if (num) num.classList.remove('hidden');
       if (check) check.classList.add('hidden');
     }

@@ -202,6 +202,21 @@ function initFormListener() {
   const form = document.getElementById('recensementForm');
   if (!form) return;
 
+  // Synchronisation ergonomique Niveau (Semestre 1 / Tronc Commun) et Filière
+  const niveauEl = document.getElementById('f-niveau');
+  const filiereEl = document.getElementById('f-filiere');
+  if (niveauEl && filiereEl) {
+    niveauEl.addEventListener('change', () => {
+      if (niveauEl.value.includes('Semestre 1 (Tronc Commun)')) {
+        if (niveauEl.value.startsWith('Licence')) {
+          filiereEl.value = 'Tronc Commun — Licence (Semestre 1)';
+        } else if (niveauEl.value.startsWith('Master')) {
+          filiereEl.value = 'Tronc Commun — Master (Semestre 1)';
+        }
+      }
+    });
+  }
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 

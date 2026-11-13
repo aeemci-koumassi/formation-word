@@ -344,38 +344,64 @@
                 Filière / Spécialisation <span class="text-rose-500">*</span>
               </label>
               <select id="f-filiere" required class="form-input">
-                <option value="Logistique et Numérique (LNUM)" selected>Logistique et Numérique (LNUM)</option>
-                <option value="Logistique et E-Commerce (LECO)">Logistique et E-Commerce (LECO)</option>
-                <option value="Finance Digitale (FDIG)">Finance Digitale (FDIG)</option>
-                <option value="Finance & Management des Entreprises du Risque (FMER)">Finance & Management des Entreprises du Risque (FMER)</option>
-                <option value="Marketing Digital (MDIG)">Marketing Digital (MDIG)</option>
-                <option value="Marketing Digital et E-Business (MDEB)">Marketing Digital et E-Business (MDEB)</option>
-                <option value="Digitalisation des Services (DSER)">Digitalisation des Services (DSER)</option>
-                <option value="Transformation Numérique des Organisations (TNOR)">Transformation Numérique des Organisations (TNOR)</option>
-                <option value="Mastère Régulation du Numérique (MS-RegNUM / Télécom Paris)">Mastère Régulation du Numérique (MS-RegNUM / Télécom Paris)</option>
-                <option value="Administrateurs des Postes et Services Financiers (APSF)">Administrateurs des Postes et Services Financiers (APSF)</option>
-                <option value="Inspecteurs des Postes et Services Financiers (IPSF)">Inspecteurs des Postes et Services Financiers (IPSF)</option>
-                <option value="Contrôleurs des Postes et Services Financiers (CPSF)">Contrôleurs des Postes et Services Financiers (CPSF)</option>
-                <option value="Autre Département / Filière">Autre département / filière</option>
+                <optgroup label="🌱 Tronc Commun (Nouveaux entrants — Semestre 1)">
+                  <option value="Tronc Commun — Licence (Semestre 1)" selected>Tronc Commun — Licence (Semestre 1 / Nouveaux)</option>
+                  <option value="Tronc Commun — Master (Semestre 1)">Tronc Commun — Master (Semestre 1 / Nouveaux)</option>
+                </optgroup>
+                <optgroup label="🎓 Spécialisations Licence Pro (Dès Semestre 2)">
+                  <option value="Logistique et Numérique (LNUM)">Logistique et Numérique (LNUM)</option>
+                  <option value="Finance Digitale (FDIG)">Finance Digitale (FDIG)</option>
+                  <option value="Marketing Digital (MDIG)">Marketing Digital (MDIG)</option>
+                  <option value="Digitalisation des Services (DSER)">Digitalisation des Services (DSER)</option>
+                </optgroup>
+                <optgroup label="🏛️ Spécialisations Master Pro (Dès Semestre 2)">
+                  <option value="Logistique et E-Commerce (LECO)">Logistique et E-Commerce (LECO)</option>
+                  <option value="Finance & Management des Entreprises du Risque (FMER)">Finance & Management des Entreprises du Risque (FMER)</option>
+                  <option value="Marketing Digital et E-Business (MDEB)">Marketing Digital et E-Business (MDEB)</option>
+                  <option value="Transformation Numérique des Organisations (TNOR)">Transformation Numérique des Organisations (TNOR)</option>
+                </optgroup>
+                <optgroup label="🌐 Mastère Spécialisé">
+                  <option value="Mastère Régulation du Numérique (MS-RegNUM / Télécom Paris)">Mastère Régulation du Numérique (MS-RegNUM / Télécom Paris)</option>
+                </optgroup>
+                <optgroup label="📮 Formations Supérieures Postales (FSP)">
+                  <option value="Tronc Commun FSP (1ère Année)">Tronc Commun FSP (1ère Année)</option>
+                  <option value="Administrateurs des Postes et Services Financiers (APSF)">Administrateurs des Postes et Services Financiers (APSF)</option>
+                  <option value="Inspecteurs des Postes et Services Financiers (IPSF)">Inspecteurs des Postes et Services Financiers (IPSF)</option>
+                  <option value="Contrôleurs des Postes et Services Financiers (CPSF)">Contrôleurs des Postes et Services Financiers (CPSF)</option>
+                </optgroup>
+                <optgroup label="Autre">
+                  <option value="Autre Département / Filière">Autre département / filière</option>
+                </optgroup>
               </select>
+              <p class="text-[10px] text-slate-500 mt-1">
+                <i class="fa-solid fa-circle-info text-emerald-600 mr-1"></i>Au <strong>Semestre 1</strong>, les nouveaux étudiants suivent le <strong>Tronc Commun</strong> puis se spécialisent dès le <strong>Semestre 2</strong>.
+              </p>
             </div>
 
-            <!-- Niveau d'Étude Réel EMSP -->
+            <!-- Niveau d'Étude & Semestre Réel EMSP -->
             <div>
               <label class="block text-xs font-bold text-slate-700 mb-1" for="f-niveau">
-                Niveau d'Étude <span class="text-rose-500">*</span>
+                Niveau d'Étude & Semestre <span class="text-rose-500">*</span>
               </label>
               <select id="f-niveau" required class="form-input">
-                <option value="Licence 1 (L1)" selected>Licence 1 (L1)</option>
-                <option value="Licence 2 (L2)">Licence 2 (L2)</option>
-                <option value="Licence 3 (L3)">Licence 3 (L3)</option>
-                <option value="Master 1 (M1)">Master 1 (M1)</option>
-                <option value="Master 2 (M2)">Master 2 (M2)</option>
-                <option value="Mastère Spécialisé (MS)">Mastère Spécialisé (MS)</option>
-                <option value="Cycle FSP (1ère Année)">Cycle FSP (1ère Année)</option>
-                <option value="Cycle FSP (2ème Année)">Cycle FSP (2ème Année)</option>
-                <option value="Cadre / Professionnel en Formation Continue">Cadre / Professionnel en Formation Continue</option>
-                <option value="Autre Niveau">Autre niveau</option>
+                <optgroup label="Licence Professionnelle">
+                  <option value="Licence 1 — Semestre 1 (Tronc Commun)" selected>Licence 1 — Semestre 1 (Tronc Commun)</option>
+                  <option value="Licence 1 — Semestre 2 (Spécialisation)">Licence 1 — Semestre 2 (Spécialisation)</option>
+                  <option value="Licence 2 (L2)">Licence 2 (L2)</option>
+                  <option value="Licence 3 (L3)">Licence 3 (L3)</option>
+                </optgroup>
+                <optgroup label="Master Professionnel">
+                  <option value="Master 1 — Semestre 1 (Tronc Commun)">Master 1 — Semestre 1 (Tronc Commun)</option>
+                  <option value="Master 1 — Semestre 2 (Spécialisation)">Master 1 — Semestre 2 (Spécialisation)</option>
+                  <option value="Master 2 (M2)">Master 2 (M2)</option>
+                </optgroup>
+                <optgroup label="Mastère & Autres Formations">
+                  <option value="Mastère Spécialisé (MS)">Mastère Spécialisé (MS)</option>
+                  <option value="Cycle FSP (1ère Année)">Cycle FSP (1ère Année)</option>
+                  <option value="Cycle FSP (2ème Année)">Cycle FSP (2ème Année)</option>
+                  <option value="Cadre / Professionnel en Formation Continue">Cadre / Professionnel en Formation Continue</option>
+                  <option value="Autre Niveau">Autre niveau</option>
+                </optgroup>
               </select>
             </div>
           </div>

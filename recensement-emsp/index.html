@@ -495,6 +495,23 @@
       </form>
     </div>
 
+    <!-- Bannière Officielle Groupe WhatsApp de la Communauté -->
+    <div class="mt-6 bg-gradient-to-r from-emerald-950 via-slate-900 to-emerald-950 rounded-2xl p-4 sm:p-5 text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm border border-emerald-800/50">
+      <div class="flex items-center gap-3.5 text-center sm:text-left">
+        <div class="w-11 h-11 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl shrink-0 border border-emerald-500/30">
+          <i class="fa-brands fa-whatsapp"></i>
+        </div>
+        <div>
+          <h3 class="font-extrabold text-sm text-white">Groupe WhatsApp Officiel de la Communauté</h3>
+          <p class="text-xs text-slate-300 mt-0.5">Élèves, étudiants, stagiaires et cadres musulmans de l'EMSP</p>
+        </div>
+      </div>
+      <a href="https://chat.whatsapp.com/CPbi9IODDx2CfZ45gydkbL" target="_blank" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-2 shadow-sm transition-all whitespace-nowrap">
+        <span>Rejoindre le Groupe WhatsApp</span>
+        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+      </a>
+    </div>
+
   </main>
 
   <!-- ==============================================
@@ -578,13 +595,21 @@
 
         <!-- Action Buttons -->
         <div class="space-y-2 pt-1">
-          <a id="recWhatsappShareBtn" href="#" target="_blank" class="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-xs transition-colors">
-            <i class="fa-brands fa-whatsapp text-sm"></i>
-            <span>Confirmer sur WhatsApp avec le Secrétariat Général</span>
+          <!-- 1. Bouton Principal : Intégrer le Groupe WhatsApp Officiel -->
+          <a href="https://chat.whatsapp.com/CPbi9IODDx2CfZ45gydkbL" target="_blank" class="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2.5 shadow-md transition-all">
+            <i class="fa-brands fa-whatsapp text-lg"></i>
+            <span>Rejoindre la Communauté sur le Groupe WhatsApp</span>
           </a>
 
-          <button onclick="window.print()" class="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-2 transition-colors">
-            <i class="fa-solid fa-print text-xs"></i>
+          <!-- 2. Notifier le Secrétariat Général en privé -->
+          <a id="recWhatsappShareBtn" href="#" target="_blank" class="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs flex items-center justify-center gap-2 border border-slate-300/80 transition-colors">
+            <i class="fa-solid fa-paper-plane text-emerald-700 text-xs"></i>
+            <span>Notifier le Secrétariat Général en privé</span>
+          </a>
+
+          <!-- 3. Imprimer l'Attestation -->
+          <button onclick="window.print()" class="w-full py-2 px-4 rounded-xl bg-white hover:bg-slate-50 text-slate-600 font-semibold text-xs flex items-center justify-center gap-2 border border-slate-200 transition-colors">
+            <i class="fa-solid fa-print text-xs text-slate-400"></i>
             <span>Imprimer / Sauvegarder l'Attestation en PDF</span>
           </button>
         </div>
@@ -606,13 +631,17 @@
         </div>
         <p class="text-slate-500 text-[11px]">École Multinationale Supérieure des Postes · Sous-comité AEEMCI Treichville</p>
       </div>
-      <div class="flex items-center gap-4 text-xs font-medium">
-        <a href="admin.html" class="text-emerald-400 hover:text-emerald-300 flex items-center gap-1.5">
+      <div class="flex flex-wrap items-center justify-center sm:justify-end gap-3 sm:gap-4 text-xs font-medium">
+        <a href="https://chat.whatsapp.com/CPbi9IODDx2CfZ45gydkbL" target="_blank" class="text-emerald-400 hover:text-emerald-300 flex items-center gap-1.5 font-bold">
+          <i class="fa-brands fa-whatsapp text-sm"></i> Groupe WhatsApp Officiel
+        </a>
+        <span>•</span>
+        <a href="admin.html" class="text-slate-400 hover:text-slate-300 flex items-center gap-1.5">
           <i class="fa-solid fa-lock text-[10px]"></i> Espace Secrétariat Général
         </a>
         <span>•</span>
         <a href="https://wa.me/2250711985810" target="_blank" class="text-slate-400 hover:text-white flex items-center gap-1.5">
-          <i class="fa-brands fa-whatsapp text-emerald-500"></i> Infoline Secrétariat
+          <i class="fa-solid fa-phone text-[10px]"></i> Infoline Secrétariat
         </a>
       </div>
     </div>
@@ -620,8 +649,8 @@
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase.js?v=20261113_EMSP_NO_BADGE_V1"></script>
-  <script src="base_donnees.js?v=20261113_EMSP_NO_BADGE_V1"></script>
-  <script src="main.js?v=20261113_EMSP_NO_BADGE_V1"></script>
+  <script src="supabase.js?v=20261113_EMSP_WA_GROUP_V1"></script>
+  <script src="base_donnees.js?v=20261113_EMSP_WA_GROUP_V1"></script>
+  <script src="main.js?v=20261113_EMSP_WA_GROUP_V1"></script>
 </body>
 </html>

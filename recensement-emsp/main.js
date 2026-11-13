@@ -222,7 +222,6 @@ function initFormListener() {
       genre: document.getElementById('f-genre').value,
       nationalite: document.getElementById('f-nationalite').value,
       date_naissance: document.getElementById('f-date-naissance').value || null,
-      groupe_sanguin: document.getElementById('f-groupe-sanguin').value,
       whatsapp: formaterNumeroTelephone(document.getElementById('f-whatsapp').value),
       telephone_urgence: formaterNumeroTelephone(document.getElementById('f-urgence').value || ''),
       email: document.getElementById('f-email').value.trim(),

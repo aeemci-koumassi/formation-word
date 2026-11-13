@@ -489,7 +489,6 @@ CREATE TABLE IF NOT EXISTS public.recensement_emsp (
     precision_residence TEXT,
     commissions TEXT[],
     competences TEXT,
-    groupe_sanguin TEXT,
     remarques TEXT,
     statut_validation TEXT DEFAULT 'Validé'
 );
@@ -717,7 +716,7 @@ CREATE POLICY "Lecture et insertion publiques" ON public.recensement_emsp FOR AL
         `🪪 *VOS INFORMATIONS OFFICIELLES :*\n` +
         `• *Matricule de Membre :* \`${matricule}\`\n` +
         `• *Filière / Niveau :* ${filiere}\n` +
-        `• *Section :* AEEMCI EMSP (Marcory, Abidjan)\n\n` +
+        `• *Section :* AEEMCI EMSP (Treichville, Abidjan)\n\n` +
         `Qu'Allah bénisse votre parcours académique à l'EMSP et fasse de notre section un lieu de fraternité et de réussite.\n\n` +
         `— *Le Secrétariat Général — Section AEEMCI EMSP*\n` +
         `📞 Infoline : +225 07 11 98 58 10`;

@@ -131,7 +131,7 @@
       <!-- Sceau Institutionnel -->
       <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border border-slate-200 text-[11px] font-bold text-slate-700 shadow-xs">
         <i class="fa-solid fa-building-columns text-emerald-800"></i>
-        <span>ÉCOLE MULTINATIONALE SUPÉRIEURE DES POSTES · SOUS-COMITÉ MARCORY</span>
+        <span>ÉCOLE MULTINATIONALE SUPÉRIEURE DES POSTES · SOUS-COMITÉ TREICHVILLE</span>
       </div>
 
       <!-- Titre d'Autorité Académique -->
@@ -368,24 +368,6 @@
               </label>
               <input type="date" id="f-date-naissance" class="form-input">
             </div>
-
-            <!-- Groupe Sanguin -->
-            <div class="sm:col-span-2">
-              <label class="block text-xs font-bold text-slate-700 mb-1" for="f-groupe-sanguin">
-                Groupe Sanguin (sécurité & assistance médicale)
-              </label>
-              <select id="f-groupe-sanguin" class="form-input">
-                <option value="Non renseigné">Non renseigné</option>
-                <option value="O+">O+</option>
-                <option value="O-">O-</option>
-                <option value="A+">A+</option>
-                <option value="A-">A-</option>
-                <option value="B+">B+</option>
-                <option value="B-">B-</option>
-                <option value="AB+">AB+</option>
-                <option value="AB-">AB-</option>
-              </select>
-            </div>
           </div>
 
           <!-- Navigation Étape 1 -->
@@ -406,7 +388,7 @@
               <span class="w-6 h-6 rounded-md bg-emerald-100 text-emerald-800 text-xs font-bold flex items-center justify-center">2</span>
               <h3 class="font-extrabold text-sm text-slate-900">Cursus Académique à l'EMSP</h3>
             </div>
-            <span class="text-[11px] text-slate-400">Étape académique</span>
+            <span class="text-[11px] text-slate-400">Cursus & Département</span>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -424,49 +406,59 @@
               </select>
             </div>
 
-            <!-- Cycle d'études -->
+            <!-- Cycle d'études (Formations Réelles EMSP Abidjan) -->
             <div>
               <label class="block text-xs font-bold text-slate-700 mb-1" for="f-cycle">
                 Cycle de Formation <span class="text-rose-500">*</span>
               </label>
               <select id="f-cycle" required class="form-input">
-                <option value="Licence Professionnelle">Licence Professionnelle</option>
-                <option value="Master Professionnel">Master Professionnel</option>
-                <option value="Cycle Ingénieur" selected>Cycle Ingénieur</option>
-                <option value="Formation Continue & Cadres">Formation Continue & Cadres</option>
+                <option value="Licence Professionnelle (Bac +3)" selected>Licence Professionnelle (Bac +3)</option>
+                <option value="Master Professionnel (Bac +5)">Master Professionnel (Bac +5)</option>
+                <option value="Mastère Spécialisé (MS Régulation du Numérique)">Mastère Spécialisé (MS Régulation du Numérique)</option>
+                <option value="Formation Supérieure Postale (FSP - Corps Postaux)">Formation Supérieure Postale (FSP - Corps Postaux)</option>
+                <option value="Formation Continue & Certifications">Formation Continue & Certifications</option>
                 <option value="Autre Cycle">Autre cycle</option>
               </select>
             </div>
 
-            <!-- Filière -->
+            <!-- Filière / Spécialisation Réelle EMSP -->
             <div>
               <label class="block text-xs font-bold text-slate-700 mb-1" for="f-filiere">
-                Filière / Département <span class="text-rose-500">*</span>
+                Filière / Spécialisation <span class="text-rose-500">*</span>
               </label>
               <select id="f-filiere" required class="form-input">
-                <option value="Réseaux & Télécommunications" selected>Réseaux & Télécommunications</option>
-                <option value="Systèmes d'Information & Génie Logiciel">Systèmes d'Information & Génie Logiciel</option>
-                <option value="Gestion Postale & Services Financiers">Gestion Postale & Services Financiers</option>
-                <option value="Logistique, Transport & Supply Chain">Logistique, Transport & Supply Chain</option>
-                <option value="Économie Numérique, Marketing & Management">Économie Numérique, Marketing & Management</option>
-                <option value="Cybersécurité, Cloud & Données">Cybersécurité, Cloud & Données</option>
-                <option value="Autre Département">Autre filière / département</option>
+                <option value="Logistique et Numérique (LNUM)" selected>Logistique et Numérique (LNUM)</option>
+                <option value="Logistique et E-Commerce (LECO)">Logistique et E-Commerce (LECO)</option>
+                <option value="Finance Digitale (FDIG)">Finance Digitale (FDIG)</option>
+                <option value="Finance & Management des Entreprises du Risque (FMER)">Finance & Management des Entreprises du Risque (FMER)</option>
+                <option value="Marketing Digital (MDIG)">Marketing Digital (MDIG)</option>
+                <option value="Marketing Digital et E-Business (MDEB)">Marketing Digital et E-Business (MDEB)</option>
+                <option value="Digitalisation des Services (DSER)">Digitalisation des Services (DSER)</option>
+                <option value="Transformation Numérique des Organisations (TNOR)">Transformation Numérique des Organisations (TNOR)</option>
+                <option value="Mastère Régulation du Numérique (MS-RegNUM / Télécom Paris)">Mastère Régulation du Numérique (MS-RegNUM / Télécom Paris)</option>
+                <option value="Administrateurs des Postes et Services Financiers (APSF)">Administrateurs des Postes et Services Financiers (APSF)</option>
+                <option value="Inspecteurs des Postes et Services Financiers (IPSF)">Inspecteurs des Postes et Services Financiers (IPSF)</option>
+                <option value="Contrôleurs des Postes et Services Financiers (CPSF)">Contrôleurs des Postes et Services Financiers (CPSF)</option>
+                <option value="Autre Département / Filière">Autre département / filière</option>
               </select>
             </div>
 
-            <!-- Niveau / Promotion -->
+            <!-- Niveau d'Étude Réel EMSP -->
             <div>
               <label class="block text-xs font-bold text-slate-700 mb-1" for="f-niveau">
                 Niveau d'Étude <span class="text-rose-500">*</span>
               </label>
               <select id="f-niveau" required class="form-input">
-                <option value="1ère Année (L1 / Ingénieur 1)" selected>1ère Année (L1 / Ingénieur 1)</option>
-                <option value="2ème Année (L2 / Ingénieur 2)">2ème Année (L2 / Ingénieur 2)</option>
-                <option value="3ème Année (L3 / Ingénieur 3)">3ème Année (L3 / Ingénieur 3)</option>
+                <option value="Licence 1 (L1)" selected>Licence 1 (L1)</option>
+                <option value="Licence 2 (L2)">Licence 2 (L2)</option>
+                <option value="Licence 3 (L3)">Licence 3 (L3)</option>
                 <option value="Master 1 (M1)">Master 1 (M1)</option>
                 <option value="Master 2 (M2)">Master 2 (M2)</option>
-                <option value="Promotion 2026-2027">Promotion 2026-2027</option>
-                <option value="Cadre / Enseignant">Cadre / Enseignant</option>
+                <option value="Mastère Spécialisé (MS)">Mastère Spécialisé (MS)</option>
+                <option value="Cycle FSP (1ère Année)">Cycle FSP (1ère Année)</option>
+                <option value="Cycle FSP (2ème Année)">Cycle FSP (2ème Année)</option>
+                <option value="Cadre / Professionnel en Formation Continue">Cadre / Professionnel en Formation Continue</option>
+                <option value="Autre Niveau">Autre niveau</option>
               </select>
             </div>
           </div>
@@ -514,7 +506,7 @@
                 <label class="block text-xs font-bold text-slate-700 mb-1" for="f-precision-residence">
                   Précision Résidence / Logement <span class="text-rose-500">*</span>
                 </label>
-                <input type="text" id="f-precision-residence" required placeholder="Ex : Pavillon B, Chambre 12 OU Marcory Zone 4" class="form-input">
+                <input type="text" id="f-precision-residence" required placeholder="Ex : Pavillon B, Chambre 12 OU Treichville Arras / Marcory" class="form-input">
                 <p class="text-[10px] text-slate-400 mt-1">Numéro de chambre (si campus) ou Commune et quartier</p>
               </div>
             </div>
@@ -624,7 +616,7 @@
           <div class="flex items-start justify-between border-b border-slate-200 pb-3">
             <div>
               <div class="font-extrabold text-slate-900 text-sm">AEEMCI · SECTION EMSP ABIDJAN</div>
-              <div class="text-[10px] text-slate-500">Sous-comité Marcory · République de Côte d'Ivoire</div>
+              <div class="text-[10px] text-slate-500">Sous-comité Treichville · République de Côte d'Ivoire</div>
             </div>
             <div class="text-right">
               <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">Référence Dossier</span>
@@ -646,7 +638,7 @@
             </div>
             <div class="flex justify-between py-1 border-b border-slate-200/60">
               <span class="text-slate-500">Filière & Niveau :</span>
-              <span id="rec-filiere" class="text-slate-800 font-semibold">Réseaux & Télécoms (Ingénieur 1)</span>
+              <span id="rec-filiere" class="text-slate-800 font-semibold">Logistique et Numérique (Licence 2)</span>
             </div>
             <div class="flex justify-between py-1 border-b border-slate-200/60">
               <span class="text-slate-500">Lieu de Résidence :</span>
@@ -699,7 +691,7 @@
           <i class="fa-solid fa-mosque text-emerald-400"></i>
           <span>Section AEEMCI EMSP Abidjan</span>
         </div>
-        <p class="text-slate-500 text-[11px]">École Multinationale Supérieure des Postes · Sous-comité AEEMCI Marcory</p>
+        <p class="text-slate-500 text-[11px]">École Multinationale Supérieure des Postes · Sous-comité AEEMCI Treichville</p>
       </div>
       <div class="flex items-center gap-4 text-xs font-medium">
         <a href="admin.html" class="text-emerald-400 hover:text-emerald-300 flex items-center gap-1.5">
@@ -715,8 +707,8 @@
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase.js?v=20261113_EMSP_STEPPER_V1"></script>
-  <script src="base_donnees.js?v=20261113_EMSP_STEPPER_V1"></script>
-  <script src="main.js?v=20261113_EMSP_STEPPER_V1"></script>
+  <script src="supabase.js?v=20261113_EMSP_TREICHVILLE_V1"></script>
+  <script src="base_donnees.js?v=20261113_EMSP_TREICHVILLE_V1"></script>
+  <script src="main.js?v=20261113_EMSP_TREICHVILLE_V1"></script>
 </body>
 </html>

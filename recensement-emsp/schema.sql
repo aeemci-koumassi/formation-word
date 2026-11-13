@@ -14,15 +14,14 @@ CREATE TABLE IF NOT EXISTS public.recensement_emsp (
     whatsapp TEXT NOT NULL,
     telephone_urgence TEXT,
     email TEXT,
-    statut TEXT NOT NULL, -- 'Étudiant', 'Auditeur libre', 'Stagiaire', 'Personnel', 'Alumni'
-    cycle TEXT NOT NULL, -- 'Licence Professionnelle', 'Master Professionnel', 'Cycle Ingénieur', 'Autre'
-    filiere TEXT NOT NULL, -- 'Réseaux & Télécoms', 'Systèmes d''Information', 'Gestion Postale & Financière', etc.
-    niveau TEXT NOT NULL, -- 'L1', 'L2', 'L3', 'M1', 'M2', 'Ingénieur 1', etc.
+    statut TEXT NOT NULL, -- 'Étudiant(e) régulier(e)', 'Auditeur libre', 'Stagiaire', 'Personnel', 'Alumni'
+    cycle TEXT NOT NULL, -- 'Licence Professionnelle (Bac +3)', 'Master Professionnel (Bac +5)', 'Mastère Spécialisé', 'FSP'
+    filiere TEXT NOT NULL, -- 'Logistique et Numérique', 'Finance Digitale', 'Marketing Digital', 'DSER/TNOR', 'Régulation', 'APSF/IPSF/CPSF'
+    niveau TEXT NOT NULL, -- 'L1', 'L2', 'L3', 'M1', 'M2', 'MS', 'FSP 1', 'FSP 2', 'Cadre'
     residence TEXT NOT NULL, -- 'Campus EMSP (Cité)', 'Hors Campus (Abidjan)'
-    precision_residence TEXT, -- Chambre campus ou Commune/Quartier (Marcory, Koumassi, Treichville...)
+    precision_residence TEXT, -- Chambre campus ou Commune/Quartier (Treichville, Marcory, Koumassi...)
     commissions TEXT[], -- ['Prédication & Dawa', 'Communication', 'Organisation', ...]
     competences TEXT, -- Graphisme, Web, Prise de parole, etc.
-    groupe_sanguin TEXT, -- Optionnel pour la santé/secourisme
     remarques TEXT,
     statut_validation TEXT DEFAULT 'Validé'
 );

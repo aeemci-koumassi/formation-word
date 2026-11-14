@@ -126,6 +126,23 @@
     <!-- Main Workspace -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6 flex-1 w-full">
       
+      <!-- BANNIÈRE DE STATUT SUPABASE CLOUD -->
+      <div id="cloudStatusBanner" class="p-3.5 rounded-2xl border text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-2xs transition-all bg-emerald-50/80 border-emerald-200 text-emerald-950">
+        <div class="flex items-center gap-2.5">
+          <span id="cloudStatusDot" class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+          <span id="cloudStatusText" class="font-medium">Vérification de la synchronisation Supabase Cloud...</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <a href="https://supabase.com/dashboard/project/iktoigkruredsudprndu/sql/new" target="_blank" id="cloudSqlLink" class="hidden px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-[11px] transition-colors flex items-center gap-1.5 shadow-2xs">
+            <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-amber-300"></i>
+            <span>Ouvrir SQL Editor Supabase</span>
+          </a>
+          <button type="button" onclick="openSqlModal()" id="cloudActionBtn" class="px-3 py-1.5 rounded-xl bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 font-bold text-[11px] transition-colors shadow-2xs">
+            <i class="fa-solid fa-code text-emerald-700 mr-1"></i> Voir le Script SQL
+          </button>
+        </div>
+      </div>
+
       <!-- STATS KPI CARDS -->
       <div class="grid grid-cols-2 sm:grid-cols-5 gap-3.5">
         
@@ -517,8 +534,8 @@ CREATE POLICY "Lecture et insertion publiques" ON public.recensement_emsp FOR AL
 
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase.js?v=20261113_EMSP_V1"></script>
-  <script src="base_donnees.js?v=20261113_EMSP_V1"></script>
+  <script src="supabase.js?v=20261114_DUAL_CLOUD_SYNC"></script>
+  <script src="base_donnees.js?v=20261114_DUAL_CLOUD_SYNC"></script>
   <script>
     const VALID_ADMIN_PINS = ["emsp2026", "aeemci2026", "admin", "sg2026", "1234"];
     let rawMembres = [];
@@ -554,6 +571,31 @@ CREATE POLICY "Lecture et insertion publiques" ON public.recensement_emsp FOR AL
     async function chargerDonnees() {
       showToast("Actualisation des membres...");
       rawMembres = await recupererTousLesMembres();
+      
+      // Actualisation visuelle de la bannière Cloud
+      const banner = document.getElementById('cloudStatusBanner');
+      const dot = document.getElementById('cloudStatusDot');
+      const text = document.getElementById('cloudStatusText');
+      const sqlLink = document.getElementById('cloudSqlLink');
+      
+      if (banner && window.SUPABASE_CLOUD_STATUS) {
+        if (window.SUPABASE_CLOUD_STATUS.mode === 'emsp_table') {
+          banner.className = "p-3 sm:p-3.5 rounded-2xl border border-emerald-200 bg-emerald-50/80 text-emerald-950 text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 shadow-2xs";
+          dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0";
+          text.innerHTML = "<strong>Base Supabase Cloud Connectée</strong> : Table officielle <code>recensement_emsp</code> active (" + rawMembres.length + " membre(s) recensé(s)).";
+          if (sqlLink) sqlLink.classList.add('hidden');
+        } else if (window.SUPABASE_CLOUD_STATUS.mode === 'backup_table') {
+          banner.className = "p-3 sm:p-3.5 rounded-2xl border border-amber-300 bg-amber-50 text-amber-950 text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 shadow-2xs";
+          dot.className = "w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0";
+          text.innerHTML = "<strong>Base Supabase Cloud Connectée (Mode de Secours)</strong> : Vos données sont bien enregistrées dans votre Cloud (" + rawMembres.length + " membre(s)). Pour activer la table dédiée <code>recensement_emsp</code>, exécutez le script SQL en 30 secondes.";
+          if (sqlLink) sqlLink.classList.remove('hidden');
+        } else {
+          banner.className = "p-3 sm:p-3.5 rounded-2xl border border-slate-200 bg-slate-50 text-slate-700 text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 shadow-2xs";
+          dot.className = "w-2.5 h-2.5 rounded-full bg-slate-400 shrink-0";
+          text.innerHTML = "<strong>Mode Hors-ligne</strong> : Affichage du cache local (" + rawMembres.length + " membre(s)).";
+        }
+      }
+
       calculerStatistiques();
       appliquerFiltres();
     }
